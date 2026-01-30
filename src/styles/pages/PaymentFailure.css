@@ -1,0 +1,92 @@
+.payment-status-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+}
+
+.payment-status-container.failure {
+  border-top: 5px solid #f44336;
+}
+
+.failure-message {
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.failure-reasons,
+.failure-actions {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: right;
+}
+
+.failure-reasons h3,
+.failure-actions h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.failure-reasons ul,
+.failure-actions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.failure-reasons li,
+.failure-actions li {
+  padding: 0.75rem 0;
+  color: #666;
+  position: relative;
+  padding-right: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.failure-reasons li:last-child,
+.failure-actions li:last-child {
+  border-bottom: none;
+}
+
+.failure-reasons li:before {
+  content: "•";
+  position: absolute;
+  right: 0;
+  color: #f44336;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.failure-actions li:before {
+  content: "→";
+  position: absolute;
+  right: 0;
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.btn-text {
+  background: transparent;
+  color: #666;
+  border: none;
+  text-decoration: underline;
+}
+
+.btn-text:hover {
+  color: #333;
+  background: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .failure-reasons,
+  .failure-actions {
+    padding: 1rem;
+  }
+}
