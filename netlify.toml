@@ -3,12 +3,7 @@
 [build]
   command = "npm run build"
   publish = "dist"
-  environment = { NODE_VERSION = "18.17.0" }
-
-# Environment variables (can be overridden in Netlify UI)
-[env]
-  [env.production]
-    VITE_API_URL = "https://jewelry-shop-udr7.onrender.com"
+  environment = { NODE_VERSION = "18.17.0", VITE_API_URL = "https://jewelry-shop-udr7.onrender.com" }
 
 # Redirect all routes to index.html for React Router SPA
 [[redirects]]
