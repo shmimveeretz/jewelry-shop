@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export const useProducts = (filters = {}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +12,7 @@ export const useProducts = (filters = {}) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/products");
+      const response = await fetch(`${API_BASE_URL}/api/products`);
       const data = await response.json();
 
       if (data.success && data.data) {
@@ -83,7 +85,7 @@ export const useProduct = (id) => {
         setError(null);
 
         const response = await fetch(
-          `http://localhost:5000/api/products/${id}`,
+          `${API_BASE_URL}/api/products/${id}`,
         );
         const data = await response.json();
 
