@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
-import { hebrewLettersData } from "../data/hebrewLetters";
-import { hoshenStonesData } from "../data/hoshenStones";
-import { trinityPendantsData } from "../data/trinityPendants";
-import { zodiacPendantsData } from "../data/zodiacPendants";
+import ProductForm from "../components/ProductForm";
+import { getAllProducts, deleteProduct } from "../services/productApi";
 import "../styles/pages/Admin.css";
 
 function Admin() {
@@ -114,6 +112,7 @@ function Admin() {
   // Products State
   const [searchTerm, setSearchTerm] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -130,16 +129,77 @@ function Admin() {
     status: "active",
   });
 
-  // Load products from data files on mount
+  // Load products from MongoDB via API
   useEffect(() => {
-    const allProducts = [
-      ...hebrewLettersData.map((p) => ({ ...p, status: "active" })),
-      ...hoshenStonesData.map((p) => ({ ...p, status: "active" })),
-      ...trinityPendantsData.map((p) => ({ ...p, status: "active" })),
-      ...zodiacPendantsData.map((p) => ({ ...p, status: "active" })),
-    ];
-    setProducts(allProducts);
+    fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/api/products");
+      const data = await response.json();
+
+      if (data.success) {
+        setProducts(data.data || []);
+      } else {
+        console.error("Failed to fetch products:", data.message);
+        showError(
+          language === "he" ? "שגיאה בטעינת מוצרים" : "Error loading products",
+        );
+        setProducts([]);
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      showError(
+        language === "he"
+          ? "שגיאה בחיבור לשרת - ודא שה-API פעיל"
+          : "Connection error - make sure API is running",
+      );
+      setProducts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle ProductForm success
+  const handleProductFormSuccess = (newProduct) => {
+    setShowProductForm(false);
+    setEditingProduct(null);
+    fetchProducts();
+    showSuccess(
+      language === "he" ? "המוצר עודכן בהצלחה" : "Product updated successfully",
+    );
+  };
+
+  // Handle delete product from new ProductForm
+  const handleDeleteProductWithImage = async (productId) => {
+    if (
+      window.confirm(
+        language === "he"
+          ? "האם אתה בטוח שברצונך למחוק את המוצר?"
+          : "Are you sure you want to delete this product?",
+      )
+    ) {
+      try {
+        const token = localStorage.getItem("token");
+        const result = await deleteProduct(productId, token);
+        if (result.success) {
+          fetchProducts();
+          showSuccess(
+            language === "he"
+              ? "המוצר נמחק בהצלחה"
+              : "Product deleted successfully",
+          );
+        } else {
+          showError(result.message || "Error deleting product");
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+      }
+    }
+  };
 
   // Check authorization on mount
   useEffect(() => {
@@ -706,40 +766,28 @@ function Admin() {
 
     if (editingProduct) {
       // Update existing product
-      setProducts(
-        products.map((p) =>
-          p.id === editingProduct.id
-            ? {
-                ...p,
-                name: formData.name,
-                nameEn: formData.nameEn,
-                category: formData.category,
-                categoryEn: formData.categoryEn,
-                description: formData.description,
-                descriptionEn: formData.descriptionEn,
-                price: parseFloat(formData.price),
-                metals: formData.metals
-                  .split(",")
-                  .map((m) => m.trim())
-                  .filter((m) => m),
-                images: formData.images
-                  .split(",")
-                  .map((i) => i.trim())
-                  .filter((i) => i),
-                status: formData.status,
-              }
-            : p,
-        ),
-      );
-      showSuccess(
-        language === "he"
-          ? "המוצר עודכן בהצלחה"
-          : "Product updated successfully",
-      );
+      updateProductAPI({
+        ...editingProduct,
+        name: formData.name,
+        nameEn: formData.nameEn,
+        category: formData.category,
+        categoryEn: formData.categoryEn,
+        description: formData.description,
+        descriptionEn: formData.descriptionEn,
+        price: parseFloat(formData.price),
+        metals: formData.metals
+          .split(",")
+          .map((m) => m.trim())
+          .filter((m) => m),
+        images: formData.images
+          .split(",")
+          .map((i) => i.trim())
+          .filter((i) => i),
+        status: formData.status,
+      });
     } else {
       // Add new product
       const newProduct = {
-        id: `product-${Date.now()}`,
         name: formData.name,
         nameEn: formData.nameEn,
         category: formData.category,
@@ -757,13 +805,75 @@ function Admin() {
           .filter((i) => i),
         status: formData.status,
       };
-      setProducts([...products, newProduct]);
-      showSuccess(
-        language === "he" ? "המוצר הוסף בהצלחה" : "Product added successfully",
-      );
+      addProductAPI(newProduct);
     }
 
     setShowForm(false);
+  };
+
+  const addProductAPI = async (product) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(product),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setProducts([...products, data.data]);
+        showSuccess(
+          language === "he"
+            ? "המוצר הוסף בהצלחה"
+            : "Product added successfully",
+        );
+      } else {
+        showError(data.message || "Error adding product");
+      }
+    } catch (error) {
+      console.error("Error adding product:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
+  };
+
+  const updateProductAPI = async (product) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:5000/api/products/${product._id || product.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(product),
+        },
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        setProducts(
+          products.map((p) =>
+            p._id === data.data._id || p.id === data.data.id ? data.data : p,
+          ),
+        );
+        showSuccess(
+          language === "he"
+            ? "המוצר עודכן בהצלחה"
+            : "Product updated successfully",
+        );
+      } else {
+        showError(data.message || "Error updating product");
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
   };
 
   const handleFormCancel = () => {
@@ -846,6 +956,13 @@ function Admin() {
               />
               <button className="add-product-btn" onClick={handleAddProduct}>
                 {language === "he" ? "➕ הוסף מוצר חדש" : "➕ Add New Product"}
+              </button>
+              <button
+                className="add-product-btn"
+                onClick={() => setShowProductForm(true)}
+                style={{ backgroundColor: "#28a745", marginLeft: "10px" }}
+              >
+                {language === "he" ? "📸 הוסף עם תמונה" : "📸 Add with Image"}
               </button>
             </div>
 
@@ -1600,6 +1717,40 @@ function Admin() {
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* ProductForm Component Modal - For Image Upload */}
+      {showProductForm && (
+        <div
+          className="product-form-modal"
+          onClick={() => setShowProductForm(false)}
+        >
+          <div
+            className="product-form-container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-btn"
+              onClick={() => setShowProductForm(false)}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "none",
+                border: "none",
+                fontSize: "24px",
+                cursor: "pointer",
+                zIndex: 10,
+              }}
+            >
+              ✕
+            </button>
+            <ProductForm
+              onSuccess={handleProductFormSuccess}
+              initialProduct={editingProduct}
+            />
+          </div>
         </div>
       )}
     </div>

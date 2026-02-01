@@ -1,9 +1,4 @@
 import { useState, useEffect } from "react";
-import { productsAPI } from "../utils/api";
-import { hebrewLettersData } from "../data/hebrewLetters";
-import { hoshenStonesData } from "../data/hoshenStones";
-import { zodiacPendantsData } from "../data/zodiacPendants";
-import { trinityPendantsData } from "../data/trinityPendants";
 
 export const useProducts = (filters = {}) => {
   const [products, setProducts] = useState([]);
@@ -15,51 +10,41 @@ export const useProducts = (filters = {}) => {
       setLoading(true);
       setError(null);
 
-      // Try to fetch from API first
-      const response = await productsAPI.getAll(filters);
+      const response = await fetch("http://localhost:5000/api/products");
+      const data = await response.json();
 
-      let apiProducts = [];
-      if (response.success) {
-        apiProducts = response.data || [];
+      if (data.success && data.data) {
+        let allProducts = data.data;
+
+        // Apply filters
+        if (filters.category && filters.category !== "הכל") {
+          allProducts = allProducts.filter(
+            (product) => product.category === filters.category,
+          );
+        }
+
+        if (filters.minPrice) {
+          allProducts = allProducts.filter(
+            (product) => product.price >= filters.minPrice,
+          );
+        }
+
+        if (filters.maxPrice) {
+          allProducts = allProducts.filter(
+            (product) => product.price <= filters.maxPrice,
+          );
+        }
+
+        setProducts(allProducts);
+        setError(null);
+      } else {
+        setError("Failed to load products");
+        setProducts([]);
       }
-
-      // Add local data collections to products
-      let allProducts = [
-        ...hebrewLettersData,
-        ...hoshenStonesData,
-        ...zodiacPendantsData,
-        ...trinityPendantsData,
-        ...apiProducts,
-      ];
-
-      // Apply filters
-      if (filters.category && filters.category !== "הכל") {
-        allProducts = allProducts.filter(
-          (product) => product.category === filters.category
-        );
-      }
-
-      setProducts(allProducts);
-      setError(null);
     } catch (err) {
       console.error("Error fetching products:", err);
-      // If API fails, still show local data collections
-      let allProducts = [
-        ...hebrewLettersData,
-        ...hoshenStonesData,
-        ...zodiacPendantsData,
-        ...trinityPendantsData,
-      ];
-
-      // Apply filters
-      if (filters.category && filters.category !== "הכל") {
-        allProducts = allProducts.filter(
-          (product) => product.category === filters.category
-        );
-      }
-
-      setProducts(allProducts);
-      setError(null); // Don't show error if we have local data
+      setError("Connection error - make sure API is running");
+      setProducts([]);
     } finally {
       setLoading(false);
     }
@@ -97,16 +82,20 @@ export const useProduct = (id) => {
         setLoading(true);
         setError(null);
 
-        const response = await productsAPI.getById(id);
+        const response = await fetch(
+          `http://localhost:5000/api/products/${id}`,
+        );
+        const data = await response.json();
 
-        if (response.success) {
-          setProduct(response.data);
+        if (data.success) {
+          setProduct(data.data);
         } else {
-          setError(response.message || "מוצר לא נמצא");
+          setError("Product not found");
+          setProduct(null);
         }
       } catch (err) {
         console.error("Error fetching product:", err);
-        setError("שגיאה בטעינת המוצר. אנא נסה שוב מאוחר יותר.");
+        setError("Connection error - make sure API is running");
         setProduct(null);
       } finally {
         setLoading(false);
