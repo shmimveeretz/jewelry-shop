@@ -137,7 +137,8 @@ function Admin() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/products");
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${API_BASE_URL}/api/products`);
       const data = await response.json();
 
       if (data.success) {
@@ -258,8 +259,9 @@ function Admin() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/users", {
+      const response = await fetch(`${API_BASE_URL}/api/users`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -70,8 +70,9 @@ function Auth() {
             phone: formData.phone,
           };
 
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(
-        `http://localhost:5000/api/auth/${endpoint}`,
+        `${API_BASE_URL}/api/auth/${endpoint}`,
         {
           method: "POST",
           headers: {
