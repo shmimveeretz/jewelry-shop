@@ -8,6 +8,7 @@
 ## 📋 Deployment Checklist
 
 ### ✅ Pre-Deployment
+
 - [x] No compilation errors
 - [x] Build optimized (`dist/` folder ready)
 - [x] Environment variables configured
@@ -50,16 +51,19 @@ Frontend/
 ## 🔧 Environment Variables
 
 ### Development (.env.local)
+
 ```bash
 VITE_API_URL=http://localhost:5000
 ```
 
 ### Production (Netlify Environment Variables)
+
 ```bash
 VITE_API_URL=https://jewelry-shop-api.onrender.com
 ```
 
 **Set in Netlify Dashboard:**
+
 - Site Settings → Build & Deploy → Environment
 - Add `VITE_API_URL` variable with production API URL
 
@@ -68,7 +72,9 @@ VITE_API_URL=https://jewelry-shop-api.onrender.com
 ## 📋 How to Deploy to Netlify
 
 ### Option 1: Connect GitHub (Recommended)
+
 1. **Push code to GitHub**
+
    ```bash
    git add .
    git commit -m "Ready for production"
@@ -91,6 +97,7 @@ VITE_API_URL=https://jewelry-shop-api.onrender.com
    - Redeploy the site
 
 ### Option 2: Manual Deploy (Netlify CLI)
+
 ```bash
 # Install Netlify CLI
 npm install -g netlify-cli
@@ -103,6 +110,7 @@ netlify deploy --prod --dir=dist
 ```
 
 ### Option 3: Drag & Drop (Quick Test)
+
 1. Run `npm run build`
 2. Go to [app.netlify.com/drop](https://app.netlify.com/drop)
 3. Drag `dist` folder
@@ -113,6 +121,7 @@ netlify deploy --prod --dir=dist
 ## 🔐 Security
 
 ### Netlify Configuration
+
 - ✅ React Router redirect to `/index.html` configured
 - ✅ Cache headers optimized
 - ✅ Security headers enabled
@@ -120,6 +129,7 @@ netlify deploy --prod --dir=dist
 - ✅ Environment variables secured
 
 ### Important Notes
+
 - Never commit `.env` files (add to `.gitignore`)
 - Use `.env.example` as template
 - API keys stay in backend
@@ -148,6 +158,7 @@ Gzipped: ~180 KB (js + css)
 ## 🧪 Testing Before Deploy
 
 ### Local Production Build
+
 ```bash
 # Build
 npm run build
@@ -196,6 +207,7 @@ POST   /api/auth/register         # User registration
 ## 🚨 Troubleshooting
 
 ### Build Fails
+
 ```bash
 # Clear cache and reinstall
 rm -rf node_modules package-lock.json
@@ -204,16 +216,19 @@ npm run build
 ```
 
 ### API 404 Errors
+
 - Check `VITE_API_URL` environment variable
 - Verify backend is running
 - Check CORS configuration on backend
 
 ### Routing Issues
+
 - ✅ netlify.toml already handles SPA routing
 - All routes redirect to `/index.html`
 - React Router handles client-side navigation
 
 ### Image Not Loading
+
 - Verify Firebase Storage configured
 - Check CORS rules in Firebase
 - Check image URLs in MongoDB
@@ -243,6 +258,7 @@ npm run build
 ## 🔄 Continuous Deployment
 
 Once GitHub connected to Netlify:
+
 - Auto-deploy on push to main
 - Preview deploys for pull requests
 - Rollback to previous versions available
@@ -262,6 +278,7 @@ If deployment issues occur:
    - Verify environment variables set
 
 3. **Test Locally**
+
    ```bash
    npm run build
    npm run preview

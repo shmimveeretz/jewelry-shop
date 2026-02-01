@@ -8,6 +8,8 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Contact.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function Contact() {
   const { t, language } = useLanguage();
 
@@ -35,7 +37,7 @@ function Contact() {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch("http://localhost:5000/api/contact", {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

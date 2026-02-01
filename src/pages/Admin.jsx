@@ -363,7 +363,7 @@ function Admin() {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `http://localhost:5000/api/users/${userId}/role`,
+          `${API_BASE_URL}/api/users/${userId}/role`,
           {
             method: "PUT",
             headers: {
@@ -429,7 +429,7 @@ function Admin() {
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(
-            `http://localhost:5000/api/users/${user._id || userId}`,
+            `${API_BASE_URL}/api/users/${user._id || userId}`,
             {
               method: "DELETE",
               headers: {
@@ -597,7 +597,7 @@ function Admin() {
   const addToFirewall = async (ipAddress) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/firewall/add`, {
+      const response = await fetch(`${API_BASE_URL}/api/firewall/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -640,7 +640,7 @@ function Admin() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/firewall/remove`,
+        `${API_BASE_URL}/api/firewall/remove`,
         {
           method: "POST",
           headers: {
@@ -816,7 +816,7 @@ function Admin() {
   const addProductAPI = async (product) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/products", {
+      const response = await fetch(`${API_BASE_URL}/api/products`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -846,7 +846,7 @@ function Admin() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/products/${product._id || product.id}`,
+        `${API_BASE_URL}/api/products/${product._id || product.id}`,
         {
           method: "PUT",
           headers: {
