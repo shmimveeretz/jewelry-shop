@@ -84,9 +84,7 @@ export const useProduct = (id) => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          `${API_BASE_URL}/api/products/${id}`,
-        );
+        const response = await fetch(`${API_BASE_URL}/api/products/${id}`);
         const data = await response.json();
 
         if (data.success) {
