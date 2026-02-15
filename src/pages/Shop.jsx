@@ -23,6 +23,17 @@ function Shop() {
     }
   }, [location.state]);
 
+  // Preload main collection image
+  useEffect(() => {
+    const img = new Image();
+    const currentCollection = collections.find(
+      (col) => col.id === selectedCollection,
+    );
+    if (currentCollection?.image) {
+      img.src = currentCollection.image;
+    }
+  }, [selectedCollection]);
+
   // Use the custom hook to fetch products from Firebase
   const apiFilters = {
     category: selectedCollection !== "הכל" ? selectedCollection : undefined,
@@ -167,7 +178,15 @@ function Shop() {
         {currentCollection && (
           <div className="category-hero">
             <div className="category-hero-image">
-              <img src={currentCollection.image} alt={currentCollection.name} />
+              <img
+                src={currentCollection.image}
+                alt={currentCollection.name}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src =
+                    "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&h=400&fit=crop";
+                }}
+              />
               <div className="category-hero-overlay"></div>
             </div>
             <div className="category-hero-content">
@@ -322,6 +341,7 @@ function Shop() {
                       src={product.images ? product.images[0] : product.image}
                       alt={product.name}
                       className="product-image"
+                      loading="lazy"
                     />
                     <div className="product-info">
                       <h3>
