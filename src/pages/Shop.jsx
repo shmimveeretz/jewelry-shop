@@ -46,7 +46,8 @@ function Shop() {
     {
       id: "הכל",
       name: language === "he" ? "הכל" : "All",
-      image: "/src/assets/EverythingBG.jpgb",
+      image:
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771152040/EverythingBG.jpg",
       description:
         language === "he"
           ? "מסע קסום אל עולם הרוחניות היהודית - תכשיטים ייחודיים המשלבים קדושה עתיקה עם עיצוב עכשווי. כל תכשיט נושא בחובו משמעות עמוקה וכוח אנרגטי מיוחד"

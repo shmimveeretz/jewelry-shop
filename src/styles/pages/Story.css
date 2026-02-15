@@ -4,7 +4,7 @@
 
 .story-hero {
     background: linear-gradient(rgba(139, 115, 85, 0.7), rgba(184, 151, 109, 0.7)),
-        url('https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1600') center/cover;
+        url('https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg') center/cover;
     height: 60vh;
     display: flex;
     align-items: center;

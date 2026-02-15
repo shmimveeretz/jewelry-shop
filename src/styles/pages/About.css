@@ -3,8 +3,10 @@
 }
 
 .about-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../../assets/AboutBG.jpg") center/cover;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url("https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg")
+      center/cover;
   height: 50vh;
   display: flex;
   align-items: center;
@@ -49,11 +51,9 @@
 }
 
 .founders-section {
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.95),
-      rgba(255, 255, 255, 0.9)
-    ),
-    url("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1600&q=80")
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9)),
+    url("https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg")
       center/cover;
   background-attachment: fixed;
   border-radius: var(--radius-lg);
