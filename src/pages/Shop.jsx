@@ -53,6 +53,18 @@ function Shop() {
 
   const { products, loading, error } = useProducts(apiFilters);
 
+  // Debug: Log products when they load
+  useEffect(() => {
+    if (products.length > 0) {
+      console.log("📦 Products loaded from API:", products);
+      console.log("🖼️ First product structure:", {
+        name: products[0]?.name,
+        images: products[0]?.images,
+        image: products[0]?.image,
+      });
+    }
+  }, [products]);
+
   const collections = [
     {
       id: "הכל",
@@ -342,6 +354,13 @@ function Shop() {
                       alt={product.name}
                       className="product-image"
                       loading="lazy"
+                      onError={(e) => {
+                        console.warn(`⚠️ Image failed to load for ${product.name}:`, product.images?.[0] || product.image);
+                        e.target.src = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
+                      }}
+                      onLoad={() => {
+                        console.log(`✅ Image loaded for ${product.name}:`, product.images?.[0] || product.image);
+                      }}
                     />
                     <div className="product-info">
                       <h3>

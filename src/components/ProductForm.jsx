@@ -24,9 +24,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
   });
 
   const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(
-    initialProduct?.images?.[0] || null,
-  );
+  const [preview, setPreview] = useState(initialProduct?.images?.[0] || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
