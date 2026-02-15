@@ -60,7 +60,7 @@ function Shop() {
       console.log("🖼️ First product structure:", {
         name: products[0]?.name,
         images: products[0]?.images,
-        image: products[0]?.image,
+        firstImage: Array.isArray(products[0]?.images) ? products[0]?.images[0] : "No images",
       });
     }
   }, [products]);
@@ -350,16 +350,22 @@ function Shop() {
                     style={{ cursor: "pointer" }}
                   >
                     <img
-                      src={product.images ? product.images[0] : product.image}
+                      src={
+                        Array.isArray(product.images)
+                          ? product.images[0]
+                          : product.image || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
+                      }
                       alt={product.name}
                       className="product-image"
                       loading="lazy"
                       onError={(e) => {
-                        console.warn(`⚠️ Image failed to load for ${product.name}:`, product.images?.[0] || product.image);
+                        console.warn(`⚠️ Image failed to load for ${product.name}:`, 
+                          Array.isArray(product.images) ? product.images[0] : product.image);
                         e.target.src = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
                       }}
                       onLoad={() => {
-                        console.log(`✅ Image loaded for ${product.name}:`, product.images?.[0] || product.image);
+                        console.log(`✅ Image loaded for ${product.name}:`, 
+                          Array.isArray(product.images) ? product.images[0] : product.image);
                       }}
                     />
                     <div className="product-info">

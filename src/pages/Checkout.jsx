@@ -219,8 +219,15 @@ function Checkout() {
               {cartItems.map((item) => (
                 <div key={item.id} className="order-item">
                   <img
-                    src={item.images ? item.images[0] : item.image}
+                    src={
+                      Array.isArray(item.images)
+                        ? item.images[0]
+                        : item.image || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
+                    }
                     alt={item.name}
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
+                    }}
                   />
                   <div className="order-item-details">
                     <h3>{item.name}</h3>

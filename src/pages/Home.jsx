@@ -93,9 +93,16 @@ function Home() {
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={product.images ? product.images[0] : product.image}
+                    src={
+                      Array.isArray(product.images)
+                        ? product.images[0]
+                        : product.image || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
+                    }
                     alt={product.name}
                     className="collection-image"
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
+                    }}
                   />
                   <div className="collection-info">
                     <h3>
