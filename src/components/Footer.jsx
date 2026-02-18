@@ -29,7 +29,7 @@ function Footer() {
                 <FaFacebook />
               </a>
               <a
-                href="https://www.instagram.com/shmim_ve_eretz"
+                href="https://www.instagram.com/shamaim_ve_eretz"
                 aria-label="אינסטגרם"
               >
                 <FaInstagram />
