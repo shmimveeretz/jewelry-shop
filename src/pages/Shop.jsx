@@ -60,7 +60,9 @@ function Shop() {
       console.log("🖼️ First product structure:", {
         name: products[0]?.name,
         images: products[0]?.images,
-        firstImage: Array.isArray(products[0]?.images) ? products[0]?.images[0] : "No images",
+        firstImage: Array.isArray(products[0]?.images)
+          ? products[0]?.images[0]
+          : "No images",
       });
     }
   }, [products]);
@@ -80,7 +82,7 @@ function Shop() {
       id: "אותיות עבריות",
       name: language === "he" ? "כתב עברי קדום" : "Ancient Hebrew Script",
       image:
-        "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=400&fit=crop",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771407399/Ancient_Hebrew.jpg",
       description:
         language === "he"
           ? "בכתב העברי הקדום זורם אורו של הבורא בימי ממלכת ישראל המאוחדת"
@@ -108,9 +110,9 @@ function Shop() {
     },
     {
       id: "כוכבים",
-      name: language === "he" ? "כוכבים" : "Stars",
+      name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
       image:
-        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&h=400&fit=crop",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771406947/Trinity.jpg",
       description:
         language === "he"
           ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
@@ -353,19 +355,29 @@ function Shop() {
                       src={
                         Array.isArray(product.images)
                           ? product.images[0]
-                          : product.image || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
+                          : product.image ||
+                            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
                       }
                       alt={product.name}
                       className="product-image"
                       loading="lazy"
                       onError={(e) => {
-                        console.warn(`⚠️ Image failed to load for ${product.name}:`, 
-                          Array.isArray(product.images) ? product.images[0] : product.image);
-                        e.target.src = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
+                        console.warn(
+                          `⚠️ Image failed to load for ${product.name}:`,
+                          Array.isArray(product.images)
+                            ? product.images[0]
+                            : product.image,
+                        );
+                        e.target.src =
+                          "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
                       }}
                       onLoad={() => {
-                        console.log(`✅ Image loaded for ${product.name}:`, 
-                          Array.isArray(product.images) ? product.images[0] : product.image);
+                        console.log(
+                          `✅ Image loaded for ${product.name}:`,
+                          Array.isArray(product.images)
+                            ? product.images[0]
+                            : product.image,
+                        );
                       }}
                     />
                     <div className="product-info">

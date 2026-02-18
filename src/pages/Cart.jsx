@@ -60,12 +60,14 @@ function Cart() {
                   src={
                     Array.isArray(item.images)
                       ? item.images[0]
-                      : item.image || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
+                      : item.image ||
+                        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
                   }
                   alt={item.name}
                   className="cart-item-image"
                   onError={(e) => {
-                    e.target.src = "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
+                    e.target.src =
+                      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
                   }}
                 />
 
