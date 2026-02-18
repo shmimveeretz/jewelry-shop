@@ -109,7 +109,7 @@ function Shop() {
           : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
     },
     {
-      id: "כוכבים",
+      id: "מזל, אבן חושן וכוכב",
       name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
       image:
         "https://res.cloudinary.com/dhayarvh3/image/upload/v1771406947/Trinity.jpg",
@@ -353,10 +353,9 @@ function Shop() {
                   >
                     <img
                       src={
-                        Array.isArray(product.images)
+                        Array.isArray(product.images) && product.images.length > 0
                           ? product.images[0]
-                          : product.image ||
-                            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
+                          : "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
                       }
                       alt={product.name}
                       className="product-image"
@@ -364,9 +363,7 @@ function Shop() {
                       onError={(e) => {
                         console.warn(
                           `⚠️ Image failed to load for ${product.name}:`,
-                          Array.isArray(product.images)
-                            ? product.images[0]
-                            : product.image,
+                          product.images?.[0]
                         );
                         e.target.src =
                           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
@@ -374,9 +371,7 @@ function Shop() {
                       onLoad={() => {
                         console.log(
                           `✅ Image loaded for ${product.name}:`,
-                          Array.isArray(product.images)
-                            ? product.images[0]
-                            : product.image,
+                          product.images?.[0]
                         );
                       }}
                     />
