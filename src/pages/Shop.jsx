@@ -92,7 +92,7 @@ function Shop() {
       id: "אבני חושן",
       name: language === "he" ? "אבני חושן" : "Hoshen Stones",
       image:
-        "https://images.unsplash.com/photo-1611652022419-a9419f74343a?w=800&h=400&fit=crop",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410296/Hoshen_Stones.jpg",
       description:
         language === "he"
           ? "וְהָאֲבָנִים תִּהְיֶינָה עַל שְׁמוֹת בְּנֵי יִשְׂרָאֵל, שְׁתֵּים־עֶשְׂרֵה עַל שְׁמוֹתָם, פִּתּוּחֵי חֹתָם, אִישׁ עַל שְׁמוֹ, לִשְׁנֵי עָשָׂר שָׁבֶט"
@@ -102,7 +102,7 @@ function Shop() {
       id: "תליוני מזלות",
       name: language === "he" ? "תליוני מזלות" : "Zodiac Pendants",
       image:
-        "https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=800&h=600&fit=crop",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
       description:
         language === "he"
           ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
