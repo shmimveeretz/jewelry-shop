@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./styles/App.css";
 
 // Context
@@ -12,6 +13,7 @@ import Footer from "./components/Footer";
 import ShabbatMode from "./components/ShabbatMode";
 import ScrollToTop from "./components/ScrollToTop";
 import AccessibilityWidget from "./components/AccessibilityWidget";
+import SplashScreen from "./components/SplashScreen";
 
 // Pages
 import Home from "./pages/Home";
@@ -34,14 +36,26 @@ import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
+  const [showSplash, setShowSplash] = useState(false);
+
+  useEffect(() => {
+    // Check if user has visited before
+    const hasVisited = localStorage.getItem("siteVisited");
+    if (!hasVisited) {
+      setShowSplash(true);
+    }
+  }, []);
+
   return (
-    <LanguageProvider>
-      <ToastProvider>
-        <CartProvider>
-          <Router>
-            <ScrollToTop />
-            <AccessibilityWidget />
-            <div className="App">
+    <>
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      <LanguageProvider>
+        <ToastProvider>
+          <CartProvider>
+            <Router>
+              <ScrollToTop />
+              <AccessibilityWidget />
+              <div className="App">
               {/* <ShabbatMode /> */}
               <Navbar />
               <main className="main-content">
@@ -76,6 +90,7 @@ function App() {
         </CartProvider>
       </ToastProvider>
     </LanguageProvider>
+    </>
   );
 }
 
