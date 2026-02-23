@@ -96,9 +96,7 @@
 }
 
 .shop-content {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: var(--spacing-xl);
+  display: block;
   transition: all var(--transition-medium);
 }
 
