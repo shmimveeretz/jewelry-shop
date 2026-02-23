@@ -107,7 +107,12 @@ function Shop() {
     setSelectedCollection(value);
   };
 
-  const filteredProducts = products;
+  // Sort products by name for consistent ordering
+  const filteredProducts = [...products].sort((a, b) => {
+    const nameA = a.name || "";
+    const nameB = b.name || "";
+    return nameA.localeCompare(nameB, "he");
+  });
 
   // Get current collection data
   const currentCollection = collections.find(
@@ -194,7 +199,8 @@ function Shop() {
                   >
                     <img
                       src={
-                        Array.isArray(product.images) && product.images.length > 0
+                        Array.isArray(product.images) &&
+                        product.images.length > 0
                           ? product.images[0]
                           : "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
                       }
@@ -204,7 +210,7 @@ function Shop() {
                       onError={(e) => {
                         console.warn(
                           `⚠️ Image failed to load for ${product.name}:`,
-                          product.images?.[0]
+                          product.images?.[0],
                         );
                         e.target.src =
                           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
@@ -212,7 +218,7 @@ function Shop() {
                       onLoad={() => {
                         console.log(
                           `✅ Image loaded for ${product.name}:`,
-                          product.images?.[0]
+                          product.images?.[0],
                         );
                       }}
                     />
