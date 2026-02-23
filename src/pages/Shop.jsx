@@ -10,11 +10,6 @@ function Shop() {
   const location = useLocation();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState("הכל");
-  const [filters, setFilters] = useState({
-    categories: [],
-    metals: [],
-    priceRange: "all",
-  });
 
   // Handle zodiac filter from navigation
   useEffect(() => {
@@ -37,18 +32,6 @@ function Shop() {
   // Use the custom hook to fetch products from Firebase
   const apiFilters = {
     category: selectedCollection !== "הכל" ? selectedCollection : undefined,
-    minPrice:
-      filters.priceRange === "medium"
-        ? 500
-        : filters.priceRange === "high"
-          ? 1000
-          : undefined,
-    maxPrice:
-      filters.priceRange === "low"
-        ? 500
-        : filters.priceRange === "medium"
-          ? 1000
-          : undefined,
   };
 
   const { products, loading, error } = useProducts(apiFilters);
@@ -121,55 +104,10 @@ function Shop() {
   ];
 
   const handleFilterChange = (filterType, value) => {
-    setFilters((prev) => {
-      if (filterType === "priceRange") {
-        return { ...prev, priceRange: value };
-      }
-
-      const currentFilters = prev[filterType];
-      const newFilters = currentFilters.includes(value)
-        ? currentFilters.filter((item) => item !== value)
-        : [...currentFilters, value];
-
-      return { ...prev, [filterType]: newFilters };
-    });
+    setSelectedCollection(value);
   };
 
-  const filteredProducts = products.filter((product) => {
-    // Filter by collection first
-    if (
-      selectedCollection !== "הכל" &&
-      product.category !== selectedCollection
-    ) {
-      return false;
-    }
-
-    if (
-      filters.categories.length > 0 &&
-      !filters.categories.includes(product.category)
-    ) {
-      return false;
-    }
-
-    if (
-      filters.metals.length > 0 &&
-      !filters.metals.some((metal) => product.metals.includes(metal))
-    ) {
-      return false;
-    }
-
-    if (filters.priceRange !== "all") {
-      if (filters.priceRange === "low" && product.price > 500) return false;
-      if (
-        filters.priceRange === "medium" &&
-        (product.price < 500 || product.price > 1000)
-      )
-        return false;
-      if (filters.priceRange === "high" && product.price < 1000) return false;
-    }
-
-    return true;
-  });
+  const filteredProducts = products;
 
   // Get current collection data
   const currentCollection = collections.find(
@@ -211,103 +149,6 @@ function Shop() {
         )}
 
         <div className="shop-content">
-          {/* Filters Sidebar */}
-          <aside className="shop-filters">
-            <h3>{t("filters")}</h3>
-
-            <div className="filter-group">
-              <h4>{t("category")}</h4>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filters.categories.includes("אותיות עבריות")}
-                  onChange={() =>
-                    handleFilterChange("categories", "אותיות עבריות")
-                  }
-                />
-                {language === "he" ? "כתב עברי קדום" : "Ancient Hebrew Script"}
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filters.categories.includes("אבני חושן")}
-                  onChange={() => handleFilterChange("categories", "אבני חושן")}
-                />
-                {language === "he" ? "אבני חושן" : "Hoshen Stones"}
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filters.categories.includes("תליוני מזלות")}
-                  onChange={() =>
-                    handleFilterChange("categories", "תליוני מזלות")
-                  }
-                />
-                {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
-              </label>
-            </div>
-
-            <div className="filter-group">
-              <h4>{t("metalType")}</h4>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filters.metals.includes("זהב")}
-                  onChange={() => handleFilterChange("metals", "זהב")}
-                />
-                {language === "he" ? "זהב" : "Gold"}
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={filters.metals.includes("כסף")}
-                  onChange={() => handleFilterChange("metals", "כסף")}
-                />
-                {language === "he" ? "כסף" : "Silver"}
-              </label>
-            </div>
-
-            <div className="filter-group">
-              <h4>{t("priceRange")}</h4>
-              <label>
-                <input
-                  type="radio"
-                  name="priceRange"
-                  checked={filters.priceRange === "all"}
-                  onChange={() => handleFilterChange("priceRange", "all")}
-                />
-                {t("all")}
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="priceRange"
-                  checked={filters.priceRange === "low"}
-                  onChange={() => handleFilterChange("priceRange", "low")}
-                />
-                {t("lowPrice")}
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="priceRange"
-                  checked={filters.priceRange === "medium"}
-                  onChange={() => handleFilterChange("priceRange", "medium")}
-                />
-                {t("mediumPrice")}
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="priceRange"
-                  checked={filters.priceRange === "high"}
-                  onChange={() => handleFilterChange("priceRange", "high")}
-                />
-                {t("highPrice")}
-              </label>
-            </div>
-          </aside>
-
           {/* Products Grid */}
           <section className="products-section">
             {/* Collection Menu */}
