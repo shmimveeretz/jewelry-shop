@@ -58,8 +58,8 @@ function Shop() {
         "https://res.cloudinary.com/dhayarvh3/image/upload/v1771152040/EverythingBG.jpg",
       description:
         language === "he"
-          ? "מסע קסום אל עולם הרוחניות היהודית - תכשיטים ייחודיים המשלבים קדושה עתיקה עם עיצוב עכשווי. כל תכשיט נושא בחובו משמעות עמוקה וכוח אנרגטי מיוחד"
-          : "A magical journey into the world of Jewish spirituality - Unique jewelry combining ancient holiness with contemporary design. Each piece carries deep meaning and special energetic power",
+          ? "מסע מבראשית דרך שמים וארץ ומה שביניהם"
+          : "A journey from the beginning through heaven and earth and what is between them",
     },
     {
       id: "אותיות עבריות",
@@ -90,8 +90,16 @@ function Shop() {
         language === "he"
           ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
           : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
-    },
-    {
+    },    {
+      id: "כוכבים",
+      name: language === "he" ? "כוכבים" : "Stars",
+      image:
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
+      description:
+        language === "he"
+          ? "אבני קדוש המייצגות את כוכבי השמים"
+          : "Sacred stones representing the stars of heaven",
+    },    {
       id: "מזל, אבן חושן וכוכב",
       name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
       image:
@@ -119,11 +127,6 @@ function Shop() {
       <div className="container">
         <div className="shop-header">
           <h1>{language === "he" ? "החנות שלנו" : "Our Shop"}</h1>
-          <p>
-            {language === "he"
-              ? "גלה את מגוון התכשיטים היהודיים המיוחדים שלנו - קולקציית שמיים וארץ"
-              : "Discover our special collection of Jewish jewelry - Heaven and Earth Collection"}
-          </p>
         </div>
 
         {/* Category Hero Section */}

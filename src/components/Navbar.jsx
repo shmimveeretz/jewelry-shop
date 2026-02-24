@@ -86,15 +86,50 @@ function Navbar() {
             <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
               <li>
                 <Link
-                  to="/shop?category=אותיות עבריות"
+                  to="/shop"
                   onClick={() => {
                     setIsMenuOpen(false);
                     setIsDropdownOpen(false);
                   }}
                 >
                   {language === "he"
-                    ? "אותיות עבריות עתיקות"
-                    : "Ancient Hebrew Letters"}
+                    ? "כתב עברי קדום"
+                    : "Ancient Hebrew Script"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=מזל, אבן חושן וכוכב"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he"
+                    ? "שלושת העולמות"
+                    : "Trinity Pendants"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=כוכבים"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "כוכבים" : "Stars"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=תליוני מזלות"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
                 </Link>
               </li>
               <li>
@@ -106,19 +141,6 @@ function Navbar() {
                   }}
                 >
                   {language === "he" ? "אבני חושן" : "Hoshen Stones"}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop?category=כוכב חושן מזל"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {language === "he"
-                    ? "כוכב + חושן + מזל"
-                    : "Star + Hoshen + Zodiac"}
                 </Link>
               </li>
             </ul>
