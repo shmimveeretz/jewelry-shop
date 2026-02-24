@@ -1,47 +1,8 @@
 import "../styles/pages/About.css";
-import { FaHeart, FaUsers, FaStar, FaHandshake } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 
 function About() {
   const { t, language } = useLanguage();
-
-  const values = [
-    {
-      icon: <FaHeart />,
-      title: language === "he" ? "אהבה ואמונה" : "Love and Faith",
-      description:
-        language === "he"
-          ? "כל יצירה שלנו נולדת מתוך אהבה עמוקה ליהדות ואמונה במשמעות של כל תכשיט"
-          : "Each of our creations is born from deep love for Judaism and belief in the meaning of each piece of jewelry",
-    },
-    {
-      icon: <FaUsers />,
-      title:
-        language === "he"
-          ? "חיבור בין דורות"
-          : "Connection Between Generations",
-      description:
-        language === "he"
-          ? "אנחנו משלבות חכמה של שנים עם תשוקה צעירה לחדשנות ויצירתיות"
-          : "We combine the wisdom of years with youthful passion for innovation and creativity",
-    },
-    {
-      icon: <FaStar />,
-      title: language === "he" ? "רוחניות ומשמעות" : "Spirituality and Meaning",
-      description:
-        language === "he"
-          ? "יצרנו מרחב שמזמין לעצור, להרגיש ולחוות משהו פנימי ואמיתי"
-          : "We created a space that invites you to pause, feel, and experience something inner and authentic",
-    },
-    {
-      icon: <FaHandshake />,
-      title: language === "he" ? "קשר אישי" : "Personal Connection",
-      description:
-        language === "he"
-          ? "אנחנו מאמינות בכוח של קשר אנושי וביצירת חוויה משמעותית לכל לקוח"
-          : "We believe in the power of human connection and creating a meaningful experience for every customer",
-    },
-  ];
 
   return (
     <div className="about-page">

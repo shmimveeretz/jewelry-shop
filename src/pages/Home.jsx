@@ -19,6 +19,11 @@ function Home() {
   const { products, loading } = useProducts();
   const topProducts = products.slice(0, 4);
 
+  // Fetch trinity products
+  const trinityProducts = products.filter(
+    (p) => p.category === "מזל, אבן חושן וכוכב"
+  ).slice(0, 3);
+
   const features = [
     {
       icon: <FaGem />,
@@ -129,6 +134,55 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Trinity Pendants Section */}
+      {trinityProducts.length > 0 && (
+        <section className="featured-collections trinity-section">
+          <div className="container">
+            <h2 className="section-title">
+              {language === "he"
+                ? "תכשיטי שלושת העולמות"
+                : "Trinity Pendants"}
+            </h2>
+            <div className="collections-grid">
+              {trinityProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="collection-card"
+                  onClick={() => setSelectedProduct(product)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={
+                      Array.isArray(product.images)
+                        ? product.images[0]
+                        : product.image ||
+                          "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
+                    }
+                    alt={product.name}
+                    className="collection-image"
+                    onError={(e) => {
+                      e.target.src =
+                        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
+                    }}
+                  />
+                  <div className="collection-info">
+                    <h3>
+                      {language === "en" && product.nameEn
+                        ? product.nameEn
+                        : product.name}
+                    </h3>
+                    <div className="price">{product.price} ₪</div>
+                    <span className="btn btn-secondary">
+                      {language === "he" ? "צפה בפרטים" : "View Details"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Why Choose Us */}
       <section className="why-choose-us">
