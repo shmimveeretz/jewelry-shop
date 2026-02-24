@@ -59,7 +59,7 @@ function Shop() {
       description:
         language === "he"
           ? "מסע מבראשית דרך שמים וארץ ומה שביניהם"
-          : "A journey from the beginning through heaven and earth and what is between them",
+          : "A journey from Genesis through Heaven and Earth and what lies between",
     },
     {
       id: "אותיות עבריות",
@@ -90,16 +90,8 @@ function Shop() {
         language === "he"
           ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
           : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
-    },    {
-      id: "כוכבים",
-      name: language === "he" ? "כוכבים" : "Stars",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
-      description:
-        language === "he"
-          ? "אבני קדוש המייצגות את כוכבי השמים"
-          : "Sacred stones representing the stars of heaven",
-    },    {
+    },
+    {
       id: "מזל, אבן חושן וכוכב",
       name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
       image:

@@ -51,76 +51,62 @@ function About() {
           </p>
         </section>
 
-        <section className="about-section">
+        <section className="about-section collection-section">
           <h2>
             {language === "he"
-              ? "אודות שמים וארץ"
-              : "About Heaven and Earth"}
+              ? "קולקציית שמיים וארץ"
+              : "Shamayim VaAretz Collection"}
           </h2>
-          <div className="about-values">
-            <p>
-              {language === "he"
-                ? "כל קולקציה שלנו נולדת ממצוקה עדינה — להביא ממממלכת השמיים לעולם הגשמי, נקודה לנקודה."
-                : "Every collection of ours is born from a gentle quest — to bring from the kingdom of heaven into the physical world, point by point."}
-            </p>
-            
-            <div className="collection-elements">
-              <div className="element">
-                <h4>{language === "he" ? "22 האותיות" : "The 22 Letters"}</h4>
-                <p>
-                  {language === "he"
-                    ? "כתב עברי קדום — חיבור לשרשים, לזהות, ולצור עמוק של הקשר שלנו לאבות ולמורשת."
-                    : "Ancient Hebrew script — a connection to roots, to identity, and to the deep fabric of our bond to our ancestors and heritage."}
-                </p>
-              </div>
-
-              <div className="element">
-                <h4>{language === "he" ? "7 כוכבי הלכת" : "The 7 Planets"}</h4>
-                <p>
-                  {language === "he"
-                    ? "משפיעים קוסמיים המעצבים את ימינו — ת"ל, ימרכורי, זוהרה, שמש, מאדים, צדק וקורנון. כל אחד מהם נושא משמעות, מסר, והשראה."
-                    : "Cosmic influences that shape our days — bringing meaning, messages, and inspiration to our lives."}
-                </p>
-              </div>
-
-              <div className="element">
-                <h4>{language === "he" ? "12 שנות המזל" : "The 12 Zodiac Signs"}</h4>
-                <p>
-                  {language === "he"
-                    ? "כל תא"ג מחזיק בתוכו סיפור, רמזים ויצירתיות — קשתנו הם אלו שמדריכים ממעלה, מעבר למה שרואים."
-                    : "Each zodiac sign holds within it a story, hints, and creativity — guiding us from above, beyond what we see."}
-                </p>
-              </div>
-
-              <div className="element">
-                <h4>{language === "he" ? "12 אבני החושן" : "The 12 Stones of the Breastplate"}</h4>
-                <p>
-                  {language === "he"
-                    ? "אבנים קדושות שקישרו את כוהן לעמו — כל אחת עם כוח, תרופה, והצעה אחרת להבין את עצמנו ואת העולם סביבנו."
-                    : "Sacred stones that connected the priest to his people — each with its own power, healing, and a different way to understand ourselves and the world around us."}
-                </p>
-              </div>
-            </div>
-
-            <p className="collections-closing">
-              {language === "he"
-                ? "כל יצירה שלנו נעשית בסבלנות, אהבה, בעבודה קולעת ועם מved עמוק של המשמעות מאחורי כל סמל. אנו מאמינות שתכשיט אמיתי אינו יפה בלבד — הוא דובר אמת, מנחה ועוזר אישי בנתיבך."
-                : "Each of our creations is made with patience, love, through dedicated work and deep understanding of the meaning behind each symbol. We believe that true jewelry is not just beautiful — it is a truth-teller, a guide, and a personal helper in your path."}
-            </p>
-          </div>
-        </section>
-
-        <section className="about-mission">
-          <h2>{t("ourMission")}</h2>
-          <p>
+          <p className="collection-intro">
             {language === "he"
-              ? "אנו מאמינות שתכשיט הוא הרבה מעבר לאביזר יפה. זה סמל של זהות, ביטוי של אמונה, וגשר בין המסורת לבין ההווה. כל יצירה שלנו נולדת מרצון לחבר אנשים לשורשיהם, לתת להם דרך לשאת עמם משהו משמעותי ומיוחד."
-              : "We believe that jewelry is much more than a beautiful accessory. It is a symbol of identity, an expression of faith, and a bridge between tradition and the present. Each of our creations is born from a desire to connect people to their roots, to give them a way to carry something meaningful and special with them."}
+              ? "קולקציית שמיים וארץ נולדה מתוך חיבור בין שתי נשמות, חן ונטע, שהוא הרבה מעבר לזמן ומקום. מסע שכולו אמונה 'שאין עוד מלבדו' וכל יום במסע מעצים את השיבה הביתה..."
+              : "The Shamayim VaAretz Collection was born from a connection between two souls, Chen and Neta, that transcends time and place. A journey of pure faith 'there is nothing but Him' and each day on the journey strengthens the return home..."}
           </p>
+
           <p>
             {language === "he"
-              ? "אנו כאן כדי ליצור עבורכם לא רק תכשיט יפה, אלא חוויה של חיבור, משמעות והשראה. בואו תהיו חלק מהסיפור שלנו, ובואו ניצור יחד משהו שיישאר איתכם לתמיד."
-              : "We are here to create for you not just a beautiful piece of jewelry, but an experience of connection, meaning, and inspiration. Come be part of our story, and let us create together something that will stay with you forever."}
+              ? "הקולקציה אוצרת בתוכה את גרמי השמים והארץ:"
+              : "The collection treasures within it the celestial and earthly bodies:"}
+          </p>
+
+          <ul className="collection-items">
+            <li>
+              {language === "he"
+                ? "22 אותיות בכתב עברי קדום"
+                : "22 letters in ancient Hebrew script"}
+            </li>
+            <li>
+              {language === "he"
+                ? "7 כוכבי לכת"
+                : "7 planets"}
+            </li>
+            <li>
+              {language === "he"
+                ? "12 סימני המזלות"
+                : "12 zodiac signs"}
+            </li>
+            <li>
+              {language === "he"
+                ? "12 אבני החושן שהיה עונד הכהן הגדול בבית המקדש כנגד 12 שבטי ישראל"
+                : "12 Hoshen stones worn by the High Priest in the Holy Temple, representing the 12 tribes of Israel"}
+            </li>
+            <li>
+              {language === "he"
+                ? "ועוד סמלים ואותות של תורתנו הקדושה למען עמנו היקר"
+                : "And more symbols and signs of our sacred Torah for our dear people"}
+            </li>
+          </ul>
+
+          <p>
+            {language === "he"
+              ? "הקולקציה נוצרה בסבלנות ואהבה עם המון חשיבה וירידה לפרטים הקטנים מתוך אומנות, אסטטיקה והרבה עומק."
+              : "The collection was created with patience and love, with careful thought and attention to every detail, through craftsmanship, aesthetics, and profound meaning."}
+          </p>
+
+          <p>
+            {language === "he"
+              ? "היא מאוד אישית ולוקחת את האדם למסע אישי, מבראשית דרך שמיים וארץ ומה שביניהם."
+              : "It is deeply personal and takes each person on a personal journey, from Genesis through Heaven and Earth and what lies between."}
           </p>
         </section>
       </div>

@@ -19,10 +19,10 @@ function Home() {
   const { products, loading } = useProducts();
   const topProducts = products.slice(0, 4);
 
-  // Fetch trinity products
+  // Get Trinity Pendants
   const trinityProducts = products.filter(
-    (p) => p.category === "מזל, אבן חושן וכוכב"
-  ).slice(0, 3);
+    (product) => product.category === "מזל, אבן חושן וכוכב" || product.category === "Trinity Pendants"
+  ).slice(0, 4);
 
   const features = [
     {
@@ -141,9 +141,10 @@ function Home() {
           <div className="container">
             <h2 className="section-title">
               {language === "he"
-                ? "תכשיטי שלושת העולמות"
-                : "Trinity Pendants"}
+                ? "תכשיטי השלישיות - מזל, אבן חושן וכוכב"
+                : "Trinity Pendants - Zodiac, Hoshen & Star"}
             </h2>
+
             <div className="collections-grid">
               {trinityProducts.map((product) => (
                 <div
@@ -179,6 +180,12 @@ function Home() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+              <Link to="/shop" className="btn">
+                {language === "he" ? "לכל המוצרים בחנות" : "View All Products"}
+              </Link>
             </div>
           </div>
         </section>
