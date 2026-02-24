@@ -54,17 +54,59 @@ function About() {
         <section className="about-section">
           <h2>
             {language === "he"
-              ? "הערכים שמנחים אותנו"
-              : "The Values That Guide Us"}
+              ? "אודות שמים וארץ"
+              : "About Heaven and Earth"}
           </h2>
           <div className="about-values">
-            {values.map((value, index) => (
-              <div key={index} className="value-card">
-                <div className="value-icon">{value.icon}</div>
-                <h3>{value.title}</h3>
-                <p>{value.description}</p>
+            <p>
+              {language === "he"
+                ? "כל קולקציה שלנו נולדת ממצוקה עדינה — להביא ממממלכת השמיים לעולם הגשמי, נקודה לנקודה."
+                : "Every collection of ours is born from a gentle quest — to bring from the kingdom of heaven into the physical world, point by point."}
+            </p>
+            
+            <div className="collection-elements">
+              <div className="element">
+                <h4>{language === "he" ? "22 האותיות" : "The 22 Letters"}</h4>
+                <p>
+                  {language === "he"
+                    ? "כתב עברי קדום — חיבור לשרשים, לזהות, ולצור עמוק של הקשר שלנו לאבות ולמורשת."
+                    : "Ancient Hebrew script — a connection to roots, to identity, and to the deep fabric of our bond to our ancestors and heritage."}
+                </p>
               </div>
-            ))}
+
+              <div className="element">
+                <h4>{language === "he" ? "7 כוכבי הלכת" : "The 7 Planets"}</h4>
+                <p>
+                  {language === "he"
+                    ? "משפיעים קוסמיים המעצבים את ימינו — ת"ל, ימרכורי, זוהרה, שמש, מאדים, צדק וקורנון. כל אחד מהם נושא משמעות, מסר, והשראה."
+                    : "Cosmic influences that shape our days — bringing meaning, messages, and inspiration to our lives."}
+                </p>
+              </div>
+
+              <div className="element">
+                <h4>{language === "he" ? "12 שנות המזל" : "The 12 Zodiac Signs"}</h4>
+                <p>
+                  {language === "he"
+                    ? "כל תא"ג מחזיק בתוכו סיפור, רמזים ויצירתיות — קשתנו הם אלו שמדריכים ממעלה, מעבר למה שרואים."
+                    : "Each zodiac sign holds within it a story, hints, and creativity — guiding us from above, beyond what we see."}
+                </p>
+              </div>
+
+              <div className="element">
+                <h4>{language === "he" ? "12 אבני החושן" : "The 12 Stones of the Breastplate"}</h4>
+                <p>
+                  {language === "he"
+                    ? "אבנים קדושות שקישרו את כוהן לעמו — כל אחת עם כוח, תרופה, והצעה אחרת להבין את עצמנו ואת העולם סביבנו."
+                    : "Sacred stones that connected the priest to his people — each with its own power, healing, and a different way to understand ourselves and the world around us."}
+                </p>
+              </div>
+            </div>
+
+            <p className="collections-closing">
+              {language === "he"
+                ? "כל יצירה שלנו נעשית בסבלנות, אהבה, בעבודה קולעת ועם מved עמוק של המשמעות מאחורי כל סמל. אנו מאמינות שתכשיט אמיתי אינו יפה בלבד — הוא דובר אמת, מנחה ועוזר אישי בנתיבך."
+                : "Each of our creations is made with patience, love, through dedicated work and deep understanding of the meaning behind each symbol. We believe that true jewelry is not just beautiful — it is a truth-teller, a guide, and a personal helper in your path."}
+            </p>
           </div>
         </section>
 
