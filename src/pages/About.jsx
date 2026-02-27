@@ -1,12 +1,6 @@
 import "../styles/pages/About.css";
 import { useLanguage } from "../contexts/LanguageContext";
-import {
-  FaBook,
-  FaStar,
-  FaAsterisk,
-  FaGem,
-  FaSparkles,
-} from "react-icons/fa";
+import { FaBook, FaStar, FaAsterisk, FaGem, FaSparkles } from "react-icons/fa";
 
 function About() {
   const { t, language } = useLanguage();
@@ -43,41 +37,41 @@ function About() {
               <div className="collection-item-icon">
                 <FaBook />
               </div>
-              <div className="collection-item-number">22</div>
               <p>
                 {language === "he"
                   ? "אותיות בכתב עברי קדום"
                   : "Letters in ancient Hebrew script"}
               </p>
+              <div className="collection-item-number">22</div>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.1s" }}>
               <div className="collection-item-icon">
                 <FaStar />
               </div>
-              <div className="collection-item-number">7</div>
               <p>{language === "he" ? "כוכבי לכת" : "Planets"}</p>
+              <div className="collection-item-number">7</div>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.2s" }}>
               <div className="collection-item-icon">
                 <FaAsterisk />
               </div>
-              <div className="collection-item-number">12</div>
               <p>{language === "he" ? "סימני המזלות" : "Zodiac signs"}</p>
+              <div className="collection-item-number">12</div>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.3s" }}>
               <div className="collection-item-icon">
                 <FaGem />
               </div>
-              <div className="collection-item-number">12</div>
               <p>{language === "he" ? "אבני החושן" : "Hoshen stones"}</p>
               <small>
                 {language === "he"
                   ? "מ12 שבטי ישראל"
                   : "From 12 tribes of Israel"}
               </small>
+              <div className="collection-item-number">12</div>
             </div>
 
             <div
