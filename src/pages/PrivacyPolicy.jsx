@@ -20,7 +20,9 @@ function PrivacyPolicy() {
           {language === "he" ? (
             <>
               <section>
-                <h2><FaLock /> מבוא</h2>
+                <h2>
+                  <FaLock /> מבוא
+                </h2>
                 <p>
                   "שמיים וארץ" (להלן: "החנות" או "אנו") מכבדת את פרטיותך
                   ומתחייבת להגן על המידע האישי שלך. מדיניות פרטיות זו מסבירה
@@ -28,13 +30,15 @@ function PrivacyPolicy() {
                   באתר ורכישת מוצרים.
                 </p>
                 <p className="highlight">
-                  <FaShield /> אנו מחויבים להגן על המידע שלך ולא נמכור אותו לצדדים
-                  שלישיים.
+                  <FaShield /> אנו מחויבים להגן על המידע שלך ולא נמכור אותו
+                  לצדדים שלישיים.
                 </p>
               </section>
 
               <section>
-                <h2><FaClipboardList /> איזה מידע אנו אוספים?</h2>
+                <h2>
+                  <FaClipboardList /> איזה מידע אנו אוספים?
+                </h2>
 
                 <h3>מידע אישי שאתה מספק לנו:</h3>
                 <ul>
@@ -75,7 +79,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2><FaBullseye /> כיצד אנו משתמשים במידע?</h2>
+                <h2>
+                  <FaBullseye /> כיצד אנו משתמשים במידע?
+                </h2>
                 <ul>
                   <li>
                     <strong>עיבוד הזמנות:</strong> לטפל בהזמנות, לשלוח מוצרים,
@@ -103,7 +109,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2><FaHandshake /> שיתוף מידע עם צדדים שלישיים</h2>
+                <h2>
+                  <FaHandshake /> שיתוף מידע עם צדדים שלישיים
+                </h2>
                 <p>אנו משתפים מידע רק כאשר הדבר הכרחי לצורך מתן השירות:</p>
 
                 <h3>ספקי שירות:</h3>

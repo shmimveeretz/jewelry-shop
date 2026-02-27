@@ -20,7 +20,9 @@ function TermsOfService() {
           {language === "he" ? (
             <>
               <section>
-                <h2><FaClipboard /> כללי</h2>
+                <h2>
+                  <FaClipboard /> כללי
+                </h2>
                 <p>
                   ברוכים הבאים לאתר "שמיים וארץ" (להלן: "האתר"). השימוש באתר
                   מהווה הסכמה לתנאי השימוש המפורטים להלן. אנא קרא בעיון את
@@ -33,7 +35,9 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2><FaShoppingCart /> תהליך הרכישה</h2>
+                <h2>
+                  <FaShoppingCart /> תהליך הרכישה
+                </h2>
 
                 <h3>הזמנת מוצרים</h3>
                 <ul>
@@ -65,7 +69,9 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2><FaBox /> משלוחים ואספקה</h2>
+                <h2>
+                  <FaBox /> משלוחים ואספקה
+                </h2>
                 <ul>
                   <li>זמני המשלוח המוצהרים הם משוערים ועשויים להשתנות</li>
                   <li>האחריות על המוצר עוברת ללקוח עם קבלת המשלוח</li>
@@ -80,7 +86,9 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2><FaRedoAlt /> החזרות והחלפות</h2>
+                <h2>
+                  <FaRedoAlt /> החזרות והחלפות
+                </h2>
                 <ul>
                   <li>ניתן להחזיר מוצרים תוך 14 ימים מקבלת המשלוח</li>
                   <li>מוצרים מותאמים אישית לא ניתנים להחזרה</li>
@@ -93,7 +101,9 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2><FaPalette /> התאמות אישיות</h2>
+                <h2>
+                  <FaPalette /> התאמות אישיות
+                </h2>
                 <p>
                   עבור מוצרים מותאמים אישית (חריטות, גדלים מיוחדים, עיצובים
                   מיוחדים):

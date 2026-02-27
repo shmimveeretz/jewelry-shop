@@ -25,7 +25,9 @@ function ShippingPolicy() {
           {language === "he" ? (
             <>
               <section>
-                <h2><FaClock /> זמני אספקה</h2>
+                <h2>
+                  <FaClock /> זמני אספקה
+                </h2>
                 <p>
                   אנו עושים כל מאמץ לספק את המוצרים במהירות האפשרית. זמני האספקה
                   המשוערים הם:
@@ -43,13 +45,16 @@ function ShippingPolicy() {
                   </li>
                 </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> שימו לב: זמני המשלוח אינם כוללים את זמן הייצור של תכשיטים
-                  מותאמים אישית, שעשוי להימשך עד 14 ימי עסקים נוספים.
+                  <FaExclamationTriangle /> שימו לב: זמני המשלוח אינם כוללים את
+                  זמן הייצור של תכשיטים מותאמים אישית, שעשוי להימשך עד 14 ימי
+                  עסקים נוספים.
                 </p>
               </section>
 
               <section>
-                <h2><FaTruck /> אפשרויות משלוח</h2>
+                <h2>
+                  <FaTruck /> אפשרויות משלוח
+                </h2>
 
                 <div className="shipping-option">
                   <h3>משלוח רגיל - ₪30</h3>
@@ -83,7 +88,9 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaGlobe /> משלוח לחו"ל</h2>
+                <h2>
+                  <FaGlobe /> משלוח לחו"ל
+                </h2>
                 <p>
                   אנו שולחים מוצרים לכל רחבי העולם באמצעות דואר רשום בינלאומי.
                 </p>
@@ -99,12 +106,15 @@ function ShippingPolicy() {
                   </li>
                 </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> הלקוח אחראי לתשלום מכס ומיסים בארץ היעד, ככל שיחולו.
+                  <FaExclamationTriangle /> הלקוח אחראי לתשלום מכס ומיסים בארץ
+                  היעד, ככל שיחולו.
                 </p>
               </section>
 
               <section>
-                <h2><FaBox /> אריזה ומעקב</h2>
+                <h2>
+                  <FaBox /> אריזה ומעקב
+                </h2>
                 <ul>
                   <li>כל המוצרים נארזים בקפידה באריזה מעוצבת ומאובטחת</li>
                   <li>התכשיטים נשלחים בקופסת מתנה יפה</li>
@@ -114,7 +124,9 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaGift /> משלוח חינם</h2>
+                <h2>
+                  <FaGift /> משלוח חינם
+                </h2>
                 <p>
                   הזמנות מעל <strong>₪500</strong> זכאיות למשלוח רגיל חינם!
                 </p>
@@ -122,7 +134,9 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaQuestionCircle /> שאלות נפוצות</h2>
+                <h2>
+                  <FaQuestionCircle /> שאלות נפוצות
+                </h2>
 
                 <div className="faq-item">
                   <h4>מתי אקבל את מספר המעקב?</h4>
@@ -151,19 +165,29 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaPhone /> יצירת קשר</h2>
+                <h2>
+                  <FaPhone /> יצירת קשר
+                </h2>
                 <p>יש לכם שאלות לגבי המשלוח? צרו איתנו קשר:</p>
                 <ul>
-                  <li><FaEnvelope /> אימייל: shmimveeretz@gmail.com</li>
-                  <li><FaMobileAlt /> וואטסאפ: 052-595-5389</li>
-                  <li><FaClock /> שעות פעילות: א׳-ה׳, 9:00-18:00</li>
+                  <li>
+                    <FaEnvelope /> אימייל: shmimveeretz@gmail.com
+                  </li>
+                  <li>
+                    <FaMobileAlt /> וואטסאפ: 052-595-5389
+                  </li>
+                  <li>
+                    <FaClock /> שעות פעילות: א׳-ה׳, 9:00-18:00
+                  </li>
                 </ul>
               </section>
             </>
           ) : (
             <>
               <section>
-                <h2><FaClock /> Delivery Times</h2>
+                <h2>
+                  <FaClock /> Delivery Times
+                </h2>
                 <p>
                   We make every effort to deliver products as quickly as
                   possible. Estimated delivery times:
@@ -183,14 +207,16 @@ function ShippingPolicy() {
                   </li>
                 </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> Note: Delivery times do not include production time for
-                  custom jewelry, which may take up to an additional 14 business
-                  days.
+                  <FaExclamationTriangle /> Note: Delivery times do not include
+                  production time for custom jewelry, which may take up to an
+                  additional 14 business days.
                 </p>
               </section>
 
               <section>
-                <h2><FaTruck /> Shipping Options</h2>
+                <h2>
+                  <FaTruck /> Shipping Options
+                </h2>
 
                 <div className="shipping-option">
                   <h3>Standard Shipping - ₪30</h3>
@@ -226,7 +252,9 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaGlobe /> International Shipping</h2>
+                <h2>
+                  <FaGlobe /> International Shipping
+                </h2>
                 <p>We ship worldwide via international registered mail.</p>
                 <ul>
                   <li>
@@ -242,13 +270,15 @@ function ShippingPolicy() {
                   </li>
                 </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> Customer is responsible for customs duties and taxes in
-                  destination country, if applicable.
+                  <FaExclamationTriangle /> Customer is responsible for customs
+                  duties and taxes in destination country, if applicable.
                 </p>
               </section>
 
               <section>
-                <h2><FaBox /> Packaging & Tracking</h2>
+                <h2>
+                  <FaBox /> Packaging & Tracking
+                </h2>
                 <ul>
                   <li>
                     All products are carefully packed in designed and secure
@@ -261,7 +291,9 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaGift /> Free Shipping</h2>
+                <h2>
+                  <FaGift /> Free Shipping
+                </h2>
                 <p>
                   Orders over <strong>₪500</strong> qualify for free standard
                   shipping!
@@ -272,7 +304,9 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaQuestionCircle /> FAQ</h2>
+                <h2>
+                  <FaQuestionCircle /> FAQ
+                </h2>
 
                 <div className="faq-item">
                   <h4>When will I receive my tracking number?</h4>
@@ -308,12 +342,20 @@ function ShippingPolicy() {
               </section>
 
               <section>
-                <h2><FaPhone /> Contact Us</h2>
+                <h2>
+                  <FaPhone /> Contact Us
+                </h2>
                 <p>Have questions about shipping? Contact us:</p>
                 <ul>
-                  <li><FaEnvelope /> Email: shmimveeretz@gmail.com</li>
-                  <li><FaMobileAlt /> WhatsApp: 052-595-5389</li>
-                  <li><FaClock /> Hours: Sun-Thu, 9:00-18:00</li>
+                  <li>
+                    <FaEnvelope /> Email: shmimveeretz@gmail.com
+                  </li>
+                  <li>
+                    <FaMobileAlt /> WhatsApp: 052-595-5389
+                  </li>
+                  <li>
+                    <FaClock /> Hours: Sun-Thu, 9:00-18:00
+                  </li>
                 </ul>
               </section>
             </>

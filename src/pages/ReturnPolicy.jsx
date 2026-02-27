@@ -31,7 +31,9 @@ function ReturnPolicy() {
           {language === "he" ? (
             <>
               <section>
-                <h2><FaRedoAlt /> תקופת ההחזרה</h2>
+                <h2>
+                  <FaRedoAlt /> תקופת ההחזרה
+                </h2>
                 <p>
                   אנו מאמינים באיכות המוצרים שלנו ובשביעות רצון הלקוחות. ניתן
                   להחזיר או להחליף מוצרים תוך <strong>14 ימים</strong> מיום קבלת
@@ -40,7 +42,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2><FaCheckCircle /> תנאי החזרה</h2>
+                <h2>
+                  <FaCheckCircle /> תנאי החזרה
+                </h2>
                 <p>כדי שההחזרה תאושר, יש לעמוד בתנאים הבאים:</p>
                 <ul>
                   <li>המוצר לא נעשה בו שימוש ונמצא במצב חדש</li>
@@ -50,13 +54,15 @@ function ReturnPolicy() {
                   <li>יש לשמור על קבלה או אישור הזמנה</li>
                 </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> מוצרים שהותאמו אישית (גודל, חריטה, עיצוב מיוחד) לא ניתנים
-                  להחזרה, אלא אם כן קיים פגם ייצור.
+                  <FaExclamationTriangle /> מוצרים שהותאמו אישית (גודל, חריטה,
+                  עיצוב מיוחד) לא ניתנים להחזרה, אלא אם כן קיים פגם ייצור.
                 </p>
               </section>
 
               <section>
-                <h2><FaTimesCircle /> מוצרים שלא ניתנים להחזרה</h2>
+                <h2>
+                  <FaTimesCircle /> מוצרים שלא ניתנים להחזרה
+                </h2>
                 <ul>
                   <li>
                     מוצרים שהותאמו אישית (חריטות, גדלים מיוחדים, עיצובים אישיים)
@@ -68,7 +74,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2><FaExchangeAlt /> החלפת מוצר</h2>
+                <h2>
+                  <FaExchangeAlt /> החלפת מוצר
+                </h2>
                 <p>ניתן להחליף מוצר בגודל או בצבע אחר, בכפוף לזמינות במלאי.</p>
                 <ul>
                   <li>החלפה ראשונה היא ללא עלות נוספת</li>
@@ -79,7 +87,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2><FaMoneyBillWave /> החזר כספי</h2>
+                <h2>
+                  <FaMoneyBillWave /> החזר כספי
+                </h2>
                 <p>
                   לאחר קבלת המוצר המוחזר ובדיקתו, נבצע החזר כספי תוך 7-14 ימי
                   עסקים.
@@ -90,13 +100,15 @@ function ReturnPolicy() {
                   <li>במקרה של פגם ייצור, נחזיר גם עלויות משלוח</li>
                 </ul>
                 <p className="note">
-                  <FaClock /> תהליך ההחזר הכספי עשוי להימשך 5-10 ימי עסקים נוספים, בהתאם
-                  לחברת האשראי.
+                  <FaClock /> תהליך ההחזר הכספי עשוי להימשך 5-10 ימי עסקים
+                  נוספים, בהתאם לחברת האשראי.
                 </p>
               </section>
 
               <section>
-                <h2><FaWrench /> פגמים וליקויים</h2>
+                <h2>
+                  <FaWrench /> פגמים וליקויים
+                </h2>
                 <p>אם קיבלת מוצר פגום או לא תקין:</p>
                 <ul>
                   <li>צרו איתנו קשר תוך 48 שעות מרגע קבלת המשלוח</li>
@@ -105,13 +117,15 @@ function ReturnPolicy() {
                   <li>או נשלח מוצר חלופי ללא עלות</li>
                 </ul>
                 <p className="highlight">
-                  <FaShield /> כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים מפני פגמי
-                  ייצור.
+                  <FaShield /> כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים מפני
+                  פגמי ייצור.
                 </p>
               </section>
 
               <section>
-                <h2><FaClipboardList /> איך להחזיר מוצר?</h2>
+                <h2>
+                  <FaClipboardList /> איך להחזיר מוצר?
+                </h2>
                 <div className="steps">
                   <div className="step">
                     <h3>1. צור קשר</h3>
