@@ -6,7 +6,7 @@ import {
   FaExchangeAlt,
   FaMoneyBillWave,
   FaWrench,
-  FaShield,
+  FaShieldAlt,
   FaClipboardList,
   FaExclamationTriangle,
   FaPhone,
@@ -117,8 +117,8 @@ function ReturnPolicy() {
                   <li>או נשלח מוצר חלופי ללא עלות</li>
                 </ul>
                 <p className="highlight">
-                  <FaShield /> כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים מפני
-                  פגמי ייצור.
+                  <FaShieldAlt /> כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים
+                  מפני פגמי ייצור.
                 </p>
               </section>
 
