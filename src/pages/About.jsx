@@ -1,6 +1,6 @@
 import "../styles/pages/About.css";
 import { useLanguage } from "../contexts/LanguageContext";
-import { FaBook, FaStar, FaAsterisk, FaGem, FaSparkles } from "react-icons/fa";
+import { FaBook, FaStar, FaAsterisk, FaGem, FaHeart } from "react-icons/fa";
 
 function About() {
   const { t, language } = useLanguage();
@@ -79,7 +79,7 @@ function About() {
               style={{ "--delay": "0.4s" }}
             >
               <div className="collection-item-icon">
-                <FaSparkles />
+                <FaHeart />
               </div>
               <p className="highlight-item">
                 {language === "he"
