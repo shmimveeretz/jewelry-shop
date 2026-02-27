@@ -56,7 +56,7 @@ function About() {
               <p>{language === "he" ? "אבני החושן" : "Hoshen stones"}</p>
               <small>
                 {language === "he"
-                  ? "מ12 שבטי ישראל"
+                  ? "מ - 12 שבטי ישראל"
                   : "From 12 tribes of Israel"}
               </small>
             </div>
