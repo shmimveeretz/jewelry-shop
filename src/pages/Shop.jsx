@@ -55,7 +55,7 @@ function Shop() {
       id: "הכל",
       name: language === "he" ? "הכל" : "All",
       image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771152040/EverythingBG.jpg",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg",
       description:
         language === "he"
           ? "מסע מבראשית דרך שמים וארץ ומה שביניהם"
@@ -189,7 +189,8 @@ function Shop() {
                   >
                     <img
                       src={
-                        Array.isArray(product.images) && product.images.length > 0
+                        Array.isArray(product.images) &&
+                        product.images.length > 0
                           ? product.images[0]
                           : "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
                       }
@@ -199,7 +200,7 @@ function Shop() {
                       onError={(e) => {
                         console.warn(
                           `⚠️ Image failed to load for ${product.name}:`,
-                          product.images?.[0]
+                          product.images?.[0],
                         );
                         e.target.src =
                           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
@@ -207,7 +208,7 @@ function Shop() {
                       onLoad={() => {
                         console.log(
                           `✅ Image loaded for ${product.name}:`,
-                          product.images?.[0]
+                          product.images?.[0],
                         );
                       }}
                     />

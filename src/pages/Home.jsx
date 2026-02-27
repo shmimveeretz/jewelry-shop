@@ -20,9 +20,13 @@ function Home() {
   const topProducts = products.slice(0, 4);
 
   // Get Trinity Pendants
-  const trinityProducts = products.filter(
-    (product) => product.category === "מזל, אבן חושן וכוכב" || product.category === "Trinity Pendants"
-  ).slice(0, 4);
+  const trinityProducts = products
+    .filter(
+      (product) =>
+        product.category === "מזל, אבן חושן וכוכב" ||
+        product.category === "Trinity Pendants",
+    )
+    .slice(0, 4);
 
   const features = [
     {
