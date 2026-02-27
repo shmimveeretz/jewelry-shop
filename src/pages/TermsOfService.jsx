@@ -13,6 +13,8 @@ import {
   FaBox,
   FaRedoAlt,
   FaPalette,
+  FaCamera,
+  FaBalanceScale,
 } from "react-icons/fa";
 import "../styles/pages/LegalPages.css";
 
