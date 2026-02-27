@@ -33,7 +33,6 @@ function About() {
 
           <div className="collection-items-grid">
             <div className="collection-item" style={{ "--delay": "0s" }}>
-              <div className="collection-item-icon">📜</div>
               <div className="collection-item-number">22</div>
               <p>
                 {language === "he"
@@ -43,33 +42,18 @@ function About() {
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.1s" }}>
-              <div className="collection-item-icon">⭐</div>
               <div className="collection-item-number">7</div>
-              <p>
-                {language === "he"
-                  ? "כוכבי לכת"
-                  : "Planets"}
-              </p>
+              <p>{language === "he" ? "כוכבי לכת" : "Planets"}</p>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.2s" }}>
-              <div className="collection-item-icon">♈</div>
               <div className="collection-item-number">12</div>
-              <p>
-                {language === "he"
-                  ? "סימני המזלות"
-                  : "Zodiac signs"}
-              </p>
+              <p>{language === "he" ? "סימני המזלות" : "Zodiac signs"}</p>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.3s" }}>
-              <div className="collection-item-icon">💎</div>
               <div className="collection-item-number">12</div>
-              <p>
-                {language === "he"
-                  ? "אבני החושן"
-                  : "Hoshen stones"}
-              </p>
+              <p>{language === "he" ? "אבני החושן" : "Hoshen stones"}</p>
               <small>
                 {language === "he"
                   ? "מ12 שבטי ישראל"
@@ -77,8 +61,10 @@ function About() {
               </small>
             </div>
 
-            <div className="collection-item full-width" style={{ "--delay": "0.4s" }}>
-              <div className="collection-item-icon">✨</div>
+            <div
+              className="collection-item full-width"
+              style={{ "--delay": "0.4s" }}
+            >
               <p className="highlight-item">
                 {language === "he"
                   ? "ועוד סמלים ואותות של תורתנו הקדושה למען עמנו היקר"
