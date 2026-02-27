@@ -1,7 +1,7 @@
 import { useLanguage } from "../contexts/LanguageContext";
 import {
   FaLock,
-  FaShield,
+  FaShieldAlt,
   FaClipboardList,
   FaBullseye,
   FaHandshake,
@@ -30,7 +30,7 @@ function PrivacyPolicy() {
                   באתר ורכישת מוצרים.
                 </p>
                 <p className="highlight">
-                  <FaShield /> אנו מחויבים להגן על המידע שלך ולא נמכור אותו
+                  <FaShieldAlt /> אנו מחויבים להגן על המידע שלך ולא נמכור אותו
                   לצדדים שלישיים.
                 </p>
               </section>
