@@ -1,5 +1,12 @@
 import "../styles/pages/About.css";
 import { useLanguage } from "../contexts/LanguageContext";
+import {
+  FaBook,
+  FaStar,
+  FaAsterisk,
+  FaGem,
+  FaSparkles,
+} from "react-icons/fa";
 
 function About() {
   const { t, language } = useLanguage();
@@ -33,6 +40,9 @@ function About() {
 
           <div className="collection-items-grid">
             <div className="collection-item" style={{ "--delay": "0s" }}>
+              <div className="collection-item-icon">
+                <FaBook />
+              </div>
               <div className="collection-item-number">22</div>
               <p>
                 {language === "he"
@@ -42,16 +52,25 @@ function About() {
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.1s" }}>
+              <div className="collection-item-icon">
+                <FaStar />
+              </div>
               <div className="collection-item-number">7</div>
               <p>{language === "he" ? "כוכבי לכת" : "Planets"}</p>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.2s" }}>
+              <div className="collection-item-icon">
+                <FaAsterisk />
+              </div>
               <div className="collection-item-number">12</div>
               <p>{language === "he" ? "סימני המזלות" : "Zodiac signs"}</p>
             </div>
 
             <div className="collection-item" style={{ "--delay": "0.3s" }}>
+              <div className="collection-item-icon">
+                <FaGem />
+              </div>
               <div className="collection-item-number">12</div>
               <p>{language === "he" ? "אבני החושן" : "Hoshen stones"}</p>
               <small>
@@ -65,6 +84,9 @@ function About() {
               className="collection-item full-width"
               style={{ "--delay": "0.4s" }}
             >
+              <div className="collection-item-icon">
+                <FaSparkles />
+              </div>
               <p className="highlight-item">
                 {language === "he"
                   ? "ועוד סמלים ואותות של תורתנו הקדושה למען עמנו היקר"

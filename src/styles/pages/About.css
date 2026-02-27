@@ -210,6 +210,18 @@
   box-shadow: 0 8px 24px rgba(212, 175, 55, 0.12);
 }
 
+.collection-item-icon {
+  font-size: 2.5rem;
+  color: var(--color-secondary);
+  margin-bottom: var(--spacing-md);
+  transition: all var(--transition-medium);
+}
+
+.collection-item:hover .collection-item-icon {
+  color: var(--color-primary);
+  transform: scale(1.2);
+}
+
 .collection-item-number {
   font-size: 3rem;
   font-weight: 700;
@@ -217,6 +229,7 @@
   line-height: 1;
   margin-bottom: var(--spacing-lg);
   transition: all var(--transition-medium);
+  display: block;
 }
 
 .collection-item:hover .collection-item-number {
@@ -247,6 +260,10 @@
   padding: var(--spacing-xl);
   background: linear-gradient(135deg, rgba(212, 175, 55, 0.04), transparent);
   border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.collection-item.full-width .collection-item-icon {
+  font-size: 2rem;
 }
 
 .highlight-item {
