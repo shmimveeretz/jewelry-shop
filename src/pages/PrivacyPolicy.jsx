@@ -1,5 +1,13 @@
 import { useLanguage } from "../contexts/LanguageContext";
 import {
+  FaFileAlt,
+  FaGlobe,
+  FaChild,
+  FaMapMarkerAlt, 
+  FaClock,
+  FaSyncAlt,
+  FaFileAlt,
+  FaEnvelope,
   FaBan,
   FaUser,
   FaCookie,
