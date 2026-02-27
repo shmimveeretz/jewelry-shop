@@ -1,6 +1,7 @@
 import { useLanguage } from "../contexts/LanguageContext";
 import {
   FaFileAlt,
+  FaWhatsapp,
   FaPhone,
   FaGlobe,
   FaChild,
