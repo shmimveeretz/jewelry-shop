@@ -1,6 +1,7 @@
 import { useLanguage } from "../contexts/LanguageContext";
 import {
   FaFileAlt,
+  FaPhone,
   FaGlobe,
   FaChild,
   FaMapMarkerAlt,
