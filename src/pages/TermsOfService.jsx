@@ -1,10 +1,31 @@
 import { useLanguage } from "../contexts/LanguageContext";
 import {
+  FaFileAlt,
+  FaWhatsapp,
+  FaPhone,
+  FaGlobe,
+  FaChild,
+  FaMapMarkerAlt,
+  FaClock,
+  FaSyncAlt,
+  FaEnvelope,
+  FaRegCopyright,
+  FaBan,
+  FaUser,
+  FaCookie,
+  FaLock,
+  FaShieldAlt,
+  FaClipboardList,
+  FaBullseye,
+  FaHandshake,
+  FaExclamationTriangle,
+  FaMailBulk,
   FaClipboard,
   FaShoppingCart,
   FaBox,
   FaRedoAlt,
   FaPalette,
+  FaPhotoVideo,
 } from "react-icons/fa";
 import "../styles/pages/LegalPages.css";
 
@@ -120,7 +141,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🛡️ אחריות</h2>
+                <h2><FaShieldAlt /> אחריות</h2>
                 <ul>
                   <li>
                     כל המוצרים מגיעים עם אחריות ל-12 חודשים מפני פגמי ייצור
@@ -135,7 +156,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🖼️ זכויות יוצרים וקניין רוחני</h2>
+                <h2><FaRegCopyright /> זכויות יוצרים וקניין רוחני</h2>
                 <ul>
                   <li>
                     כל התכנים באתר (תמונות, טקסטים, עיצובים) הם רכוש החנות
@@ -149,7 +170,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>👤 חשבון משתמש</h2>
+                <h2><FaUser /> חשבון משתמש</h2>
                 <ul>
                   <li>אתה אחראי לשמירה על סודיות פרטי החשבון שלך</li>
                   <li>אתה אחראי לכל פעילות שתתבצע תחת חשבונך</li>
@@ -159,7 +180,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>⚠️ הגבלת אחריות</h2>
+                <h2><FaExclamationTriangle /> הגבלת אחריות</h2>
                 <ul>
                   <li>החנות אינה אחראית לנזקים עקיפים או תוצאתיים</li>
                   <li>האחריות מוגבלת לסכום ששולם עבור המוצר</li>
@@ -172,7 +193,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>📸 שימוש בתמונות</h2>
+                <h2><FaCamera /> שימוש בתמונות</h2>
                 <ul>
                   <li>תמונות המוצרים הן להמחשה בלבד</li>
                   <li>צבעים עשויים להשתנות מעט בהתאם למסך המחשב</li>
@@ -184,7 +205,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🌐 שינויים בתנאי השימוש</h2>
+                <h2><FaGlobe /> שינויים בתנאי השימוש</h2>
                 <p>
                   החנות שומרת לעצמה את הזכות לעדכן ולשנות את תנאי השימוש מעת
                   לעת. שינויים יכנסו לתוקף מיד עם פרסומם באתר. המשך השימוש באתר
@@ -193,7 +214,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>⚖️ דין ושיפוט</h2>
+                <h2><FaBalanceScale /> דין ושיפוט</h2>
                 <ul>
                   <li>תנאי שימוש אלה כפופים לדיני מדינת ישראל</li>
                   <li>סמכות השיפוט הבלעדית נתונה לבתי המשפט בתל אביב</li>
@@ -202,12 +223,12 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>📧 יצירת קשר</h2>
+                <h2><FaEnvelope /> יצירת קשר</h2>
                 <p>לשאלות או הבהרות בנוגע לתנאי השימוש:</p>
                 <ul>
-                  <li>📧 אימייל: shmimveeretz@gmail.com</li>
-                  <li>📱 וואטסאפ: 052-595-5389</li>
-                  <li>⏰ שעות פעילות: א׳-ה׳, 9:00-18:00</li>
+                  <li><FaEnvelope /> אימייל: shmimveeretz@gmail.com</li>
+                  <li><FaWhatsapp /> וואטסאפ: 052-595-5389</li>
+                  <li><FaClock /> שעות פעילות: א׳-ה׳, 9:00-18:00</li>
                 </ul>
               </section>
 
@@ -220,21 +241,21 @@ function TermsOfService() {
           ) : (
             <>
               <section>
-                <h2>📋 General</h2>
+                <h2><FaClipboard /> General</h2>
                 <p>
-                  Welcome to "Shamayim VaAretz" website (hereinafter: "the
+                  Welcome to "Shamaim VeEretz" website (hereinafter: "the
                   Site"). Using the site constitutes agreement to the terms of
                   use detailed below. Please read the terms carefully before
                   placing an order.
                 </p>
                 <p>
-                  The site is operated by "Shamayim VaAretz" - Jewish Jewelry
+                  The site is operated by "Shamaim VeEretz" - Jewish Jewelry
                   Store (hereinafter: "the Store" or "we").
                 </p>
               </section>
 
               <section>
-                <h2>🛒 Purchase Process</h2>
+                <h2><FaShoppingCart /> Purchase Process</h2>
 
                 <h3>Ordering Products</h3>
                 <ul>
@@ -279,7 +300,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>📦 Shipping and Delivery</h2>
+                <h2><FaBox /> Shipping and Delivery</h2>
                 <ul>
                   <li>Stated delivery times are estimates and may vary</li>
                   <li>
@@ -298,7 +319,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🔄 Returns and Exchanges</h2>
+                <h2><FaRedo /> Returns and Exchanges</h2>
                 <ul>
                   <li>Products can be returned within 14 days of receipt</li>
                   <li>Customized products are not returnable</li>
@@ -314,7 +335,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🎨 Customizations</h2>
+                <h2><FaPalette /> Customizations</h2>
                 <p>
                   For customized products (engravings, special sizes, custom
                   designs):
@@ -335,7 +356,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🛡️ Warranty</h2>
+                <h2><FaShieldAlt /> Warranty</h2>
                 <ul>
                   <li>
                     All products come with 12-month warranty against
@@ -353,7 +374,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🖼️ Copyright and Intellectual Property</h2>
+                <h2><FaRegCopyright /> Copyright and Intellectual Property</h2>
                 <ul>
                   <li>
                     All site content (images, texts, designs) is property of the
@@ -374,7 +395,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>👤 User Account</h2>
+                <h2><FaUser /> User Account</h2>
                 <ul>
                   <li>
                     You are responsible for maintaining confidentiality of your
@@ -393,7 +414,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>⚠️ Limitation of Liability</h2>
+                <h2><FaExclamationTriangle /> Limitation of Liability</h2>
                 <ul>
                   <li>
                     Store is not responsible for indirect or consequential
@@ -409,7 +430,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>📸 Use of Images</h2>
+                <h2><FaCamera /> Use of Images</h2>
                 <ul>
                   <li>Product images are for illustration only</li>
                   <li>Colors may vary slightly depending on computer screen</li>
@@ -423,7 +444,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>🌐 Changes to Terms of Use</h2>
+                <h2><FaGlobe /> Changes to Terms of Use</h2>
                 <p>
                   Store reserves the right to update and change terms of use
                   from time to time. Changes will take effect immediately upon
@@ -433,7 +454,7 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>⚖️ Law and Jurisdiction</h2>
+                <h2><FaBalanceScale /> Law and Jurisdiction</h2>
                 <ul>
                   <li>
                     These terms of use are subject to laws of State of Israel
@@ -447,12 +468,12 @@ function TermsOfService() {
               </section>
 
               <section>
-                <h2>📧 Contact Us</h2>
+                <h2><FaEnvelope /> Contact Us</h2>
                 <p>For questions or clarifications regarding terms of use:</p>
                 <ul>
-                  <li>📧 Email: shmimveeretz@gmail.com</li>
-                  <li>📱 WhatsApp: 052-595-5389</li>
-                  <li>⏰ Hours: Sun-Thu, 9:00-18:00</li>
+                  <li><FaEnvelope /> Email: shmimveeretz@gmail.com</li>
+                  <li><FaWhatsapp /> WhatsApp: 052-595-5389</li>
+                  <li><FaClock /> Hours: Sun-Thu, 9:00-18:00</li>
                 </ul>
               </section>
 

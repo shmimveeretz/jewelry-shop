@@ -1,7 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useLanguage } from "../contexts/LanguageContext";
-import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
+import {
+  FaTrash,
+  FaPlus,
+  FaMinus,
+  FaPalette,
+  FaGem,
+  FaLink,
+  FaInfoCircle,
+} from "react-icons/fa";
 import "../styles/pages/Cart.css";
 
 function Cart() {
@@ -80,22 +88,22 @@ function Cart() {
                     <div className="selected-options">
                       {item.selectedOptions.length && (
                         <span className="option-tag">
-                          📏 אורך: {item.selectedOptions.length} מ״מ
+                          <FaRuler /> אורך: {item.selectedOptions.length} מ״מ
                         </span>
                       )}
                       {item.selectedOptions.metalType && (
                         <span className="option-tag">
-                          ✨ {item.selectedOptions.metalType}
+                          <FaGem /> {item.selectedOptions.metalType}
                         </span>
                       )}
                       {item.selectedOptions.chainType && (
                         <span className="option-tag">
-                          🔗 {item.selectedOptions.chainType}
+                          <FaLink /> {item.selectedOptions.chainType}
                         </span>
                       )}
                       {item.selectedOptions.waxColor && (
                         <span className="option-tag">
-                          🎨 {item.selectedOptions.waxColor}
+                          <FaPalette /> {item.selectedOptions.waxColor}
                         </span>
                       )}
                     </div>
@@ -165,7 +173,7 @@ function Cart() {
 
             {!localStorage.getItem("token") && (
               <p className="guest-checkout-info">
-                💡{" "}
+                <FaInfoCircle />{" "}
                 {language === "he"
                   ? "אין צורך בהרשמה - ניתן להזמין כאורח"
                   : "No registration required - order as guest"}
