@@ -1,10 +1,15 @@
 import { useLanguage } from "../contexts/LanguageContext";
 import {
+  FaBan,
+  FaUser,
+  FaCookie,
   FaLock,
   FaShieldAlt,
   FaClipboardList,
   FaBullseye,
   FaHandshake,
+  FaExclamationTriangle,
+  FaMailBulk,
 } from "react-icons/fa";
 import "../styles/pages/LegalPages.css";
 
@@ -131,8 +136,8 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="note">
-                  ⚠️ כל ספקי השירות שלנו מחויבים לשמור על סודיות המידע ולא
-                  להשתמש בו למטרות אחרות.
+                  <FaExclamationTriangle /> כל ספקי השירות שלנו מחויבים לשמור על
+                  סודיות המידע ולא להשתמש בו למטרות אחרות.
                 </p>
 
                 <h3>מקרים נוספים:</h3>
@@ -143,13 +148,15 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="highlight">
-                  ❌ אנו <strong>לעולם לא</strong> נמכור או נשכיר את המידע האישי
-                  שלך!
+                  <FaBan /> אנו <strong>לעולם לא</strong> נמכור או נשכיר את
+                  המידע האישי שלך!
                 </p>
               </section>
 
               <section>
-                <h2>🍪 Cookies ומעקב</h2>
+                <h2>
+                  <FaCookie /> Cookies ומעקב
+                </h2>
                 <p>אנו משתמשים ב-Cookies לשיפור חוויית השימוש באתר:</p>
 
                 <h3>סוגי Cookies:</h3>
@@ -179,7 +186,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🔐 אבטחת מידע</h2>
+                <h2>
+                  <FaShieldAlt /> אבטחת מידע
+                </h2>
                 <p>אנו נוקטים באמצעים טכניים וארגוניים להגנה על המידע שלך:</p>
                 <ul>
                   <li>
@@ -203,13 +212,15 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="note">
-                  ⚠️ למרות המאמצים שלנו, אף שיטה אינה בטוחה ב-100%. אנא שמור על
-                  סיסמתך ופרטי החשבון שלך בסודיות.
+                  <FaExclamationTriangle /> למרות המאמצים שלנו, אף שיטה אינה
+                  בטוחה ב-100%. אנא שמור על סיסמתך ופרטי החשבון שלך בסודיות.
                 </p>
               </section>
 
               <section>
-                <h2>👤 הזכויות שלך</h2>
+                <h2>
+                  <FaUser /> הזכויות שלך
+                </h2>
                 <p>
                   בהתאם לחוק הגנת הפרטיות, יש לך זכויות לגבי המידע האישי שלך:
                 </p>
@@ -246,7 +257,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>📧 תקשורת שיווקית</h2>
+                <h2>
+                  <FaEnvelope /> תקשורת שיווקית
+                </h2>
                 <p>אם נתת הסכמה, אנו עשויים לשלוח לך:</p>
                 <ul>
                   <li>ניוזלטרים עם עדכונים על מוצרים חדשים</li>
@@ -265,13 +278,15 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="note">
-                  📬 שים לב: מיילים תפעוליים (אישורי הזמנה, עדכוני משלוח) יישלחו
-                  גם אם ביטלת הרשמה לניוזלטר.
+                  <FaMailBulk /> שים לב: מיילים תפעוליים (אישורי הזמנה, עדכוני
+                  משלוח) יישלחו גם אם ביטלת הרשמה לניוזלטר.
                 </p>
               </section>
 
               <section>
-                <h2>👶 פרטיות ילדים</h2>
+                <h2>
+                  <FaChild /> פרטיות ילדים
+                </h2>
                 <p>
                   האתר מיועד למבוגרים מעל גיל 18. אנו לא אוספים ביודעין מידע
                   מילדים מתחת לגיל 18. אם הנך הורה וחושב שילדך מסר לנו מידע
@@ -280,7 +295,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🌍 העברת מידע בינלאומית</h2>
+                <h2>
+                  <FaGlobe /> העברת מידע בינלאומית
+                </h2>
                 <p>
                   המידע שלך מאוחסן בשרתים בישראל. אם אתה ממדינה אחרת, המידע שלך
                   עשוי להיות מועבר ומעובד בישראל. אנו נוקטים בצעדים להבטיח
@@ -289,7 +306,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>⏱️ כמה זמן אנו שומרים את המידע?</h2>
+                <h2>
+                  <FaClock /> כמה זמן אנו שומרים את המידע?
+                </h2>
                 <ul>
                   <li>
                     <strong>פרטי לקוח:</strong> כל עוד החשבון פעיל + 7 שנים
@@ -309,7 +328,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🔄 שינויים במדיניות הפרטיות</h2>
+                <h2>
+                  <FaSyncAlt /> שינויים במדיניות הפרטיות
+                </h2>
                 <p>
                   אנו עשויים לעדכן מדיניות זו מעת לעת. שינויים משמעותיים יפורסמו
                   באתר ונשלח אליך הודעה באימייל (אם רשום). אנא בדוק עמוד זה מעת
@@ -321,23 +342,27 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>📞 יצירת קשר</h2>
+                <h2>
+                  <FaPhone /> יצירת קשר
+                </h2>
                 <p>
                   יש לך שאלות לגבי מדיניות הפרטיות או רוצה לממש את זכויותיך?
                 </p>
                 <div className="contact-box">
                   <ul>
                     <li>
-                      📧 <strong>אימייל:</strong> shmimveeretz@gmail.com
+                      <FaEnvelope /> <strong>אימייל:</strong>{" "}
+                      shmimveeretz@gmail.com
                     </li>
                     <li>
-                      📱 <strong>וואטסאפ:</strong> 052-595-5389
+                      <FaWhatsapp /> <strong>וואטסאפ:</strong> 052-595-5389
                     </li>
                     <li>
-                      ⏰ <strong>שעות פעילות:</strong> א׳-ה׳, 9:00-18:00
+                      <FaClock /> <strong>שעות פעילות:</strong> א׳-ה׳,
+                      9:00-18:00
                     </li>
                     <li>
-                      📍 <strong>כתובת:</strong> תל אביב, ישראל
+                      <FaMapMarkerAlt /> <strong>כתובת:</strong> תל אביב, ישראל
                     </li>
                   </ul>
                 </div>
@@ -357,7 +382,9 @@ function PrivacyPolicy() {
           ) : (
             <>
               <section>
-                <h2>🔒 Introduction</h2>
+                <h2>
+                  <FaLock /> Introduction
+                </h2>
                 <p>
                   "Shamayim VaAretz" (hereinafter: "the Store" or "we") respects
                   your privacy and is committed to protecting your personal
@@ -366,13 +393,15 @@ function PrivacyPolicy() {
                   purchasing products.
                 </p>
                 <p className="highlight">
-                  🛡️ We are committed to protecting your information and will
-                  not sell it to third parties.
+                  <FaShieldAlt /> We are committed to protecting your
+                  information and will not sell it to third parties.
                 </p>
               </section>
 
               <section>
-                <h2>📝 What Information Do We Collect?</h2>
+                <h2>
+                  <FaFileAlt /> What Information Do We Collect?
+                </h2>
 
                 <h3>Personal information you provide:</h3>
                 <ul>
@@ -416,7 +445,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🎯 How Do We Use the Information?</h2>
+                <h2>
+                  <FaBullseye /> How Do We Use the Information?
+                </h2>
                 <ul>
                   <li>
                     <strong>Order processing:</strong> Process orders, ship
@@ -446,7 +477,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🤝 Sharing Information with Third Parties</h2>
+                <h2>
+                  <FaHandshake /> Sharing Information with Third Parties
+                </h2>
                 <p>
                   We share information only when necessary to provide service:
                 </p>
@@ -469,8 +502,9 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="note">
-                  ⚠️ All our service providers are required to maintain
-                  information confidentiality and not use it for other purposes.
+                  <FaExclamationTriangle /> All our service providers are
+                  required to maintain information confidentiality and not use
+                  it for other purposes.
                 </p>
 
                 <h3>Additional cases:</h3>
@@ -481,13 +515,15 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="highlight">
-                  ❌ We will <strong>never</strong> sell or rent your personal
-                  information!
+                  <FaBan /> We will <strong>never</strong> sell or rent your
+                  personal information!
                 </p>
               </section>
 
               <section>
-                <h2>🍪 Cookies and Tracking</h2>
+                <h2>
+                  <FaCookie /> Cookies and Tracking
+                </h2>
                 <p>We use Cookies to improve site user experience:</p>
 
                 <h3>Types of Cookies:</h3>
@@ -518,7 +554,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🔐 Information Security</h2>
+                <h2>
+                  <FaLock /> Information Security
+                </h2>
                 <p>
                   We take technical and organizational measures to protect your
                   information:
@@ -546,13 +584,16 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="note">
-                  ⚠️ Despite our efforts, no method is 100% secure. Please keep
-                  your password and account details confidential.
+                  <FaExclamationTriangle /> Despite our efforts, no method is
+                  100% secure. Please keep your password and account details
+                  confidential.
                 </p>
               </section>
 
               <section>
-                <h2>👤 Your Rights</h2>
+                <h2>
+                  <FaUser /> Your Rights
+                </h2>
                 <p>
                   According to privacy law, you have rights regarding your
                   personal information:
@@ -594,7 +635,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>📧 Marketing Communication</h2>
+                <h2>
+                  <FaEnvelope /> Marketing Communication
+                </h2>
                 <p>If you gave consent, we may send you:</p>
                 <ul>
                   <li>Newsletters with updates on new products</li>
@@ -613,13 +656,16 @@ function PrivacyPolicy() {
                 </ul>
 
                 <p className="note">
-                  📬 Note: Operational emails (order confirmations, shipping
-                  updates) will be sent even if you unsubscribe from newsletter.
+                  <FaMailBulk /> Note: Operational emails (order confirmations,
+                  shipping updates) will be sent even if you unsubscribe from
+                  newsletter.
                 </p>
               </section>
 
               <section>
-                <h2>👶 Children's Privacy</h2>
+                <h2>
+                  <FaChild /> Children's Privacy
+                </h2>
                 <p>
                   The site is intended for adults over 18. We do not knowingly
                   collect information from children under 18. If you are a
@@ -629,7 +675,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🌍 International Data Transfer</h2>
+                <h2>
+                  <FaGlobe /> International Data Transfer
+                </h2>
                 <p>
                   Your information is stored on servers in Israel. If you are
                   from another country, your information may be transferred and
@@ -639,7 +687,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>⏱️ How Long Do We Keep Information?</h2>
+                <h2>
+                  <FaClock /> How Long Do We Keep Information?
+                </h2>
                 <ul>
                   <li>
                     <strong>Customer details:</strong> As long as account is
@@ -660,7 +710,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>🔄 Changes to Privacy Policy</h2>
+                <h2>
+                  <FaSyncAlt /> Changes to Privacy Policy
+                </h2>
                 <p>
                   We may update this policy from time to time. Significant
                   changes will be posted on site and we'll send you email
@@ -673,7 +725,9 @@ function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2>📞 Contact Us</h2>
+                <h2>
+                  <FaPhone /> Contact Us
+                </h2>
                 <p>
                   Have questions about privacy policy or want to exercise your
                   rights?
@@ -681,16 +735,18 @@ function PrivacyPolicy() {
                 <div className="contact-box">
                   <ul>
                     <li>
-                      📧 <strong>Email:</strong> shmimveeretz@gmail.com
+                      <FaEnvelope /> <strong>Email:</strong>{" "}
+                      shmimveeretz@gmail.com
                     </li>
                     <li>
-                      📱 <strong>WhatsApp:</strong> 052-595-5389
+                      <FaWhatsapp /> <strong>WhatsApp:</strong> 052-595-5389
                     </li>
                     <li>
-                      ⏰ <strong>Hours:</strong> Sun-Thu, 9:00-18:00
+                      <FaClock /> <strong>Hours:</strong> Sun-Thu, 9:00-18:00
                     </li>
                     <li>
-                      📍 <strong>Address:</strong> Tel Aviv, Israel
+                      <FaMapMarkerAlt /> <strong>Address:</strong> Tel Aviv,
+                      Israel
                     </li>
                   </ul>
                 </div>
