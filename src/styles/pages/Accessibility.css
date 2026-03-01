@@ -1,0 +1,280 @@
+/* Accessibility Page Styles */
+
+.accessibility-container {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background-color: #f9f9f9;
+}
+
+.accessibility-content {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 3rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  line-height: 1.8;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Heading Styles */
+.accessibility-content h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom: 3px solid #d4af37;
+  padding-bottom: 1rem;
+  font-weight: 700;
+}
+
+.accessibility-content h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.accessibility-content h3 {
+  font-size: 1.3rem;
+  color: #444;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+/* Section Styles */
+.accessibility-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.accessibility-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Paragraph Styles */
+.accessibility-content p {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 1.05rem;
+}
+
+/* List Styles */
+.accessibility-list {
+  margin: 1.5rem 0;
+  padding-right: 2rem;
+}
+
+.accessibility-list li {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 1.05rem;
+  list-style-type: disc;
+}
+
+/* Link Styles */
+.accessibility-content a {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.accessibility-content a:hover {
+  color: #333;
+  border-bottom: 2px solid #d4af37;
+}
+
+.accessibility-content a:focus {
+  outline: 3px solid #d4af37;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Contact Info Styles */
+.contact-section {
+  background-color: #f5f5f5;
+  padding: 2rem;
+  border-radius: 8px;
+  border-right: 4px solid #d4af37;
+}
+
+.contact-info {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 6px;
+  margin: 1.5rem 0;
+  border: 1px solid #e0e0e0;
+}
+
+.info-item {
+  display: flex;
+  margin-bottom: 1.2rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #333;
+  min-width: 80px;
+}
+
+.info-value {
+  color: #555;
+  font-size: 1.05rem;
+}
+
+.info-item a {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.info-item a:hover {
+  color: #333;
+  border-bottom: 2px solid #d4af37;
+}
+
+.info-item a:focus {
+  outline: 3px solid #d4af37;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.update-date {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #ddd;
+  color: #666;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .accessibility-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .accessibility-content {
+    padding: 2rem 1.5rem;
+    border-radius: 0;
+  }
+
+  .accessibility-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .accessibility-content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .accessibility-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .accessibility-content p,
+  .accessibility-list li {
+    font-size: 1rem;
+  }
+
+  .contact-info {
+    padding: 1rem;
+  }
+
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .info-label {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .accessibility-container {
+    padding: 0.5rem;
+  }
+
+  .accessibility-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .accessibility-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .accessibility-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .accessibility-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .contact-section {
+    padding: 1.5rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .accessibility-container {
+    background-color: white;
+    padding: 0;
+  }
+
+  .accessibility-content {
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .accessibility-section {
+    page-break-inside: avoid;
+  }
+}
+
+/* Accessibility Focus Styles */
+*:focus-visible {
+  outline: 3px solid #d4af37;
+  outline-offset: 4px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: more) {
+  .accessibility-content {
+    border: 2px solid #333;
+  }
+
+  .accessibility-content h1,
+  .accessibility-content h2,
+  .accessibility-content h3 {
+    color: #000;
+  }
+
+  .accessibility-content p,
+  .accessibility-list li {
+    color: #000;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .accessibility-content a {
+    transition: none;
+  }
+}

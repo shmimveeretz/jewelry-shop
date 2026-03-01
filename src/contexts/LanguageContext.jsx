@@ -192,6 +192,96 @@ export const translations = {
     hello: "שלום",
     goodbye: "להתראות",
     user: "משתמש",
+
+    // Accessibility Statement
+    accessibility: "הצהרת נגישות",
+    accessibilityStatement: "הצהרת נגישות",
+    aboutSite: "על אתר שמיים וארץ",
+    siteUrl: "https://shamaimveeretz.com",
+    accessibilityPurpose: "מטרת הנגישות",
+    standards: "תקנים וקובעי תקנים",
+    accessibilityLevel: "רמת הנגישות באתר: AA",
+    company: "Vee הנגשת אתרים",
+    regulationText: 'תקנות שוויון זכויות לאנשים עם מוגבלות 5568 התשע"ג 2013',
+    wcagGuidelines: "הנחיות לנגישות תכנים באינטרנט",
+    wcagAcronym: "Web Content Accessibility Guidelines (WCAG) 2.0",
+    authorityGuidelines: "הנחיות רשות התקשוב להנגשת יישומים בדפדפני אינטרנט",
+    accessibleMode: "כיצד עוברים למצב נגיש?",
+    screenReaders: "קוראי מסך",
+    stopBlinking: "עצירת הבהובים",
+    skipToContent: "דילוג ישיר לתוכן",
+    keyboardNavigation: "התאמה לניווט מקלדת",
+    textSize: "הגדלה / הקטנה של טקסט",
+    spacing: "ריווח בין אותיות / מילים / שורות",
+    contrast: "ניגודיות וצבע",
+    readableFont: "גופן קריא",
+    linkHighlight: "הדגשת קישורים",
+    readingGuide: "מדריך קריאה",
+    cursorIcon: "שינוי אייקון סמן עכבר",
+    imageDescription: "תיאור לתמונות",
+    adjustments: "תיקונים והתאמות שבוצעו באתר",
+    screenReaderSupport:
+      "התאמה לקורא מסך - התאמת האתר עבור טכנולוגיות מסייעות כגון NVDA, JAWS",
+    simpleNavigation: "אמצעי הניווט באתר פשוטים וברורים",
+    clearContent: "תכני האתר כתובים באופן ברור, מסודר והיררכי",
+    modernBrowsers: "האתר מותאם לצפייה בדפדפנים מודרניים",
+    responsiveDesign: "התאמת האתר לתצוגה תואמת מגוון מסכים ורזולוציות",
+    headerStructure: "כל הדפים באתר בעלי מבנה קבוע (1H/2H/3H וכו')",
+    altText: "לכל התמונות באתר יש הסבר טקסטואלי חלופי (alt)",
+    softwareFunctionality: "פונקציונליות תוכנת נגישות",
+    highContrast: "גבוהה",
+    inverted: "הפוכה",
+    blackAndWhite: "שחור לבן",
+    exceptions: "החרגות",
+    contactAccessibility: "יצירת קשר בנושא נגישות",
+    problemDescription: "תיאור הבעיה",
+    attemptedAction: "מהי הפעולה שניסיתם לבצע",
+    pageLink: "קישור לדף שבו גלשתם",
+    browserType: "סוג הדפדפן וגרסתו",
+    operatingSystem: "מערכת הפעלה",
+    assistiveTechnology: "סוג הטכנולוגיה המסייעת (במידה והשתמשתם)",
+    improvementEfforts:
+      "שמיים וארץ תעשה ככל יכולה על מנת להנגיש את האתר בצורה המיטבית ולענות לפניות בצורה המקצועית והמהירה ביותר",
+    accessibilityChampion: "רכז נגישות",
+    phone: "טלפון",
+    lastUpdate: "תאריך עדכון הצהרת נגישות",
+    percentageDisability:
+      "במדינת ישראל כ-20 אחוזים מקרב האוכלוסייה הינם אנשים עם מוגבלות",
+    makeAvailable: "להפוך את שירותי החברה לזמינים יותר עבור אנשים עם מוגבלות",
+    motorDisabilities: "מוגבלויות מוטוריות שונות",
+    cognitiveImpairments: "לקויות קוגניטיביות",
+    colorBlindness: "קוצר רואי, עיוורון או עיוורון צבעים",
+    hearingImpairments: "לקויות שמיעה",
+    elderly: "אוכלוסייה הנמנית על בני הגיל השלישי",
+    veeCompany: "Vee",
+    browsers: "Chrome, Firefox, Safari, Opera",
+    chromeRecommendation: "הגלישה במצב נגישות מומלצת בדפדפן כרום",
+    semanticStructure: "מבנה סמנטי",
+    keyboardSupport: "תמיכה בדפוס השימוש המקובל להפעלה עם מקלדת",
+    arrowKeys: "מקשי החיצים",
+    nvidaScreen: "תוכנת NVDA",
+    latestVersion: "העדכנית ביותר",
+    bestBrowsingExperience: "חווית גלישה מיטבית עם תוכנת הקראת מסך",
+    recommendNvda: "אנו ממליצים לשימוש בתוכנת NVDA העדכנית ביותר",
+    ourValueEqual:
+      "אנו רואים חשיבות רבה במתן שירות שוויוני לכלל האזרחים ובשיפור השירות הניתן לאזרחים עם מוגבלות",
+    investingResources:
+      "אנו משקיעים משאבים רבים בהנגשת האתר והנכסים הדיגיטליים שלנו",
+    accessibilityIcon: 'באתר מוצב אייקון נגישות (בד"כ בדפנות האתר)',
+    accessibilityMenu: "לחיצה על האייקון מאפשרת פתיחת של תפריט הנגישות",
+    selectFunction: "לאחר בחירת הפונקציה המתאימה בתפריט",
+    awaitLoading: "יש להמתין לטעינת הדף ולשינוי הרצוי בתצוגה (במידת הצורך)",
+    cancelAction:
+      "במידה ומעוניינים לבטל את הפעולה, יש ללחוץ על הפונקציה בתפריט פעם שניה",
+    resetSettings: "בכל מצב, ניתן לאפס הגדרות נגישות",
+    worksOnBrowsers: "התוכנה פועלת בדפדפנים הפופולריים",
+    browserConditions: "בכפוף (תנאי יצרן)",
+    getInTouchAccessibility:
+      "על מנת שנוכל לטפל בבעיה בדרך הטובה ביותר, אנו ממליצים מאוד לצרף פרטים מלאים ככל שניתן",
+    possibleIssues:
+      "חשוב לציין, כי למרות מאמצינו להנגיש את כלל הדפים והאלמנטים באתר, ייתכן שיתגלו חלקים או יכולות שלא הונגשו כראוי או שטרם הונגשו",
+    continuousImprovement:
+      "אנו פועלים לשפר את נגישות האתר שלנו כל העת, כחלק ממחויבותנו לאפשר לכלל האוכלוסייה להשתמש בו, כולל אנשים עם מוגבלות",
   },
   en: {
     // Navbar
@@ -206,7 +296,7 @@ export const translations = {
     admin: "Admin",
 
     // Home Page
-    heroTitle: "Shamayim VaAretz",
+    heroTitle: "Shamaim VeEretz",
     heroSubtitle: "Handcrafted Jewelry with Authentic Gemstones",
     heroDescription:
       "Discover our unique collection of carefully designed jewelry, combining natural beauty with traditional craftsmanship",
@@ -374,6 +464,106 @@ export const translations = {
     hello: "Hello",
     goodbye: "Goodbye",
     user: "User",
+
+    // Accessibility Statement
+    accessibility: "Accessibility Statement",
+    accessibilityStatement: "Accessibility Statement",
+    aboutSite: "About Shamaim VeEretz Website",
+    siteUrl: "https://shamaimveeretz.com",
+    accessibilityPurpose: "Purpose of Accessibility",
+    standards: "Standards and Standard-Setting Bodies",
+    accessibilityLevel: "Website Accessibility Level: AA",
+    company: "Vee Website Accessibility",
+    regulationText:
+      "Equal Rights for Persons with Disabilities Law 5568 (2013)",
+    wcagGuidelines: "Web Content Accessibility Guidelines",
+    wcagAcronym: "Web Content Accessibility Guidelines (WCAG) 2.0",
+    authorityGuidelines:
+      "Authority for the Internet Web Application Accessibility Guidelines",
+    accessibleMode: "How to Switch to Accessible Mode?",
+    screenReaders: "Screen Readers",
+    stopBlinking: "Stop Blinking",
+    skipToContent: "Skip to Main Content",
+    keyboardNavigation: "Keyboard Navigation Support",
+    textSize: "Text Size Adjustment",
+    spacing: "Letter / Word / Line Spacing",
+    contrast: "Contrast and Colors",
+    readableFont: "Readable Font",
+    linkHighlight: "Link Highlight",
+    readingGuide: "Reading Guide",
+    cursorIcon: "Cursor Icon Change",
+    imageDescription: "Image Descriptions",
+    adjustments: "Adjustments and Accommodations Made to the Website",
+    screenReaderSupport:
+      "Screen Reader Support - Website adapted for assistive technologies such as NVDA, JAWS",
+    simpleNavigation: "Simple and Clear Navigation",
+    clearContent:
+      "Website content is written clearly, organized, and hierarchically",
+    modernBrowsers: "Website is compatible with modern browsers",
+    responsiveDesign:
+      "Website is responsive to various screen sizes and resolutions",
+    headerStructure: "All website pages have fixed structure (H1/H2/H3, etc.)",
+    altText: "All images have alternative text descriptions (alt)",
+    softwareFunctionality: "Accessibility Software Features",
+    highContrast: "High",
+    inverted: "Inverted",
+    blackAndWhite: "Black and White",
+    exceptions: "Exclusions",
+    contactAccessibility: "Contact Us About Accessibility",
+    problemDescription: "Description of the problem",
+    attemptedAction: "What action did you try to perform",
+    pageLink: "Link to the page you were viewing",
+    browserType: "Browser type and version",
+    operatingSystem: "Operating System",
+    assistiveTechnology: "Type of assistive technology used (if applicable)",
+    improvementEfforts:
+      "Shamaim VeEretz will do its best to make the website accessible in the best way possible and respond to inquiries professionally and quickly.",
+    accessibilityChampion: "Accessibility Champion",
+    phone: "Phone",
+    lastUpdate: "Accessibility Statement Last Updated",
+    percentageDisability:
+      "In Israel, approximately 20% of the population are people with disabilities",
+    makeAvailable:
+      "To make company services more accessible to people with disabilities",
+    motorDisabilities: "Various motor disabilities",
+    cognitiveImpairments: "Cognitive impairments",
+    colorBlindness: "Color blindness, blindness or color blindness",
+    hearingImpairments: "Hearing impairments",
+    elderly: "Elderly population",
+    veeCompany: "Vee",
+    browsers: "Chrome, Firefox, Safari, Opera",
+    chromeRecommendation:
+      "Browsing in accessible mode is recommended in Chrome",
+    semanticStructure: "Semantic structure",
+    keyboardSupport:
+      "Support for standard usage patterns with keyboard operation",
+    arrowKeys: "Arrow keys",
+    nvidaScreen: "NVDA software",
+    latestVersion: "Latest version",
+    bestBrowsingExperience:
+      "Best browsing experience with screen reading software",
+    recommendNvda: "We recommend using the latest NVDA software",
+    ourValueEqual:
+      "We value highly providing equal service to all citizens and improving service for citizens with disabilities",
+    investingResources:
+      "We invest significant resources in making our website and digital assets more accessible",
+    accessibilityIcon:
+      "The website has an accessibility icon (usually on the sides of the website)",
+    accessibilityMenu: "Clicking the icon opens an accessibility menu",
+    selectFunction: "After selecting the appropriate function in the menu",
+    awaitLoading:
+      "You need to wait for the page to load and for the desired display change (if necessary)",
+    cancelAction:
+      "If you want to cancel the action, click the function in the menu again",
+    resetSettings: "You can reset accessibility settings at any time",
+    worksOnBrowsers: "The software works on popular browsers",
+    browserConditions: "Subject to (manufacturer's conditions)",
+    getInTouchAccessibility:
+      "To best address the issue, we recommend providing as much detail as possible",
+    possibleIssues:
+      "It is important to note that despite our efforts to make all pages and elements of the website accessible, there may be parts or features that are not properly accessible or not yet accessible",
+    continuousImprovement:
+      "We work continuously to improve the accessibility of our website as part of our commitment to enable the entire population, including people with disabilities, to use it",
   },
 };
 

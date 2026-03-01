@@ -32,6 +32,7 @@ import ShippingPolicy from "./pages/ShippingPolicy";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Accessibility from "./pages/Accessibility";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
                     element={<TermsOfService />}
                   />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/accessibility" element={<Accessibility />} />
                 </Routes>
               </main>
               <Footer />

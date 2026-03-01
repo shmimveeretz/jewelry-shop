@@ -395,7 +395,7 @@ function PrivacyPolicy() {
                   <FaLock /> Introduction
                 </h2>
                 <p>
-                  "Shamayim VaAretz" (hereinafter: "the Store" or "we") respects
+                  "Shamaim VeEretz" (hereinafter: "the Store" or "we") respects
                   your privacy and is committed to protecting your personal
                   information. This privacy policy explains how we collect, use,
                   and protect your personal information when using the site and

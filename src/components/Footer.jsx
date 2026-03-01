@@ -6,6 +6,7 @@ import {
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,
+  
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/Footer.css";
@@ -22,7 +23,7 @@ function Footer() {
             <p>
               {language === "he"
                 ? "שמיים וארץ - חנות תכשיטים יהודיים המתמחה בתכשיטים איכותיים עם סמלים יהודיים. כל תכשיט נעשה באהבה ובקפידה רבה."
-                : "Shamayim VaAretz - A Jewish jewelry store specializing in quality jewelry with Jewish symbols. Each piece is made with love and great care."}
+                : "Shamaim VeEretz - A Jewish jewelry store specializing in quality jewelry with Jewish symbols. Each piece is made with love and great care."}
             </p>
             <div className="footer-social">
               <a href="#" aria-label="פייסבוק">
@@ -78,6 +79,9 @@ function Footer() {
               <li>
                 <Link to="/contact">{t("contactUs")}</Link>
               </li>
+              <li>
+                <Link to="/accessibility">{t("accessibility")}</Link>
+              </li>
             </ul>
           </div>
 
@@ -101,7 +105,7 @@ function Footer() {
         <div className="footer-bottom">
           <p>
             &copy; {new Date().getFullYear()}{" "}
-            {language === "he" ? "שמיים וארץ" : "Shamayim VaAretz"}.{" "}
+            {language === "he" ? "שמיים וארץ" : "Shamaim VeEretz"}.{" "}
             {t("allRightsReserved")}.
           </p>
         </div>

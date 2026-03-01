@@ -1,3 +1,20 @@
+import {
+  FaSyncAlt,
+  FaCheck,
+  FaExclamationTriangle,
+  FaBan,
+  FaSync,
+  FaMoneyBillWave,
+  FaCreditCard,
+  FaFile,
+  FaGift,
+  FaExchangeAlt,
+  FaPhone,
+  FaEnvelope,
+  FaWhatsapp,
+  FaClock,
+  FaRegEdit,
+} from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/LegalPages.css";
 
@@ -17,7 +34,9 @@ function ReturnPolicy() {
           {language === "he" ? (
             <>
               <section>
-                <h2>🔄 תקופת ההחזרה</h2>
+                <h2>
+                  <FaSyncAlt /> תקופת ההחזרה
+                </h2>
                 <p>
                   אנו מאמינים באיכות המוצרים שלנו ובשביעות רצון הלקוחות. ניתן
                   להחזיר או להחליף מוצרים תוך <strong>14 ימים</strong> מיום קבלת
@@ -26,7 +45,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>✅ תנאי החזרה</h2>
+                <h2>
+                  <FaCheck /> תנאי החזרה
+                </h2>
                 <p>כדי שההחזרה תאושר, יש לעמוד בתנאים הבאים:</p>
                 <ul>
                   <li>המוצר לא נעשה בו שימוש ונמצא במצב חדש</li>
@@ -36,13 +57,15 @@ function ReturnPolicy() {
                   <li>יש לשמור על קבלה או אישור הזמנה</li>
                 </ul>
                 <p className="note">
-                  ⚠️ מוצרים שהותאמו אישית (גודל, חריטה, עיצוב מיוחד) לא ניתנים
-                  להחזרה, אלא אם כן קיים פגם ייצור.
+                  <FaExclamationTriangle /> מוצרים שהותאמו אישית (גודל, חריטה,
+                  עיצוב מיוחד) לא ניתנים להחזרה, אלא אם כן קיים פגם ייצור.
                 </p>
               </section>
 
               <section>
-                <h2>❌ מוצרים שלא ניתנים להחזרה</h2>
+                <h2>
+                  <FaBan /> מוצרים שלא ניתנים להחזרה
+                </h2>
                 <ul>
                   <li>
                     מוצרים שהותאמו אישית (חריטות, גדלים מיוחדים, עיצובים אישיים)
@@ -54,7 +77,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>💱 החלפת מוצר</h2>
+                <h2>
+                  <FaExchangeAlt /> החלפת מוצר
+                </h2>
                 <p>ניתן להחליף מוצר בגודל או בצבע אחר, בכפוף לזמינות במלאי.</p>
                 <ul>
                   <li>החלפה ראשונה היא ללא עלות נוספת</li>
@@ -65,7 +90,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>💰 החזר כספי</h2>
+                <h2>
+                  <FaMoneyBillWave /> החזר כספי
+                </h2>
                 <p>
                   לאחר קבלת המוצר המוחזר ובדיקתו, נבצע החזר כספי תוך 7-14 ימי
                   עסקים.
@@ -76,13 +103,15 @@ function ReturnPolicy() {
                   <li>במקרה של פגם ייצור, נחזיר גם עלויות משלוח</li>
                 </ul>
                 <p className="note">
-                  💳 תהליך ההחזר הכספי עשוי להימשך 5-10 ימי עסקים נוספים, בהתאם
-                  לחברת האשראי.
+                  <FaCreditCard /> תהליך ההחזר הכספי עשוי להימשך 5-10 ימי עסקים
+                  נוספים, בהתאם לחברת האשראי.
                 </p>
               </section>
 
               <section>
-                <h2>🔧 פגמים וליקויים</h2>
+                <h2>
+                  <FaExclamationTriangle /> פגמים וליקויים
+                </h2>
                 <p>אם קיבלת מוצר פגום או לא תקין:</p>
                 <ul>
                   <li>צרו איתנו קשר תוך 48 שעות מרגע קבלת המשלוח</li>
@@ -91,13 +120,15 @@ function ReturnPolicy() {
                   <li>או נשלח מוצר חלופי ללא עלות</li>
                 </ul>
                 <p className="highlight">
-                  🛡️ כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים מפני פגמי
-                  ייצור.
+                  <FaShieldAlt /> כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים
+                  מפני פגמי ייצור.
                 </p>
               </section>
 
               <section>
-                <h2>📝 איך להחזיר מוצר?</h2>
+                <h2>
+                  <FaRegEdit /> איך להחזיר מוצר?
+                </h2>
                 <div className="steps">
                   <div className="step">
                     <h3>1. צור קשר</h3>
@@ -127,7 +158,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>🎁 מתנות</h2>
+                <h2>
+                  <FaGift /> מתנות
+                </h2>
                 <p>
                   מוצר שהתקבל במתנה ניתן להחזרה או החלפה באותם תנאים. ההחזר
                   הכספי יבוצע לרוכש המקורי או בתלוש קרדיט לחנות.
@@ -135,7 +168,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>⚠️ הערות חשובות</h2>
+                <h2>
+                  <FaExclamationTriangle /> הערות חשובות
+                </h2>
                 <ul>
                   <li>עלות משלוח ההחזרה על חשבון הלקוח (אלא אם המוצר פגום)</li>
                   <li>אנו ממליצים לשלוח בדואר רשום עם מעקב</li>
@@ -145,19 +180,29 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>📞 יצירת קשר</h2>
+                <h2>
+                  <FaPhone /> יצירת קשר
+                </h2>
                 <p>שאלות או בעיות? אנחנו כאן לעזור!</p>
                 <ul>
-                  <li>📧 אימייל: shmimveeretz@gmail.com</li>
-                  <li>📱 וואטסאפ: 052-595-5389</li>
-                  <li>⏰ שעות פעילות: א׳-ה׳, 9:00-18:00</li>
+                  <li>
+                    <FaEnvelope /> אימייל: shmimveeretz@gmail.com
+                  </li>
+                  <li>
+                    <FaWhatsapp /> וואטסאפ: 052-595-5389
+                  </li>
+                  <li>
+                    <FaClock /> שעות פעילות: א׳-ה׳, 9:00-18:00
+                  </li>
                 </ul>
               </section>
             </>
           ) : (
             <>
               <section>
-                <h2>🔄 Return Period</h2>
+                <h2>
+                  <FaSync /> Return Period
+                </h2>
                 <p>
                   We believe in the quality of our products and customer
                   satisfaction. Products can be returned or exchanged within{" "}
@@ -167,7 +212,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>✅ Return Conditions</h2>
+                <h2>
+                  <FaCheck /> Return Conditions
+                </h2>
                 <p>
                   For a return to be approved, the following conditions must be
                   met:
@@ -186,13 +233,16 @@ function ReturnPolicy() {
                   <li>Receipt or order confirmation must be kept</li>
                 </ul>
                 <p className="note">
-                  ⚠️ Personalized products (size, engraving, special design) are
-                  not returnable, unless there is a manufacturing defect.
+                  <FaExclamationTriangle /> Personalized products (size,
+                  engraving, special design) are not returnable, unless there is
+                  a manufacturing defect.
                 </p>
               </section>
 
               <section>
-                <h2>❌ Non-Returnable Items</h2>
+                <h2>
+                  <FaBan /> Non-Returnable Items
+                </h2>
                 <ul>
                   <li>
                     Personalized products (engravings, special sizes, custom
@@ -205,7 +255,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>💱 Product Exchange</h2>
+                <h2>
+                  <FaExchangeAlt /> Product Exchange
+                </h2>
                 <p>
                   Products can be exchanged for different size or color, subject
                   to availability.
@@ -227,7 +279,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>💰 Refund</h2>
+                <h2>
+                  <FaMoneyBillWave /> Refund
+                </h2>
                 <p>
                   After receiving and inspecting the returned product, we will
                   process a refund within 7-14 business days.
@@ -244,13 +298,15 @@ function ReturnPolicy() {
                   </li>
                 </ul>
                 <p className="note">
-                  💳 The refund process may take an additional 5-10 business
-                  days, depending on the credit card company.
+                  <FaCreditCard /> The refund process may take an additional
+                  5-10 business days, depending on the credit card company.
                 </p>
               </section>
 
               <section>
-                <h2>🔧 Defects and Malfunctions</h2>
+                <h2>
+                  <FaTools /> Defects and Malfunctions
+                </h2>
                 <p>If you received a defective or faulty product:</p>
                 <ul>
                   <li>Contact us within 48 hours of receiving the shipment</li>
@@ -261,13 +317,15 @@ function ReturnPolicy() {
                   <li>Or send a replacement product at no cost</li>
                 </ul>
                 <p className="highlight">
-                  🛡️ All our products come with a 12-month warranty against
-                  manufacturing defects.
+                  <FaShieldAlt /> All our products come with a 12-month warranty
+                  against manufacturing defects.
                 </p>
               </section>
 
               <section>
-                <h2>📝 How to Return a Product?</h2>
+                <h2>
+                  <FaRegEdit /> How to Return a Product?
+                </h2>
                 <div className="steps">
                   <div className="step">
                     <h3>1. Contact Us</h3>
@@ -306,7 +364,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>🎁 Gifts</h2>
+                <h2>
+                  <FaGift /> Gifts
+                </h2>
                 <p>
                   Products received as gifts can be returned or exchanged under
                   the same conditions. Refund will be made to original purchaser
@@ -315,7 +375,9 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>⚠️ Important Notes</h2>
+                <h2>
+                  <FaExclamationTriangle /> Important Notes
+                </h2>
                 <ul>
                   <li>
                     Return shipping cost is customer's responsibility (unless
@@ -334,12 +396,20 @@ function ReturnPolicy() {
               </section>
 
               <section>
-                <h2>📞 Contact Us</h2>
+                <h2>
+                  <FaPhone /> Contact Us
+                </h2>
                 <p>Questions or issues? We're here to help!</p>
                 <ul>
-                  <li>📧 Email: shmimveeretz@gmail.com</li>
-                  <li>📱 WhatsApp: 052-595-5389</li>
-                  <li>⏰ Hours: Sun-Thu, 9:00-18:00</li>
+                  <li>
+                    <FaEnvelope /> Email: shmimveeretz@gmail.com
+                  </li>
+                  <li>
+                    <FaWhatsapp /> WhatsApp: 052-595-5389
+                  </li>
+                  <li>
+                    <FaClock /> Hours: Sun-Thu, 9:00-18:00
+                  </li>
                 </ul>
               </section>
             </>
