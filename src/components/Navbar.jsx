@@ -13,7 +13,7 @@ import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/Navbar.css";
-import logo from "../assets/hebrewLetter/Letter_Aleph_Gold.png";
+import logo from "../assets/hebrewLetters/Letter_Aleph_Gold.png";
 
 function Navbar() {
   const { getCartCount } = useCart();
