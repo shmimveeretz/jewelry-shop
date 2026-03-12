@@ -139,7 +139,7 @@ function ProductModal({ product, onClose }) {
                     className="gallery-nav prev"
                     onClick={() =>
                       setCurrentImageIndex((prev) =>
-                        prev === 0 ? productImages.length - 1 : prev - 1
+                        prev === 0 ? productImages.length - 1 : prev - 1,
                       )
                     }
                     aria-label="תמונה קודמת"
@@ -150,7 +150,7 @@ function ProductModal({ product, onClose }) {
                     className="gallery-nav next"
                     onClick={() =>
                       setCurrentImageIndex((prev) =>
-                        prev === productImages.length - 1 ? 0 : prev + 1
+                        prev === productImages.length - 1 ? 0 : prev + 1,
                       )
                     }
                     aria-label="תמונה הבאה"

@@ -84,9 +84,9 @@ function VerifyCode() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-header">
+    <div class"name"="auth-page">
+      <div class"name"="auth-container">
+        <div class"name"="auth-header">
           <h1>{language === "he" ? "אימות קוד" : "Verify Code"}</h1>
           <p>
             {language === "he"
@@ -95,13 +95,13 @@ function VerifyCode() {
           </p>
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+        <form class"name"="auth-form" onSubmit={handleSubmit}>
+          <div class"name"="form-group">
             <label htmlFor="code">{language === "he" ? "קוד" : "Code"}</label>
             <input
               type="text"
               id="code"
-              name="code"
+              "name"="code"
               value={code}
               onChange={(e) =>
                 setCode(e.target.value.replace(/\D/g, "").slice(0, 6))
@@ -126,7 +126,7 @@ function VerifyCode() {
               : "The code is valid for 10 minutes only"}
           </p>
 
-          <button type="submit" className="btn auth-btn" disabled={loading}>
+          <button type="submit" class"name"="btn auth-btn" disabled={loading}>
             {loading
               ? language === "he"
                 ? "בודק..."
@@ -137,11 +137,11 @@ function VerifyCode() {
           </button>
         </form>
 
-        <div className="auth-toggle">
+        <div class"name"="auth-toggle">
           <p>
             <button
               onClick={() => navigate("/forgot-password")}
-              className="link-btn"
+              class"name"="link-btn"
             >
               {language === "he" ? "חזור לשליחת קוד" : "Back to Send Code"}
             </button>

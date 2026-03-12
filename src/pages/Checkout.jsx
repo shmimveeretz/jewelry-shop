@@ -17,7 +17,7 @@ function Checkout() {
   const [loading, setLoading] = useState(false);
   const [checkoutAsGuest, setCheckoutAsGuest] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: "",
+    full"name": "",
     email: "",
     phone: "",
     address: "",
@@ -39,7 +39,7 @@ function Checkout() {
           const details = JSON.parse(savedDetails);
           setFormData((prev) => ({
             ...prev,
-            fullName: details.fullName || "",
+            full"name": details.full"name" || "",
             email: details.email || "",
             phone: details.phone || "",
             address: details.address || "",
@@ -54,16 +54,16 @@ function Checkout() {
   }, [cartItems, navigate]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { "name", value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      ["name"]: value,
     }));
   };
 
   const getFieldLabel = (field) => {
     const labels = {
-      fullName: "שם מלא",
+      full"name": "שם מלא",
       email: "אימייל",
       phone: "טלפון",
       address: "כתובת",
@@ -75,7 +75,7 @@ function Checkout() {
 
   const validateForm = () => {
     const requiredFields = [
-      "fullName",
+      "full"name"",
       "email",
       "phone",
       "address",
@@ -117,13 +117,13 @@ function Checkout() {
     try {
       // Prepare payment data for PayPlus
       const paymentData = {
-        customerName: formData.fullName,
+        customer"name": formData.full"name",
         customerEmail: formData.email,
         customerPhone: formData.phone,
         amount: total,
         currency: "ILS",
         items: cartItems.map((item) => ({
-          name: item.name,
+          "name": item."name",
           quantity: item.quantity || 1,
           price: item.price,
         })),
@@ -152,7 +152,7 @@ function Checkout() {
 
         // Save shipping details for future use
         const shippingDetails = {
-          fullName: formData.fullName,
+          full"name": formData.full"name",
           email: formData.email,
           phone: formData.phone,
           address: formData.address,
@@ -181,12 +181,12 @@ function Checkout() {
   }
 
   return (
-    <div className="checkout-page">
-      <div className="checkout-container">
+    <div class"name"="checkout-page">
+      <div class"name"="checkout-container">
         <h1>{language === "he" ? "השלמת הזמנה" : "Complete Order"}</h1>
 
         {!localStorage.getItem("token") && (
-          <div className="guest-checkout-notice">
+          <div class"name"="guest-checkout-notice">
             <p>
               💡{" "}
               <strong>
@@ -196,10 +196,10 @@ function Checkout() {
                 ? "אתה יכול להשלים את ההזמנה ללא הרשמה. פרטי ההזמנה יישלחו לאימייל שתזין."
                 : "You can complete your order without registration. Order details will be sent to the email you provide."}
             </p>
-            <p className="login-option">
+            <p class"name"="login-option">
               {language === "he" ? "יש לך חשבון?" : "Have an account?"}{" "}
               <button
-                className="link-btn"
+                class"name"="link-btn"
                 onClick={() =>
                   navigate("/login", {
                     state: { returnTo: "/checkout", cartItems, total },
@@ -212,12 +212,12 @@ function Checkout() {
           </div>
         )}
 
-        <div className="checkout-content">
-          <div className="order-summary-section">
+        <div class"name"="checkout-content">
+          <div class"name"="order-summary-section">
             <h2>סיכום הזמנה</h2>
-            <div className="order-items">
+            <div class"name"="order-items">
               {cartItems.map((item) => (
-                <div key={item.id} className="order-item">
+                <div key={item.id} class"name"="order-item">
                   <img
                     src={
                       Array.isArray(item.images)
@@ -225,18 +225,18 @@ function Checkout() {
                         : item.image ||
                           "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
                     }
-                    alt={item.name}
+                    alt={item."name"}
                     onError={(e) => {
                       e.target.src =
                         "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
                     }}
                   />
-                  <div className="order-item-details">
-                    <h3>{item.name}</h3>
+                  <div class"name"="order-item-details">
+                    <h3>{item."name"}</h3>
 
                     {/* Display selected options in checkout */}
                     {item.selectedOptions && (
-                      <div className="order-item-options">
+                      <div class"name"="order-item-options">
                         {item.selectedOptions.length && (
                           <span>📏 {item.selectedOptions.length} מ״מ</span>
                         )}
@@ -252,52 +252,52 @@ function Checkout() {
                       </div>
                     )}
 
-                    <p className="order-item-price">{item.price} ₪</p>
+                    <p class"name"="order-item-price">{item.price} ₪</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="order-total">
+            <div class"name"="order-total">
               <span>סה"כ לתשלום:</span>
-              <span className="total-amount">{total} ₪</span>
+              <span class"name"="total-amount">{total} ₪</span>
             </div>
           </div>
 
-          <form className="checkout-form" onSubmit={handleSubmit}>
-            <div className="form-section">
+          <form class"name"="checkout-form" onSubmit={handleSubmit}>
+            <div class"name"="form-section">
               <h2>פרטי משלוח</h2>
 
-              <div className="form-group">
-                <label htmlFor="fullName">שם מלא *</label>
+              <div class"name"="form-group">
+                <label htmlFor="full"name"">שם מלא *</label>
                 <input
                   type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
+                  id="full"name""
+                  "name"="full"name""
+                  value={formData.full"name"}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div class"name"="form-row">
+                <div class"name"="form-group">
                   <label htmlFor="email">אימייל *</label>
                   <input
                     type="email"
                     id="email"
-                    name="email"
+                    "name"="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
                   />
                 </div>
 
-                <div className="form-group">
+                <div class"name"="form-group">
                   <label htmlFor="phone">טלפון *</label>
                   <input
                     type="tel"
                     id="phone"
-                    name="phone"
+                    "name"="phone"
                     value={formData.phone}
                     onChange={handleChange}
                     required
@@ -305,37 +305,37 @@ function Checkout() {
                 </div>
               </div>
 
-              <div className="form-group">
+              <div class"name"="form-group">
                 <label htmlFor="address">כתובת *</label>
                 <input
                   type="text"
                   id="address"
-                  name="address"
+                  "name"="address"
                   value={formData.address}
                   onChange={handleChange}
                   required
                 />
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
+              <div class"name"="form-row">
+                <div class"name"="form-group">
                   <label htmlFor="city">עיר *</label>
                   <input
                     type="text"
                     id="city"
-                    name="city"
+                    "name"="city"
                     value={formData.city}
                     onChange={handleChange}
                     required
                   />
                 </div>
 
-                <div className="form-group">
+                <div class"name"="form-group">
                   <label htmlFor="zipCode">מיקוד *</label>
                   <input
                     type="text"
                     id="zipCode"
-                    name="zipCode"
+                    "name"="zipCode"
                     value={formData.zipCode}
                     onChange={handleChange}
                     required
@@ -346,7 +346,7 @@ function Checkout() {
 
             <button
               type="submit"
-              className="btn submit-order-btn"
+              class"name"="btn submit-order-btn"
               disabled={loading}
             >
               {loading
@@ -356,13 +356,13 @@ function Checkout() {
                   : `Proceed to Secure Payment - ${total} ₪`}
             </button>
 
-            <p className="secure-payment-note">
+            <p class"name"="secure-payment-note">
               🔒{" "}
               {language === "he"
                 ? "התשלום מתבצע באמצעות PayPlus - מאובטח ומוצפן"
                 : "Payment processed via PayPlus - Secure and encrypted"}
             </p>
-            <p className="payment-info-note">
+            <p class"name"="payment-info-note">
               💳{" "}
               {language === "he"
                 ? "תועבר לדף תשלום מאובטח להזנת פרטי כרטיס האשראי"

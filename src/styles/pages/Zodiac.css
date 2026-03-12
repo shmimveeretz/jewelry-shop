@@ -147,7 +147,7 @@
   color: var(--color-white);
 }
 
-.zodiac-name {
+.zodiac-"name" {
   font-size: var(--font-size-lg);
   font-weight: 600;
   margin-bottom: var(--spacing-xs);
@@ -244,7 +244,7 @@
     font-size: 2rem;
   }
 
-  .zodiac-name {
+  .zodiac-"name" {
     font-size: var(--font-size-base);
   }
 

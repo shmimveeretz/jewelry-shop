@@ -41,7 +41,7 @@ function ShabbatMode() {
     }
 
     return (
-        <div className="shabbat-overlay">
+        <div class"name"="shabbat-overlay">
             <div>
                 <h2>🕯️ שבת שלום 🕯️</h2>
                 <p>

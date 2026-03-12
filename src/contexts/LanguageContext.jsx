@@ -83,7 +83,7 @@ export const translations = {
     loginToContinue: "התחבר כדי להמשיך",
     createAccount: "צור חשבון",
     joinUs: "הצטרף אלינו היום",
-    name: "שם מלא",
+    "name": "שם מלא",
     email: "אימייל",
     password: "סיסמה",
     confirmPassword: "אימות סיסמה",
@@ -168,7 +168,7 @@ export const translations = {
     highPrice: "מעל 1000 ₪",
 
     // Contact Form
-    fullName: "שם מלא",
+    full"name": "שם מלא",
     phoneNumber: "טלפון",
     subject: "נושא",
     yourMessage: "ההודעה שלך",
@@ -355,7 +355,7 @@ export const translations = {
     loginToContinue: "Login to continue",
     createAccount: "Create Account",
     joinUs: "Join us today",
-    name: "Full Name",
+    "name": "Full "name"",
     email: "Email",
     password: "Password",
     confirmPassword: "Confirm Password",
@@ -440,7 +440,7 @@ export const translations = {
     highPrice: "Over ₪1000",
 
     // Contact Form
-    fullName: "Full Name",
+    full"name": "Full "name"",
     phoneNumber: "Phone Number",
     subject: "Subject",
     yourMessage: "Your Message",

@@ -35,41 +35,41 @@ function Toast({
   const getIcon = () => {
     switch (type) {
       case "success":
-        return <FaCheckCircle className="toast-icon success-icon" />;
+        return <FaCheckCircle class"name"="toast-icon success-icon" />;
       case "error":
-        return <FaExclamationTriangle className="toast-icon error-icon" />;
+        return <FaExclamationTriangle class"name"="toast-icon error-icon" />;
       case "cart":
-        return <FaShoppingCart className="toast-icon cart-icon" />;
+        return <FaShoppingCart class"name"="toast-icon cart-icon" />;
       default:
-        return <FaInfoCircle className="toast-icon info-icon" />;
+        return <FaInfoCircle class"name"="toast-icon info-icon" />;
     }
   };
 
-  const getClassName = () => {
+  const getClass"name" = () => {
     const baseClass = `toast toast-${type}`;
     return isClosing ? `${baseClass} toast-closing` : baseClass;
   };
 
   return (
-    <div className={getClassName()}>
-      <div className="toast-content">
+    <div class"name"={getClass"name"()}>
+      <div class"name"="toast-content">
         {productImage && (
-          <img src={productImage} alt="" className="toast-product-image" />
+          <img src={productImage} alt="" class"name"="toast-product-image" />
         )}
-        <div className="toast-icon-wrapper">{getIcon()}</div>
-        <div className="toast-message">
+        <div class"name"="toast-icon-wrapper">{getIcon()}</div>
+        <div class"name"="toast-message">
           {message}
           {type === "cart" && (
-            <a href="/cart" className="toast-cart-link" onClick={handleClose}>
+            <a href="/cart" class"name"="toast-cart-link" onClick={handleClose}>
               עבור לעגלה ←
             </a>
           )}
         </div>
       </div>
-      <button className="toast-close" onClick={handleClose}>
+      <button class"name"="toast-close" onClick={handleClose}>
         <FaTimes />
       </button>
-      <div className="toast-progress"></div>
+      <div class"name"="toast-progress"></div>
     </div>
   );
 }

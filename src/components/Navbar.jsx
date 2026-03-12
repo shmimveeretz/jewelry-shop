@@ -110,7 +110,7 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/shop?category=כוכב חושן מזל"
+                  to="/shop?category=מזל, אבן חושן וכוכב"
                   onClick={() => {
                     setIsMenuOpen(false);
                     setIsDropdownOpen(false);

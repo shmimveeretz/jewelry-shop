@@ -12,19 +12,19 @@ function PaymentFailure() {
   };
 
   return (
-    <div className="payment-status-page">
-      <div className="payment-status-container failure">
-        <div className="status-icon">❌</div>
+    <div class"name"="payment-status-page">
+      <div class"name"="payment-status-container failure">
+        <div class"name"="status-icon">❌</div>
 
         <h1>{language === "he" ? "התשלום נכשל" : "Payment Failed"}</h1>
 
-        <p className="failure-message">
+        <p class"name"="failure-message">
           {language === "he"
             ? "מצטערים, התשלום לא הושלם בהצלחה."
             : "Sorry, your payment could not be processed."}
         </p>
 
-        <div className="failure-reasons">
+        <div class"name"="failure-reasons">
           <h3>{language === "he" ? "סיבות אפשריות:" : "Possible Reasons:"}</h3>
           <ul>
             <li>
@@ -50,7 +50,7 @@ function PaymentFailure() {
           </ul>
         </div>
 
-        <div className="failure-actions">
+        <div class"name"="failure-actions">
           <h3>{language === "he" ? "מה אפשר לעשות?" : "What can you do?"}</h3>
           <ul>
             <li>
@@ -74,17 +74,17 @@ function PaymentFailure() {
           </ul>
         </div>
 
-        <div className="action-buttons">
-          <button className="btn btn-primary" onClick={handleRetry}>
+        <div class"name"="action-buttons">
+          <button class"name"="btn btn-primary" onClick={handleRetry}>
             {language === "he" ? "נסה שוב" : "Try Again"}
           </button>
           <button
-            className="btn btn-secondary"
+            class"name"="btn btn-secondary"
             onClick={() => navigate("/contact")}
           >
             {language === "he" ? "צור קשר" : "Contact Us"}
           </button>
-          <button className="btn btn-text" onClick={() => navigate("/")}>
+          <button class"name"="btn btn-text" onClick={() => navigate("/")}>
             {language === "he" ? "חזרה לדף הבית" : "Back to Home"}
           </button>
         </div>

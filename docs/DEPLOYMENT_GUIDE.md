@@ -3,6 +3,7 @@
 ## 📋 דרישות מערכת
 
 לפני שמתחילים, ודא שיש לך:
+
 - **Node.js** גרסה 18 ומעלה ([הורד כאן](https://nodejs.org/))
 - **npm** או **yarn**
 - עורך קוד (מומלץ: VS Code)
@@ -69,6 +70,7 @@ npm run preview
    - התחבר עם GitHub
 
 2. **חבר את הפרויקט:**
+
    ```bash
    npm install -g vercel
    vercel login
@@ -80,6 +82,7 @@ npm run preview
 4. **הפרויקט יפורסם אוטומטית!** 🎉
 
 **יתרונות Vercel:**
+
 - פריסה אוטומטית מ-Git
 - SSL חינמי
 - CDN עולמי
@@ -93,6 +96,7 @@ npm run preview
    - גש ל-[netlify.com](https://netlify.com)
 
 2. **התקן Netlify CLI:**
+
    ```bash
    npm install -g netlify-cli
    netlify login
@@ -109,17 +113,19 @@ npm run preview
 ### אפשרות 3: GitHub Pages
 
 1. **התקן gh-pages:**
+
    ```bash
    npm install --save-dev gh-pages
    ```
 
 2. **הוסף ל-package.json:**
+
    ```json
    {
      "scripts": {
        "deploy": "npm run build && gh-pages -d dist"
      },
-     "homepage": "https://[username].github.io/[repo-name]"
+     "homepage": "https://[user"name"].github.io/[repo-"name"]"
    }
    ```
 
@@ -133,6 +139,7 @@ npm run preview
 ### אפשרות 4: הוסטינג משלך (cPanel/FTP)
 
 1. **בנה את הפרויקט:**
+
    ```bash
    npm run build
    ```
@@ -160,6 +167,7 @@ VITE_ADMIN_PASSWORD=your_secret_password
 **חשוב:** אל תעלה את קובץ `.env` ל-Git!
 
 הוסף ל-`.gitignore`:
+
 ```
 .env
 .env.local
@@ -173,6 +181,7 @@ VITE_ADMIN_PASSWORD=your_secret_password
 **Vercel/Netlify:** SSL אוטומטי ✅
 
 **שרת משלך:**
+
 1. השתמש ב-**Let's Encrypt** (חינמי)
 2. התקן דרך cPanel או:
    ```bash
@@ -186,6 +195,7 @@ VITE_ADMIN_PASSWORD=your_secret_password
 ### שינוי צבעים ולוגו
 
 1. **ערוך את `src/index.css`:**
+
    ```css
    :root {
      --color-primary: #2c2c2c;
@@ -198,8 +208,7 @@ VITE_ADMIN_PASSWORD=your_secret_password
 
 3. **עדכן את `index.html`:**
    ```html
-   <title>שם החנות שלך</title>
-   <link rel="icon" href="/your-logo.png" />
+   <title>שם החנות שלך</title> <link rel="icon" href="/your-logo.png" />
    ```
 
 ---
@@ -209,12 +218,17 @@ VITE_ADMIN_PASSWORD=your_secret_password
 1. **הוסף ל-`index.html` לפני סגירת `</head>`:**
    ```html
    <!-- Google Analytics -->
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+   <script
+     async
+     src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+   ></script>
    <script>
      window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-     gtag('config', 'G-XXXXXXXXXX');
+     function gtag() {
+       dataLayer.push(arguments);
+     }
+     gtag("js", new Date());
+     gtag("config", "G-XXXXXXXXXX");
    </script>
    ```
 
@@ -225,21 +239,23 @@ VITE_ADMIN_PASSWORD=your_secret_password
 #### Stripe:
 
 1. **התקן את Stripe:**
+
    ```bash
    npm install @stripe/stripe-js @stripe/react-stripe-js
    ```
 
 2. **הוסף ל-App.jsx:**
+
    ```jsx
-   import { loadStripe } from '@stripe/stripe-js';
-   import { Elements } from '@stripe/react-stripe-js';
+   import { loadStripe } from "@stripe/stripe-js";
+   import { Elements } from "@stripe/react-stripe-js";
 
    const stripePromise = loadStripe(process.env.VITE_STRIPE_KEY);
 
    // Wrap your cart/checkout component
    <Elements stripe={stripePromise}>
      <YourCheckoutComponent />
-   </Elements>
+   </Elements>;
    ```
 
 ---
@@ -249,14 +265,16 @@ VITE_ADMIN_PASSWORD=your_secret_password
 ### Firebase (מומלץ למתחילים):
 
 1. **התקן Firebase:**
+
    ```bash
    npm install firebase
    ```
 
 2. **צור קובץ `src/firebase.js`:**
+
    ```javascript
-   import { initializeApp } from 'firebase/app';
-   import { getFirestore } from 'firebase/firestore';
+   import { initializeApp } from "firebase/app";
+   import { getFirestore } from "firebase/firestore";
 
    const firebaseConfig = {
      apiKey: "your-api-key",
@@ -270,11 +288,12 @@ VITE_ADMIN_PASSWORD=your_secret_password
    ```
 
 3. **השתמש בו בקומפוננטות:**
-   ```javascript
-   import { collection, getDocs } from 'firebase/firestore';
-   import { db } from './firebase';
 
-   const products = await getDocs(collection(db, 'products'));
+   ```javascript
+   import { collection, getDocs } from "firebase/firestore";
+   import { db } from "./firebase";
+
+   const products = await getDocs(collection(db, "products"));
    ```
 
 ---
@@ -284,9 +303,10 @@ VITE_ADMIN_PASSWORD=your_secret_password
 ### הוספת אימות בסיסי:
 
 1. **צור Context לאימות:**
+
    ```javascript
    // src/context/AuthContext.jsx
-   import { createContext, useState } from 'react';
+   import { createContext, useState } from "react";
 
    export const AuthContext = createContext();
 
@@ -313,11 +333,11 @@ VITE_ADMIN_PASSWORD=your_secret_password
    ```jsx
    function Admin() {
      const { isAdmin } = useContext(AuthContext);
-     
+
      if (!isAdmin) {
        return <LoginForm />;
      }
-     
+
      return <AdminPanel />;
    }
    ```
@@ -329,11 +349,13 @@ VITE_ADMIN_PASSWORD=your_secret_password
 האתר כבר responsive, אבל תוכל לשפר:
 
 1. **הוסף PWA (Progressive Web App):**
+
    ```bash
    npm install vite-plugin-pwa -D
    ```
 
 2. **ערוך `vite.config.js`:**
+
    ```javascript
    import { VitePWA } from 'vite-plugin-pwa';
 
@@ -343,8 +365,8 @@ VITE_ADMIN_PASSWORD=your_secret_password
        VitePWA({
          registerType: 'autoUpdate',
          manifest: {
-           name: 'חנות תכשיטים',
-           short_name: 'תכשיטים',
+           "name": 'חנות תכשיטים',
+           short_"name": 'תכשיטים',
            theme_color: '#2c2c2c'
          }
        })
@@ -357,14 +379,18 @@ VITE_ADMIN_PASSWORD=your_secret_password
 ## 🐛 פתרון בעיות נפוצות
 
 ### בעיה: "Module not found"
+
 **פתרון:**
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
 ### בעיה: "Port 5173 is already in use"
+
 **פתרון:**
+
 ```bash
 # Windows
 netstat -ano | findstr :5173
@@ -375,7 +401,9 @@ lsof -ti:5173 | xargs kill
 ```
 
 ### בעיה: תמונות לא נטענות
+
 **פתרון:**
+
 - ודא שכל התמונות נמצאות בתיקייה `public/`
 - או השתמש ב-URL מלא לתמונות חיצוניות
 

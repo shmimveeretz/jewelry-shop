@@ -11,12 +11,16 @@ function Shop() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState("הכל");
 
-  // Handle zodiac filter from navigation
+  // Handle category filter from URL query params or navigation state
   useEffect(() => {
-    if (location.state?.zodiacFilter) {
+    const params = new URLSearchParams(location.search);
+    const categoryParam = params.get("category");
+    if (categoryParam) {
+      setSelectedCollection(categoryParam);
+    } else if (location.state?.zodiacFilter) {
       setSelectedCollection("תליוני מזלות");
     }
-  }, [location.state]);
+  }, [location.search, location.state]);
 
   // Preload main collection image
   useEffect(() => {

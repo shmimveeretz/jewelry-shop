@@ -42,10 +42,10 @@ function App() {
           <Router>
             <ScrollToTop />
             <AccessibilityWidget />
-            <div className="App">
+            <div class"name"="App">
               {/* <ShabbatMode /> */}
               <Navbar />
-              <main className="main-content">
+              <main class"name"="main-content">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/shop" element={<Shop />} />

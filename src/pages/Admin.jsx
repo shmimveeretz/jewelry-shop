@@ -25,38 +25,38 @@ function Admin() {
     {
       id: "ORD-001",
       customerId: "user-1",
-      customerName: "רוי רביב",
+      customer"name": "רוי רביב",
       email: "raviroi@gmail.com",
       totalPrice: 2890,
       status: "pending",
       createdAt: "2026-01-28T14:30:00",
       items: [
-        { id: "aleph", name: "אלף", price: 890, quantity: 2 },
-        { id: "ruby-odem", name: "אבן רובי", price: 1290, quantity: 1 },
+        { id: "aleph", "name": "אלף", price: 890, quantity: 2 },
+        { id: "ruby-odem", "name": "אבן רובי", price: 1290, quantity: 1 },
       ],
     },
     {
       id: "ORD-002",
       customerId: "user-2",
-      customerName: "דנה כהן",
+      customer"name": "דנה כהן",
       email: "dana@gmail.com",
       totalPrice: 950,
       status: "shipped",
       createdAt: "2026-01-27T10:15:00",
       items: [
-        { id: "aries-pendant", name: "תליון מזל טלה", price: 950, quantity: 1 },
+        { id: "aries-pendant", "name": "תליון מזל טלה", price: 950, quantity: 1 },
       ],
     },
     {
       id: "ORD-003",
       customerId: "user-3",
-      customerName: "אברהם לוי",
+      customer"name": "אברהם לוי",
       email: "abraham@gmail.com",
       totalPrice: 1690,
       status: "delivered",
       createdAt: "2026-01-25T08:45:00",
       items: [
-        { id: "trinity-aries", name: "שלישיית טלה", price: 1690, quantity: 1 },
+        { id: "trinity-aries", "name": "שלישיית טלה", price: 1690, quantity: 1 },
       ],
     },
   ]);
@@ -69,7 +69,7 @@ function Admin() {
     {
       id: "dev-1",
       ipAddress: "192.168.1.100",
-      deviceName: "Chrome - Windows",
+      device"name": "Chrome - Windows",
       location: "ירושלים, ישראל",
       locationEn: "Jerusalem, Israel",
       lastLogin: "2026-01-30T14:30:00",
@@ -80,7 +80,7 @@ function Admin() {
     {
       id: "dev-2",
       ipAddress: "203.45.67.89",
-      deviceName: "Safari - iPhone",
+      device"name": "Safari - iPhone",
       location: "תל אביב, ישראל",
       locationEn: "Tel Aviv, Israel",
       lastLogin: "2026-01-29T10:15:00",
@@ -91,7 +91,7 @@ function Admin() {
     {
       id: "dev-3",
       ipAddress: "156.23.45.67",
-      deviceName: "Edge - Windows",
+      device"name": "Edge - Windows",
       location: "חיפה, ישראל",
       locationEn: "Haifa, Israel",
       lastLogin: "2026-01-28T16:45:00",
@@ -117,8 +117,8 @@ function Admin() {
 
   const [formData, setFormData] = useState({
     id: "",
-    name: "",
-    nameEn: "",
+    "name": "",
+    "nameEn": "",
     category: "",
     categoryEn: "",
     description: "",
@@ -303,10 +303,10 @@ function Admin() {
 
   const filteredUsers = users.filter(
     (user) =>
-      (user.firstName &&
-        user.firstName.toLowerCase().includes(userSearchTerm.toLowerCase())) ||
-      (user.lastName &&
-        user.lastName.toLowerCase().includes(userSearchTerm.toLowerCase())) ||
+      (user.first"name" &&
+        user.first"name".toLowerCase().includes(userSearchTerm.toLowerCase())) ||
+      (user.last"name" &&
+        user.last"name".toLowerCase().includes(userSearchTerm.toLowerCase())) ||
       (user.email &&
         user.email.toLowerCase().includes(userSearchTerm.toLowerCase())),
   );
@@ -343,8 +343,8 @@ function Admin() {
     if (newRole === "roi") {
       const confirmed = window.confirm(
         language === "he"
-          ? `⚠️ אתה עומד לתת ל-${targetUser?.firstName} גישה כמנהל ניטור (ROI). 👑 זה התפקיד הגבוה ביותר במערכת. האם אתה בטוח?`
-          : `⚠️ You are about to grant ${targetUser?.firstName} ROI access. 👑 This is the highest role in the system. Are you sure?`,
+          ? `⚠️ אתה עומד לתת ל-${targetUser?.first"name"} גישה כמנהל ניטור (ROI). 👑 זה התפקיד הגבוה ביותר במערכת. האם אתה בטוח?`
+          : `⚠️ You are about to grant ${targetUser?.first"name"} ROI access. 👑 This is the highest role in the system. Are you sure?`,
       );
       if (!confirmed) return;
     }
@@ -353,8 +353,8 @@ function Admin() {
     if (targetUser?.role === "roi" && newRole !== "roi") {
       const confirmed = window.confirm(
         language === "he"
-          ? `⚠️ אתה עומד להסיר מ-${targetUser?.firstName} את תפקיד מנהל ניטור (ROI). תפקיד זה הוא הגבוה ביותר. האם אתה בטוח?`
-          : `⚠️ You are about to remove ${targetUser?.firstName}'s ROI (highest) role. Are you sure?`,
+          ? `⚠️ אתה עומד להסיר מ-${targetUser?.first"name"} את תפקיד מנהל ניטור (ROI). תפקיד זה הוא הגבוה ביותר. האם אתה בטוח?`
+          : `⚠️ You are about to remove ${targetUser?.first"name"}'s ROI (highest) role. Are you sure?`,
       );
       if (!confirmed) return;
     }
@@ -382,7 +382,7 @@ function Admin() {
             ),
           );
 
-          const roleDisplayNames = {
+          const roleDisplay"name"s = {
             user: language === "he" ? "משתמש" : "User",
             admin: language === "he" ? "מנהל" : "Admin",
             roi:
@@ -391,8 +391,8 @@ function Admin() {
 
           showSuccess(
             language === "he"
-              ? `✅ תפקיד המשתמש ${targetUser?.firstName} עודכן ל-${roleDisplayNames[newRole]}`
-              : `✅ ${targetUser?.firstName}'s role updated to ${roleDisplayNames[newRole]}`,
+              ? `✅ תפקיד המשתמש ${targetUser?.first"name"} עודכן ל-${roleDisplay"name"s[newRole]}`
+              : `✅ ${targetUser?.first"name"}'s role updated to ${roleDisplay"name"s[newRole]}`,
           );
         } else {
           showError(
@@ -417,12 +417,12 @@ function Admin() {
       return;
     }
 
-    const userName = `${user.firstName} ${user.lastName}`;
+    const user"name" = `${user.first"name"} ${user.last"name"}`;
     if (
       window.confirm(
         language === "he"
-          ? `האם אתה בטוח שברצונך למחוק את המשתמש ${userName}?`
-          : `Are you sure you want to delete ${userName}?`,
+          ? `האם אתה בטוח שברצונך למחוק את המשתמש ${user"name"}?`
+          : `Are you sure you want to delete ${user"name"}?`,
       )
     ) {
       const deleteUserAsync = async () => {
@@ -472,15 +472,15 @@ function Admin() {
     const user = users.find((u) => u.id === userId || u._id === userId);
     if (!user) return;
 
-    const userName = `${user.firstName} ${user.lastName}`;
+    const user"name" = `${user.first"name"} ${user.last"name"}`;
     const action = user.blocked ? "ביטול חסימה" : "חסימה";
     const actionEn = user.blocked ? "Unblock" : "Block";
 
     if (
       window.confirm(
         language === "he"
-          ? `האם אתה בטוח שברצונך ${action} את המשתמש ${userName}?`
-          : `Are you sure you want to ${actionEn} ${userName}?`,
+          ? `האם אתה בטוח שברצונך ${action} את המשתמש ${user"name"}?`
+          : `Are you sure you want to ${actionEn} ${user"name"}?`,
       )
     ) {
       setUsers(
@@ -513,7 +513,7 @@ function Admin() {
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       order.id.toLowerCase().includes(orderSearchTerm.toLowerCase()) ||
-      order.customerName
+      order.customer"name"
         .toLowerCase()
         .includes(orderSearchTerm.toLowerCase()) ||
       order.email.toLowerCase().includes(orderSearchTerm.toLowerCase());
@@ -666,7 +666,7 @@ function Admin() {
         device.ipAddress
           .toLowerCase()
           .includes(deviceSearchTerm.toLowerCase()) ||
-        device.deviceName
+        device.device"name"
           .toLowerCase()
           .includes(deviceSearchTerm.toLowerCase()) ||
         device.location.toLowerCase().includes(deviceSearchTerm.toLowerCase())
@@ -689,8 +689,8 @@ function Admin() {
   const filteredProducts = products.filter((product) => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      (product.name && product.name.toLowerCase().includes(searchLower)) ||
-      (product.nameEn && product.nameEn.toLowerCase().includes(searchLower)) ||
+      (product."name" && product."name".toLowerCase().includes(searchLower)) ||
+      (product."name"En && product."name"En.toLowerCase().includes(searchLower)) ||
       (product.category &&
         product.category.toLowerCase().includes(searchLower)) ||
       (product.categoryEn &&
@@ -702,8 +702,8 @@ function Admin() {
     setEditingProduct(null);
     setFormData({
       id: "",
-      name: "",
-      nameEn: "",
+      "name": "",
+      "nameEn": "",
       category: "",
       categoryEn: "",
       description: "",
@@ -720,8 +720,8 @@ function Admin() {
     setEditingProduct(product);
     setFormData({
       id: product.id,
-      name: product.name,
-      nameEn: product.nameEn || "",
+      "name": product."name",
+      "nameEn": product."name"En || "",
       category: product.category,
       categoryEn: product.categoryEn || "",
       description: product.description || "",
@@ -756,10 +756,10 @@ function Admin() {
   };
 
   const handleFormChange = (e) => {
-    const { name, value } = e.target;
+    const { "name", value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      ["name"]: value,
     }));
   };
 
@@ -770,8 +770,8 @@ function Admin() {
       // Update existing product
       updateProductAPI({
         ...editingProduct,
-        name: formData.name,
-        nameEn: formData.nameEn,
+        "name": formData."name",
+        "nameEn": formData."name"En,
         category: formData.category,
         categoryEn: formData.categoryEn,
         description: formData.description,
@@ -790,8 +790,8 @@ function Admin() {
     } else {
       // Add new product
       const newProduct = {
-        name: formData.name,
-        nameEn: formData.nameEn,
+        "name": formData."name",
+        "nameEn": formData."name"En,
         category: formData.category,
         categoryEn: formData.categoryEn,
         description: formData.description,
@@ -886,8 +886,8 @@ function Admin() {
   // If not authorized, show loading
   if (!isAuthorized) {
     return (
-      <div className="admin-page">
-        <div className="admin-header">
+      <div class"name"="admin-page">
+        <div class"name"="admin-header">
           <p>{language === "he" ? "טוען..." : "Loading..."}</p>
         </div>
       </div>
@@ -895,8 +895,8 @@ function Admin() {
   }
 
   return (
-    <div className="admin-page">
-      <div className="admin-header">
+    <div class"name"="admin-page">
+      <div class"name"="admin-header">
         <h1>{language === "he" ? "🔓 ניהול חנות" : "🔓 Store Management"}</h1>
         <p>
           {language === "he"
@@ -906,9 +906,9 @@ function Admin() {
       </div>
 
       {/* Tabs */}
-      <div className="admin-tabs">
+      <div class"name"="admin-tabs">
         <button
-          className={`tab-btn ${activeTab === "products" ? "active" : ""}`}
+          class"name"={`tab-btn ${activeTab === "products" ? "active" : ""}`}
           onClick={() => setActiveTab("products")}
         >
           {language === "he" ? "📦 ניהול מוצרים" : "📦 Manage Products"}
@@ -917,7 +917,7 @@ function Admin() {
         {/* Show Users tab only for ROI */}
         {isROI() && (
           <button
-            className={`tab-btn ${activeTab === "users" ? "active" : ""}`}
+            class"name"={`tab-btn ${activeTab === "users" ? "active" : ""}`}
             onClick={() => setActiveTab("users")}
           >
             {language === "he" ? "👥 ניהול משתמשים" : "👥 Manage Users"}
@@ -925,7 +925,7 @@ function Admin() {
         )}
 
         <button
-          className={`tab-btn ${activeTab === "orders" ? "active" : ""}`}
+          class"name"={`tab-btn ${activeTab === "orders" ? "active" : ""}`}
           onClick={() => setActiveTab("orders")}
         >
           {language === "he" ? "📋 ניהול הזמנות" : "📋 Manage Orders"}
@@ -934,7 +934,7 @@ function Admin() {
         {/* Show Devices tab only for ROI */}
         {isROI() && (
           <button
-            className={`tab-btn ${activeTab === "devices" ? "active" : ""}`}
+            class"name"={`tab-btn ${activeTab === "devices" ? "active" : ""}`}
             onClick={() => setActiveTab("devices")}
           >
             {language === "he" ? "🔒 ניהול מכשירים" : "🔒 Device Management"}
@@ -942,25 +942,25 @@ function Admin() {
         )}
       </div>
 
-      <div className="admin-container">
+      <div class"name"="admin-container">
         {/* Products Tab */}
         {activeTab === "products" && (
           <>
-            <div className="admin-actions">
+            <div class"name"="admin-actions">
               <input
                 type="text"
-                className="search-bar"
+                class"name"="search-bar"
                 placeholder={
                   language === "he" ? "חיפוש מוצרים..." : "Search products..."
                 }
                 value={searchTerm}
                 onChange={handleSearch}
               />
-              <button className="add-product-btn" onClick={handleAddProduct}>
+              <button class"name"="add-product-btn" onClick={handleAddProduct}>
                 {language === "he" ? "➕ הוסף מוצר חדש" : "➕ Add New Product"}
               </button>
               <button
-                className="add-product-btn"
+                class"name"="add-product-btn"
                 onClick={() => setShowProductForm(true)}
                 style={{ backgroundColor: "#28a745", marginLeft: "10px" }}
               >
@@ -968,12 +968,12 @@ function Admin() {
               </button>
             </div>
 
-            <div className="admin-products-table">
-              <table className="products-table">
+            <div class"name"="admin-products-table">
+              <table class"name"="products-table">
                 <thead>
                   <tr>
                     <th>{language === "he" ? "תמונה" : "Image"}</th>
-                    <th>{language === "he" ? "שם המוצר" : "Product Name"}</th>
+                    <th>{language === "he" ? "שם המוצר" : "Product "name""}</th>
                     <th>{language === "he" ? "קטגוריה" : "Category"}</th>
                     <th>{language === "he" ? "מחיר" : "Price"}</th>
                     <th>{language === "he" ? "סטטוס" : "Status"}</th>
@@ -987,8 +987,8 @@ function Admin() {
                         {Array.isArray(product.images) && product.images[0] ? (
                           <img
                             src={product.images[0]}
-                            alt={product.name}
-                            className="product-thumbnail"
+                            alt={product."name"}
+                            class"name"="product-thumbnail"
                             onError={(e) => {
                               e.target.src =
                                 "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400";
@@ -997,25 +997,25 @@ function Admin() {
                         ) : product.images ? (
                           <img
                             src={product.images}
-                            alt={product.name}
-                            className="product-thumbnail"
+                            alt={product."name"}
+                            class"name"="product-thumbnail"
                             onError={(e) => {
                               e.target.src =
                                 "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400";
                             }}
                           />
                         ) : (
-                          <div className="product-thumbnail-placeholder">
+                          <div class"name"="product-thumbnail-placeholder">
                             {language === "he" ? "ללא תמונה" : "No image"}
                           </div>
                         )}
                       </td>
                       <td>
                         <div>
-                          <strong>{product.name}</strong>
-                          {product.nameEn && (
+                          <strong>{product."name"}</strong>
+                          {product."name"En && (
                             <div style={{ fontSize: "0.8em", color: "#666" }}>
-                              {product.nameEn}
+                              {product."name"En}
                             </div>
                           )}
                         </div>
@@ -1032,7 +1032,7 @@ function Admin() {
                       </td>
                       <td>₪{product.price}</td>
                       <td>
-                        <span className={`product-status ${product.status}`}>
+                        <span class"name"={`product-status ${product.status}`}>
                           {product.status === "active"
                             ? language === "he"
                               ? "פעיל"
@@ -1043,15 +1043,15 @@ function Admin() {
                         </span>
                       </td>
                       <td>
-                        <div className="table-actions">
+                        <div class"name"="table-actions">
                           <button
-                            className="action-btn edit"
+                            class"name"="action-btn edit"
                             onClick={() => handleEditProduct(product)}
                           >
                             {language === "he" ? "✏️ ערוך" : "✏️ Edit"}
                           </button>
                           <button
-                            className="action-btn delete"
+                            class"name"="action-btn delete"
                             onClick={() => handleDeleteProduct(product.id)}
                           >
                             {language === "he" ? "🗑️ מחק" : "🗑️ Delete"}
@@ -1069,34 +1069,34 @@ function Admin() {
         {/* Users Tab - ROI Only */}
         {activeTab === "users" && isROI() && (
           <>
-            <div className="admin-actions">
+            <div class"name"="admin-actions">
               <input
                 type="text"
-                className="search-bar"
+                class"name"="search-bar"
                 placeholder={
                   language === "he" ? "חיפוש משתמשים..." : "Search users..."
                 }
                 value={userSearchTerm}
                 onChange={handleUserSearch}
               />
-              <span className="user-count">
+              <span class"name"="user-count">
                 {language === "he"
                   ? `סה"כ משתמשים: ${users.length}`
                   : `Total Users: ${users.length}`}
               </span>
             </div>
 
-            <div className="admin-products-table">
+            <div class"name"="admin-products-table">
               {loading ? (
-                <div className="loading-message">
+                <div class"name"="loading-message">
                   {language === "he" ? "טוען משתמשים..." : "Loading users..."}
                 </div>
               ) : (
-                <table className="users-table">
+                <table class"name"="users-table">
                   <thead>
                     <tr>
-                      <th>{language === "he" ? "שם פרטי" : "First Name"}</th>
-                      <th>{language === "he" ? "שם משפחה" : "Last Name"}</th>
+                      <th>{language === "he" ? "שם פרטי" : "First "name""}</th>
+                      <th>{language === "he" ? "שם משפחה" : "Last "name""}</th>
                       <th>{language === "he" ? "אימייל" : "Email"}</th>
                       <th>{language === "he" ? "טלפון" : "Phone"}</th>
                       <th>{language === "he" ? "תפקיד" : "Role"}</th>
@@ -1108,13 +1108,13 @@ function Admin() {
                   <tbody>
                     {filteredUsers.map((user) => (
                       <tr key={user.id}>
-                        <td>{user.firstName}</td>
-                        <td>{user.lastName}</td>
+                        <td>{user.first"name"}</td>
+                        <td>{user.last"name"}</td>
                         <td>{user.email}</td>
                         <td>{user.phone}</td>
                         <td>
                           <select
-                            className="role-select"
+                            class"name"="role-select"
                             value={user.role}
                             onChange={(e) =>
                               handleChangeUserRole(user.id, e.target.value)
@@ -1143,7 +1143,7 @@ function Admin() {
                         </td>
                         <td>
                           <span
-                            className={`user-status ${user.blocked ? "blocked" : "active"}`}
+                            class"name"={`user-status ${user.blocked ? "blocked" : "active"}`}
                           >
                             {user.blocked
                               ? language === "he"
@@ -1156,9 +1156,9 @@ function Admin() {
                         </td>
                         <td>{formatDate(user.createdAt)}</td>
                         <td>
-                          <div className="table-actions">
+                          <div class"name"="table-actions">
                             <button
-                              className={`action-btn ${user.blocked ? "unblock" : "block"}`}
+                              class"name"={`action-btn ${user.blocked ? "unblock" : "block"}`}
                               onClick={() => handleBlockUser(user.id)}
                               title={
                                 language === "he"
@@ -1179,7 +1179,7 @@ function Admin() {
                                   : "🔒 Block"}
                             </button>
                             <button
-                              className="action-btn delete"
+                              class"name"="action-btn delete"
                               onClick={() => handleDeleteUser(user.id)}
                             >
                               {language === "he" ? "🗑️ מחק" : "🗑️ Delete"}
@@ -1198,10 +1198,10 @@ function Admin() {
         {/* Orders Tab */}
         {activeTab === "orders" && (
           <>
-            <div className="admin-actions">
+            <div class"name"="admin-actions">
               <input
                 type="text"
-                className="search-bar"
+                class"name"="search-bar"
                 placeholder={
                   language === "he"
                     ? "חיפוש הזמנה או לקוח..."
@@ -1211,7 +1211,7 @@ function Admin() {
                 onChange={(e) => setOrderSearchTerm(e.target.value)}
               />
               <select
-                className="filter-select"
+                class"name"="filter-select"
                 value={orderStatusFilter}
                 onChange={(e) => setOrderStatusFilter(e.target.value)}
               >
@@ -1234,15 +1234,15 @@ function Admin() {
                   {language === "he" ? "בוטלה" : "Cancelled"}
                 </option>
               </select>
-              <span className="user-count">
+              <span class"name"="user-count">
                 {language === "he"
                   ? `סה"כ הזמנות: ${filteredOrders.length}`
                   : `Total Orders: ${filteredOrders.length}`}
               </span>
             </div>
 
-            <div className="admin-products-table">
-              <table className="orders-table">
+            <div class"name"="admin-products-table">
+              <table class"name"="orders-table">
                 <thead>
                   <tr>
                     <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
@@ -1261,12 +1261,12 @@ function Admin() {
                       <td>
                         <strong>{order.id}</strong>
                       </td>
-                      <td>{order.customerName}</td>
+                      <td>{order.customer"name"}</td>
                       <td>{order.email}</td>
-                      <td className="price">₪{order.totalPrice}</td>
+                      <td class"name"="price">₪{order.totalPrice}</td>
                       <td>
                         <select
-                          className={`status-select status-${order.status}`}
+                          class"name"={`status-select status-${order.status}`}
                           value={order.status}
                           onChange={(e) =>
                             handleOrderStatusChange(order.id, e.target.value)
@@ -1292,15 +1292,15 @@ function Admin() {
                       <td>{formatDate(order.createdAt)}</td>
                       <td>
                         <details>
-                          <summary className="items-summary">
+                          <summary class"name"="items-summary">
                             {language === "he"
                               ? `${order.items.length} פריטים`
                               : `${order.items.length} items`}
                           </summary>
-                          <ul className="items-list">
+                          <ul class"name"="items-list">
                             {order.items.map((item) => (
                               <li key={item.id}>
-                                {item.name} x{item.quantity} - ₪
+                                {item."name"} x{item.quantity} - ₪
                                 {item.price * item.quantity}
                               </li>
                             ))}
@@ -1308,9 +1308,9 @@ function Admin() {
                         </details>
                       </td>
                       <td>
-                        <div className="table-actions">
+                        <div class"name"="table-actions">
                           <button
-                            className="action-btn view"
+                            class"name"="action-btn view"
                             title={
                               language === "he" ? "צפה בפרטים" : "View details"
                             }
@@ -1330,19 +1330,19 @@ function Admin() {
         {/* Devices Tab - ROI Only */}
         {activeTab === "devices" && isROI() && (
           <>
-            <div className="admin-actions">
+            <div class"name"="admin-actions">
               <input
                 type="text"
-                className="search-bar"
+                class"name"="search-bar"
                 placeholder={
                   language === "he"
                     ? "חיפוש לפי IP או שם מכשיר..."
-                    : "Search by IP or device name..."
+                    : "Search by IP or device "name"..."
                 }
                 value={deviceSearchTerm}
                 onChange={(e) => setDeviceSearchTerm(e.target.value)}
               />
-              <span className="user-count">
+              <span class"name"="user-count">
                 {language === "he"
                   ? `סה"כ מכשירים: ${filteredDevices.length}`
                   : `Total Devices: ${filteredDevices.length}`}
@@ -1350,16 +1350,16 @@ function Admin() {
             </div>
 
             {/* Firewall Section */}
-            <div className="firewall-section">
+            <div class"name"="firewall-section">
               <h3>
                 {language === "he"
                   ? "🔥 ניהול חומת אש"
                   : "🔥 Firewall Management"}
               </h3>
-              <div className="firewall-input-group">
+              <div class"name"="firewall-input-group">
                 <input
                   type="text"
-                  className="search-bar"
+                  class"name"="search-bar"
                   placeholder={
                     language === "he"
                       ? "הזן כתובת IP להוספה לחומת אש (דוגמה: 192.168.1.100)"
@@ -1374,7 +1374,7 @@ function Admin() {
                   }}
                 />
                 <button
-                  className="add-product-btn"
+                  class"name"="add-product-btn"
                   onClick={handleAddToFirewall}
                 >
                   {language === "he"
@@ -1385,18 +1385,18 @@ function Admin() {
 
               {/* Firewall List */}
               {firewall.length > 0 && (
-                <div className="firewall-list">
+                <div class"name"="firewall-list">
                   <h4>
                     {language === "he"
                       ? `IP כתובות בחומת אש (${firewall.length})`
                       : `Blocked IPs (${firewall.length})`}
                   </h4>
-                  <div className="firewall-grid">
+                  <div class"name"="firewall-grid">
                     {firewall.map((ip, index) => (
-                      <div key={index} className="firewall-item">
-                        <code className="ip-address">{ip}</code>
+                      <div key={index} class"name"="firewall-item">
+                        <code class"name"="ip-address">{ip}</code>
                         <button
-                          className="action-btn delete"
+                          class"name"="action-btn delete"
                           onClick={() => removeFromFirewall(ip)}
                           title={
                             language === "he"
@@ -1413,12 +1413,12 @@ function Admin() {
               )}
             </div>
 
-            <div className="admin-products-table">
-              <table className="devices-table">
+            <div class"name"="admin-products-table">
+              <table class"name"="devices-table">
                 <thead>
                   <tr>
                     <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
-                    <th>{language === "he" ? "שם מכשיר" : "Device Name"}</th>
+                    <th>{language === "he" ? "שם מכשיר" : "Device "name""}</th>
                     <th>{language === "he" ? "מיקום" : "Location"}</th>
                     <th>
                       {language === "he" ? "ספירת כניסות" : "Login Count"}
@@ -1434,9 +1434,9 @@ function Admin() {
                   {filteredDevices.map((device) => (
                     <tr key={device.id}>
                       <td>
-                        <code className="ip-address">{device.ipAddress}</code>
+                        <code class"name"="ip-address">{device.ipAddress}</code>
                       </td>
-                      <td>{device.deviceName}</td>
+                      <td>{device.device"name"}</td>
                       <td>
                         <div>
                           <strong>{device.location}</strong>
@@ -1446,12 +1446,12 @@ function Admin() {
                         </div>
                       </td>
                       <td>
-                        <span className="login-count">{device.loginCount}</span>
+                        <span class"name"="login-count">{device.loginCount}</span>
                       </td>
                       <td>{formatDate(device.lastLogin)}</td>
                       <td>
                         <span
-                          className={`device-status ${
+                          class"name"={`device-status ${
                             device.blocked ? "blocked" : "active"
                           }`}
                         >
@@ -1465,9 +1465,9 @@ function Admin() {
                         </span>
                       </td>
                       <td>
-                        <div className="table-actions">
+                        <div class"name"="table-actions">
                           <button
-                            className={`action-btn ${
+                            class"name"={`action-btn ${
                               device.blocked ? "unblock" : "block"
                             }`}
                             onClick={() => handleBlockIP(device.id)}
@@ -1498,14 +1498,14 @@ function Admin() {
             </div>
 
             {/* Blocked IPs Summary */}
-            <div className="blocked-ips-summary">
+            <div class"name"="blocked-ips-summary">
               <h3>
                 {language === "he"
                   ? "📋 רשימת כתובות IP החסומות"
                   : "📋 Blocked IP Addresses"}
               </h3>
               {blockedIPs.length > 0 ? (
-                <ul className="blocked-ips-list">
+                <ul class"name"="blocked-ips-list">
                   {blockedIPs.map((ip) => (
                     <li key={ip}>
                       <code>{ip}</code>
@@ -1526,9 +1526,9 @@ function Admin() {
 
       {/* Product Form Modal */}
       {showForm && (
-        <div className="product-form-modal" onClick={handleFormCancel}>
+        <div class"name"="product-form-modal" onClick={handleFormCancel}>
           <form
-            className="product-form"
+            class"name"="product-form"
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleFormSubmit}
           >
@@ -1542,43 +1542,43 @@ function Admin() {
                   : "Add New Product"}
             </h2>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he"
                   ? "שם המוצר (עברית) *"
-                  : "Product Name (Hebrew) *"}
+                  : "Product "name" (Hebrew) *"}
               </label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                "name"="name"
+                value={formData."name"}
                 onChange={handleFormChange}
                 required
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he"
                   ? "שם המוצר (אנגלית)"
-                  : "Product Name (English)"}
+                  : "Product "name" (English)"}
               </label>
               <input
                 type="text"
-                name="nameEn"
-                value={formData.nameEn}
+                "name"="nameEn"
+                value={formData."name"En}
                 onChange={handleFormChange}
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he"
                   ? "קטגוריה (עברית) *"
                   : "Category (Hebrew) *"}
               </label>
               <select
-                name="category"
+                "name"="category"
                 value={formData.category}
                 onChange={handleFormChange}
                 required
@@ -1601,47 +1601,47 @@ function Admin() {
               </select>
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he" ? "קטגוריה (אנגלית)" : "Category (English)"}
               </label>
               <input
                 type="text"
-                name="categoryEn"
+                "name"="categoryEn"
                 value={formData.categoryEn}
                 onChange={handleFormChange}
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he" ? "תיאור (עברית)" : "Description (Hebrew)"}
               </label>
               <textarea
-                name="description"
+                "name"="description"
                 value={formData.description}
                 onChange={handleFormChange}
                 rows="3"
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he" ? "תיאור (אנגלית)" : "Description (English)"}
               </label>
               <textarea
-                name="descriptionEn"
+                "name"="descriptionEn"
                 value={formData.descriptionEn}
                 onChange={handleFormChange}
                 rows="3"
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>{language === "he" ? "מחיר (₪) *" : "Price (₪) *"}</label>
               <input
                 type="number"
-                name="price"
+                "name"="price"
                 value={formData.price}
                 onChange={handleFormChange}
                 required
@@ -1650,7 +1650,7 @@ function Admin() {
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he"
                   ? "סוגי מתכות (מופרדים בפסיק)"
@@ -1658,21 +1658,21 @@ function Admin() {
               </label>
               <input
                 type="text"
-                name="metals"
+                "name"="metals"
                 value={formData.metals}
                 onChange={handleFormChange}
                 placeholder={language === "he" ? "זהב, כסף" : "Gold, Silver"}
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>
                 {language === "he"
                   ? "כתובות תמונה (מופרדות בפסיק)"
                   : "Image URLs (comma separated)"}
               </label>
               <textarea
-                name="images"
+                "name"="images"
                 value={formData.images}
                 onChange={handleFormChange}
                 rows="2"
@@ -1684,10 +1684,10 @@ function Admin() {
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label>{language === "he" ? "סטטוס" : "Status"}</label>
               <select
-                name="status"
+                "name"="status"
                 value={formData.status}
                 onChange={handleFormChange}
               >
@@ -1700,8 +1700,8 @@ function Admin() {
               </select>
             </div>
 
-            <div className="form-actions">
-              <button type="submit" className="btn">
+            <div class"name"="form-actions">
+              <button type="submit" class"name"="btn">
                 {editingProduct
                   ? language === "he"
                     ? "שמור שינויים"
@@ -1712,7 +1712,7 @@ function Admin() {
               </button>
               <button
                 type="button"
-                className="btn btn-secondary"
+                class"name"="btn btn-secondary"
                 onClick={handleFormCancel}
               >
                 {language === "he" ? "ביטול" : "Cancel"}
@@ -1725,15 +1725,15 @@ function Admin() {
       {/* ProductForm Component Modal - For Image Upload */}
       {showProductForm && (
         <div
-          className="product-form-modal"
+          class"name"="product-form-modal"
           onClick={() => setShowProductForm(false)}
         >
           <div
-            className="product-form-container"
+            class"name"="product-form-container"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="close-btn"
+              class"name"="close-btn"
               onClick={() => setShowProductForm(false)}
               style={{
                 position: "absolute",

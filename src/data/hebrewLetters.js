@@ -2,8 +2,8 @@
 export const hebrewLettersData = [
   {
     id: "aleph",
-    name: "אלף",
-    nameEn: "Aleph",
+    "name": "אלף",
+    "nameEn": "Aleph",
     letter: "א",
     category: "אותיות עבריות",
     price: 890,
@@ -36,8 +36,8 @@ export const hebrewLettersData = [
   },
   {
     id: "bet",
-    name: "בית",
-    nameEn: "Bet",
+    "name": "בית",
+    "nameEn": "Bet",
     letter: "ב",
     category: "אותיות עבריות",
     price: 850,
@@ -70,8 +70,8 @@ export const hebrewLettersData = [
   },
   {
     id: "gimel",
-    name: "גימל",
-    nameEn: "Gimel",
+    "name": "גימל",
+    "nameEn": "Gimel",
     letter: "ג",
     category: "אותיות עבריות",
     price: 870,
@@ -104,8 +104,8 @@ export const hebrewLettersData = [
   },
   {
     id: "dalet",
-    name: "דלת",
-    nameEn: "Dalet",
+    "name": "דלת",
+    "nameEn": "Dalet",
     letter: "ד",
     category: "אותיות עבריות",
     price: 860,
@@ -138,8 +138,8 @@ export const hebrewLettersData = [
   },
   {
     id: "hey",
-    name: "הא",
-    nameEn: "Hey",
+    "name": "הא",
+    "nameEn": "Hey",
     letter: "ה",
     category: "אותיות עבריות",
     price: 880,
@@ -164,7 +164,7 @@ export const hebrewLettersData = [
     description:
       "אות הא - אחת משתי אותיות השם הקדוש. מסמלת הנשמה, הנשימה והתגלות האלוהית. ההא מייצגת את החיים, הרוח והתקשרות עם הבורא.",
     descriptionEn:
-      "Hey - One of the two letters in God's holy name. Symbolizes the soul, breath and divine revelation. Hey represents life, spirit and connection with the Creator.",
+      "Hey - One of the two letters in God's holy "name". Symbolizes the soul, breath and divine revelation. Hey represents life, spirit and connection with the Creator.",
     meaningHe: "נשמה, נשימה, התגלות",
     meaningEn: "Soul, Breath, Revelation",
     gematria: 5,
@@ -172,8 +172,8 @@ export const hebrewLettersData = [
   },
   {
     id: "vav",
-    name: "וו",
-    nameEn: "Vav",
+    "name": "וו",
+    "nameEn": "Vav",
     letter: "ו",
     category: "אותיות עבריות",
     price: 840,
@@ -206,8 +206,8 @@ export const hebrewLettersData = [
   },
   {
     id: "zayin",
-    name: "זין",
-    nameEn: "Zayin",
+    "name": "זין",
+    "nameEn": "Zayin",
     letter: "ז",
     category: "אותיות עבריות",
     price: 865,
@@ -240,8 +240,8 @@ export const hebrewLettersData = [
   },
   {
     id: "chet",
-    name: "חית",
-    nameEn: "Chet",
+    "name": "חית",
+    "nameEn": "Chet",
     letter: "ח",
     category: "אותיות עבריות",
     price: 895,
@@ -274,8 +274,8 @@ export const hebrewLettersData = [
   },
   {
     id: "tet",
-    name: "טית",
-    nameEn: "Tet",
+    "name": "טית",
+    "nameEn": "Tet",
     letter: "ט",
     category: "אותיות עבריות",
     price: 855,
@@ -308,8 +308,8 @@ export const hebrewLettersData = [
   },
   {
     id: "yud",
-    name: "יוד",
-    nameEn: "Yud",
+    "name": "יוד",
+    "nameEn": "Yud",
     letter: "י",
     category: "אותיות עבריות",
     price: 820,
@@ -334,7 +334,7 @@ export const hebrewLettersData = [
     description:
       "אות יוד - האות הקטנה ביותר, פותחת את שם ה'. מסמלת נקודה, זרע ותחילת הכל. היוד מייצגת את הצניעות, הפוטנציאל האינסופי והקדושה.",
     descriptionEn:
-      "Yud - The smallest letter, opens God's name. Symbolizes a point, seed and the beginning of everything. Yud represents humility, infinite potential and holiness.",
+      "Yud - The smallest letter, opens God's "name". Symbolizes a point, seed and the beginning of everything. Yud represents humility, infinite potential and holiness.",
     meaningHe: "נקודה, זרע, קדושה",
     meaningEn: "Point, Seed, Holiness",
     gematria: 10,
@@ -342,8 +342,8 @@ export const hebrewLettersData = [
   },
   {
     id: "kaf",
-    name: "כף",
-    nameEn: "Kaf",
+    "name": "כף",
+    "nameEn": "Kaf",
     letter: "כ",
     category: "אותיות עבריות",
     price: 875,
@@ -376,8 +376,8 @@ export const hebrewLettersData = [
   },
   {
     id: "lamed",
-    name: "למד",
-    nameEn: "Lamed",
+    "name": "למד",
+    "nameEn": "Lamed",
     letter: "ל",
     category: "אותיות עבריות",
     price: 885,
@@ -410,8 +410,8 @@ export const hebrewLettersData = [
   },
   {
     id: "mem",
-    name: "מם",
-    nameEn: "Mem",
+    "name": "מם",
+    "nameEn": "Mem",
     letter: "מ",
     category: "אותיות עבריות",
     price: 890,
@@ -444,8 +444,8 @@ export const hebrewLettersData = [
   },
   {
     id: "nun",
-    name: "נון",
-    nameEn: "Nun",
+    "name": "נון",
+    "nameEn": "Nun",
     letter: "נ",
     category: "אותיות עבריות",
     price: 870,
@@ -478,8 +478,8 @@ export const hebrewLettersData = [
   },
   {
     id: "samech",
-    name: "סמך",
-    nameEn: "Samech",
+    "name": "סמך",
+    "nameEn": "Samech",
     letter: "ס",
     category: "אותיות עבריות",
     price: 900,
@@ -512,8 +512,8 @@ export const hebrewLettersData = [
   },
   {
     id: "ayin",
-    name: "עין",
-    nameEn: "Ayin",
+    "name": "עין",
+    "nameEn": "Ayin",
     letter: "ע",
     category: "אותיות עבריות",
     price: 895,
@@ -546,8 +546,8 @@ export const hebrewLettersData = [
   },
   {
     id: "pey",
-    name: "פא",
-    nameEn: "Pey",
+    "name": "פא",
+    "nameEn": "Pey",
     letter: "פ",
     category: "אותיות עבריות",
     price: 865,
@@ -580,8 +580,8 @@ export const hebrewLettersData = [
   },
   {
     id: "tzadi",
-    name: "צדי",
-    nameEn: "Tzadi",
+    "name": "צדי",
+    "nameEn": "Tzadi",
     letter: "צ",
     category: "אותיות עבריות",
     price: 910,
@@ -614,8 +614,8 @@ export const hebrewLettersData = [
   },
   {
     id: "kuf",
-    name: "קוף",
-    nameEn: "Kuf",
+    "name": "קוף",
+    "nameEn": "Kuf",
     letter: "ק",
     category: "אותיות עבריות",
     price: 880,
@@ -648,8 +648,8 @@ export const hebrewLettersData = [
   },
   {
     id: "resh",
-    name: "ריש",
-    nameEn: "Resh",
+    "name": "ריש",
+    "nameEn": "Resh",
     letter: "ר",
     category: "אותיות עבריות",
     price: 875,
@@ -682,8 +682,8 @@ export const hebrewLettersData = [
   },
   {
     id: "shin",
-    name: "שין",
-    nameEn: "Shin",
+    "name": "שין",
+    "nameEn": "Shin",
     letter: "ש",
     category: "אותיות עבריות",
     price: 920,
@@ -708,7 +708,7 @@ export const hebrewLettersData = [
     description:
       "אות שין - מסמלת אש אלוהית, שלום ושלמות. השין מופיעה על התפילין ומייצגת את שמו של ה'. מלמדת על האש הפנימית והשלמות הרוחנית.",
     descriptionEn:
-      "Shin - Symbolizes divine fire, peace and completeness. Shin appears on tefillin and represents God's name. Teaches about the inner fire and spiritual completeness.",
+      "Shin - Symbolizes divine fire, peace and completeness. Shin appears on tefillin and represents God's "name". Teaches about the inner fire and spiritual completeness.",
     meaningHe: "אש, שלום, שלמות",
     meaningEn: "Fire, Peace, Completeness",
     gematria: 300,
@@ -716,8 +716,8 @@ export const hebrewLettersData = [
   },
   {
     id: "tav",
-    name: "תו",
-    nameEn: "Tav",
+    "name": "תו",
+    "nameEn": "Tav",
     letter: "ת",
     category: "אותיות עבריות",
     price: 900,

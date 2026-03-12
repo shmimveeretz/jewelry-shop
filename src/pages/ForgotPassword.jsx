@@ -58,9 +58,9 @@ function ForgotPassword() {
 
   if (emailSent) {
     return (
-      <div className="auth-page">
-        <div className="auth-container">
-          <div className="auth-header">
+      <div class"name"="auth-page">
+        <div class"name"="auth-container">
+          <div class"name"="auth-header">
             <h1>
               ✅{" "}
               {language === "he"
@@ -80,7 +80,7 @@ function ForgotPassword() {
             </p>
           </div>
 
-          <div className="email-sent-message">
+          <div class"name"="email-sent-message">
             <p>
               <strong>{language === "he" ? "כתובת:" : "Email:"}</strong>
               <br />
@@ -120,9 +120,9 @@ function ForgotPassword() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-header">
+    <div class"name"="auth-page">
+      <div class"name"="auth-container">
+        <div class"name"="auth-header">
           <h1>{language === "he" ? "שכחת סיסמה?" : "Forgot Password?"}</h1>
           <p>
             {language === "he"
@@ -131,15 +131,15 @@ function ForgotPassword() {
           </p>
         </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+        <form class"name"="auth-form" onSubmit={handleSubmit}>
+          <div class"name"="form-group">
             <label htmlFor="email">
               {language === "he" ? "אימייל" : "Email"}
             </label>
             <input
               type="email"
               id="email"
-              name="email"
+              "name"="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -149,7 +149,7 @@ function ForgotPassword() {
             />
           </div>
 
-          <button type="submit" className="btn auth-btn" disabled={loading}>
+          <button type="submit" class"name"="btn auth-btn" disabled={loading}>
             {loading
               ? language === "he"
                 ? "שולח..."
@@ -160,9 +160,9 @@ function ForgotPassword() {
           </button>
         </form>
 
-        <div className="auth-toggle">
+        <div class"name"="auth-toggle">
           <p>
-            <button onClick={() => navigate("/login")} className="link-btn">
+            <button onClick={() => navigate("/login")} class"name"="link-btn">
               {language === "he" ? "חזרה להתחברות" : "Back to Login"}
             </button>
           </p>

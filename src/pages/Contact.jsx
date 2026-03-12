@@ -14,7 +14,7 @@ function Contact() {
   const { t, language } = useLanguage();
 
   const [formData, setFormData] = useState({
-    name: "",
+    "name": "",
     email: "",
     phone: "",
     subject: "",
@@ -24,10 +24,10 @@ function Contact() {
   const [status, setStatus] = useState({ type: "", message: "" });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { "name", value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      ["name"]: value,
     }));
   };
 
@@ -53,7 +53,7 @@ function Contact() {
           message: data.message,
         });
         setFormData({
-          name: "",
+          "name": "",
           email: "",
           phone: "",
           subject: "",
@@ -79,9 +79,9 @@ function Contact() {
   };
 
   return (
-    <div className="contact-page">
-      <div className="container">
-        <div className="contact-header">
+    <div class"name"="contact-page">
+      <div class"name"="container">
+        <div class"name"="contact-header">
           <h1>{t("contactUs")}</h1>
           <p>
             {language === "he"
@@ -91,43 +91,43 @@ function Contact() {
         </div>
 
         {/* Contact Form Section - NOW FIRST */}
-        <section className="contact-form-section">
-          <form onSubmit={handleSubmit} className="contact-form">
+        <section class"name"="contact-form-section">
+          <form onSubmit={handleSubmit} class"name"="contact-form">
             <h2>{t("sendMessage")}</h2>
 
             {status.message && (
-              <div className={`status-message ${status.type}`}>
+              <div class"name"={`status-message ${status.type}`}>
                 {status.message}
               </div>
             )}
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label htmlFor="name">
-                {t("fullName")} <span className="required">*</span>
+                {t("full"name"")} <span class"name"="required">*</span>
               </label>
               <input
                 type="text"
                 id="name"
-                name="name"
-                value={formData.name}
+                "name"="name"
+                value={formData."name"}
                 onChange={handleChange}
                 required
                 placeholder={
                   language === "he"
                     ? "הכנס את שמך המלא"
-                    : "Enter your full name"
+                    : "Enter your full "name""
                 }
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label htmlFor="email">
-                {t("email")} <span className="required">*</span>
+                {t("email")} <span class"name"="required">*</span>
               </label>
               <input
                 type="email"
                 id="email"
-                name="email"
+                "name"="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -135,24 +135,24 @@ function Contact() {
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label htmlFor="phone">{t("phoneNumber")}</label>
               <input
                 type="tel"
                 id="phone"
-                name="phone"
+                "name"="phone"
                 value={formData.phone}
                 onChange={handleChange}
                 placeholder="050-1234567"
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label htmlFor="subject">{t("subject")}</label>
               <input
                 type="text"
                 id="subject"
-                name="subject"
+                "name"="subject"
                 value={formData.subject}
                 onChange={handleChange}
                 placeholder={
@@ -161,13 +161,13 @@ function Contact() {
               />
             </div>
 
-            <div className="form-group">
+            <div class"name"="form-group">
               <label htmlFor="message">
-                {t("message")} <span className="required">*</span>
+                {t("message")} <span class"name"="required">*</span>
               </label>
               <textarea
                 id="message"
-                name="message"
+                "name"="message"
                 value={formData.message}
                 onChange={handleChange}
                 required
@@ -180,7 +180,7 @@ function Contact() {
               ></textarea>
             </div>
 
-            <button type="submit" className="submit-btn" disabled={loading}>
+            <button type="submit" class"name"="submit-btn" disabled={loading}>
               {loading ? (
                 <span>{language === "he" ? "שולח..." : "Sending..."}</span>
               ) : (

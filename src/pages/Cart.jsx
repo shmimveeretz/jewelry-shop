@@ -38,13 +38,13 @@ function Cart() {
   };
   if (cartItems.length === 0) {
     return (
-      <div className="cart-page">
-        <div className="cart-container">
-          <div className="empty-cart">
-            <div className="empty-cart-icon">🛒</div>
+      <div class"name"="cart-page">
+        <div class"name"="cart-container">
+          <div class"name"="empty-cart">
+            <div class"name"="empty-cart-icon">🛒</div>
             <h2>{t("emptyCart")}</h2>
             <p>{t("startShopping")}</p>
-            <Link to="/shop" className="btn">
+            <Link to="/shop" class"name"="btn">
               {t("shopNow")}
             </Link>
           </div>
@@ -54,16 +54,16 @@ function Cart() {
   }
 
   return (
-    <div className="cart-page">
-      <div className="cart-container">
-        <div className="cart-header">
+    <div class"name"="cart-page">
+      <div class"name"="cart-container">
+        <div class"name"="cart-header">
           <h1>{t("shoppingCart")}</h1>
         </div>
 
-        <div className="cart-content">
-          <div className="cart-items">
+        <div class"name"="cart-content">
+          <div class"name"="cart-items">
             {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
+              <div key={item.id} class"name"="cart-item">
                 <img
                   src={
                     Array.isArray(item.images)
@@ -71,74 +71,74 @@ function Cart() {
                       : item.image ||
                         "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
                   }
-                  alt={item.name}
-                  className="cart-item-image"
+                  alt={item."name"}
+                  class"name"="cart-item-image"
                   onError={(e) => {
                     e.target.src =
                       "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
                   }}
                 />
 
-                <div className="cart-item-details">
-                  <h3>{item.name}</h3>
-                  <p className="cart-item-description">{item.description}</p>
+                <div class"name"="cart-item-details">
+                  <h3>{item."name"}</h3>
+                  <p class"name"="cart-item-description">{item.description}</p>
 
                   {/* Display selected options */}
                   {item.selectedOptions && (
-                    <div className="selected-options">
+                    <div class"name"="selected-options">
                       {item.selectedOptions.length && (
-                        <span className="option-tag">
+                        <span class"name"="option-tag">
                           <FaRuler /> אורך: {item.selectedOptions.length} מ״מ
                         </span>
                       )}
                       {item.selectedOptions.metalType && (
-                        <span className="option-tag">
+                        <span class"name"="option-tag">
                           <FaGem /> {item.selectedOptions.metalType}
                         </span>
                       )}
                       {item.selectedOptions.chainType && (
-                        <span className="option-tag">
+                        <span class"name"="option-tag">
                           <FaLink /> {item.selectedOptions.chainType}
                         </span>
                       )}
                       {item.selectedOptions.waxColor && (
-                        <span className="option-tag">
+                        <span class"name"="option-tag">
                           <FaPalette /> {item.selectedOptions.waxColor}
                         </span>
                       )}
                     </div>
                   )}
 
-                  <div className="cart-item-meta">
-                    <span className="cart-item-category">{item.category}</span>
-                    <span className="cart-item-price-single">
+                  <div class"name"="cart-item-meta">
+                    <span class"name"="cart-item-category">{item.category}</span>
+                    <span class"name"="cart-item-price-single">
                       {item.price} ₪ ליחידה
                     </span>
                   </div>
                 </div>
 
-                <div className="cart-item-actions">
-                  <div className="quantity-controls">
+                <div class"name"="cart-item-actions">
+                  <div class"name"="quantity-controls">
                     <button
-                      className="quantity-btn"
+                      class"name"="quantity-btn"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       disabled={item.quantity <= 1}
                     >
                       <FaMinus />
                     </button>
-                    <span className="quantity-display">{item.quantity}</span>
+                    <span class"name"="quantity-display">{item.quantity}</span>
                     <button
-                      className="quantity-btn"
+                      class"name"="quantity-btn"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
                       <FaPlus />
                     </button>
                   </div>
-                  <div className="cart-item-price">
+                  <div class"name"="cart-item-price">
                     {item.price * item.quantity} ₪
                   </div>
                   <button
-                    className="remove-item"
+                    class"name"="remove-item"
                     onClick={() => removeFromCart(item.id)}
                     title="הסר מהעגלה"
                   >
@@ -149,30 +149,30 @@ function Cart() {
             ))}
           </div>
 
-          <div className="cart-summary">
+          <div class"name"="cart-summary">
             <h2>{t("orderSummary")}</h2>
 
-            <div className="summary-row">
+            <div class"name"="summary-row">
               <span>{t("subtotal")}:</span>
               <span>{getCartTotal()} ₪</span>
             </div>
 
-            <div className="summary-row">
+            <div class"name"="summary-row">
               <span>{t("shipping")}:</span>
               <span>{calculateShipping()} ₪</span>
             </div>
 
-            <div className="summary-row total">
+            <div class"name"="summary-row total">
               <span>{t("total")}:</span>
               <span>{calculateTotal()} ₪</span>
             </div>
 
-            <button className="btn checkout-btn" onClick={handleCheckout}>
+            <button class"name"="btn checkout-btn" onClick={handleCheckout}>
               {t("proceedToCheckout")}
             </button>
 
             {!localStorage.getItem("token") && (
-              <p className="guest-checkout-info">
+              <p class"name"="guest-checkout-info">
                 <FaInfoCircle />{" "}
                 {language === "he"
                   ? "אין צורך בהרשמה - ניתן להזמין כאורח"
@@ -182,7 +182,7 @@ function Cart() {
 
             <Link
               to="/shop"
-              className="btn btn-secondary"
+              class"name"="btn btn-secondary"
               style={{
                 marginTop: "1rem",
                 display: "block",
