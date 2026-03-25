@@ -168,7 +168,7 @@ export const translations = {
     highPrice: "מעל 1000 ₪",
 
     // Contact Form
-    full"name": "שם מלא",
+    fullName: "שם מלא",
     phoneNumber: "טלפון",
     subject: "נושא",
     yourMessage: "ההודעה שלך",
