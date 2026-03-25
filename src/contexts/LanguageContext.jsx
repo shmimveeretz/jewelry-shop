@@ -355,7 +355,7 @@ export const translations = {
     loginToContinue: "Login to continue",
     createAccount: "Create Account",
     joinUs: "Join us today",
-    "name": "Full "name"",
+    fullName: "Full Name",
     email: "Email",
     password: "Password",
     confirmPassword: "Confirm Password",
