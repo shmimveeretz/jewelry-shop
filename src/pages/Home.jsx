@@ -110,6 +110,7 @@ function Home() {
                     }
                     alt={product.name}
                     className="collection-image"
+                    loading="lazy"
                     onError={(e) => {
                       e.target.src =
                         "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
@@ -166,6 +167,7 @@ function Home() {
                     }
                     alt={product.name}
                     className="collection-image"
+                    loading="lazy"
                     onError={(e) => {
                       e.target.src =
                         "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";

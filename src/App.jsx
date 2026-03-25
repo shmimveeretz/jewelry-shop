@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./styles/App.css";
 
@@ -6,33 +7,33 @@ import { CartProvider } from "./context/CartContext";
 import { ToastProvider } from "./context/ToastContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 
-// Components
+// Components (always loaded - part of every page)
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ShabbatMode from "./components/ShabbatMode";
 import ScrollToTop from "./components/ScrollToTop";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 
-// Pages
-import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import Zodiac from "./pages/Zodiac";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import Auth from "./pages/Auth";
-import ForgotPassword from "./pages/ForgotPassword";
-import VerifyCode from "./pages/VerifyCode";
-import ChangePassword from "./pages/ChangePassword";
-import Admin from "./pages/Admin";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import PaymentFailure from "./pages/PaymentFailure";
-import ShippingPolicy from "./pages/ShippingPolicy";
-import ReturnPolicy from "./pages/ReturnPolicy";
-import TermsOfService from "./pages/TermsOfService";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Accessibility from "./pages/Accessibility";
+// Pages (lazy loaded - only when route is visited)
+const Home = lazy(() => import("./pages/Home"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Zodiac = lazy(() => import("./pages/Zodiac"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const Auth = lazy(() => import("./pages/Auth"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const VerifyCode = lazy(() => import("./pages/VerifyCode"));
+const ChangePassword = lazy(() => import("./pages/ChangePassword"));
+const Admin = lazy(() => import("./pages/Admin"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const PaymentFailure = lazy(() => import("./pages/PaymentFailure"));
+const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
+const ReturnPolicy = lazy(() => import("./pages/ReturnPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const Accessibility = lazy(() => import("./pages/Accessibility"));
 
 function App() {
   return (
@@ -42,10 +43,11 @@ function App() {
           <Router>
             <ScrollToTop />
             <AccessibilityWidget />
-            <div class"name"="App">
+            <div className="App">
               {/* <ShabbatMode /> */}
               <Navbar />
-              <main class"name"="main-content">
+              <main className="main-content">
+                <Suspense fallback={<div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", color: "#888" }}>טוען...</div>}>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/shop" element={<Shop />} />
@@ -71,6 +73,7 @@ function App() {
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/accessibility" element={<Accessibility />} />
                 </Routes>
+                </Suspense>
               </main>
               <Footer />
             </div>
