@@ -88,7 +88,7 @@ function Auth() {
         localStorage.setItem("user", JSON.stringify(data.data));
 
         const user"name" =
-          data.data.full"name" ||
+          data.data.fullname ||
           `${data.data.first"name"} ${data.data.last"name"}` ||
           data.data."name" ||
           (language === "he" ? "משתמש" : "User");

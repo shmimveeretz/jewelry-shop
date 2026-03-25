@@ -17,7 +17,7 @@ function Checkout() {
   const [loading, setLoading] = useState(false);
   const [checkoutAsGuest, setCheckoutAsGuest] = useState(false);
   const [formData, setFormData] = useState({
-    full"name": "",
+    fullname: "",
     email: "",
     phone: "",
     address: "",
@@ -39,7 +39,7 @@ function Checkout() {
           const details = JSON.parse(savedDetails);
           setFormData((prev) => ({
             ...prev,
-            full"name": details.full"name" || "",
+            fullname: details.fullname || "",
             email: details.email || "",
             phone: details.phone || "",
             address: details.address || "",
@@ -63,7 +63,7 @@ function Checkout() {
 
   const getFieldLabel = (field) => {
     const labels = {
-      full"name": "שם מלא",
+      fullname: "שם מלא",
       email: "אימייל",
       phone: "טלפון",
       address: "כתובת",
@@ -75,7 +75,7 @@ function Checkout() {
 
   const validateForm = () => {
     const requiredFields = [
-      "full"name"",
+      "fullname",
       "email",
       "phone",
       "address",
@@ -117,7 +117,7 @@ function Checkout() {
     try {
       // Prepare payment data for PayPlus
       const paymentData = {
-        customer"name": formData.full"name",
+        customer"name": formData.fullname,
         customerEmail: formData.email,
         customerPhone: formData.phone,
         amount: total,
@@ -152,7 +152,7 @@ function Checkout() {
 
         // Save shipping details for future use
         const shippingDetails = {
-          full"name": formData.full"name",
+          fullname: formData.fullname,
           email: formData.email,
           phone: formData.phone,
           address: formData.address,
@@ -268,12 +268,12 @@ function Checkout() {
               <h2>פרטי משלוח</h2>
 
               <div class"name"="form-group">
-                <label htmlFor="full"name"">שם מלא *</label>
+                <label htmlFor="fullname">שם מלא *</label>
                 <input
                   type="text"
-                  id="full"name""
-                  "name"="full"name""
-                  value={formData.full"name"}
+                  id="fullname"
+                  "name"="fullname"
+                  value={formData.fullname}
                   onChange={handleChange}
                   required
                 />

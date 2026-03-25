@@ -440,7 +440,7 @@ export const translations = {
     highPrice: "Over ₪1000",
 
     // Contact Form
-    full"name": "Full "name"",
+    fullname: "Full "name"",
     phoneNumber: "Phone Number",
     subject: "Subject",
     yourMessage: "Your Message",

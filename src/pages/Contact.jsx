@@ -103,7 +103,7 @@ function Contact() {
 
             <div class"name"="form-group">
               <label htmlFor="name">
-                {t("full"name"")} <span class"name"="required">*</span>
+                {t("fullname")} <span class"name"="required">*</span>
               </label>
               <input
                 type="text"
