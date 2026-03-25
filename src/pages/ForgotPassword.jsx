@@ -139,7 +139,7 @@ function ForgotPassword() {
             <input
               type="email"
               id="email"
-              "name"="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

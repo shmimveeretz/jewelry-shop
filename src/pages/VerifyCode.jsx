@@ -101,7 +101,7 @@ function VerifyCode() {
             <input
               type="text"
               id="code"
-              "name"="code"
+              name="code"
               value={code}
               onChange={(e) =>
                 setCode(e.target.value.replace(/\D/g, "").slice(0, 6))
