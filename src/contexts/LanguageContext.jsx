@@ -83,7 +83,7 @@ export const translations = {
     loginToContinue: "התחבר כדי להמשיך",
     createAccount: "צור חשבון",
     joinUs: "הצטרף אלינו היום",
-    "name": "שם מלא",
+    name: "שם מלא",
     email: "אימייל",
     password: "סיסמה",
     confirmPassword: "אימות סיסמה",
@@ -440,7 +440,7 @@ export const translations = {
     highPrice: "Over ₪1000",
 
     // Contact Form
-    fullname: "Full "name"",
+    fullname: "Full name",
     phoneNumber: "Phone Number",
     subject: "Subject",
     yourMessage: "Your Message",

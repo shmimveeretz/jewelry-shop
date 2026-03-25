@@ -415,8 +415,8 @@ function PrivacyPolicy() {
                 <h3>Personal information you provide:</h3>
                 <ul>
                   <li>
-                    <strong>Contact details:</strong> Full "name", email
-                    address, phone number
+                    <strong>Contact details:</strong> Full name, email address,
+                    phone number
                   </li>
                   <li>
                     <strong>Shipping address:</strong> Street, city, postal

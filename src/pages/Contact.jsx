@@ -115,7 +115,7 @@ function Contact() {
                 placeholder={
                   language === "he"
                     ? "הכנס את שמך המלא"
-                    : "Enter your full "name""
+                    : "Enter your Full name"
                 }
               />
             </div>
