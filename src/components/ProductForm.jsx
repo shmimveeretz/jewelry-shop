@@ -118,12 +118,12 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} class"name"="product-form">
+    <form onSubmit={handleSubmit} classname="product-form">
       <h2>{initialProduct ? "עדכן מוצר" : "צור מוצר חדש"}</h2>
 
-      {error && <div class"name"="error-message">{error}</div>}
+      {error && <div classname="error-message">{error}</div>}
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>שם המוצר (עברית) *</label>
         <input
           type="text"
@@ -134,7 +134,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>שם המוצר (אנגלית)</label>
         <input
           type="text"
@@ -144,7 +144,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>תיאור (עברית) *</label>
         <textarea
           "name"="description"
@@ -154,7 +154,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>תיאור (אנגלית)</label>
         <textarea
           "name"="descriptionEn"
@@ -163,7 +163,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>מחיר *</label>
         <input
           type="number"
@@ -174,7 +174,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>קטגוריה *</label>
         <select
           "name"="category"
@@ -191,7 +191,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         </select>
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>אות (למוצרי אותיות עברית)</label>
         <input
           type="text"
@@ -202,7 +202,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>משמעות (עברית)</label>
         <input
           type="text"
@@ -213,7 +213,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>משמעות (אנגלית)</label>
         <input
           type="text"
@@ -224,7 +224,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>גימטריה (מספר)</label>
         <input
           type="number"
@@ -234,7 +234,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>סוגים (מופרדים בפסיקים)</label>
         <input
           type="text"
@@ -245,15 +245,15 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>תמונה</label>
         <input type="file" accept="image/*" onChange={handleImageChange} />
         {preview && (
-          <img src={preview} alt="preview" class"name"="image-preview" />
+          <img src={preview} alt="preview" classname="image-preview" />
         )}
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>מתכות (כנויות בפסיקים)</label>
         <input
           type="text"
@@ -264,7 +264,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>מלאי</label>
         <input
           type="number"
@@ -274,7 +274,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         />
       </div>
 
-      <div class"name"="form-group">
+      <div classname="form-group">
         <label>מחיר מוזל</label>
         <input
           type="number"

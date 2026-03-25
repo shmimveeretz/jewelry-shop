@@ -38,13 +38,13 @@ function Cart() {
   };
   if (cartItems.length === 0) {
     return (
-      <div class"name"="cart-page">
-        <div class"name"="cart-container">
-          <div class"name"="empty-cart">
-            <div class"name"="empty-cart-icon">🛒</div>
+      <div classname="cart-page">
+        <div classname="cart-container">
+          <div classname="empty-cart">
+            <div classname="empty-cart-icon">🛒</div>
             <h2>{t("emptyCart")}</h2>
             <p>{t("startShopping")}</p>
-            <Link to="/shop" class"name"="btn">
+            <Link to="/shop" classname="btn">
               {t("shopNow")}
             </Link>
           </div>
@@ -54,16 +54,16 @@ function Cart() {
   }
 
   return (
-    <div class"name"="cart-page">
-      <div class"name"="cart-container">
-        <div class"name"="cart-header">
+    <div classname="cart-page">
+      <div classname="cart-container">
+        <div classname="cart-header">
           <h1>{t("shoppingCart")}</h1>
         </div>
 
-        <div class"name"="cart-content">
-          <div class"name"="cart-items">
+        <div classname="cart-content">
+          <div classname="cart-items">
             {cartItems.map((item) => (
-              <div key={item.id} class"name"="cart-item">
+              <div key={item.id} classname="cart-item">
                 <img
                   src={
                     Array.isArray(item.images)
@@ -72,73 +72,73 @@ function Cart() {
                         "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
                   }
                   alt={item."name"}
-                  class"name"="cart-item-image"
+                  classname="cart-item-image"
                   onError={(e) => {
                     e.target.src =
                       "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
                   }}
                 />
 
-                <div class"name"="cart-item-details">
+                <div classname="cart-item-details">
                   <h3>{item."name"}</h3>
-                  <p class"name"="cart-item-description">{item.description}</p>
+                  <p classname="cart-item-description">{item.description}</p>
 
                   {/* Display selected options */}
                   {item.selectedOptions && (
-                    <div class"name"="selected-options">
+                    <div classname="selected-options">
                       {item.selectedOptions.length && (
-                        <span class"name"="option-tag">
+                        <span classname="option-tag">
                           <FaRuler /> אורך: {item.selectedOptions.length} מ״מ
                         </span>
                       )}
                       {item.selectedOptions.metalType && (
-                        <span class"name"="option-tag">
+                        <span classname="option-tag">
                           <FaGem /> {item.selectedOptions.metalType}
                         </span>
                       )}
                       {item.selectedOptions.chainType && (
-                        <span class"name"="option-tag">
+                        <span classname="option-tag">
                           <FaLink /> {item.selectedOptions.chainType}
                         </span>
                       )}
                       {item.selectedOptions.waxColor && (
-                        <span class"name"="option-tag">
+                        <span classname="option-tag">
                           <FaPalette /> {item.selectedOptions.waxColor}
                         </span>
                       )}
                     </div>
                   )}
 
-                  <div class"name"="cart-item-meta">
-                    <span class"name"="cart-item-category">{item.category}</span>
-                    <span class"name"="cart-item-price-single">
+                  <div classname="cart-item-meta">
+                    <span classname="cart-item-category">{item.category}</span>
+                    <span classname="cart-item-price-single">
                       {item.price} ₪ ליחידה
                     </span>
                   </div>
                 </div>
 
-                <div class"name"="cart-item-actions">
-                  <div class"name"="quantity-controls">
+                <div classname="cart-item-actions">
+                  <div classname="quantity-controls">
                     <button
-                      class"name"="quantity-btn"
+                      classname="quantity-btn"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       disabled={item.quantity <= 1}
                     >
                       <FaMinus />
                     </button>
-                    <span class"name"="quantity-display">{item.quantity}</span>
+                    <span classname="quantity-display">{item.quantity}</span>
                     <button
-                      class"name"="quantity-btn"
+                      classname="quantity-btn"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     >
                       <FaPlus />
                     </button>
                   </div>
-                  <div class"name"="cart-item-price">
+                  <div classname="cart-item-price">
                     {item.price * item.quantity} ₪
                   </div>
                   <button
-                    class"name"="remove-item"
+                    classname="remove-item"
                     onClick={() => removeFromCart(item.id)}
                     title="הסר מהעגלה"
                   >
@@ -149,30 +149,30 @@ function Cart() {
             ))}
           </div>
 
-          <div class"name"="cart-summary">
+          <div classname="cart-summary">
             <h2>{t("orderSummary")}</h2>
 
-            <div class"name"="summary-row">
+            <div classname="summary-row">
               <span>{t("subtotal")}:</span>
               <span>{getCartTotal()} ₪</span>
             </div>
 
-            <div class"name"="summary-row">
+            <div classname="summary-row">
               <span>{t("shipping")}:</span>
               <span>{calculateShipping()} ₪</span>
             </div>
 
-            <div class"name"="summary-row total">
+            <div classname="summary-row total">
               <span>{t("total")}:</span>
               <span>{calculateTotal()} ₪</span>
             </div>
 
-            <button class"name"="btn checkout-btn" onClick={handleCheckout}>
+            <button classname="btn checkout-btn" onClick={handleCheckout}>
               {t("proceedToCheckout")}
             </button>
 
             {!localStorage.getItem("token") && (
-              <p class"name"="guest-checkout-info">
+              <p classname="guest-checkout-info">
                 <FaInfoCircle />{" "}
                 {language === "he"
                   ? "אין צורך בהרשמה - ניתן להזמין כאורח"
@@ -182,7 +182,7 @@ function Cart() {
 
             <Link
               to="/shop"
-              class"name"="btn btn-secondary"
+              classname="btn btn-secondary"
               style={{
                 marginTop: "1rem",
                 display: "block",

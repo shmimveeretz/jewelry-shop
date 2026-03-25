@@ -58,9 +58,9 @@ function ForgotPassword() {
 
   if (emailSent) {
     return (
-      <div class"name"="auth-page">
-        <div class"name"="auth-container">
-          <div class"name"="auth-header">
+      <div classname="auth-page">
+        <div classname="auth-container">
+          <div classname="auth-header">
             <h1>
               ✅{" "}
               {language === "he"
@@ -80,7 +80,7 @@ function ForgotPassword() {
             </p>
           </div>
 
-          <div class"name"="email-sent-message">
+          <div classname="email-sent-message">
             <p>
               <strong>{language === "he" ? "כתובת:" : "Email:"}</strong>
               <br />
@@ -120,9 +120,9 @@ function ForgotPassword() {
   }
 
   return (
-    <div class"name"="auth-page">
-      <div class"name"="auth-container">
-        <div class"name"="auth-header">
+    <div classname="auth-page">
+      <div classname="auth-container">
+        <div classname="auth-header">
           <h1>{language === "he" ? "שכחת סיסמה?" : "Forgot Password?"}</h1>
           <p>
             {language === "he"
@@ -131,8 +131,8 @@ function ForgotPassword() {
           </p>
         </div>
 
-        <form class"name"="auth-form" onSubmit={handleSubmit}>
-          <div class"name"="form-group">
+        <form classname="auth-form" onSubmit={handleSubmit}>
+          <div classname="form-group">
             <label htmlFor="email">
               {language === "he" ? "אימייל" : "Email"}
             </label>
@@ -149,7 +149,7 @@ function ForgotPassword() {
             />
           </div>
 
-          <button type="submit" class"name"="btn auth-btn" disabled={loading}>
+          <button type="submit" classname="btn auth-btn" disabled={loading}>
             {loading
               ? language === "he"
                 ? "שולח..."
@@ -160,9 +160,9 @@ function ForgotPassword() {
           </button>
         </form>
 
-        <div class"name"="auth-toggle">
+        <div classname="auth-toggle">
           <p>
-            <button onClick={() => navigate("/login")} class"name"="link-btn">
+            <button onClick={() => navigate("/login")} classname="link-btn">
               {language === "he" ? "חזרה להתחברות" : "Back to Login"}
             </button>
           </p>

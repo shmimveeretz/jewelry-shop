@@ -137,17 +137,17 @@ function Auth() {
   };
 
   return (
-    <div class"name"="auth-page">
-      <div class"name"="auth-container">
-        <div class"name"="auth-header">
+    <div classname="auth-page">
+      <div classname="auth-container">
+        <div classname="auth-header">
           <h1>{isLogin ? t("signIn") : t("signUp")}</h1>
           <p>{isLogin ? t("welcomeBack") : t("joinUs")}</p>
         </div>
 
-        <form class"name"="auth-form" onSubmit={handleSubmit}>
+        <form classname="auth-form" onSubmit={handleSubmit}>
           {!isLogin && (
             <>
-              <div class"name"="form-group">
+              <div classname="form-group">
                 <label htmlFor="first"name"">
                   {language === "he" ? "שם פרטי" : "First "name""}
                 </label>
@@ -160,7 +160,7 @@ function Auth() {
                   required
                 />
               </div>
-              <div class"name"="form-group">
+              <div classname="form-group">
                 <label htmlFor="last"name"">
                   {language === "he" ? "שם משפחה" : "Last "name""}
                 </label>
@@ -173,7 +173,7 @@ function Auth() {
                   required
                 />
               </div>
-              <div class"name"="form-group">
+              <div classname="form-group">
                 <label htmlFor="phone">
                   {language === "he" ? "טלפון" : "Phone"}
                 </label>
@@ -192,7 +192,7 @@ function Auth() {
             </>
           )}
 
-          <div class"name"="form-group">
+          <div classname="form-group">
             <label htmlFor="email">{t("email")}</label>
             <input
               type="email"
@@ -204,7 +204,7 @@ function Auth() {
             />
           </div>
 
-          <div class"name"="form-group">
+          <div classname="form-group">
             <label htmlFor="password">{t("password")}</label>
             <input
               type="password"
@@ -217,7 +217,7 @@ function Auth() {
           </div>
 
           {!isLogin && (
-            <div class"name"="form-group">
+            <div classname="form-group">
               <label htmlFor="confirmPassword">{t("confirmPassword")}</label>
               <input
                 type="password"
@@ -230,7 +230,7 @@ function Auth() {
             </div>
           )}
 
-          <button type="submit" class"name"="btn auth-btn" disabled={loading}>
+          <button type="submit" classname="btn auth-btn" disabled={loading}>
             {loading
               ? language === "he"
                 ? "מעבד..."
@@ -241,11 +241,11 @@ function Auth() {
           </button>
 
           {isLogin && (
-            <div class"name"="forgot-password-link">
+            <div classname="forgot-password-link">
               <button
                 type="button"
                 onClick={() => navigate("/forgot-password")}
-                class"name"="link-btn"
+                classname="link-btn"
               >
                 {language === "he" ? "שכחת סיסמה?" : "Forgot password?"}
               </button>
@@ -253,10 +253,10 @@ function Auth() {
           )}
         </form>
 
-        <div class"name"="auth-toggle">
+        <div classname="auth-toggle">
           <p>
             {isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
-            <button onClick={toggleMode} class"name"="toggle-btn">
+            <button onClick={toggleMode} classname="toggle-btn">
               {isLogin ? t("signUp") : t("signIn")}
             </button>
           </p>

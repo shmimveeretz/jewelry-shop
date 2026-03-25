@@ -181,12 +181,12 @@ function Checkout() {
   }
 
   return (
-    <div class"name"="checkout-page">
-      <div class"name"="checkout-container">
+    <div classname="checkout-page">
+      <div classname="checkout-container">
         <h1>{language === "he" ? "השלמת הזמנה" : "Complete Order"}</h1>
 
         {!localStorage.getItem("token") && (
-          <div class"name"="guest-checkout-notice">
+          <div classname="guest-checkout-notice">
             <p>
               💡{" "}
               <strong>
@@ -196,10 +196,10 @@ function Checkout() {
                 ? "אתה יכול להשלים את ההזמנה ללא הרשמה. פרטי ההזמנה יישלחו לאימייל שתזין."
                 : "You can complete your order without registration. Order details will be sent to the email you provide."}
             </p>
-            <p class"name"="login-option">
+            <p classname="login-option">
               {language === "he" ? "יש לך חשבון?" : "Have an account?"}{" "}
               <button
-                class"name"="link-btn"
+                classname="link-btn"
                 onClick={() =>
                   navigate("/login", {
                     state: { returnTo: "/checkout", cartItems, total },
@@ -212,12 +212,12 @@ function Checkout() {
           </div>
         )}
 
-        <div class"name"="checkout-content">
-          <div class"name"="order-summary-section">
+        <div classname="checkout-content">
+          <div classname="order-summary-section">
             <h2>סיכום הזמנה</h2>
-            <div class"name"="order-items">
+            <div classname="order-items">
               {cartItems.map((item) => (
-                <div key={item.id} class"name"="order-item">
+                <div key={item.id} classname="order-item">
                   <img
                     src={
                       Array.isArray(item.images)
@@ -231,12 +231,12 @@ function Checkout() {
                         "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
                     }}
                   />
-                  <div class"name"="order-item-details">
+                  <div classname="order-item-details">
                     <h3>{item."name"}</h3>
 
                     {/* Display selected options in checkout */}
                     {item.selectedOptions && (
-                      <div class"name"="order-item-options">
+                      <div classname="order-item-options">
                         {item.selectedOptions.length && (
                           <span>📏 {item.selectedOptions.length} מ״מ</span>
                         )}
@@ -252,22 +252,22 @@ function Checkout() {
                       </div>
                     )}
 
-                    <p class"name"="order-item-price">{item.price} ₪</p>
+                    <p classname="order-item-price">{item.price} ₪</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div class"name"="order-total">
+            <div classname="order-total">
               <span>סה"כ לתשלום:</span>
-              <span class"name"="total-amount">{total} ₪</span>
+              <span classname="total-amount">{total} ₪</span>
             </div>
           </div>
 
-          <form class"name"="checkout-form" onSubmit={handleSubmit}>
-            <div class"name"="form-section">
+          <form classname="checkout-form" onSubmit={handleSubmit}>
+            <div classname="form-section">
               <h2>פרטי משלוח</h2>
 
-              <div class"name"="form-group">
+              <div classname="form-group">
                 <label htmlFor="fullname">שם מלא *</label>
                 <input
                   type="text"
@@ -279,8 +279,8 @@ function Checkout() {
                 />
               </div>
 
-              <div class"name"="form-row">
-                <div class"name"="form-group">
+              <div classname="form-row">
+                <div classname="form-group">
                   <label htmlFor="email">אימייל *</label>
                   <input
                     type="email"
@@ -292,7 +292,7 @@ function Checkout() {
                   />
                 </div>
 
-                <div class"name"="form-group">
+                <div classname="form-group">
                   <label htmlFor="phone">טלפון *</label>
                   <input
                     type="tel"
@@ -305,7 +305,7 @@ function Checkout() {
                 </div>
               </div>
 
-              <div class"name"="form-group">
+              <div classname="form-group">
                 <label htmlFor="address">כתובת *</label>
                 <input
                   type="text"
@@ -317,8 +317,8 @@ function Checkout() {
                 />
               </div>
 
-              <div class"name"="form-row">
-                <div class"name"="form-group">
+              <div classname="form-row">
+                <div classname="form-group">
                   <label htmlFor="city">עיר *</label>
                   <input
                     type="text"
@@ -330,7 +330,7 @@ function Checkout() {
                   />
                 </div>
 
-                <div class"name"="form-group">
+                <div classname="form-group">
                   <label htmlFor="zipCode">מיקוד *</label>
                   <input
                     type="text"
@@ -346,7 +346,7 @@ function Checkout() {
 
             <button
               type="submit"
-              class"name"="btn submit-order-btn"
+              classname="btn submit-order-btn"
               disabled={loading}
             >
               {loading
@@ -356,13 +356,13 @@ function Checkout() {
                   : `Proceed to Secure Payment - ${total} ₪`}
             </button>
 
-            <p class"name"="secure-payment-note">
+            <p classname="secure-payment-note">
               🔒{" "}
               {language === "he"
                 ? "התשלום מתבצע באמצעות PayPlus - מאובטח ומוצפן"
                 : "Payment processed via PayPlus - Secure and encrypted"}
             </p>
-            <p class"name"="payment-info-note">
+            <p classname="payment-info-note">
               💳{" "}
               {language === "he"
                 ? "תועבר לדף תשלום מאובטח להזנת פרטי כרטיס האשראי"

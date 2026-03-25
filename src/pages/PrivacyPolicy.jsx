@@ -26,11 +26,11 @@ function PrivacyPolicy() {
   const { language } = useLanguage();
 
   return (
-    <div class"name"="legal-page">
-      <div class"name"="legal-container">
+    <div classname="legal-page">
+      <div classname="legal-container">
         <h1>{language === "he" ? "מדיניות פרטיות" : "Privacy Policy"}</h1>
 
-        <div class"name"="legal-content">
+        <div classname="legal-content">
           {language === "he" ? (
             <>
               <section>
@@ -43,7 +43,7 @@ function PrivacyPolicy() {
                   כיצד אנו אוספים, משתמשים, ומגינים על המידע האישי שלך בעת שימוש
                   באתר ורכישת מוצרים.
                 </p>
-                <p class"name"="highlight">
+                <p classname="highlight">
                   <FaShieldAlt /> אנו מחויבים להגן על המידע שלך ולא נמכור אותו
                   לצדדים שלישיים.
                 </p>
@@ -144,7 +144,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p class"name"="note">
+                <p classname="note">
                   <FaExclamationTriangle /> כל ספקי השירות שלנו מחויבים לשמור על
                   סודיות המידע ולא להשתמש בו למטרות אחרות.
                 </p>
@@ -156,7 +156,7 @@ function PrivacyPolicy() {
                   <li>במקרה של מיזוג, רכישה או מכירת עסק</li>
                 </ul>
 
-                <p class"name"="highlight">
+                <p classname="highlight">
                   <FaBan /> אנו <strong>לעולם לא</strong> נמכור או נשכיר את
                   המידע האישי שלך!
                 </p>
@@ -220,7 +220,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p class"name"="note">
+                <p classname="note">
                   <FaExclamationTriangle /> למרות המאמצים שלנו, אף שיטה אינה
                   בטוחה ב-100%. אנא שמור על סיסמתך ופרטי החשבון שלך בסודיות.
                 </p>
@@ -286,7 +286,7 @@ function PrivacyPolicy() {
                   <li>פנייה אלינו בבקשה להסרה</li>
                 </ul>
 
-                <p class"name"="note">
+                <p classname="note">
                   <FaMailBulk /> שים לב: מיילים תפעוליים (אישורי הזמנה, עדכוני
                   משלוח) יישלחו גם אם ביטלת הרשמה לניוזלטר.
                 </p>
@@ -357,7 +357,7 @@ function PrivacyPolicy() {
                 <p>
                   יש לך שאלות לגבי מדיניות הפרטיות או רוצה לממש את זכויותיך?
                 </p>
-                <div class"name"="contact-box">
+                <div classname="contact-box">
                   <ul>
                     <li>
                       <FaEnvelope /> <strong>אימייל:</strong>{" "}
@@ -378,7 +378,7 @@ function PrivacyPolicy() {
                 <p>נשתדל להגיב תוך 48 שעות לכל פנייה.</p>
               </section>
 
-              <section class"name"="update-info">
+              <section classname="update-info">
                 <p>
                   <strong>תאריך עדכון אחרון:</strong> ינואר 2026
                 </p>
@@ -401,7 +401,7 @@ function PrivacyPolicy() {
                   and protect your personal information when using the site and
                   purchasing products.
                 </p>
-                <p class"name"="highlight">
+                <p classname="highlight">
                   <FaShieldAlt /> We are committed to protecting your
                   information and will not sell it to third parties.
                 </p>
@@ -415,8 +415,8 @@ function PrivacyPolicy() {
                 <h3>Personal information you provide:</h3>
                 <ul>
                   <li>
-                    <strong>Contact details:</strong> Full "name", email address,
-                    phone number
+                    <strong>Contact details:</strong> Full "name", email
+                    address, phone number
                   </li>
                   <li>
                     <strong>Shipping address:</strong> Street, city, postal
@@ -510,7 +510,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p class"name"="note">
+                <p classname="note">
                   <FaExclamationTriangle /> All our service providers are
                   required to maintain information confidentiality and not use
                   it for other purposes.
@@ -523,7 +523,7 @@ function PrivacyPolicy() {
                   <li>In case of merger, acquisition, or business sale</li>
                 </ul>
 
-                <p class"name"="highlight">
+                <p classname="highlight">
                   <FaBan /> We will <strong>never</strong> sell or rent your
                   personal information!
                 </p>
@@ -592,7 +592,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p class"name"="note">
+                <p classname="note">
                   <FaExclamationTriangle /> Despite our efforts, no method is
                   100% secure. Please keep your password and account details
                   confidential.
@@ -664,7 +664,7 @@ function PrivacyPolicy() {
                   <li>Contact us with removal request</li>
                 </ul>
 
-                <p class"name"="note">
+                <p classname="note">
                   <FaMailBulk /> Note: Operational emails (order confirmations,
                   shipping updates) will be sent even if you unsubscribe from
                   newsletter.
@@ -741,7 +741,7 @@ function PrivacyPolicy() {
                   Have questions about privacy policy or want to exercise your
                   rights?
                 </p>
-                <div class"name"="contact-box">
+                <div classname="contact-box">
                   <ul>
                     <li>
                       <FaEnvelope /> <strong>Email:</strong>{" "}
@@ -762,7 +762,7 @@ function PrivacyPolicy() {
                 <p>We'll try to respond within 48 hours to any inquiry.</p>
               </section>
 
-              <section class"name"="update-info">
+              <section classname="update-info">
                 <p>
                   <strong>Last Updated:</strong> January 2026
                 </p>

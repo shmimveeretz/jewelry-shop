@@ -79,9 +79,9 @@ function Contact() {
   };
 
   return (
-    <div class"name"="contact-page">
-      <div class"name"="container">
-        <div class"name"="contact-header">
+    <div classname="contact-page">
+      <div classname="container">
+        <div classname="contact-header">
           <h1>{t("contactUs")}</h1>
           <p>
             {language === "he"
@@ -91,19 +91,19 @@ function Contact() {
         </div>
 
         {/* Contact Form Section - NOW FIRST */}
-        <section class"name"="contact-form-section">
-          <form onSubmit={handleSubmit} class"name"="contact-form">
+        <section classname="contact-form-section">
+          <form onSubmit={handleSubmit} classname="contact-form">
             <h2>{t("sendMessage")}</h2>
 
             {status.message && (
-              <div class"name"={`status-message ${status.type}`}>
+              <div classname={`status-message ${status.type}`}>
                 {status.message}
               </div>
             )}
 
-            <div class"name"="form-group">
+            <div classname="form-group">
               <label htmlFor="name">
-                {t("fullname")} <span class"name"="required">*</span>
+                {t("fullname")} <span classname="required">*</span>
               </label>
               <input
                 type="text"
@@ -120,9 +120,9 @@ function Contact() {
               />
             </div>
 
-            <div class"name"="form-group">
+            <div classname="form-group">
               <label htmlFor="email">
-                {t("email")} <span class"name"="required">*</span>
+                {t("email")} <span classname="required">*</span>
               </label>
               <input
                 type="email"
@@ -135,7 +135,7 @@ function Contact() {
               />
             </div>
 
-            <div class"name"="form-group">
+            <div classname="form-group">
               <label htmlFor="phone">{t("phoneNumber")}</label>
               <input
                 type="tel"
@@ -147,7 +147,7 @@ function Contact() {
               />
             </div>
 
-            <div class"name"="form-group">
+            <div classname="form-group">
               <label htmlFor="subject">{t("subject")}</label>
               <input
                 type="text"
@@ -161,9 +161,9 @@ function Contact() {
               />
             </div>
 
-            <div class"name"="form-group">
+            <div classname="form-group">
               <label htmlFor="message">
-                {t("message")} <span class"name"="required">*</span>
+                {t("message")} <span classname="required">*</span>
               </label>
               <textarea
                 id="message"
@@ -180,7 +180,7 @@ function Contact() {
               ></textarea>
             </div>
 
-            <button type="submit" class"name"="submit-btn" disabled={loading}>
+            <button type="submit" classname="submit-btn" disabled={loading}>
               {loading ? (
                 <span>{language === "he" ? "שולח..." : "Sending..."}</span>
               ) : (

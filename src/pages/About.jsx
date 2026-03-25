@@ -5,35 +5,35 @@ function About() {
   const { t, language } = useLanguage();
 
   return (
-    <div class"name"="about-page">
-      <div class"name"="about-hero">
+    <div classname="about-page">
+      <div classname="about-hero">
         <div>
           <h1>{t("ourStory")}</h1>
         </div>
       </div>
 
-      <div class"name"="about-content">
-        <section class"name"="about-section collection-section">
+      <div classname="about-content">
+        <section classname="about-section collection-section">
           <h2>
             {language === "he"
               ? "קולקציית שמיים וארץ"
               : "Shamaim VeEretz Collection"}
           </h2>
-          <p class"name"="collection-intro">
+          <p classname="collection-intro">
             {language === "he"
               ? "קולקציית שמיים וארץ נולדה מתוך חיבור בין שתי נשמות, חן ונטע, שהוא הרבה מעבר לזמן ומקום. מסע שכולו אמונה 'שאין עוד מלבדו' וכל יום במסע מעצים את השיבה הביתה..."
               : "The Shamaim VeEretz Collection was born from a connection between two souls, Chen and Neta, that transcends time and place. A journey of pure faith 'there is nothing but Him' and each day on the journey strengthens the return home..."}
           </p>
 
-          <p class"name"="collection-intro-subtitle">
+          <p classname="collection-intro-subtitle">
             {language === "he"
               ? "הקולקציה אוצרת בתוכה את גרמי השמים והארץ:"
               : "The collection treasures within it the celestial and earthly bodies:"}
           </p>
 
-          <div class"name"="collection-items-grid">
-            <div class"name"="collection-item" style={{ "--delay": "0s" }}>
-              <div class"name"="collection-item-number">22</div>
+          <div classname="collection-items-grid">
+            <div classname="collection-item" style={{ "--delay": "0s" }}>
+              <div classname="collection-item-number">22</div>
               <p>
                 {language === "he"
                   ? "אותיות בכתב עברי קדום"
@@ -41,18 +41,18 @@ function About() {
               </p>
             </div>
 
-            <div class"name"="collection-item" style={{ "--delay": "0.1s" }}>
-              <div class"name"="collection-item-number">7</div>
+            <div classname="collection-item" style={{ "--delay": "0.1s" }}>
+              <div classname="collection-item-number">7</div>
               <p>{language === "he" ? "כוכבי לכת" : "Planets"}</p>
             </div>
 
-            <div class"name"="collection-item" style={{ "--delay": "0.2s" }}>
-              <div class"name"="collection-item-number">12</div>
+            <div classname="collection-item" style={{ "--delay": "0.2s" }}>
+              <div classname="collection-item-number">12</div>
               <p>{language === "he" ? "סימני המזלות" : "Zodiac signs"}</p>
             </div>
 
-            <div class"name"="collection-item" style={{ "--delay": "0.3s" }}>
-              <div class"name"="collection-item-number">12</div>
+            <div classname="collection-item" style={{ "--delay": "0.3s" }}>
+              <div classname="collection-item-number">12</div>
               <p>{language === "he" ? "אבני החושן" : "Hoshen stones"}</p>
               <small>
                 {language === "he"
@@ -62,10 +62,10 @@ function About() {
             </div>
 
             <div
-              class"name"="collection-item full-width"
+              classname="collection-item full-width"
               style={{ "--delay": "0.4s" }}
             >
-              <p class"name"="highlight-item">
+              <p classname="highlight-item">
                 {language === "he"
                   ? "ועוד סמלים ואותות של תורתנו הקדושה למען עמנו היקר"
                   : "And more symbols and signs of our sacred Torah for our dear people"}

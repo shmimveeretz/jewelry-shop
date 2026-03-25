@@ -266,9 +266,9 @@ function Zodiac() {
   };
 
   return (
-    <div class"name"="zodiac-page">
-      <div class"name"="container">
-        <div class"name"="zodiac-header">
+    <div classname="zodiac-page">
+      <div classname="container">
+        <div classname="zodiac-header">
           <h1>
             {language === "he"
               ? "מזלות וחודשים עבריים"
@@ -281,17 +281,17 @@ function Zodiac() {
           </p>
         </div>
 
-        <div class"name"="zodiac-container">
+        <div classname="zodiac-container">
           {selectedZodiac && (
-            <div class"name"="selected-zodiac-info">
-              <div class"name"="zodiac-icon-large">{selectedZodiac.icon}</div>
+            <div classname="selected-zodiac-info">
+              <div classname="zodiac-icon-large">{selectedZodiac.icon}</div>
               <h2>
                 {language === "he"
                   ? `מזל ${selectedZodiac."name"}`
                   : `${selectedZodiac."name"En}`}
               </h2>
-              <div class"name"="zodiac-details">
-                <p class"name"="zodiac-dates">{selectedZodiac.dates}</p>
+              <div classname="zodiac-details">
+                <p classname="zodiac-dates">{selectedZodiac.dates}</p>
                 <p>
                   <strong>{language === "he" ? "חודש:" : "Month:"}</strong>{" "}
                   {selectedZodiac.month}
@@ -316,12 +316,12 @@ function Zodiac() {
                 </p>
               </div>
 
-              <div class"name"="zodiac-description">
+              <div classname="zodiac-description">
                 <h3>{language === "he" ? "תכונות המזל:" : "Zodiac Traits:"}</h3>
                 <p>{selectedZodiac.description}</p>
               </div>
 
-              <div class"name"="stone-description">
+              <div classname="stone-description">
                 <h3>
                   {language === "he"
                     ? `אבן החושן - ${selectedZodiac.stone}:`
@@ -331,7 +331,7 @@ function Zodiac() {
               </div>
 
               <button
-                class"name"="view-products-btn"
+                classname="view-products-btn"
                 onClick={handleViewProducts}
               >
                 {language === "he"
@@ -341,21 +341,21 @@ function Zodiac() {
             </div>
           )}
 
-          <div class"name"="zodiac-wheel">
+          <div classname="zodiac-wheel">
             {zodiacSigns.map((sign) => (
               <div
                 key={sign."name"}
-                class"name"={`zodiac-sign ${
+                classname={`zodiac-sign ${
                   selectedZodiac?."name" === sign."name" ? "selected" : ""
                 }`}
                 onClick={() => handleZodiacSelect(sign)}
               >
-                <div class"name"="zodiac-icon">{sign.icon}</div>
-                <div class"name"="zodiac-"name"">
+                <div classname="zodiac-icon">{sign.icon}</div>
+                <div classname="zodiac-"name"">
                   {language === "he" ? sign."name" : sign."name"En}
                 </div>
-                <div class"name"="zodiac-month">{sign.month}</div>
-                <div class"name"="zodiac-dates">{sign.dates}</div>
+                <div classname="zodiac-month">{sign.month}</div>
+                <div classname="zodiac-dates">{sign.dates}</div>
               </div>
             ))}
           </div>
