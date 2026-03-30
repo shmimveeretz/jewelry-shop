@@ -9,6 +9,7 @@ import {
   FaGem,
   FaLink,
   FaInfoCircle,
+  FaRuler,
 } from "react-icons/fa";
 import "../styles/pages/Cart.css";
 
