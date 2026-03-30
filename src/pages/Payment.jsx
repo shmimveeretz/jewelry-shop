@@ -9,7 +9,7 @@ import {
   FaLock,
   FaPhone,
   FaEnvelope,
-  FaInfoTriangle,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 
 function Payment() {
@@ -162,7 +162,7 @@ function Payment() {
         {error && (
           <div className="payment-error">
             <span>
-              <FaInfoTriangle /> {error}
+              <FaExclamationTriangle /> {error}
             </span>
           </div>
         )}
