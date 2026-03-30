@@ -8,7 +8,7 @@ export const useLanguage = () => {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
-};
+};  
 
 export const translations = {
   he: {
@@ -126,7 +126,6 @@ export const translations = {
     getInTouch: "צור איתנו קשר",
     message: "הודעה",
     send: "שלח",
-    phone: "טלפון",
     address: "כתובת",
     followUs: "עקוב אחרינו",
 

@@ -15,7 +15,6 @@ import {
   FaEnvelope,
   FaWhatsapp,
   FaClock,
-  FaRegEdit,
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/LegalPages.css";
