@@ -49,9 +49,11 @@ function Payment() {
         amount: orderData.totalPrice,
         currency: "ILS",
         items: orderData.items.map((item) => ({
+          productId: item.productId,
           name: item.name,
           quantity: item.quantity,
           price: item.price,
+          selectedOptions: item.selectedOptions || {},
         })),
         shippingAddress: orderData.shippingAddress,
       };

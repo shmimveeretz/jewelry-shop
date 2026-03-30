@@ -13,21 +13,47 @@ export const payPlusService = {
    */
   async createPayment(paymentData) {
     try {
-      const response = await axios.post(`${API_URL}/payment/create-intent`, {
+      const body = {
+        // PayPlus-compatible fields
+        amount: paymentData.amount,
+        currency_code: paymentData.currency || "ILS",
+        charge_method: 1,
+        sendEmailApproval: true,
+        sendEmailFailure: false,
+        initial_invoice: true,
+        hide_identification_id: false,
+        more_info: `order-${Date.now()}`,
+
+        // Customer info (used by backend to build the PayPlus customer object)
         customerName: paymentData.customerName,
         customerEmail: paymentData.customerEmail,
         customerPhone: paymentData.customerPhone,
-        amount: paymentData.amount,
-        currency: paymentData.currency || "ILS",
-        items: paymentData.items,
+
+        // Order items & shipping (used by backend to build the order in DB)
+        orderItems: paymentData.items,
         shippingAddress: paymentData.shippingAddress,
-      });
+      };
+
+      const response = await axios.post(
+        `${API_URL}/payment/create-intent`,
+        body,
+      );
 
       return response.data;
     } catch (error) {
-      console.error("Payment creation failed:", error);
+      const serverMsg =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.response?.data;
+      console.error(
+        "Payment creation failed:",
+        error.response?.status,
+        serverMsg,
+      );
       throw new Error(
-        error.response?.data?.error || "שגיאה ביצירת תשלום. אנא נסה שוב.",
+        typeof serverMsg === "string"
+          ? serverMsg
+          : "שגיאה ביצירת תשלום. אנא נסה שוב.",
       );
     }
   },
