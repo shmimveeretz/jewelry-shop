@@ -84,9 +84,9 @@ function VerifyCode() {
   }
 
   return (
-    <div classname="auth-page">
-      <div classname="auth-container">
-        <div classname="auth-header">
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-header">
           <h1>{language === "he" ? "אימות קוד" : "Verify Code"}</h1>
           <p>
             {language === "he"
@@ -95,8 +95,8 @@ function VerifyCode() {
           </p>
         </div>
 
-        <form classname="auth-form" onSubmit={handleSubmit}>
-          <div classname="form-group">
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="form-group">
             <label htmlFor="code">{language === "he" ? "קוד" : "Code"}</label>
             <input
               type="text"
@@ -126,7 +126,7 @@ function VerifyCode() {
               : "The code is valid for 10 minutes only"}
           </p>
 
-          <button type="submit" classname="btn auth-btn" disabled={loading}>
+          <button type="submit" className="btn auth-btn" disabled={loading}>
             {loading
               ? language === "he"
                 ? "בודק..."
@@ -137,11 +137,11 @@ function VerifyCode() {
           </button>
         </form>
 
-        <div classname="auth-toggle">
+        <div className="auth-toggle">
           <p>
             <button
               onClick={() => navigate("/forgot-password")}
-              classname="link-btn"
+              className="link-btn"
             >
               {language === "he" ? "חזור לשליחת קוד" : "Back to Send Code"}
             </button>

@@ -262,13 +262,13 @@ function Zodiac() {
   };
 
   const handleViewProducts = () => {
-    navigate("/shop", { state: { zodiacFilter: selectedZodiac."name" } });
+    navigate("/shop", { state: { zodiacFilter: selectedZodiac.name } });
   };
 
   return (
-    <div classname="zodiac-page">
-      <div classname="container">
-        <div classname="zodiac-header">
+    <div className="zodiac-page">
+      <div className="container">
+        <div className="zodiac-header">
           <h1>
             {language === "he"
               ? "מזלות וחודשים עבריים"
@@ -281,17 +281,17 @@ function Zodiac() {
           </p>
         </div>
 
-        <div classname="zodiac-container">
+        <div className="zodiac-container">
           {selectedZodiac && (
-            <div classname="selected-zodiac-info">
-              <div classname="zodiac-icon-large">{selectedZodiac.icon}</div>
+            <div className="selected-zodiac-info">
+              <div className="zodiac-icon-large">{selectedZodiac.icon}</div>
               <h2>
                 {language === "he"
-                  ? `מזל ${selectedZodiac."name"}`
-                  : `${selectedZodiac."name"En}`}
+                  ? `מזל ${selectedZodiac.name}`
+                  : `${selectedZodiac.nameEn}`}
               </h2>
-              <div classname="zodiac-details">
-                <p classname="zodiac-dates">{selectedZodiac.dates}</p>
+              <div className="zodiac-details">
+                <p className="zodiac-dates">{selectedZodiac.dates}</p>
                 <p>
                   <strong>{language === "he" ? "חודש:" : "Month:"}</strong>{" "}
                   {selectedZodiac.month}
@@ -316,12 +316,12 @@ function Zodiac() {
                 </p>
               </div>
 
-              <div classname="zodiac-description">
+              <div className="zodiac-description">
                 <h3>{language === "he" ? "תכונות המזל:" : "Zodiac Traits:"}</h3>
                 <p>{selectedZodiac.description}</p>
               </div>
 
-              <div classname="stone-description">
+              <div className="stone-description">
                 <h3>
                   {language === "he"
                     ? `אבן החושן - ${selectedZodiac.stone}:`
@@ -331,31 +331,31 @@ function Zodiac() {
               </div>
 
               <button
-                classname="view-products-btn"
+                className="view-products-btn"
                 onClick={handleViewProducts}
               >
                 {language === "he"
-                  ? `צפה בתכשיטים למזל ${selectedZodiac."name"}`
-                  : `View ${selectedZodiac."name"En} Jewelry`}
+                  ? `צפה בתכשיטים למזל ${selectedZodiac.name}`
+                  : `View ${selectedZodiac.nameEn} Jewelry`}
               </button>
             </div>
           )}
 
-          <div classname="zodiac-wheel">
+          <div className="zodiac-wheel">
             {zodiacSigns.map((sign) => (
               <div
-                key={sign."name"}
-                classname={`zodiac-sign ${
-                  selectedZodiac?."name" === sign."name" ? "selected" : ""
+                key={sign.name}
+                className={`zodiac-sign ${
+                  selectedZodiac?.name === sign.name ? "selected" : ""
                 }`}
                 onClick={() => handleZodiacSelect(sign)}
               >
-                <div classname="zodiac-icon">{sign.icon}</div>
-                <div classname="zodiac-"name"">
-                  {language === "he" ? sign."name" : sign."name"En}
+                <div className="zodiac-icon">{sign.icon}</div>
+                <div className="zodiac-name">
+                  {language === "he" ? sign.name : sign.nameEn}
                 </div>
-                <div classname="zodiac-month">{sign.month}</div>
-                <div classname="zodiac-dates">{sign.dates}</div>
+                <div className="zodiac-month">{sign.month}</div>
+                <div className="zodiac-dates">{sign.dates}</div>
               </div>
             ))}
           </div>

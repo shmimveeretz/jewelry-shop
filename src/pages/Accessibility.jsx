@@ -6,11 +6,11 @@ const Accessibility = () => {
   const { t, language } = useLanguage();
 
   return (
-    <div classname="accessibility-container">
-      <div classname="accessibility-content">
+    <div className="accessibility-container">
+      <div className="accessibility-content">
         <h1>{t("accessibilityStatement")}</h1>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("aboutSite")}</h2>
           <p>
             {language === "he" ? (
@@ -48,7 +48,7 @@ const Accessibility = () => {
           </p>
         </section>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("accessibilityPurpose")}</h2>
           <p>
             {language === "he"
@@ -57,7 +57,7 @@ const Accessibility = () => {
           </p>
         </section>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("standards")}</h2>
           <p>
             {language === "he"
@@ -101,7 +101,7 @@ const Accessibility = () => {
           </p>
         </section>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("accessibleMode")}</h2>
           <p>
             {language === "he"
@@ -130,9 +130,9 @@ const Accessibility = () => {
           </p>
         </section>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("adjustments")}</h2>
-          <ul classname="accessibility-list">
+          <ul className="accessibility-list">
             <li>{t("screenReaderSupport")}</li>
             <li>{t("simpleNavigation")}</li>
             <li>{t("clearContent")}</li>
@@ -143,9 +143,9 @@ const Accessibility = () => {
           </ul>
         </section>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("softwareFunctionality")}</h2>
-          <ul classname="accessibility-list">
+          <ul className="accessibility-list">
             <li>{t("screenReaderSupport")}</li>
             <li>
               {language === "he"
@@ -173,13 +173,13 @@ const Accessibility = () => {
           </ul>
         </section>
 
-        <section classname="accessibility-section">
+        <section className="accessibility-section">
           <h2>{t("exceptions")}</h2>
           <p>{t("possibleIssues")}</p>
           <p>{t("continuousImprovement")}</p>
         </section>
 
-        <section classname="accessibility-section contact-section">
+        <section className="accessibility-section contact-section">
           <h2>{t("contactAccessibility")}</h2>
           <p>
             {language === "he"
@@ -187,7 +187,7 @@ const Accessibility = () => {
               : "If you encounter an accessibility issue on the website, we would be happy to receive comments and requests by contacting our accessibility coordinator."}
           </p>
           <p>{t("getInTouchAccessibility")}</p>
-          <ul classname="accessibility-list">
+          <ul className="accessibility-list">
             <li>{t("problemDescription")}</li>
             <li>{t("attemptedAction")}</li>
             <li>{t("pageLink")}</li>
@@ -197,29 +197,29 @@ const Accessibility = () => {
           </ul>
           <p>{t("improvementEfforts")}</p>
 
-          <div classname="contact-info">
+          <div className="contact-info">
             <h3>
               {language === "he"
                 ? "פרטי רכז נגישות:"
                 : "Accessibility Coordinator Details:"}
             </h3>
-            <div classname="info-item">
-              <span classname="info-label">
-                {language === "he" ? "שם:" : ""name":"}
+            <div className="info-item">
+              <span className="info-label">
+                {language === "he" ? "שם:" : "Name:"}
               </span>
-              <span classname="info-value">חן נטע</span>
+              <span className="info-value">חן נטע</span>
             </div>
-            <div classname="info-item">
-              <span classname="info-label">{t("phone")}:</span>
+            <div className="info-item">
+              <span className="info-label">{language === "he" ? "טלפון:" : "Phone:"}</span>
               <a href="tel:0523897583">0523897583</a>
             </div>
-            <div classname="info-item">
-              <span classname="info-label">{t("email")}:</span>
+            <div className="info-item">
+              <span className="info-label">{t("email")}:</span>
               <a href="mailto:shmimveeretz@gmail.com">shmimveeretz@gmail.com</a>
             </div>
           </div>
 
-          <p classname="update-date">
+          <p className="update-date">
             <strong>{t("lastUpdate")}:</strong> 01-03-2026
           </p>
         </section>

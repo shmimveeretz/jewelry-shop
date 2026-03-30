@@ -12,19 +12,19 @@ function PaymentFailure() {
   };
 
   return (
-    <div classname="payment-status-page">
-      <div classname="payment-status-container failure">
-        <div classname="status-icon">❌</div>
+    <div className="payment-status-page">
+      <div className="payment-status-container failure">
+        <div className="status-icon">❌</div>
 
         <h1>{language === "he" ? "התשלום נכשל" : "Payment Failed"}</h1>
 
-        <p classname="failure-message">
+        <p className="failure-message">
           {language === "he"
             ? "מצטערים, התשלום לא הושלם בהצלחה."
             : "Sorry, your payment could not be processed."}
         </p>
 
-        <div classname="failure-reasons">
+        <div className="failure-reasons">
           <h3>{language === "he" ? "סיבות אפשריות:" : "Possible Reasons:"}</h3>
           <ul>
             <li>
@@ -50,7 +50,7 @@ function PaymentFailure() {
           </ul>
         </div>
 
-        <div classname="failure-actions">
+        <div className="failure-actions">
           <h3>{language === "he" ? "מה אפשר לעשות?" : "What can you do?"}</h3>
           <ul>
             <li>
@@ -74,17 +74,17 @@ function PaymentFailure() {
           </ul>
         </div>
 
-        <div classname="action-buttons">
-          <button classname="btn btn-primary" onClick={handleRetry}>
+        <div className="action-buttons">
+          <button className="btn btn-primary" onClick={handleRetry}>
             {language === "he" ? "נסה שוב" : "Try Again"}
           </button>
           <button
-            classname="btn btn-secondary"
+            className="btn btn-secondary"
             onClick={() => navigate("/contact")}
           >
             {language === "he" ? "צור קשר" : "Contact Us"}
           </button>
-          <button classname="btn btn-text" onClick={() => navigate("/")}>
+          <button className="btn btn-text" onClick={() => navigate("/")}>
             {language === "he" ? "חזרה לדף הבית" : "Back to Home"}
           </button>
         </div>

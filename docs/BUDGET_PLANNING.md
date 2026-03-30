@@ -180,7 +180,7 @@
 - Vercel: https://vercel.com
 - Stripe: https://stripe.com
 - MongoDB Atlas: https://www.mongodb.com/cloud/atlas
-- "name"cheap: https://www."name"cheap.com
+- "name"cheap: https://www.namecheap.com
 - Let's Encrypt: https://letsencrypt.org
 
 ---

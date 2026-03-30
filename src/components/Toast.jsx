@@ -35,41 +35,41 @@ function Toast({
   const getIcon = () => {
     switch (type) {
       case "success":
-        return <FaCheckCircle classname="toast-icon success-icon" />;
+        return <FaCheckCircle className="toast-icon success-icon" />;
       case "error":
-        return <FaExclamationTriangle classname="toast-icon error-icon" />;
+        return <FaExclamationTriangle className="toast-icon error-icon" />;
       case "cart":
-        return <FaShoppingCart classname="toast-icon cart-icon" />;
+        return <FaShoppingCart className="toast-icon cart-icon" />;
       default:
-        return <FaInfoCircle classname="toast-icon info-icon" />;
+        return <FaInfoCircle className="toast-icon info-icon" />;
     }
   };
 
-  const getclassname = () => {
+  const getclassName = () => {
     const baseClass = `toast toast-${type}`;
     return isClosing ? `${baseClass} toast-closing` : baseClass;
   };
 
   return (
-    <div classname={getclassname()}>
-      <div classname="toast-content">
+    <div className={getclassName()}>
+      <div className="toast-content">
         {productImage && (
-          <img src={productImage} alt="" classname="toast-product-image" />
+          <img src={productImage} alt="" className="toast-product-image" />
         )}
-        <div classname="toast-icon-wrapper">{getIcon()}</div>
-        <div classname="toast-message">
+        <div className="toast-icon-wrapper">{getIcon()}</div>
+        <div className="toast-message">
           {message}
           {type === "cart" && (
-            <a href="/cart" classname="toast-cart-link" onClick={handleClose}>
+            <a href="/cart" className="toast-cart-link" onClick={handleClose}>
               עבור לעגלה ←
             </a>
           )}
         </div>
       </div>
-      <button classname="toast-close" onClick={handleClose}>
+      <button className="toast-close" onClick={handleClose}>
         <FaTimes />
       </button>
-      <div classname="toast-progress"></div>
+      <div className="toast-progress"></div>
     </div>
   );
 }

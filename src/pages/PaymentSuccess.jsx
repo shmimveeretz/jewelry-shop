@@ -42,7 +42,7 @@ function PaymentSuccess() {
           setOrderDetails({
             transactionUid,
             amount: result.transactionDetails.amount,
-            customer"name": result.transactionDetails.customer"name",
+            customerName: result.transactionDetails.customerName,
             email: result.transactionDetails.email,
             items: orderData?.items || [],
           });
@@ -67,9 +67,9 @@ function PaymentSuccess() {
 
   if (verifying) {
     return (
-      <div classname="payment-status-page">
-        <div classname="payment-status-container">
-          <div classname="loading-spinner"></div>
+      <div className="payment-status-page">
+        <div className="payment-status-container">
+          <div className="loading-spinner"></div>
           <h2>
             {language === "he" ? "מאמת תשלום..." : "Verifying payment..."}
           </h2>
@@ -85,16 +85,16 @@ function PaymentSuccess() {
 
   if (error) {
     return (
-      <div classname="payment-status-page">
-        <div classname="payment-status-container error">
-          <div classname="status-icon">❌</div>
+      <div className="payment-status-page">
+        <div className="payment-status-container error">
+          <div className="status-icon">❌</div>
           <h1>
             {language === "he"
               ? "שגיאה באימות התשלום"
               : "Payment Verification Error"}
           </h1>
           <p>{error}</p>
-          <button classname="btn" onClick={() => navigate("/contact")}>
+          <button className="btn" onClick={() => navigate("/contact")}>
             {language === "he" ? "צור קשר" : "Contact Us"}
           </button>
         </div>
@@ -103,51 +103,51 @@ function PaymentSuccess() {
   }
 
   return (
-    <div classname="payment-status-page">
-      <div classname="payment-status-container success">
-        <div classname="status-icon">✅</div>
+    <div className="payment-status-page">
+      <div className="payment-status-container success">
+        <div className="status-icon">✅</div>
         <h1>
           {language === "he" ? "התשלום הושלם בהצלחה!" : "Payment Successful!"}
         </h1>
 
         {orderDetails && (
-          <div classname="order-details">
-            <p classname="success-message">
+          <div className="order-details">
+            <p className="success-message">
               {language === "he"
                 ? "תודה על הרכישה! אישור הזמנה נשלח לכתובת המייל שלך."
                 : "Thank you for your purchase! Order confirmation has been sent to your email."}
             </p>
 
-            <div classname="order-info">
+            <div className="order-info">
               <h3>{language === "he" ? "פרטי הזמנה:" : "Order Details:"}</h3>
-              <div classname="info-row">
-                <span classname="label">
+              <div className="info-row">
+                <span className="label">
                   {language === "he" ? "מספר עסקה:" : "Transaction ID:"}
                 </span>
-                <span classname="value">{orderDetails.transactionUid}</span>
+                <span className="value">{orderDetails.transactionUid}</span>
               </div>
-              <div classname="info-row">
-                <span classname="label">
+              <div className="info-row">
+                <span className="label">
                   {language === "he" ? "סכום:" : "Amount:"}
                 </span>
-                <span classname="value">{orderDetails.amount} ₪</span>
+                <span className="value">{orderDetails.amount} ₪</span>
               </div>
-              <div classname="info-row">
-                <span classname="label">
+              <div className="info-row">
+                <span className="label">
                   {language === "he" ? "אימייל:" : "Email:"}
                 </span>
-                <span classname="value">{orderDetails.email}</span>
+                <span className="value">{orderDetails.email}</span>
               </div>
             </div>
 
             {orderDetails.items && orderDetails.items.length > 0 && (
-              <div classname="order-items">
+              <div className="order-items">
                 <h3>
                   {language === "he" ? "מוצרים שנרכשו:" : "Items Purchased:"}
                 </h3>
                 {orderDetails.items.map((item, index) => (
-                  <div key={index} classname="order-item">
-                    <span>{item."name"}</span>
+                  <div key={index} className="order-item">
+                    <span>{item.name}</span>
                     <span>x{item.quantity}</span>
                     <span>{item.price} ₪</span>
                   </div>
@@ -155,7 +155,7 @@ function PaymentSuccess() {
               </div>
             )}
 
-            <div classname="next-steps">
+            <div className="next-steps">
               <h3>{language === "he" ? "מה הלאה?" : "What's Next?"}</h3>
               <ul>
                 <li>
@@ -178,12 +178,12 @@ function PaymentSuccess() {
           </div>
         )}
 
-        <div classname="action-buttons">
-          <button classname="btn btn-primary" onClick={() => navigate("/")}>
+        <div className="action-buttons">
+          <button className="btn btn-primary" onClick={() => navigate("/")}>
             {language === "he" ? "חזרה לדף הבית" : "Back to Home"}
           </button>
           <button
-            classname="btn btn-secondary"
+            className="btn btn-secondary"
             onClick={() => navigate("/shop")}
           >
             {language === "he" ? "המשך קניות" : "Continue Shopping"}

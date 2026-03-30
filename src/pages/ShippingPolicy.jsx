@@ -17,11 +17,11 @@ function ShippingPolicy() {
   const { language } = useLanguage();
 
   return (
-    <div classname="legal-page">
-      <div classname="legal-container">
+    <div className="legal-page">
+      <div className="legal-container">
         <h1>{language === "he" ? "מדיניות משלוחים" : "Shipping Policy"}</h1>
 
-        <div classname="legal-content">
+        <div className="legal-content">
           {language === "he" ? (
             <>
               <section>
@@ -44,7 +44,7 @@ function ShippingPolicy() {
                     עסקים
                   </li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> שימו לב: זמני המשלוח אינם כוללים את
                   זמן הייצור של תכשיטים מותאמים אישית, שעשוי להימשך עד 14 ימי
                   עסקים נוספים.
@@ -56,7 +56,7 @@ function ShippingPolicy() {
                   <FaShippingFast /> אפשרויות משלוח
                 </h2>
 
-                <div classname="shipping-option">
+                <div className="shipping-option">
                   <h3>משלוח רגיל - ₪30</h3>
                   <p>משלוח באמצעות דואר רשום או שליח עד הבית</p>
                   <ul>
@@ -66,7 +66,7 @@ function ShippingPolicy() {
                   </ul>
                 </div>
 
-                <div classname="shipping-option">
+                <div className="shipping-option">
                   <h3>משלוח מהיר - ₪60</h3>
                   <p>משלוח באמצעות שליח מהיר</p>
                   <ul>
@@ -76,7 +76,7 @@ function ShippingPolicy() {
                   </ul>
                 </div>
 
-                <div classname="shipping-option">
+                <div className="shipping-option">
                   <h3>איסוף עצמי - חינם</h3>
                   <p>ניתן לאסוף את המוצרים בתיאום מראש</p>
                   <ul>
@@ -105,7 +105,7 @@ function ShippingPolicy() {
                     <strong>יתר העולם:</strong> 14-28 ימי עסקים | עלות: ₪200
                   </li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> הלקוח אחראי לתשלום מכס ומיסים בארץ
                   היעד, ככל שיחולו.
                 </p>
@@ -130,7 +130,7 @@ function ShippingPolicy() {
                 <p>
                   הזמנות מעל <strong>₪500</strong> זכאיות למשלוח רגיל חינם!
                 </p>
-                <p classname="note">* ההטבה תקפה למשלוחים בתוך ישראל בלבד</p>
+                <p className="note">* ההטבה תקפה למשלוחים בתוך ישראל בלבד</p>
               </section>
 
               <section>
@@ -138,14 +138,14 @@ function ShippingPolicy() {
                   <FaQuestionCircle /> שאלות נפוצות
                 </h2>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>מתי אקבל את מספר המעקב?</h4>
                   <p>
                     מספר המעקב נשלח באימייל תוך 24 שעות מרגע שהמוצר יוצא למשלוח.
                   </p>
                 </div>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>מה קורה אם לא הייתי בבית בזמן המשלוח?</h4>
                   <p>
                     השליח ישאיר הודעה ותוכל לתאם משלוח מחדש או לאסוף מסניף הדואר
@@ -153,12 +153,12 @@ function ShippingPolicy() {
                   </p>
                 </div>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>האם ניתן לשלוח לכתובת שונה מכתובת החיוב?</h4>
                   <p>כן, ניתן להזין כתובת משלוח שונה בעת ביצוע ההזמנה.</p>
                 </div>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>האם המשלוח מבוטח?</h4>
                   <p>כן, כל המשלוחים מבוטחים מפני אובדן או נזק במהלך המשלוח.</p>
                 </div>
@@ -206,7 +206,7 @@ function ShippingPolicy() {
                     days
                   </li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> Note: Delivery times do not include
                   production time for custom jewelry, which may take up to an
                   additional 14 business days.
@@ -218,7 +218,7 @@ function ShippingPolicy() {
                   <FaShippingFast /> Shipping Options
                 </h2>
 
-                <div classname="shipping-option">
+                <div className="shipping-option">
                   <h3>Standard Shipping - ₪30</h3>
                   <p>
                     Delivery via registered mail or courier to your doorstep
@@ -230,7 +230,7 @@ function ShippingPolicy() {
                   </ul>
                 </div>
 
-                <div classname="shipping-option">
+                <div className="shipping-option">
                   <h3>Express Shipping - ₪60</h3>
                   <p>Delivery via express courier</p>
                   <ul>
@@ -240,7 +240,7 @@ function ShippingPolicy() {
                   </ul>
                 </div>
 
-                <div classname="shipping-option">
+                <div className="shipping-option">
                   <h3>Self Pickup - Free</h3>
                   <p>Pick up products by appointment</p>
                   <ul>
@@ -269,7 +269,7 @@ function ShippingPolicy() {
                     ₪200
                   </li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> Customer is responsible for customs
                   duties and taxes in destination country, if applicable.
                 </p>
@@ -298,7 +298,7 @@ function ShippingPolicy() {
                   Orders over <strong>₪500</strong> qualify for free standard
                   shipping!
                 </p>
-                <p classname="note">
+                <p className="note">
                   * Offer valid for shipments within Israel only
                 </p>
               </section>
@@ -308,7 +308,7 @@ function ShippingPolicy() {
                   <FaQuestionCircle /> FAQ
                 </h2>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>When will I receive my tracking number?</h4>
                   <p>
                     Tracking number is sent via email within 24 hours of
@@ -316,7 +316,7 @@ function ShippingPolicy() {
                   </p>
                 </div>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>What happens if I'm not home during delivery?</h4>
                   <p>
                     The courier will leave a notice and you can reschedule
@@ -324,7 +324,7 @@ function ShippingPolicy() {
                   </p>
                 </div>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>Can I ship to a different address than billing?</h4>
                   <p>
                     Yes, you can enter a different shipping address when placing
@@ -332,7 +332,7 @@ function ShippingPolicy() {
                   </p>
                 </div>
 
-                <div classname="faq-item">
+                <div className="faq-item">
                   <h4>Is shipping insured?</h4>
                   <p>
                     Yes, all shipments are insured against loss or damage during

@@ -125,7 +125,7 @@ npm run preview
      "scripts": {
        "deploy": "npm run build && gh-pages -d dist"
      },
-     "homepage": "https://[user"name"].github.io/[repo-"name"]"
+     "homepage": "https://[username].github.io/[repo-"name"]"
    }
    ```
 
@@ -330,6 +330,7 @@ VITE_ADMIN_PASSWORD=your_secret_password
    ```
 
 2. **הגן על דף Admin:**
+
    ```jsx
    function Admin() {
      const { isAdmin } = useContext(AuthContext);

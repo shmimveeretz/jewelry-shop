@@ -12,8 +12,8 @@ function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    first"name": "",
-    last"name": "",
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -28,7 +28,7 @@ function Auth() {
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
-      [e.target."name"]: e.target.value,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -63,8 +63,8 @@ function Auth() {
       const body = isLogin
         ? { email: formData.email, password: formData.password }
         : {
-            first"name": formData.first"name",
-            last"name": formData.last"name",
+            firstname: formData.firstname,
+            lastname: formData.lastname,
             email: formData.email,
             password: formData.password,
             phone: formData.phone,
@@ -87,15 +87,15 @@ function Auth() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.data));
 
-        const user"name" =
+        const userName =
           data.data.fullname ||
-          `${data.data.first"name"} ${data.data.last"name"}` ||
-          data.data."name" ||
+          `${data.data.firstname} ${data.data.lastname}` ||
+          data.data.name ||
           (language === "he" ? "משתמש" : "User");
         showSuccess(
           isLogin
-            ? `${language === "he" ? "שלום" : "Hello"} ${user"name"}! ${t("loginSuccess")}`
-            : `${language === "he" ? `ברוך הבא` : "Welcome"} ${user"name"}! ${t(
+            ? `${language === "he" ? "שלום" : "Hello"} ${userName}! ${t("loginSuccess")}`
+            : `${language === "he" ? `ברוך הבא` : "Welcome"} ${userName}! ${t(
                 "registerSuccess",
               )}`,
         );
@@ -127,8 +127,8 @@ function Auth() {
   const toggleMode = () => {
     setIsLogin(!isLogin);
     setFormData({
-      first"name": "",
-      last"name": "",
+      firstname: "",
+      lastname: "",
       phone: "",
       email: "",
       password: "",
@@ -137,50 +137,50 @@ function Auth() {
   };
 
   return (
-    <div classname="auth-page">
-      <div classname="auth-container">
-        <div classname="auth-header">
+    <div className="auth-page">
+      <div className="auth-container">
+        <div className="auth-header">
           <h1>{isLogin ? t("signIn") : t("signUp")}</h1>
           <p>{isLogin ? t("welcomeBack") : t("joinUs")}</p>
         </div>
 
-        <form classname="auth-form" onSubmit={handleSubmit}>
+        <form className="auth-form" onSubmit={handleSubmit}>
           {!isLogin && (
             <>
-              <div classname="form-group">
-                <label htmlFor="first"name"">
-                  {language === "he" ? "שם פרטי" : "First "name""}
+              <div className="form-group">
+                <label htmlFor="firstname">
+                  {language === "he" ? "שם פרטי" : "First name"}
                 </label>
                 <input
                   type="text"
-                  id="first"name""
-                  "name"="first"name""
-                  value={formData.first"name"}
+                  id="firstname"
+                  name="firstname"
+                  value={formData.firstname}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <div classname="form-group">
-                <label htmlFor="last"name"">
-                  {language === "he" ? "שם משפחה" : "Last "name""}
+              <div className="form-group">
+                <label htmlFor="lastname">
+                  {language === "he" ? "שם משפחה" : "Last name"}
                 </label>
                 <input
                   type="text"
-                  id="last"name""
-                  "name"="last"name""
-                  value={formData.last"name"}
+                  id="lastname"
+                  name="lastname"
+                  value={formData.lastname}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <div classname="form-group">
+              <div className="form-group">
                 <label htmlFor="phone">
                   {language === "he" ? "טלפון" : "Phone"}
                 </label>
                 <input
                   type="tel"
                   id="phone"
-                  "name"="phone"
+                  name="phone"
                   value={formData.phone}
                   onChange={handleChange}
                   required
@@ -192,24 +192,24 @@ function Auth() {
             </>
           )}
 
-          <div classname="form-group">
+          <div className="form-group">
             <label htmlFor="email">{t("email")}</label>
             <input
               type="email"
               id="email"
-              "name"="email"
+              name="email"
               value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
 
-          <div classname="form-group">
+          <div className="form-group">
             <label htmlFor="password">{t("password")}</label>
             <input
               type="password"
               id="password"
-              "name"="password"
+              name="password"
               value={formData.password}
               onChange={handleChange}
               required
@@ -217,12 +217,12 @@ function Auth() {
           </div>
 
           {!isLogin && (
-            <div classname="form-group">
+            <div className="form-group">
               <label htmlFor="confirmPassword">{t("confirmPassword")}</label>
               <input
                 type="password"
                 id="confirmPassword"
-                "name"="confirmPassword"
+                name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
@@ -230,7 +230,7 @@ function Auth() {
             </div>
           )}
 
-          <button type="submit" classname="btn auth-btn" disabled={loading}>
+          <button type="submit" className="btn auth-btn" disabled={loading}>
             {loading
               ? language === "he"
                 ? "מעבד..."
@@ -241,11 +241,11 @@ function Auth() {
           </button>
 
           {isLogin && (
-            <div classname="forgot-password-link">
+            <div className="forgot-password-link">
               <button
                 type="button"
                 onClick={() => navigate("/forgot-password")}
-                classname="link-btn"
+                className="link-btn"
               >
                 {language === "he" ? "שכחת סיסמה?" : "Forgot password?"}
               </button>
@@ -253,10 +253,10 @@ function Auth() {
           )}
         </form>
 
-        <div classname="auth-toggle">
+        <div className="auth-toggle">
           <p>
             {isLogin ? t("dontHaveAccount") : t("alreadyHaveAccount")}
-            <button onClick={toggleMode} classname="toggle-btn">
+            <button onClick={toggleMode} className="toggle-btn">
               {isLogin ? t("signUp") : t("signIn")}
             </button>
           </p>

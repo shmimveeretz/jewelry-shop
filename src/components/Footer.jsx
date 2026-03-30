@@ -14,17 +14,17 @@ function Footer() {
   const { t, language } = useLanguage();
 
   return (
-    <footer classname="footer">
-      <div classname="footer-container">
-        <div classname="footer-content">
-          <div classname="footer-section">
+    <footer className="footer">
+      <div className="footer-container">
+        <div className="footer-content">
+          <div className="footer-section">
             <h3>{t("aboutUs")}</h3>
             <p>
               {language === "he"
                 ? "שמיים וארץ - חנות תכשיטים יהודיים המתמחה בתכשיטים איכותיים עם סמלים יהודיים. כל תכשיט נעשה באהבה ובקפידה רבה."
                 : "Shamaim VeEretz - A Jewish jewelry store specializing in quality jewelry with Jewish symbols. Each piece is made with love and great care."}
             </p>
-            <div classname="footer-social">
+            <div className="footer-social">
               <a href="#" aria-label="פייסבוק">
                 <FaFacebook />
               </a>
@@ -40,7 +40,7 @@ function Footer() {
             </div>
           </div>
 
-          <div classname="footer-section">
+          <div className="footer-section">
             <h3>{t("quickLinks")}</h3>
             <ul>
               <li>
@@ -58,7 +58,7 @@ function Footer() {
             </ul>
           </div>
 
-          <div classname="footer-section">
+          <div className="footer-section">
             <h3>{t("customerService")}</h3>
             <ul>
               <li>
@@ -84,24 +84,24 @@ function Footer() {
             </ul>
           </div>
 
-          <div classname="footer-section">
+          <div className="footer-section">
             <h3>{t("contactUs")}</h3>
             <ul>
               <li>
-                <FaEnvelope classname="footer-icon" /> shmimveeretz@gmail.com
+                <FaEnvelope className="footer-icon" /> shmimveeretz@gmail.com
               </li>
               <li>
-                <FaPhone classname="footer-icon" /> 052-595-5389
+                <FaPhone className="footer-icon" /> 052-595-5389
               </li>
               <li>
-                <FaMapMarkerAlt classname="footer-icon" />{" "}
+                <FaMapMarkerAlt className="footer-icon" />{" "}
                 {language === "he" ? "תל אביב, ישראל" : "Tel Aviv, Israel"}
               </li>
             </ul>
           </div>
         </div>
 
-        <div classname="footer-bottom">
+        <div className="footer-bottom">
           <p>
             &copy; {new Date().getFullYear()}{" "}
             {language === "he" ? "שמיים וארץ" : "Shamaim VeEretz"}.{" "}

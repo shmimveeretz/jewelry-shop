@@ -26,11 +26,11 @@ function PrivacyPolicy() {
   const { language } = useLanguage();
 
   return (
-    <div classname="legal-page">
-      <div classname="legal-container">
+    <div className="legal-page">
+      <div className="legal-container">
         <h1>{language === "he" ? "מדיניות פרטיות" : "Privacy Policy"}</h1>
 
-        <div classname="legal-content">
+        <div className="legal-content">
           {language === "he" ? (
             <>
               <section>
@@ -43,7 +43,7 @@ function PrivacyPolicy() {
                   כיצד אנו אוספים, משתמשים, ומגינים על המידע האישי שלך בעת שימוש
                   באתר ורכישת מוצרים.
                 </p>
-                <p classname="highlight">
+                <p className="highlight">
                   <FaShieldAlt /> אנו מחויבים להגן על המידע שלך ולא נמכור אותו
                   לצדדים שלישיים.
                 </p>
@@ -144,7 +144,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> כל ספקי השירות שלנו מחויבים לשמור על
                   סודיות המידע ולא להשתמש בו למטרות אחרות.
                 </p>
@@ -156,7 +156,7 @@ function PrivacyPolicy() {
                   <li>במקרה של מיזוג, רכישה או מכירת עסק</li>
                 </ul>
 
-                <p classname="highlight">
+                <p className="highlight">
                   <FaBan /> אנו <strong>לעולם לא</strong> נמכור או נשכיר את
                   המידע האישי שלך!
                 </p>
@@ -220,7 +220,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> למרות המאמצים שלנו, אף שיטה אינה
                   בטוחה ב-100%. אנא שמור על סיסמתך ופרטי החשבון שלך בסודיות.
                 </p>
@@ -286,7 +286,7 @@ function PrivacyPolicy() {
                   <li>פנייה אלינו בבקשה להסרה</li>
                 </ul>
 
-                <p classname="note">
+                <p className="note">
                   <FaMailBulk /> שים לב: מיילים תפעוליים (אישורי הזמנה, עדכוני
                   משלוח) יישלחו גם אם ביטלת הרשמה לניוזלטר.
                 </p>
@@ -357,7 +357,7 @@ function PrivacyPolicy() {
                 <p>
                   יש לך שאלות לגבי מדיניות הפרטיות או רוצה לממש את זכויותיך?
                 </p>
-                <div classname="contact-box">
+                <div className="contact-box">
                   <ul>
                     <li>
                       <FaEnvelope /> <strong>אימייל:</strong>{" "}
@@ -378,7 +378,7 @@ function PrivacyPolicy() {
                 <p>נשתדל להגיב תוך 48 שעות לכל פנייה.</p>
               </section>
 
-              <section classname="update-info">
+              <section className="update-info">
                 <p>
                   <strong>תאריך עדכון אחרון:</strong> ינואר 2026
                 </p>
@@ -401,7 +401,7 @@ function PrivacyPolicy() {
                   and protect your personal information when using the site and
                   purchasing products.
                 </p>
-                <p classname="highlight">
+                <p className="highlight">
                   <FaShieldAlt /> We are committed to protecting your
                   information and will not sell it to third parties.
                 </p>
@@ -510,7 +510,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> All our service providers are
                   required to maintain information confidentiality and not use
                   it for other purposes.
@@ -523,7 +523,7 @@ function PrivacyPolicy() {
                   <li>In case of merger, acquisition, or business sale</li>
                 </ul>
 
-                <p classname="highlight">
+                <p className="highlight">
                   <FaBan /> We will <strong>never</strong> sell or rent your
                   personal information!
                 </p>
@@ -592,7 +592,7 @@ function PrivacyPolicy() {
                   </li>
                 </ul>
 
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> Despite our efforts, no method is
                   100% secure. Please keep your password and account details
                   confidential.
@@ -664,7 +664,7 @@ function PrivacyPolicy() {
                   <li>Contact us with removal request</li>
                 </ul>
 
-                <p classname="note">
+                <p className="note">
                   <FaMailBulk /> Note: Operational emails (order confirmations,
                   shipping updates) will be sent even if you unsubscribe from
                   newsletter.
@@ -741,7 +741,7 @@ function PrivacyPolicy() {
                   Have questions about privacy policy or want to exercise your
                   rights?
                 </p>
-                <div classname="contact-box">
+                <div className="contact-box">
                   <ul>
                     <li>
                       <FaEnvelope /> <strong>Email:</strong>{" "}
@@ -762,7 +762,7 @@ function PrivacyPolicy() {
                 <p>We'll try to respond within 48 hours to any inquiry.</p>
               </section>
 
-              <section classname="update-info">
+              <section className="update-info">
                 <p>
                   <strong>Last Updated:</strong> January 2026
                 </p>

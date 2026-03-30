@@ -22,15 +22,15 @@ function ReturnPolicy() {
   const { language } = useLanguage();
 
   return (
-    <div classname="legal-page">
-      <div classname="legal-container">
+    <div className="legal-page">
+      <div className="legal-container">
         <h1>
           {language === "he"
             ? "מדיניות החזרות והחלפות"
             : "Return & Exchange Policy"}
         </h1>
 
-        <div classname="legal-content">
+        <div className="legal-content">
           {language === "he" ? (
             <>
               <section>
@@ -56,7 +56,7 @@ function ReturnPolicy() {
                   <li>לא בוצעו התאמות אישיות או שינויים במוצר</li>
                   <li>יש לשמור על קבלה או אישור הזמנה</li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> מוצרים שהותאמו אישית (גודל, חריטה,
                   עיצוב מיוחד) לא ניתנים להחזרה, אלא אם כן קיים פגם ייצור.
                 </p>
@@ -102,7 +102,7 @@ function ReturnPolicy() {
                   <li>עלויות משלוח לא מוחזרות (אלא במקרה של פגם ייצור)</li>
                   <li>במקרה של פגם ייצור, נחזיר גם עלויות משלוח</li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaCreditCard /> תהליך ההחזר הכספי עשוי להימשך 5-10 ימי עסקים
                   נוספים, בהתאם לחברת האשראי.
                 </p>
@@ -119,7 +119,7 @@ function ReturnPolicy() {
                   <li>נחזיר את עלות המוצר במלואה כולל משלוח</li>
                   <li>או נשלח מוצר חלופי ללא עלות</li>
                 </ul>
-                <p classname="highlight">
+                <p className="highlight">
                   <FaShieldAlt /> כל המוצרים שלנו מגיעים עם אחריות ל-12 חודשים
                   מפני פגמי ייצור.
                 </p>
@@ -129,8 +129,8 @@ function ReturnPolicy() {
                 <h2>
                   <FaRegEdit /> איך להחזיר מוצר?
                 </h2>
-                <div classname="steps">
-                  <div classname="step">
+                <div className="steps">
+                  <div className="step">
                     <h3>1. צור קשר</h3>
                     <p>שלח לנו אימייל או הודעת וואטסאפ עם:</p>
                     <ul>
@@ -140,17 +140,17 @@ function ReturnPolicy() {
                     </ul>
                   </div>
 
-                  <div classname="step">
+                  <div className="step">
                     <h3>2. קבל אישור</h3>
                     <p>נאשר את ההחזרה ונספק כתובת למשלוח ומספר מעקב</p>
                   </div>
 
-                  <div classname="step">
+                  <div className="step">
                     <h3>3. שלח את המוצר</h3>
                     <p>ארוז את המוצר היטב באריזה המקורית ושלח אלינו</p>
                   </div>
 
-                  <div classname="step">
+                  <div className="step">
                     <h3>4. קבל החזר/החלפה</h3>
                     <p>לאחר בדיקת המוצר, נבצע החזר כספי או נשלח מוצר חלופי</p>
                   </div>
@@ -232,7 +232,7 @@ function ReturnPolicy() {
                   <li>No personal customizations or modifications were made</li>
                   <li>Receipt or order confirmation must be kept</li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaExclamationTriangle /> Personalized products (size,
                   engraving, special design) are not returnable, unless there is
                   a manufacturing defect.
@@ -297,7 +297,7 @@ function ReturnPolicy() {
                     refunded
                   </li>
                 </ul>
-                <p classname="note">
+                <p className="note">
                   <FaCreditCard /> The refund process may take an additional
                   5-10 business days, depending on the credit card company.
                 </p>
@@ -316,7 +316,7 @@ function ReturnPolicy() {
                   </li>
                   <li>Or send a replacement product at no cost</li>
                 </ul>
-                <p classname="highlight">
+                <p className="highlight">
                   <FaShieldAlt /> All our products come with a 12-month warranty
                   against manufacturing defects.
                 </p>
@@ -326,8 +326,8 @@ function ReturnPolicy() {
                 <h2>
                   <FaRegEdit /> How to Return a Product?
                 </h2>
-                <div classname="steps">
-                  <div classname="step">
+                <div className="steps">
+                  <div className="step">
                     <h3>1. Contact Us</h3>
                     <p>Send us an email or WhatsApp message with:</p>
                     <ul>
@@ -337,7 +337,7 @@ function ReturnPolicy() {
                     </ul>
                   </div>
 
-                  <div classname="step">
+                  <div className="step">
                     <h3>2. Get Approval</h3>
                     <p>
                       We'll approve the return and provide shipping address and
@@ -345,7 +345,7 @@ function ReturnPolicy() {
                     </p>
                   </div>
 
-                  <div classname="step">
+                  <div className="step">
                     <h3>3. Ship the Product</h3>
                     <p>
                       Pack the product securely in original packaging and send
@@ -353,7 +353,7 @@ function ReturnPolicy() {
                     </p>
                   </div>
 
-                  <div classname="step">
+                  <div className="step">
                     <h3>4. Receive Refund/Exchange</h3>
                     <p>
                       After inspecting the product, we'll process refund or send

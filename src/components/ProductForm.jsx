@@ -6,8 +6,8 @@ import {
 
 export default function ProductForm({ onSuccess, initialProduct = null }) {
   const [formData, setFormData] = useState({
-    "name": initialProduct?."name" || "",
-    "nameEn": initialProduct?."name"En || "",
+    "name": initialProduct?.name || "",
+    "nameEn": initialProduct?.nameEn || "",
     description: initialProduct?.description || "",
     descriptionEn: initialProduct?.descriptionEn || "",
     price: initialProduct?.price || "",
@@ -39,10 +39,10 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
   };
 
   const handleInputChange = (e) => {
-    const { "name", value } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      ["name"]: value,
+      [name]: value,
     }));
   };
 
@@ -53,8 +53,8 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
 
     try {
       const data = new FormData();
-      data.append("name", formData."name");
-      data.append("nameEn", formData."name"En);
+      data.append("name", formData.name);
+      data.append("nameEn", formData.nameEn);
       data.append("description", formData.description);
       data.append("descriptionEn", formData.descriptionEn);
       data.append("price", formData.price);
@@ -118,66 +118,66 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} classname="product-form">
+    <form onSubmit={handleSubmit} className="product-form">
       <h2>{initialProduct ? "עדכן מוצר" : "צור מוצר חדש"}</h2>
 
-      {error && <div classname="error-message">{error}</div>}
+      {error && <div className="error-message">{error}</div>}
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>שם המוצר (עברית) *</label>
         <input
           type="text"
-          "name"="name"
-          value={formData."name"}
+          name="name"
+          value={formData.name}
           onChange={handleInputChange}
           required
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>שם המוצר (אנגלית)</label>
         <input
           type="text"
-          "name"="nameEn"
-          value={formData."name"En}
+          name="nameEn"
+          value={formData.nameEn}
           onChange={handleInputChange}
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>תיאור (עברית) *</label>
         <textarea
-          "name"="description"
+          name="description"
           value={formData.description}
           onChange={handleInputChange}
           required
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>תיאור (אנגלית)</label>
         <textarea
-          "name"="descriptionEn"
+          name="descriptionEn"
           value={formData.descriptionEn}
           onChange={handleInputChange}
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>מחיר *</label>
         <input
           type="number"
-          "name"="price"
+          name="price"
           value={formData.price}
           onChange={handleInputChange}
           required
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>קטגוריה *</label>
         <select
-          "name"="category"
+          name="category"
           value={formData.category}
           onChange={handleInputChange}
           required
@@ -191,94 +191,94 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         </select>
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>אות (למוצרי אותיות עברית)</label>
         <input
           type="text"
-          "name"="letter"
+          name="letter"
           value={formData.letter}
           onChange={handleInputChange}
           placeholder="א, ב, ג..."
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>משמעות (עברית)</label>
         <input
           type="text"
-          "name"="meaningHe"
+          name="meaningHe"
           value={formData.meaningHe}
           onChange={handleInputChange}
           placeholder="נשמה, נאמנות, צמיחה"
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>משמעות (אנגלית)</label>
         <input
           type="text"
-          "name"="meaningEn"
+          name="meaningEn"
           value={formData.meaningEn}
           onChange={handleInputChange}
           placeholder="Soul, Faithfulness, Growth"
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>גימטריה (מספר)</label>
         <input
           type="number"
-          "name"="gematria"
+          name="gematria"
           value={formData.gematria}
           onChange={handleInputChange}
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>סוגים (מופרדים בפסיקים)</label>
         <input
           type="text"
-          "name"="types"
+          name="types"
           value={formData.types}
           onChange={handleInputChange}
           placeholder="תליון, טבעת, עגיל"
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>תמונה</label>
         <input type="file" accept="image/*" onChange={handleImageChange} />
         {preview && (
-          <img src={preview} alt="preview" classname="image-preview" />
+          <img src={preview} alt="preview" className="image-preview" />
         )}
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>מתכות (כנויות בפסיקים)</label>
         <input
           type="text"
-          "name"="metals"
+          name="metals"
           value={formData.metals}
           onChange={handleInputChange}
           placeholder="זהב, כסף, ברונזה"
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>מלאי</label>
         <input
           type="number"
-          "name"="stock"
+          name="stock"
           value={formData.stock}
           onChange={handleInputChange}
         />
       </div>
 
-      <div classname="form-group">
+      <div className="form-group">
         <label>מחיר מוזל</label>
         <input
           type="number"
-          "name"="discountPrice"
+          name="discountPrice"
           value={formData.discountPrice}
           onChange={handleInputChange}
         />

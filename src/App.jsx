@@ -47,32 +47,62 @@ function App() {
               {/* <ShabbatMode /> */}
               <Navbar />
               <main className="main-content">
-                <Suspense fallback={<div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", color: "#888" }}>טוען...</div>}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/shop" element={<Shop />} />
-                  <Route path="/zodiac" element={<Zodiac />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
-                  {/* <Route path="/story" element={<Story />} /> */}
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/login" element={<Auth />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/verify-code" element={<VerifyCode />} />
-                  <Route path="/change-password" element={<ChangePassword />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="/payment-success" element={<PaymentSuccess />} />
-                  <Route path="/payment-failure" element={<PaymentFailure />} />
-                  <Route path="/shipping-policy" element={<ShippingPolicy />} />
-                  <Route path="/return-policy" element={<ReturnPolicy />} />
-                  <Route
-                    path="/terms-of-service"
-                    element={<TermsOfService />}
-                  />
-                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/accessibility" element={<Accessibility />} />
-                </Routes>
+                <Suspense
+                  fallback={
+                    <div
+                      style={{
+                        minHeight: "60vh",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "1.2rem",
+                        color: "#888",
+                      }}
+                    >
+                      טוען...
+                    </div>
+                  }
+                >
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/shop" element={<Shop />} />
+                    <Route path="/zodiac" element={<Zodiac />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    {/* <Route path="/story" element={<Story />} /> */}
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/login" element={<Auth />} />
+                    <Route
+                      path="/forgot-password"
+                      element={<ForgotPassword />}
+                    />
+                    <Route path="/verify-code" element={<VerifyCode />} />
+                    <Route
+                      path="/change-password"
+                      element={<ChangePassword />}
+                    />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route
+                      path="/payment-success"
+                      element={<PaymentSuccess />}
+                    />
+                    <Route
+                      path="/payment-failure"
+                      element={<PaymentFailure />}
+                    />
+                    <Route
+                      path="/shipping-policy"
+                      element={<ShippingPolicy />}
+                    />
+                    <Route path="/return-policy" element={<ReturnPolicy />} />
+                    <Route
+                      path="/terms-of-service"
+                      element={<TermsOfService />}
+                    />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/accessibility" element={<Accessibility />} />
+                  </Routes>
                 </Suspense>
               </main>
               <Footer />
