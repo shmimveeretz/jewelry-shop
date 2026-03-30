@@ -13,7 +13,7 @@ export const payPlusService = {
    */
   async createPayment(paymentData) {
     try {
-      const response = await axios.post(`${API_URL}/payment/create-payment`, {
+      const response = await axios.post(`${API_URL}/payment/create-intent`, {
         customerName: paymentData.customerName,
         customerEmail: paymentData.customerEmail,
         customerPhone: paymentData.customerPhone,
