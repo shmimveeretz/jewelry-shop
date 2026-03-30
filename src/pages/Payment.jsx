@@ -4,6 +4,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
 import { payPlusService } from "../utils/payPlusService";
 import "../styles/pages/Payment.css";
+import { FaCreditCard, FaLock, FaPhone } from "react-icons/fa";
 
 function Payment() {
   const navigate = useNavigate();
@@ -144,15 +145,19 @@ function Payment() {
               : ""}
           </p>
           <p>
-            {he ? "📧" : "📧"} {orderData.customerEmail}
+            <FaEnvelope /> {orderData.customerEmail}
           </p>
-          <p>📞 {orderData.customerPhone}</p>
+          <p>
+            <FaPhone /> {orderData.customerPhone}
+          </p>
         </div>
 
         {/* Error */}
         {error && (
           <div className="payment-error">
-            <span>⚠️ {error}</span>
+            <span>
+              <FaInfoTriangle /> {error}
+            </span>
           </div>
         )}
 
@@ -170,7 +175,7 @@ function Payment() {
               </>
             ) : (
               <>
-                💳{" "}
+                <FaCreditCard />{" "}
                 {he
                   ? `בצע תשלום מאובטח - ${orderData.totalPrice} ₪`
                   : `Pay Securely - ${orderData.totalPrice} ₪`}
@@ -195,7 +200,7 @@ function Payment() {
         </div>
 
         <p className="payment-secure-note">
-          🔒{" "}
+          <FaLock />{" "}
           {he
             ? "התשלום מתבצע דרך PayPlus - מוצפן ומאובטח לחלוטין"
             : "Payment processed via PayPlus - Fully encrypted and secure"}
