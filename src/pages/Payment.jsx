@@ -4,7 +4,13 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
 import { payPlusService } from "../utils/payPlusService";
 import "../styles/pages/Payment.css";
-import { FaCreditCard, FaLock, FaPhone, FaEnvelope } from "react-icons/fa";
+import {
+  FaCreditCard,
+  FaLock,
+  FaPhone,
+  FaEnvelope,
+  FaInfoTriangle,
+} from "react-icons/fa";
 
 function Payment() {
   const navigate = useNavigate();
