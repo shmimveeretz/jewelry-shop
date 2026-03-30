@@ -29,6 +29,8 @@ const ChangePassword = lazy(() => import("./pages/ChangePassword"));
 const Admin = lazy(() => import("./pages/Admin"));
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const PaymentFailure = lazy(() => import("./pages/PaymentFailure"));
+const Payment = lazy(() => import("./pages/Payment"));
+const PaymentCancelled = lazy(() => import("./pages/PaymentCancelled"));
 const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
 const ReturnPolicy = lazy(() => import("./pages/ReturnPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
@@ -90,6 +92,11 @@ function App() {
                     <Route
                       path="/payment-failure"
                       element={<PaymentFailure />}
+                    />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route
+                      path="/payment-cancelled"
+                      element={<PaymentCancelled />}
                     />
                     <Route
                       path="/shipping-policy"

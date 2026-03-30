@@ -1,0 +1,173 @@
+.payment-page {
+  min-height: 80vh;
+  padding: 3rem 1rem;
+  background: var(--color-background, #fafafa);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.payment-container {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.payment-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--color-primary, #2c2c2c);
+  margin-bottom: 0.5rem;
+}
+
+/* Cards */
+.payment-summary-card,
+.payment-address-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.payment-summary-card h2,
+.payment-address-card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+  color: var(--color-primary, #2c2c2c);
+}
+
+.payment-address-card p {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Items list */
+.payment-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.payment-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.payment-item-qty {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.payment-item-price {
+  font-weight: 600;
+}
+
+/* Price breakdown */
+.payment-breakdown {
+  border-top: 1px solid #eee;
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.payment-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.payment-breakdown-row.total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary, #2c2c2c);
+  border-top: 1px solid #eee;
+  padding-top: 0.6rem;
+  margin-top: 0.2rem;
+}
+
+/* Error */
+.payment-error {
+  background: #fff0f0;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #c0392b;
+  font-size: 0.95rem;
+}
+
+/* Actions */
+.payment-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 10px;
+  background: var(--color-primary, #2c2c2c);
+  color: #fff;
+  transition: opacity 0.2s;
+}
+
+.btn-pay:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-back {
+  width: 100%;
+  text-align: center;
+}
+
+/* Spinner */
+.payment-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Secure note */
+.payment-secure-note {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* RTL support */
+[dir="rtl"] .payment-page {
+  direction: rtl;
+}
+
+@media (max-width: 600px) {
+  .payment-page {
+    padding: 1.5rem 0.75rem;
+  }
+}

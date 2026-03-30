@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useCart } from "../context/CartContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
-import { payPlusService } from "../utils/payPlusService";
 import "../styles/pages/Checkout.css";
 
 function Checkout() {
@@ -11,11 +9,8 @@ function Checkout() {
   const location = useLocation();
   const { language } = useLanguage();
   const { cartItems, total } = location.state || { cartItems: [], total: 0 };
-  const { clearCart } = useCart();
   const { showError } = useToast();
 
-  const [loading, setLoading] = useState(false);
-  const [checkoutAsGuest, setCheckoutAsGuest] = useState(false);
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -105,75 +100,55 @@ function Checkout() {
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    setLoading(true);
+    const shippingPrice = cartItems.length > 0 ? 30 : 0;
+    const itemsPrice = total - shippingPrice;
 
-    try {
-      // Prepare payment data for PayPlus
-      const paymentData = {
-        customerName: formData.fullname,
-        customerEmail: formData.email,
-        customerPhone: formData.phone,
-        amount: total,
-        currency: "ILS",
-        items: cartItems.map((item) => ({
-          name: item.name,
-          quantity: item.quantity || 1,
-          price: item.price,
-        })),
-        shippingAddress: {
-          address: formData.address,
-          city: formData.city,
-          zipCode: formData.zipCode,
-        },
-      };
+    // Save full order data to localStorage for the Payment page
+    const pendingOrder = {
+      customerName: formData.fullname,
+      customerEmail: formData.email,
+      customerPhone: formData.phone,
+      items: cartItems.map((item) => ({
+        productId: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity || 1,
+        selectedOptions: item.selectedOptions || {},
+      })),
+      shippingAddress: {
+        fullname: formData.fullname,
+        address: formData.address,
+        city: formData.city,
+        zipCode: formData.zipCode,
+      },
+      itemsPrice,
+      shippingPrice,
+      totalPrice: total,
+    };
 
-      console.log("📤 Creating PayPlus payment:", paymentData);
+    localStorage.setItem("pendingOrder", JSON.stringify(pendingOrder));
 
-      // Create payment with PayPlus
-      const result = await payPlusService.createPayment(paymentData);
+    // Save shipping details for future use
+    localStorage.setItem(
+      "shippingDetails",
+      JSON.stringify({
+        fullname: formData.fullname,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        zipCode: formData.zipCode,
+      }),
+    );
 
-      if (result.success && result.paymentPageUrl) {
-        console.log("✅ Payment page created:", result.paymentPageUrl);
-
-        // Save order data in localStorage for verification after redirect
-        const orderData = {
-          ...paymentData,
-          transactionUid: result.transactionUid,
-          cartItems: cartItems,
-        };
-        localStorage.setItem("pendingOrder", JSON.stringify(orderData));
-
-        // Save shipping details for future use
-        const shippingDetails = {
-          fullname: formData.fullname,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          zipCode: formData.zipCode,
-        };
-        localStorage.setItem(
-          "shippingDetails",
-          JSON.stringify(shippingDetails),
-        );
-
-        // Redirect to PayPlus payment page
-        window.location.href = result.paymentPageUrl;
-      } else {
-        throw new Error("לא התקבל קישור לתשלום");
-      }
-    } catch (error) {
-      console.error("Payment error:", error);
-      showError(`שגיאה ביצירת תשלום: ${error.message}`);
-      setLoading(false);
-    }
+    navigate("/payment");
   };
 
   if (!cartItems || cartItems.length === 0) {
@@ -344,16 +319,10 @@ function Checkout() {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="btn submit-order-btn"
-              disabled={loading}
-            >
-              {loading
-                ? "מפנה לתשלום..."
-                : language === "he"
-                  ? `המשך לתשלום מאובטח - ${total} ₪`
-                  : `Proceed to Secure Payment - ${total} ₪`}
+            <button type="submit" className="btn submit-order-btn">
+              {language === "he"
+                ? `סכום הזמנה ומעבר לתשלום - ${total} ₪`
+                : `Review & Proceed to Payment - ${total} ₪`}
             </button>
 
             <p className="secure-payment-note">
