@@ -34,10 +34,7 @@ export const payPlusService = {
         shippingAddress: paymentData.shippingAddress,
       };
 
-      const response = await axios.post(
-        `${API_URL}/payment/create-intent`,
-        body,
-      );
+      const response = await axios.post(`${API_URL}/create-intent`, body);
 
       return response.data;
     } catch (error) {
@@ -65,7 +62,7 @@ export const payPlusService = {
    */
   async verifyPayment(transactionUid, orderData = null) {
     try {
-      const url = `${API_URL}/payment/verify/${transactionUid}`;
+      const url = `${API_URL}/verify/${transactionUid}`;
       const params = orderData ? { orderData: JSON.stringify(orderData) } : {};
 
       const response = await axios.get(url, { params });
@@ -88,7 +85,7 @@ export const payPlusService = {
    */
   async refundPayment(transactionUid, amount = null) {
     try {
-      const response = await axios.post(`${API_URL}/payment/refund`, {
+      const response = await axios.post(`${API_URL}/refund`, {
         transactionUid,
         amount,
       });
