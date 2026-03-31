@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/PaymentFailure.css";
+import { FaTimes } from "react-icons/fa";
 
 function PaymentCancelled() {
   const navigate = useNavigate();
@@ -20,7 +21,9 @@ function PaymentCancelled() {
   return (
     <div className="payment-status-page">
       <div className="payment-status-container failure">
-        <div className="status-icon">❌</div>
+        <div className="status-icon">
+          <FaTimes />
+        </div>
 
         <h1>{he ? "התשלום בוטל" : "Payment Cancelled"}</h1>
 

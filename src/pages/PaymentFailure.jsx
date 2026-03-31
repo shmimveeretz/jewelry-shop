@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
+import { FaTimes } from "react-icons/fa";
 import "../styles/pages/PaymentFailure.css";
 
 function PaymentFailure() {
@@ -14,7 +15,7 @@ function PaymentFailure() {
   return (
     <div className="payment-status-page">
       <div className="payment-status-container failure">
-        <div className="status-icon">❌</div>
+        <div className="status-icon"><FaTimes /></div>
 
         <h1>{language === "he" ? "התשלום נכשל" : "Payment Failed"}</h1>
 
