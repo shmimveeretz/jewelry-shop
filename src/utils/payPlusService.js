@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = "https://jewelry-shop-udr7.onrender.com/api";
 
 /**
  * PayPlus Payment Service for Frontend
