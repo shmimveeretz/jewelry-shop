@@ -46,7 +46,7 @@ function App() {
             <ScrollToTop />
             <AccessibilityWidget />
             <div className="App">
-              <ShabbatMode />
+              {/* <ShabbatMode /> */}
               <Navbar />
               <main className="main-content">
                 <Suspense
