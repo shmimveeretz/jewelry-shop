@@ -15,7 +15,6 @@ import {
   GiSeahorse,
 } from "react-icons/gi";
 import { useLanguage } from "../contexts/LanguageContext";
-import logo from "../assets/logo.svg";
 import "../styles/pages/Zodiac.css";
 
 const toRad = (deg) => (deg * Math.PI) / 180;
@@ -377,21 +376,29 @@ function Zodiac() {
                 );
               })}
 
-              <defs>
-                <clipPath id="centerCircleClip">
-                  <circle cx="250" cy="250" r="72" />
-                </clipPath>
-              </defs>
               <circle cx="250" cy="250" r="72" fill="#2c3e50" />
-              <image
-                href={logo}
-                x="178"
-                y="178"
-                width="144"
-                height="144"
-                clipPath="url(#centerCircleClip)"
-                preserveAspectRatio="xMidYMid meet"
-              />
+              <text
+                x="250"
+                y="244"
+                textAnchor="middle"
+                fill="#d4af37"
+                fontSize="15"
+                fontFamily="Cardo, serif"
+                fontWeight="700"
+              >
+                שמים וארץ
+              </text>
+              <text
+                x="250"
+                y="262"
+                textAnchor="middle"
+                fill="#c5a572"
+                fontSize="7"
+                fontFamily="Cardo, serif"
+                letterSpacing="2"
+              >
+                Shamaim VeEretz
+              </text>
             </svg>
 
             <div className="zodiac-subtitle">
