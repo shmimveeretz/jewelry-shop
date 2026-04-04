@@ -120,119 +120,127 @@ function Shop() {
 
   return (
     <div className="shop">
-      <div className="container">
-        <div className="shop-header">
-          <h1>{language === "he" ? "החנות שלנו" : "Our Shop"}</h1>
-        </div>
-
-        {/* Category Hero Section */}
-        {currentCollection && (
-          <div className="category-hero">
-            <div className="category-hero-image">
-              <img
-                src={currentCollection.image}
-                alt={currentCollection.name}
-                loading="lazy"
-                onError={(e) => {
-                  e.target.src =
-                    "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&h=400&fit=crop";
-                }}
-              />
-              <div className="category-hero-overlay"></div>
-            </div>
-            <div className="category-hero-content">
-              <h2>{currentCollection.name}</h2>
-              <p>{currentCollection.description}</p>
-            </div>
+      {/* Editorial Header */}
+      <header className="shop-header">
+        <span className="shop-header-eyebrow">
+          {language === "he" ? "קולקציות" : "COLLECTIONS"}
+        </span>
+        <div className="shop-header-title-wrap">
+          <h1>
+            {language === "he" ? "החנות שלנו" : "Our Shop"}
+          </h1>
+          <div className="shop-header-underline">
+            <div className="shop-header-underline-pulse" />
           </div>
-        )}
+        </div>
+      </header>
 
-        <div className="shop-content">
-          {/* Products Grid */}
-          <section className="products-section">
-            {/* Collection Menu */}
-            <div className="products-header">
-              {/* Collection Filter Menu */}
-              <div className="collection-filter">
-                {collections.map((collection) => (
-                  <button
-                    key={collection.id}
-                    className={`collection-btn ${
-                      selectedCollection === collection.id ? "active" : ""
-                    }`}
-                    onClick={() => setSelectedCollection(collection.id)}
-                  >
-                    <span>{collection.name}</span>
-                  </button>
-                ))}
-              </div>
+      {/* Category Hero Section */}
+      {currentCollection && (
+        <section className="category-hero parallax-hero">
+          <div
+            className="category-hero-bg"
+            style={{ backgroundImage: `url('${currentCollection.image}')` }}
+          />
+          <div className="category-hero-overlay" />
+          <div className="category-hero-content">
+            <h2>{currentCollection.name}</h2>
+            <p>{currentCollection.description}</p>
+          </div>
+        </section>
+      )}
+
+      {/* Sticky Filter Bar */}
+      <div className="filter-bar">
+        <div className="collection-filter">
+          {collections.map((collection) => (
+            <button
+              key={collection.id}
+              className={`collection-btn${selectedCollection === collection.id ? " active" : ""}`}
+              onClick={() => setSelectedCollection(collection.id)}
+            >
+              <span>{collection.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="shop-section-divider" />
+
+      {/* Products */}
+      <div className="shop-grid-section">
+        <div className="container">
+          {loading ? (
+            <div className="products-grid">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="product-skeleton shimmer" />
+              ))}
             </div>
-
-            {loading ? (
-              <div className="loading-state">
-                <p>{t("loading")}</p>
-              </div>
-            ) : error ? (
-              <div className="error-state">
-                <p>{error}</p>
-                <button
-                  className="btn"
-                  onClick={() => window.location.reload()}
+          ) : error ? (
+            <div className="shop-state-box">
+              <span className="shop-state-icon">✦</span>
+              <h3>{language === "he" ? "שגיאה בטעינה" : "Loading Error"}</h3>
+              <p>{error}</p>
+              <button className="btn" onClick={() => window.location.reload()}>
+                {language === "he" ? "נסה שוב" : "Try Again"}
+              </button>
+            </div>
+          ) : filteredProducts.length > 0 ? (
+            <div className="products-grid">
+              {filteredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="product-card"
+                  onClick={() => setSelectedProduct(product)}
+                  style={{ cursor: "pointer" }}
                 >
-                  {language === "he" ? "נסה שוב" : "Try Again"}
-                </button>
-              </div>
-            ) : filteredProducts.length > 0 ? (
-              <div className="products-grid">
-                {filteredProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="product-card"
-                    onClick={() => setSelectedProduct(product)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <img
-                      src={
-                        Array.isArray(product.images) &&
-                        product.images.length > 0
-                          ? product.images[0]
-                          : "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
-                      }
-                      alt={product.name}
-                      className="product-image"
-                      loading="lazy"
-                      onError={(e) => {
-                        console.warn(
-                          `⚠️ Image failed to load for ${product.name}:`,
-                          product.images?.[0],
-                        );
-                        e.target.src =
-                          "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
-                      }}
-                      onLoad={() => {
-                        console.log(
-                          `✅ Image loaded for ${product.name}:`,
-                          product.images?.[0],
-                        );
-                      }}
-                    />
-                    <div className="product-info">
-                      <h3>
-                        {language === "en" && product.nameEn
-                          ? product.nameEn
-                          : product.name}
-                      </h3>
-                      <div className="product-price">{product.price} ₪</div>
-                    </div>
+                  <img
+                    src={
+                      Array.isArray(product.images) && product.images.length > 0
+                        ? product.images[0]
+                        : "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
+                    }
+                    alt={product.name}
+                    className="product-image"
+                    loading="lazy"
+                    onError={(e) => {
+                      console.warn(
+                        `⚠️ Image failed to load for ${product.name}:`,
+                        product.images?.[0],
+                      );
+                      e.target.src =
+                        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
+                    }}
+                    onLoad={() => {
+                      console.log(
+                        `✅ Image loaded for ${product.name}:`,
+                        product.images?.[0],
+                      );
+                    }}
+                  />
+                  <div className="product-overlay">
+                    <h3>
+                      {language === "en" && product.nameEn
+                        ? product.nameEn
+                        : product.name}
+                    </h3>
+                    <div className="product-price">{product.price} ₪</div>
+                    <span className="product-overlay-btn">
+                      {language === "he" ? "צפה בפרטים" : "View Details"}
+                    </span>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-products">
-                <p>{t("noProducts")}</p>
-              </div>
-            )}
-          </section>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="shop-state-box">
+              <span className="shop-state-icon">✧</span>
+              <h3>
+                {language === "he" ? "יצירה בראשיתה" : "Coming Soon"}
+              </h3>
+              <p>{t("noProducts")}</p>
+            </div>
+          )}
         </div>
       </div>
 
