@@ -102,7 +102,7 @@ function About() {
             <div className="about-story-divider" />
             <p>
               {language === "he"
-                ? "קולקציית שמים וארץ נולדה מתוך חיבור בין שתי נשמות, חן ונטע, שהוא הרבה מעבר לזמן ומקום. מסע שכולו אמונה 'שאין עוד מלבדו' וכל יום במסע מעצים את השיבה הביתה..."
+                ? "קולקציית שמיים וארץ נולדה מתוך חיבור בין שתי נשמות, חן ונטע, שהוא הרבה מעבר לזמן ומקום. מסע שכולו אמונה 'שאין עוד מלבדו' וכל יום במסע מעצים את השיבה הביתה..."
                 : "The Shamaim VeEretz Collection was born from a connection between two souls, Chen and Neta, that transcends time and place. A journey of pure faith 'there is nothing but Him' and each day on the journey strengthens the return home..."}
             </p>
             <p>
@@ -160,7 +160,7 @@ function About() {
               </p>
               <p>
                 {language === "he"
-                  ? "היא מאוד אישית ולוקחת את האדם למסע אישי, מבראשית דרך שמים וארץ ומה שביניהם."
+                  ? "היא מאוד אישית ולוקחת את האדם למסע אישי, מבראשית דרך שמיים וארץ ומה שביניהם."
                   : "It is deeply personal and takes each person on a personal journey, from Genesis through Heaven and Earth and what lies between."}
               </p>
             </div>

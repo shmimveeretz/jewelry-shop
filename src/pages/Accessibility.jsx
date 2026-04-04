@@ -15,7 +15,7 @@ const Accessibility = () => {
           <p>
             {language === "he" ? (
               <>
-                שמים וארץ, אחראית על הקמת והפעלת אתר:{" "}
+                שמיים וארץ, אחראית על הקמת והפעלת אתר:{" "}
                 <a
                   href="https://shamaimveeretz.com"
                   target="_blank"
@@ -52,7 +52,7 @@ const Accessibility = () => {
           <h2>{t("accessibilityPurpose")}</h2>
           <p>
             {language === "he"
-              ? "הנגשת האתר של שמים וארץ, נועדה להפוך אותו לזמין, ידידותי ונוח יותר לשימוש עבור אוכלוסיות עם צרכים מיוחדים, הנובעים בין היתר ממוגבלויות מוטוריות שונות, לקויות קוגניטיביות, קוצר רואי, עיוורון או עיוורון צבעים, לקויות שמיעה וכן אוכלוסייה הנמנית על בני הגיל השלישי."
+              ? "הנגשת האתר של שמיים וארץ, נועדה להפוך אותו לזמין, ידידותי ונוח יותר לשימוש עבור אוכלוסיות עם צרכים מיוחדים, הנובעים בין היתר ממוגבלויות מוטוריות שונות, לקויות קוגניטיביות, קוצר רואי, עיוורון או עיוורון צבעים, לקויות שמיעה וכן אוכלוסייה הנמנית על בני הגיל השלישי."
               : "Making the Shamaim VeEretz website accessible is intended to make it available, user-friendly and more convenient for populations with special needs, arising from various motor disabilities, cognitive impairments, color blindness, blindness or color blindness, hearing impairments and the elderly population."}
           </p>
         </section>
@@ -210,9 +210,7 @@ const Accessibility = () => {
               <span className="info-value">חן נטע</span>
             </div>
             <div className="info-item">
-              <span className="info-label">
-                {language === "he" ? "טלפון:" : "Phone:"}
-              </span>
+              <span className="info-label">{language === "he" ? "טלפון:" : "Phone:"}</span>
               <a href="tel:0523897583">0523897583</a>
             </div>
             <div className="info-item">

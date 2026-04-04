@@ -8,7 +8,7 @@ export const useLanguage = () => {
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;
-};
+};  
 
 export const translations = {
   he: {
@@ -24,7 +24,7 @@ export const translations = {
     admin: "ניהול",
 
     // Home Page
-    heroTitle: "שמים וארץ",
+    heroTitle: "שמיים וארץ",
     heroSubtitle: "תכשיטים בעבודת יד עם אבני חן אמיתיות",
     heroDescription:
       "גלו את הקולקציה הייחודית שלנו של תכשיטים מעוצבים בקפידה, המשלבים יופי טבעי עם אומנות מסורתית",
@@ -195,7 +195,7 @@ export const translations = {
     // Accessibility Statement
     accessibility: "הצהרת נגישות",
     accessibilityStatement: "הצהרת נגישות",
-    aboutSite: "על אתר שמים וארץ",
+    aboutSite: "על אתר שמיים וארץ",
     siteUrl: "https://shamaimveeretz.com",
     accessibilityPurpose: "מטרת הנגישות",
     standards: "תקנים וקובעי תקנים",
@@ -240,7 +240,7 @@ export const translations = {
     operatingSystem: "מערכת הפעלה",
     assistiveTechnology: "סוג הטכנולוגיה המסייעת (במידה והשתמשתם)",
     improvementEfforts:
-      "שמים וארץ תעשה ככל יכולה על מנת להנגיש את האתר בצורה המיטבית ולענות לפניות בצורה המקצועית והמהירה ביותר",
+      "שמיים וארץ תעשה ככל יכולה על מנת להנגיש את האתר בצורה המיטבית ולענות לפניות בצורה המקצועית והמהירה ביותר",
     accessibilityChampion: "רכז נגישות",
     phone: "טלפון",
     lastUpdate: "תאריך עדכון הצהרת נגישות",

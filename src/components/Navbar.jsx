@@ -58,7 +58,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={logo} alt="שמים וארץ" className="logo-image" />
+          <img src={logo} alt="שמיים וארץ" className="logo-image" />
         </Link>
 
         <ul className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
