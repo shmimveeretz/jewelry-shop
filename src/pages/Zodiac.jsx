@@ -17,6 +17,26 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Zodiac.css";
 
+const toRad = (deg) => (deg * Math.PI) / 180;
+
+function getSegmentData(index) {
+  const startAngle = index * 30 - 90;
+  const endAngle = (index + 1) * 30 - 90;
+  const midAngle = index * 30 + 15 - 90;
+  const x1 = 250 + 230 * Math.cos(toRad(startAngle));
+  const y1 = 250 + 230 * Math.sin(toRad(startAngle));
+  const x2 = 250 + 230 * Math.cos(toRad(endAngle));
+  const y2 = 250 + 230 * Math.sin(toRad(endAngle));
+  const lx = 250 + 197 * Math.cos(toRad(midAngle));
+  const ly = 250 + 197 * Math.sin(toRad(midAngle));
+  return {
+    path: `M 250,250 L ${x1.toFixed(2)},${y1.toFixed(2)} A 230,230 0 0,1 ${x2.toFixed(2)},${y2.toFixed(2)} Z`,
+    lx,
+    ly,
+    textRotation: (index % 6) * 30 + 15,
+  };
+}
+
 function Zodiac() {
   const { t, language } = useLanguage();
   const [selectedZodiac, setSelectedZodiac] = useState(null);
@@ -25,8 +45,8 @@ function Zodiac() {
   // Define zodiac data structure
   const getZodiacSigns = () => [
     {
-      "name": "טלה",
-      "nameEn": "Aries",
+      name: "טלה",
+      nameEn: "Aries",
       icon: <GiRam />,
       month: language === "he" ? "ניסן" : "Nisan",
       dates: language === "he" ? "20.3-19.4" : "March 20 - April 19",
@@ -44,8 +64,8 @@ function Zodiac() {
           : "Associated with fertility in the broad sense - blooming, growth, implementation of ideas and goals, personal prosperity. Provides stability and resilience, a sense of 'here and now'. Strengthens personal power, charisma and inner radiance.",
     },
     {
-      "name": "שור",
-      "nameEn": "Taurus",
+      name: "שור",
+      nameEn: "Taurus",
       icon: <GiBull />,
       month: language === "he" ? "אייר" : "Iyar",
       dates: language === "he" ? "20.4-20.5" : "April 20 - May 20",
@@ -63,8 +83,8 @@ function Zodiac() {
           : "Strong stone, strengthens willpower, intellect and motivation. Helps the bearer adapt to situations and find the right beauty. Provides a sense of inner beauty leading to strengthening self-confidence in action.",
     },
     {
-      "name": "תאומים",
-      "nameEn": "Gemini",
+      name: "תאומים",
+      nameEn: "Gemini",
       icon: <GiGemini />,
       month: language === "he" ? "סיוון" : "Sivan",
       dates: language === "he" ? "21.5-21.6" : "May 21 - June 21",
@@ -82,8 +102,8 @@ function Zodiac() {
           : "Associated with optimism and power. Strengthens self-expression and memory. Provides emotional and mental strength. Relieves pressure when working with or opposite others. Encourages loyalty and giving.",
     },
     {
-      "name": "סרטן",
-      "nameEn": "Cancer",
+      name: "סרטן",
+      nameEn: "Cancer",
       icon: <GiCrab />,
       month: language === "he" ? "תמוז" : "Tammuz",
       dates: language === "he" ? "22.6-22.7" : "June 22 - July 22",
@@ -101,8 +121,8 @@ function Zodiac() {
           : "Strengthens self-confidence and willpower. Good for withstanding pressures and new challenges. Connects person to higher truth. Strengthens weak body and balances blood system. Strengthens decision-making ability and maintaining personal stance.",
     },
     {
-      "name": "אריה",
-      "nameEn": "Leo",
+      name: "אריה",
+      nameEn: "Leo",
       icon: <GiLion />,
       month: language === "he" ? "אב" : "Av",
       dates: language === "he" ? "23.7-23.8" : "July 23 - August 23",
@@ -120,8 +140,8 @@ function Zodiac() {
           : "Strengthens wisdom, intellect, thinking ability and focus. Helps thinking about solutions and implementing them. Strengthens decisiveness, survival ability, courage and coping while maintaining focus and balance. Encourages self-expression and self-discipline.",
     },
     {
-      "name": "בתולה",
-      "nameEn": "Virgo",
+      name: "בתולה",
+      nameEn: "Virgo",
       icon: <GiWheat />,
       month: language === "he" ? "אלול" : "Elul",
       dates: language === "he" ? "24.8-22.9" : "August 24 - September 22",
@@ -139,8 +159,8 @@ function Zodiac() {
           : "Radiates power. Its frequency simultaneously radiates power, softness and refinement. Symbolizes marital fidelity and faithfulness in love in general. Strengthens the aura. The diamond stone is generally considered an abundance stone. Encourages balance, metabolism in the body.",
     },
     {
-      "name": "מאזניים",
-      "nameEn": "Libra",
+      name: "מאזניים",
+      nameEn: "Libra",
       icon: <GiScales />,
       month: language === "he" ? "תשרי" : "Tishrei",
       dates: language === "he" ? "23.9-23.10" : "September 23 - October 23",
@@ -158,8 +178,8 @@ function Zodiac() {
           : "Related to balance, grounding. Symbolizes connection to earth, basic life force and protection from negative energies. Excellent for energy depletion states and good to accompany meditation and increases sensuality and balances sexual desire.",
     },
     {
-      "name": "עקרב",
-      "nameEn": "Scorpio",
+      name: "עקרב",
+      nameEn: "Scorpio",
       icon: <GiScorpion />,
       month: language === "he" ? "חשוון" : "Cheshvan",
       dates: language === "he" ? "24.10-22.11" : "October 24 - November 22",
@@ -177,8 +197,8 @@ function Zodiac() {
           : "High percentage of opal stone is water representing emotion and femininity. Considered an awakening and increasing stone that amplifies every trait and energetic state in its wearer. Increases creativity and imagination, helps overcome the darkest sides of the soul.",
     },
     {
-      "name": "קשת",
-      "nameEn": "Sagittarius",
+      name: "קשת",
+      nameEn: "Sagittarius",
       icon: <GiBowArrow />,
       month: language === "he" ? "כסלו" : "Kislev",
       dates: language === "he" ? "23.11-21.12" : "November 23 - December 21",
@@ -196,8 +216,8 @@ function Zodiac() {
           : "Related to liberation from logic, helps in change with openness. Radiates a kind of transition from logical thinking to more liberated thinking that allows acceptance of the other and new and thus reaching higher energetic powers. Good for health and general balance.",
     },
     {
-      "name": "גדי",
-      "nameEn": "Capricorn",
+      name: "גדי",
+      nameEn: "Capricorn",
       icon: <GiGoat />,
       month: language === "he" ? "טבת" : "Tevet",
       dates: language === "he" ? "22.12-20.1" : "December 22 - January 20",
@@ -215,8 +235,8 @@ function Zodiac() {
           : "Strengthens willpower, self-control, courage and intuition. Encourages good dreams and peaceful sleep. Provides general protection. Good for general balance and general health. Relieves headaches. Balances the metabolic system and hearing system.",
     },
     {
-      "name": "דלי",
-      "nameEn": "Aquarius",
+      name: "דלי",
+      nameEn: "Aquarius",
       icon: <GiWaterDrop />,
       month: language === "he" ? "שבט" : "Shevat",
       dates: language === "he" ? "21.1-18.2" : "January 21 - February 18",
@@ -234,8 +254,8 @@ function Zodiac() {
           : "Calming, provides deep inner peace accompanied by feeling of comfort and security. Encourages flow in life, even in challenging situations while providing ability to cope peacefully. Reduces feeling of confusion. Strengthens intellect.",
     },
     {
-      "name": "דגים",
-      "nameEn": "Pisces",
+      name: "דגים",
+      nameEn: "Pisces",
       icon: <GiSeahorse />,
       month: language === "he" ? "אדר" : "Adar",
       dates: language === "he" ? "19.2-19.3" : "February 19 - March 19",
@@ -281,83 +301,195 @@ function Zodiac() {
           </p>
         </div>
 
-        <div className="zodiac-container">
-          {selectedZodiac && (
-            <div className="selected-zodiac-info">
-              <div className="zodiac-icon-large">{selectedZodiac.icon}</div>
+        <div className="zodiac-layout">
+          {/* SVG Wheel */}
+          <div className="zodiac-wheel-column">
+            <svg viewBox="0 0 500 500" className="zodiac-svg">
+              <circle
+                cx="250"
+                cy="250"
+                r="240"
+                fill="none"
+                stroke="#d4af37"
+                strokeWidth="1"
+                opacity="0.3"
+              />
+              <circle
+                cx="250"
+                cy="250"
+                r="235"
+                fill="none"
+                stroke="#d4af37"
+                strokeWidth="1.5"
+              />
+              <circle
+                cx="250"
+                cy="250"
+                r="160"
+                fill="none"
+                stroke="#d4af37"
+                strokeWidth="0.5"
+                strokeDasharray="4 2"
+              />
+              <circle
+                cx="250"
+                cy="250"
+                r="80"
+                fill="none"
+                stroke="#d4af37"
+                strokeWidth="1"
+              />
+
+              {zodiacSigns.map((sign, i) => {
+                const { path, lx, ly, textRotation } = getSegmentData(i);
+                const isSelected = selectedZodiac?.name === sign.name;
+                return (
+                  <g
+                    key={sign.name}
+                    className="zodiac-wheel-segment"
+                    onClick={() => handleZodiacSelect(sign)}
+                  >
+                    <path
+                      d={path}
+                      fill={
+                        isSelected ? "rgba(212,175,55,0.18)" : "transparent"
+                      }
+                      stroke="#d4af37"
+                      strokeWidth="0.8"
+                      className="zodiac-svg-segment"
+                    />
+                    <text
+                      x={lx}
+                      y={ly}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      transform={`rotate(${textRotation}, ${lx}, ${ly})`}
+                      fontSize="10"
+                      fill={isSelected ? "#d4af37" : "#2c3e50"}
+                      fontFamily="Cardo, serif"
+                      fontWeight={isSelected ? "700" : "400"}
+                      style={{ pointerEvents: "none" }}
+                    >
+                      {language === "he" ? sign.name : sign.nameEn}
+                    </text>
+                  </g>
+                );
+              })}
+
+              <circle cx="250" cy="250" r="72" fill="#2c3e50" />
+              <text
+                x="250"
+                y="244"
+                textAnchor="middle"
+                fill="#d4af37"
+                fontSize="15"
+                fontFamily="Cardo, serif"
+                fontWeight="700"
+              >
+                ש&amp;א
+              </text>
+              <text
+                x="250"
+                y="262"
+                textAnchor="middle"
+                fill="#c5a572"
+                fontSize="7"
+                fontFamily="Cardo, serif"
+                letterSpacing="2"
+              >
+                HEAVENLY JEWELRY
+              </text>
+            </svg>
+
+            <div className="zodiac-subtitle">
               <h2>
-                {language === "he"
-                  ? `מזל ${selectedZodiac.name}`
-                  : `${selectedZodiac.nameEn}`}
+                {language === "he" ? "הנתיב השמימי" : "The Celestial Path"}
               </h2>
-              <div className="zodiac-details">
-                <p className="zodiac-dates">{selectedZodiac.dates}</p>
-                <p>
-                  <strong>{language === "he" ? "חודש:" : "Month:"}</strong>{" "}
-                  {selectedZodiac.month}
-                </p>
-                <p>
-                  <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
-                  {selectedZodiac.tribe}
-                </p>
-                <p>
-                  <strong>{language === "he" ? "כוכב:" : "Planet:"}</strong>{" "}
-                  {selectedZodiac.planet}
-                </p>
-                <p>
-                  <strong>
-                    {language === "he" ? "אבן חושן:" : "Hoshen Stone:"}
-                  </strong>{" "}
-                  {selectedZodiac.stone}
-                </p>
-                <p>
-                  <strong>{language === "he" ? "יסוד:" : "Element:"}</strong>{" "}
-                  {selectedZodiac.element}
-                </p>
-              </div>
-
-              <div className="zodiac-description">
-                <h3>{language === "he" ? "תכונות המזל:" : "Zodiac Traits:"}</h3>
-                <p>{selectedZodiac.description}</p>
-              </div>
-
-              <div className="stone-description">
-                <h3>
-                  {language === "he"
-                    ? `אבן החושן - ${selectedZodiac.stone}:`
-                    : `Hoshen Stone - ${selectedZodiac.stone}:`}
-                </h3>
-                <p>{selectedZodiac.stoneDescription}</p>
-              </div>
-
-              <button
-                className="view-products-btn"
-                onClick={handleViewProducts}
-              >
+              <p>
                 {language === "he"
-                  ? `צפה בתכשיטים למזל ${selectedZodiac.name}`
-                  : `View ${selectedZodiac.nameEn} Jewelry`}
-              </button>
+                  ? "גלה את הקשר הקדום בין נשמתך, שבטך, ולכוכבים"
+                  : "Discover the ancient connection between your soul, your tribe, and the stars"}
+              </p>
             </div>
-          )}
+          </div>
 
-          <div className="zodiac-wheel">
-            {zodiacSigns.map((sign) => (
-              <div
-                key={sign.name}
-                className={`zodiac-sign ${
-                  selectedZodiac?.name === sign.name ? "selected" : ""
-                }`}
-                onClick={() => handleZodiacSelect(sign)}
-              >
-                <div className="zodiac-icon">{sign.icon}</div>
-                <div className="zodiac-name">
-                  {language === "he" ? sign.name : sign.nameEn}
+          {/* Side Panel */}
+          <div className="zodiac-panel">
+            <div className="zodiac-panel-header">
+              <h3>{language === "he" ? "גלגל המזלות" : "The Zodiac Signs"}</h3>
+              <p>
+                {language === "he"
+                  ? "הנתיב השמימי של השבטים"
+                  : "Celestial Path of the Tribes"}
+              </p>
+            </div>
+
+            {selectedZodiac ? (
+              <div className="zodiac-panel-detail">
+                <div className="zodiac-panel-icon">{selectedZodiac.icon}</div>
+                <h4>
+                  {language === "he"
+                    ? `מזל ${selectedZodiac.name}`
+                    : selectedZodiac.nameEn}
+                </h4>
+                <span className="zodiac-dates-badge">
+                  {selectedZodiac.dates}
+                </span>
+
+                <div className="zodiac-panel-info">
+                  <div>
+                    <span>{language === "he" ? "שבט" : "Tribe"}</span>
+                    <strong>{selectedZodiac.tribe}</strong>
+                  </div>
+                  <div>
+                    <span>{language === "he" ? "כוכב לכת" : "Planet"}</span>
+                    <strong>{selectedZodiac.planet}</strong>
+                  </div>
+                  <div>
+                    <span>{language === "he" ? "אבן" : "Stone"}</span>
+                    <strong>{selectedZodiac.stone}</strong>
+                  </div>
+                  <div>
+                    <span>{language === "he" ? "יסוד" : "Element"}</span>
+                    <strong>{selectedZodiac.element}</strong>
+                  </div>
                 </div>
-                <div className="zodiac-month">{sign.month}</div>
-                <div className="zodiac-dates">{sign.dates}</div>
+
+                <p className="zodiac-panel-desc">
+                  {selectedZodiac.description}
+                </p>
+
+                <button
+                  className="view-products-btn"
+                  onClick={handleViewProducts}
+                >
+                  {language === "he"
+                    ? `צפה בתכשיטים למזל ${selectedZodiac.name}`
+                    : `View ${selectedZodiac.nameEn} Jewelry`}
+                </button>
               </div>
-            ))}
+            ) : (
+              <div className="zodiac-panel-empty">
+                <p>
+                  {language === "he"
+                    ? "בחר מזל מגלגל המזלות"
+                    : "Select a sign from the wheel"}
+                </p>
+              </div>
+            )}
+
+            <div className="zodiac-list">
+              {zodiacSigns.map((sign) => (
+                <div
+                  key={sign.name}
+                  className={`zodiac-list-item ${selectedZodiac?.name === sign.name ? "active" : ""}`}
+                  onClick={() => handleZodiacSelect(sign)}
+                >
+                  <span className="zodiac-list-icon">{sign.icon}</span>
+                  <span>{language === "he" ? sign.name : sign.nameEn}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
