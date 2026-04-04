@@ -55,167 +55,157 @@ function Navbar() {
   };
 
   return (
-    <>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <Link to="/" className="navbar-logo">
-            <img src={logo} alt="שמים וארץ" className="logo-image" />
-          </Link>
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo">
+          <img src={logo} alt="שמים וארץ" className="logo-image" />
+        </Link>
 
-          <ul className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
-            <li>
-              <Link
-                to="/"
-                className={`nav-link-underline ${isActive("/")}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("home")}
-              </Link>
-            </li>
-            <li
-              className="dropdown"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
+        <ul className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
+          <li>
+            <Link
+              to="/"
+              className={isActive("/")}
+              onClick={() => setIsMenuOpen(false)}
             >
-              <Link
-                to="/shop"
-                className={`nav-link-underline ${isActive("/shop")}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("shop")} <FaChevronDown className="dropdown-icon" />
-              </Link>
-              <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
-                <li>
-                  <Link
-                    to="/shop?category=אותיות עבריות"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {language === "he"
-                      ? "אותיות עבריות עתיקות"
-                      : "Ancient Hebrew Letters"}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/shop?category=אבני חושן"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {language === "he" ? "אבני חושן" : "Hoshen Stones"}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/shop?category=מזל, אבן חושן וכוכב"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {language === "he"
-                      ? "כוכב + חושן + מזל"
-                      : "Star + Hoshen + Zodiac"}
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <Link
-                to="/zodiac"
-                className={`nav-link-underline ${isActive("/zodiac")}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("zodiac")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/about"
-                className={`nav-link-underline ${isActive("/about")}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("about")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contact"
-                className={`nav-link-underline ${isActive("/contact")}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t("contactUs")}
-              </Link>
-            </li>
-            {(user?.role === "admin" || user?.role === "roi") && (
+              {t("home")}
+            </Link>
+          </li>
+          <li
+            className="dropdown"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <Link
+              to="/shop"
+              className={isActive("/shop")}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("shop")} <FaChevronDown className="dropdown-icon" />
+            </Link>
+            <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
               <li>
                 <Link
-                  to="/admin"
-                  className={`navbar-admin-link ${isActive("/admin")}`}
-                  onClick={() => setIsMenuOpen(false)}
+                  to="/shop?category=אותיות עבריות"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
                 >
-                  {language === "he" ? "📊 ניהול" : "📊 Admin"}
+                  {language === "he"
+                    ? "אותיות עבריות עתיקות"
+                    : "Ancient Hebrew Letters"}
                 </Link>
               </li>
-            )}
-          </ul>
-
-          <div className="navbar-icons">
-            <button
-              onClick={toggleLanguage}
-              className="navbar-icon language-btn"
-              title={language === "he" ? "Switch to English" : "עבור לעברית"}
-            >
-              <FaGlobe />
-              <span className="language-text">
-                {language === "he" ? "EN" : "עב"}
-              </span>
-            </button>
-            {user ? (
-              <>
-                <span className="user-name">
-                  {language === "he"
-                    ? `שלום, ${user.firstName ? `${user.firstName} ${user.lastName}` : user.name || "משתמש"}`
-                    : `Hello, ${user.firstName ? `${user.firstName} ${user.lastName}` : user.name || "User"}`}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="navbar-icon logout-btn"
-                  title={t("logout")}
+              <li>
+                <Link
+                  to="/shop?category=אבני חושן"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
                 >
-                  <FaSignOutAlt />
-                </button>
-              </>
-            ) : (
-              <Link to="/login" className="navbar-icon" title={t("login")}>
-                <FaUser />
-              </Link>
-            )}
-            <Link to="/cart" className="navbar-icon cart-icon">
-              <FaShoppingCart />
-              {getCartCount() > 0 && (
-                <span className="cart-badge">
-                  <span className="cart-badge-ping" />
-                  <span className="cart-badge-count">{getCartCount()}</span>
-                </span>
-              )}
+                  {language === "he" ? "אבני חושן" : "Hoshen Stones"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=מזל, אבן חושן וכוכב"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he"
+                    ? "כוכב + חושן + מזל"
+                    : "Star + Hoshen + Zodiac"}
+                </Link>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <Link
+              to="/zodiac"
+              className={isActive("/zodiac")}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("zodiac")}
             </Link>
-            <button className="navbar-mobile-toggle" onClick={toggleMenu}>
-              {isMenuOpen ? <FaTimes /> : <FaBars />}
-            </button>
-          </div>
-        </div>
-      </nav>
+          </li>
+          <li>
+            <Link
+              to="/about"
+              className={isActive("/about")}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("about")}
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/contact"
+              className={isActive("/contact")}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {t("contactUs")}
+            </Link>
+          </li>
+          {(user?.role === "admin" || user?.role === "roi") && (
+            <li>
+              <Link
+                to="/admin"
+                className={isActive("/admin")}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {language === "he" ? "📊 ניהול" : "📊 Admin"}
+              </Link>
+            </li>
+          )}
+        </ul>
 
-      {/* Mobile overlay */}
-      {isMenuOpen && (
-        <div className="navbar-overlay" onClick={() => setIsMenuOpen(false)} />
-      )}
-    </>
+        <div className="navbar-icons">
+          <button
+            onClick={toggleLanguage}
+            className="navbar-icon language-btn"
+            title={language === "he" ? "Switch to English" : "עבור לעברית"}
+          >
+            <FaGlobe />
+            <span className="language-text">
+              {language === "he" ? "EN" : "עב"}
+            </span>
+          </button>
+          {user ? (
+            <>
+              <span className="user-name">
+                {language === "he"
+                  ? `שלום, ${user.firstName ? `${user.firstName} ${user.lastName}` : user.name || "משתמש"}`
+                  : `Hello, ${user.firstName ? `${user.firstName} ${user.lastName}` : user.name || "User"}`}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="navbar-icon logout-btn"
+                title={t("logout")}
+              >
+                <FaSignOutAlt />
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="navbar-icon" title={t("login")}>
+              <FaUser />
+            </Link>
+          )}
+          <Link to="/cart" className="navbar-icon cart-icon">
+            <FaShoppingCart />
+            {getCartCount() > 0 && (
+              <span className="cart-badge">{getCartCount()}</span>
+            )}
+          </Link>
+          <button className="navbar-mobile-toggle" onClick={toggleMenu}>
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 }
 
