@@ -5,7 +5,10 @@ const SACRED_NUMBERS = (language) => [
   {
     icon: "auto_stories",
     number: 22,
-    label: language === "he" ? "אותיות בכתב עברי קדום" : "Letters in ancient Hebrew script",
+    label:
+      language === "he"
+        ? "אותיות בכתב עברי קדום"
+        : "Letters in ancient Hebrew script",
     desc:
       language === "he"
         ? "אבני הבניין של היקום, דרכן נברא העולם והן מהוות את ליבת העיצובים שלנו."
@@ -60,8 +63,8 @@ function About() {
           <h1>{t("ourStory")}</h1>
           <p className="about-hero-quote">
             {language === "he"
-              ? "\"בין שמיים לארץ, במפגש של קדושה וחומר, נולדת היצירה המאירה את הנשמה.\""
-              : "\"Between heaven and earth, where the sacred meets matter, creation is born to illuminate the soul.\""}
+              ? '"בין שמיים לארץ, במפגש של קדושה וחומר, נולדת היצירה המאירה את הנשמה."'
+              : '"Between heaven and earth, where the sacred meets matter, creation is born to illuminate the soul."'}
           </p>
           <div className="about-hero-scroll">
             <span className="material-symbols-outlined">expand_more</span>
@@ -76,13 +79,17 @@ function About() {
             <div className="about-story-glow" />
             <img
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPKD1eSSuWwl5NPYODJviVyandcIiUgXJt5MfAEg8Ljf5DqyoGZtI0jEeyhYRqxPeS5D_dJoIv5NjeNLKaQ8F49CR68WY2_BPm1osP5dAaX8xtyOQGHZ0F2C_VHYzus43izX94G0hsToFmecKGkilegGmWkzQDUB34fgyR1NDpl_ZH9i85iYVN1RyqOcsxvIbJawA9qE3rajUNL2DNhtD381dL2bHCTsr7sVsE2E1l6sLGrfQmYvgEND4Fvg8cGQiqHAhA8utBBi-s"
-              alt={language === "he" ? "חן ונטע, מייסדות הקולקציה" : "Chen and Neta, collection founders"}
+              alt={
+                language === "he"
+                  ? "חן ונטע, מייסדות הקולקציה"
+                  : "Chen and Neta, collection founders"
+              }
               className="about-story-img"
             />
             <blockquote className="about-story-quote-card">
               {language === "he"
-                ? "\"האמונה היא החוט המקשר בין כל חוליה וחוליה.\""
-                : "\"Faith is the thread that connects every single link.\""}
+                ? '"האמונה היא החוט המקשר בין כל חוליה וחוליה."'
+                : '"Faith is the thread that connects every single link."'}
             </blockquote>
           </div>
 
@@ -110,7 +117,11 @@ function About() {
         <section className="about-numbers-section">
           <div className="about-numbers-header">
             <h2>{language === "he" ? "מספרים מקודשים" : "Sacred Numbers"}</h2>
-            <p>{language === "he" ? "צפנים של יצירה קוסמית" : "Codes of Cosmic Creation"}</p>
+            <p>
+              {language === "he"
+                ? "צפנים של יצירה קוסמית"
+                : "Codes of Cosmic Creation"}
+            </p>
           </div>
           <div className="about-numbers-grid">
             {SACRED_NUMBERS(language).map((item) => (
