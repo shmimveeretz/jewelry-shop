@@ -21,7 +21,7 @@ function Footer() {
             <h3>{t("aboutUs")}</h3>
             <p>
               {language === "he"
-                ? "שמיים וארץ - חנות תכשיטים יהודיים המתמחה בתכשיטים איכותיים עם סמלים יהודיים. כל תכשיט נעשה באהבה ובקפידה רבה."
+                ? "שמים וארץ - חנות תכשיטים יהודיים המתמחה בתכשיטים איכותיים עם סמלים יהודיים. כל תכשיט נעשה באהבה ובקפידה רבה."
                 : "Shamaim VeEretz - A Jewish jewelry store specializing in quality jewelry with Jewish symbols. Each piece is made with love and great care."}
             </p>
             <div className="footer-social">
@@ -104,7 +104,7 @@ function Footer() {
         <div className="footer-bottom">
           <p>
             &copy; {new Date().getFullYear()}{" "}
-            {language === "he" ? "שמיים וארץ" : "Shamaim VeEretz"}.{" "}
+            {language === "he" ? "שמים וארץ" : "Shamaim VeEretz"}.{" "}
             {t("allRightsReserved")}.
           </p>
         </div>
