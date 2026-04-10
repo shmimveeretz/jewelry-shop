@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
+import { emailService } from "../utils/emailService";
 import "../styles/pages/Auth.css";
 
 function Auth() {
@@ -86,6 +87,15 @@ function Auth() {
         // Save token
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.data));
+
+        // Send welcome email on registration
+        if (!isLogin) {
+          emailService.sendWelcomeEmail({
+            email: formData.email,
+            firstName: formData.firstname,
+            lastName: formData.lastname,
+          });
+        }
 
         const userName =
           data.data.fullname ||
