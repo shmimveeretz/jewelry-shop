@@ -12,8 +12,8 @@ function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -63,8 +63,8 @@ function Auth() {
       const body = isLogin
         ? { email: formData.email, password: formData.password }
         : {
-            firstname: formData.firstname,
-            lastname: formData.lastname,
+            firstName: formData.firstname,
+            lastName: formData.lastname,
             email: formData.email,
             password: formData.password,
             phone: formData.phone,
@@ -127,8 +127,8 @@ function Auth() {
   const toggleMode = () => {
     setIsLogin(!isLogin);
     setFormData({
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       phone: "",
       email: "",
       password: "",

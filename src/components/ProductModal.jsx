@@ -23,14 +23,14 @@ function ProductModal({ product, onClose }) {
   const currentImage = productImages[currentImageIndex];
 
   // const waxColors = [
-  //   { name: "שחור", hex: "#000000" },
-  //   { name: "חום", hex: "#8B4513" },
-  //   { name: "אדום", hex: "#DC143C" },
-  //   { name: "כחול", hex: "#1E90FF" },
-  //   { name: "ירוק", hex: "#228B22" },
-  //   { name: "סגול", hex: "#9370DB" },
-  //   { name: "כתום", hex: "#FF8C00" },
-  //   { name: "ורוד", hex: "#FF69B4" },
+  //   { "name": "שחור", hex: "#000000" },
+  //   { "name": "חום", hex: "#8B4513" },
+  //   { "name": "אדום", hex: "#DC143C" },
+  //   { "name": "כחול", hex: "#1E90FF" },
+  //   { "name": "ירוק", hex: "#228B22" },
+  //   { "name": "סגול", hex: "#9370DB" },
+  //   { "name": "כתום", hex: "#FF8C00" },
+  //   { "name": "ורוד", hex: "#FF69B4" },
   // ];
 
   // Price additions for different options

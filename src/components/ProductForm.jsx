@@ -6,8 +6,8 @@ import {
 
 export default function ProductForm({ onSuccess, initialProduct = null }) {
   const [formData, setFormData] = useState({
-    "name": initialProduct?.name || "",
-    "nameEn": initialProduct?.nameEn || "",
+    name: initialProduct?.name || "",
+    nameEn: initialProduct?.nameEn || "",
     description: initialProduct?.description || "",
     descriptionEn: initialProduct?.descriptionEn || "",
     price: initialProduct?.price || "",

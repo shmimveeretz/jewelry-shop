@@ -25,26 +25,26 @@ function Admin() {
     {
       id: "ORD-001",
       customerId: "user-1",
-      customername: "רוי רביב",
+      customerName: "רוי רביב",
       email: "raviroi@gmail.com",
       totalPrice: 2890,
       status: "pending",
       createdAt: "2026-01-28T14:30:00",
       items: [
-        { id: "aleph", "name": "אלף", price: 890, quantity: 2 },
-        { id: "ruby-odem", "name": "אבן רובי", price: 1290, quantity: 1 },
+        { id: "aleph", name: "אלף", price: 890, quantity: 2 },
+        { id: "ruby-odem", name: "אבן רובי", price: 1290, quantity: 1 },
       ],
     },
     {
       id: "ORD-002",
       customerId: "user-2",
-      customername: "דנה כהן",
+      customerName: "דנה כהן",
       email: "dana@gmail.com",
       totalPrice: 950,
       status: "shipped",
       createdAt: "2026-01-27T10:15:00",
       items: [
-        { id: "aries-pendant", "name": "תליון מזל טלה", price: 950, quantity: 1 },
+        { id: "aries-pendant", name: "תליון מזל טלה", price: 950, quantity: 1 },
       ],
     },
     {
@@ -56,7 +56,7 @@ function Admin() {
       status: "delivered",
       createdAt: "2026-01-25T08:45:00",
       items: [
-        { id: "trinity-aries", "name": "שלישיית טלה", price: 1690, quantity: 1 },
+        { id: "trinity-aries", name: "שלישיית טלה", price: 1690, quantity: 1 },
       ],
     },
   ]);
@@ -117,8 +117,8 @@ function Admin() {
 
   const [formData, setFormData] = useState({
     id: "",
-    "name": "",
-    "nameEn": "",
+    name: "",
+    nameEn: "",
     category: "",
     categoryEn: "",
     description: "",
@@ -137,7 +137,8 @@ function Admin() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const API_BASE_URL =
+        import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(`${API_BASE_URL}/api/products`);
       const data = await response.json();
 
@@ -259,7 +260,8 @@ function Admin() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const API_BASE_URL =
+        import.meta.env.VITE_API_URL || "http://localhost:5000";
       const token = localStorage.getItem("token");
       const response = await fetch(`${API_BASE_URL}/api/users`, {
         method: "GET",
@@ -639,17 +641,14 @@ function Admin() {
   const removeFromFirewallBackend = async (ipAddress) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${API_BASE_URL}/api/firewall/remove`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ ipAddress }),
+      const response = await fetch(`${API_BASE_URL}/api/firewall/remove`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({ ipAddress }),
+      });
 
       const data = await response.json();
       if (!data.success) {
@@ -702,8 +701,8 @@ function Admin() {
     setEditingProduct(null);
     setFormData({
       id: "",
-      "name": "",
-      "nameEn": "",
+      name: "",
+      nameEn: "",
       category: "",
       categoryEn: "",
       description: "",

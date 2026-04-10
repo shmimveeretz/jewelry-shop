@@ -12,7 +12,7 @@ function Checkout() {
   const { showError } = useToast();
 
   const [formData, setFormData] = useState({
-    fullname: "",
+    fullName: "",
     email: "",
     phone: "",
     address: "",
@@ -34,7 +34,7 @@ function Checkout() {
           const details = JSON.parse(savedDetails);
           setFormData((prev) => ({
             ...prev,
-            fullname: details.fullname || "",
+            fullName: details.fullname || "",
             email: details.email || "",
             phone: details.phone || "",
             address: details.address || "",
@@ -58,7 +58,7 @@ function Checkout() {
 
   const getFieldLabel = (field) => {
     const labels = {
-      fullname: "שם מלא",
+      fullName: "שם מלא",
       email: "אימייל",
       phone: "טלפון",
       address: "כתובת",
@@ -123,7 +123,7 @@ function Checkout() {
         selectedOptions: item.selectedOptions || {},
       })),
       shippingAddress: {
-        fullname: formData.fullname,
+        fullName: formData.fullname,
         address: formData.address,
         city: formData.city,
         zipCode: formData.zipCode,
@@ -139,7 +139,7 @@ function Checkout() {
     localStorage.setItem(
       "shippingDetails",
       JSON.stringify({
-        fullname: formData.fullname,
+        fullName: formData.fullname,
         email: formData.email,
         phone: formData.phone,
         address: formData.address,
