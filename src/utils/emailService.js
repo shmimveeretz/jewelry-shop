@@ -1,12 +1,12 @@
 // Email Service - Send order confirmation emails
 const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const emailService = {
   // Send order confirmation to customer and admin
   sendOrderConfirmation: async (orderData) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/email/order-confirmation`, {
+      const response = await fetch(`${API_BASE_URL}/api/email/order-confirmation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const emailService = {
   // Send contact form email
   sendContactForm: async (contactData) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/email/contact`, {
+      const response = await fetch(`${API_BASE_URL}/api/email/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

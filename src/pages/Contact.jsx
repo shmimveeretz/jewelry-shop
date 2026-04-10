@@ -53,7 +53,7 @@ function Contact() {
           message: data.message,
         });
         setFormData({
-          "name": "",
+          name: "",
           email: "",
           phone: "",
           subject: "",
