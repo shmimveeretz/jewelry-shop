@@ -78,7 +78,7 @@ function About() {
           <div className="about-story-image-col">
             <div className="about-story-glow" />
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPKD1eSSuWwl5NPYODJviVyandcIiUgXJt5MfAEg8Ljf5DqyoGZtI0jEeyhYRqxPeS5D_dJoIv5NjeNLKaQ8F49CR68WY2_BPm1osP5dAaX8xtyOQGHZ0F2C_VHYzus43izX94G0hsToFmecKGkilegGmWkzQDUB34fgyR1NDpl_ZH9i85iYVN1RyqOcsxvIbJawA9qE3rajUNL2DNhtD381dL2bHCTsr7sVsE2E1l6sLGrfQmYvgEND4Fvg8cGQiqHAhA8utBBi-s"
+              src="https://res.cloudinary.com/dhayarvh3/image/upload/v1776006525/The_Minds_Behind.jpg"
               alt={
                 language === "he"
                   ? "חן ונטע, מייסדות הקולקציה"
@@ -107,8 +107,8 @@ function About() {
             </p>
             <p>
               {language === "he"
-                ? "כל תכשיט בקולקציה אינו רק פריט נוי, אלא קמע של ממש. חן, האמון על העיצוב המדויק, ונטע, המפיחה רוח בכל אבן ואות, יוצרים יחד הרמוניה שמתבטאת בשימוש בזהב טהור, אבני חושן וכתב עברי קדום."
-                : "Each piece in the collection is not merely an ornament but a true talisman. Together, Chen and Neta create a harmony expressed through pure gold, Hoshen stones, and ancient Hebrew script."}
+                ? "כל תכשיט בקולקציה הוא סיפור שמספר את השתלשלות האור מאין סוף ברוך הוא ועד לעולמנו הנוכחי. ועל כל הוא בעל נוכחות פיזית ויופי לצד ערך מוסף שמחבר את האדם למקום הנסתר בנפש, ברוח ובנשמה. שזוהי כל מהותה של הבריאה, חיבור בין שמים לארץ שהוא חיבור בין הקדוש ברוך הוא והשכינה הקדושה."
+                : "Every piece of jewelry in the collection is a story, recounting the descent of the Divine light from the Infinite (Ein Sof), Blessed be He, down to our present world. Therefore, alongside its physical presence and beauty, it holds a profound added value that connects a person to the hidden depths of their soul, spirit, and higher consciousness. This is the very essence of creation: a bridge between heaven and earth, uniting the Holy One, Blessed be He, with the Holy Divine Presence."}
             </p>
           </div>
         </section>

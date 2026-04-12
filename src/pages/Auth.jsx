@@ -100,7 +100,7 @@ function Auth() {
         const userName =
           data.data.fullname ||
           `${data.data.firstname} ${data.data.lastname}` ||
-          data.data.name ||
+          data.data.name ||s
           (language === "he" ? "משתמש" : "User");
         showSuccess(
           isLogin
