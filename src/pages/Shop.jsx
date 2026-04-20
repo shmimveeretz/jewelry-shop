@@ -96,6 +96,16 @@ function Shop() {
           : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
     },
     {
+      id: "כוכבים",
+      name: language === "he" ? "כוכבים" : "Planets",
+      image:
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410177/Planets.jpg",
+      description:
+        language === "he"
+          ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
+          : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
+    },
+    {
       id: "מזל, אבן חושן וכוכב",
       name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
       image:
@@ -247,4 +257,3 @@ function Shop() {
 }
 
 export default Shop;
-
