@@ -476,6 +476,12 @@ function ProductModal({ product, onClose }) {
               */}
             </div>
 
+            <div className="shipping-note">
+              {language === "he"
+                ? "זמן אספקה: עד 14 ימי עסקים"
+                : "Delivery time: up to 14 business days"}
+            </div>
+
             <div className="add-to-cart-section">
               <button className="btn add-to-cart-btn" onClick={handleAddToCart}>
                 {language === "he"

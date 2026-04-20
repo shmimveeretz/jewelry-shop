@@ -1,5 +1,22 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useEffect, useRef } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+
+function MetaPixelPageView() {
+  const location = useLocation();
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // First PageView already tracked by index.html
+    }
+    if (typeof window.fbq === "function") {
+      window.fbq("track", "PageView");
+    }
+  }, [location.pathname]);
+
+  return null;
+}
 import "./styles/App.css";
 
 // Context
@@ -43,6 +60,7 @@ function App() {
       <ToastProvider>
         <CartProvider>
           <Router>
+            <MetaPixelPageView />
             <ScrollToTop />
             <AccessibilityWidget />
             <div className="App">

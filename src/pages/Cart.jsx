@@ -42,7 +42,7 @@ function Cart() {
       <div className="cart-page">
         <div className="cart-container">
           <div className="empty-cart">
-            <div className="empty-cart-icon">🛒</div>
+            <div className="empty-cart-icon"><span className="material-symbols-outlined" style={{fontSize:"3rem",color:"var(--color-secondary)",fontVariationSettings:"'FILL' 0, 'wght' 200"}}>shopping_bag</span></div>
             <h2>{t("emptyCart")}</h2>
             <p>{t("startShopping")}</p>
             <Link to="/shop" className="btn">

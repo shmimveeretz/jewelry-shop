@@ -296,8 +296,8 @@ function Zodiac() {
           </h1>
           <p>
             {language === "he"
-              ? "גלה את המזל שלך ואת אבן החושן המיוחדת לחודש הלידה העברי שלך"
-              : "Discover your zodiac sign and the special Hoshen stone for your Hebrew birth month"}
+              ? "\"בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם\" — תהילים לג:ו"
+              : "\"By the word of the LORD the heavens were made, and by the breath of His mouth all their host\" — Psalms 33:6"}
           </p>
         </div>
 

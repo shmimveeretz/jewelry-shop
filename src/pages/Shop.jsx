@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/pages/Shop.css";
 import ProductModal from "../components/ProductModal";
@@ -247,3 +247,4 @@ function Shop() {
 }
 
 export default Shop;
+

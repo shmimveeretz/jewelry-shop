@@ -107,7 +107,7 @@ function About() {
             </p>
             <p>
               {language === "he"
-                ? "כל תכשיט בקולקציה הוא סיפור שמספר את השתלשלות האור מאין סוף ברוך הוא ועד לעולמנו הנוכחי. ועל כל הוא בעל נוכחות פיזית ויופי לצד ערך מוסף שמחבר את האדם למקום הנסתר בנפש, ברוח ובנשמה. שזוהי כל מהותה של הבריאה, חיבור בין שמים לארץ שהוא חיבור בין הקדוש ברוך הוא והשכינה הקדושה."
+                ? "כל תכשיט בקולקציה הוא סיפור שמספר את השתלשלות האור מאין סוף ברוך הוא ועד לעולמנו הנוכחי. ועל כן הוא בעל נוכחות פיזית ויופי לצד ערך מוסף שמחבר את האדם למקום הנסתר בנפש, ברוח ובנשמה. שזוהי כל מהותה של הבריאה, חיבור בין שמים לארץ שהוא חיבור בין הקדוש ברוך הוא והשכינה הקדושה."
                 : "Every piece of jewelry in the collection is a story, recounting the descent of the Divine light from the Infinite (Ein Sof), Blessed be He, down to our present world. Therefore, alongside its physical presence and beauty, it holds a profound added value that connects a person to the hidden depths of their soul, spirit, and higher consciousness. This is the very essence of creation: a bridge between heaven and earth, uniting the Holy One, Blessed be He, with the Holy Divine Presence."}
             </p>
           </div>
