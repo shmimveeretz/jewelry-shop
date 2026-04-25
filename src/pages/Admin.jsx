@@ -6,6 +6,8 @@ import ProductForm from "../components/ProductForm";
 import { getAllProducts, deleteProduct } from "../services/productApi";
 import "../styles/pages/Admin.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function Admin() {
   const { language, t } = useLanguage();
   const { showSuccess, showError } = useToast();
@@ -63,43 +65,7 @@ function Admin() {
 
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
-
-  // Devices State - Mock data (Only for role "roi")
-  const [devices, setDevices] = useState([
-    {
-      id: "dev-1",
-      ipAddress: "192.168.1.100",
-      deviceName: "Chrome - Windows",
-      location: "ירושלים, ישראל",
-      locationEn: "Jerusalem, Israel",
-      lastLogin: "2026-01-30T14:30:00",
-      loginCount: 12,
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-      blocked: false,
-    },
-    {
-      id: "dev-2",
-      ipAddress: "203.45.67.89",
-      deviceName: "Safari - iPhone",
-      location: "תל אביב, ישראל",
-      locationEn: "Tel Aviv, Israel",
-      lastLogin: "2026-01-29T10:15:00",
-      loginCount: 8,
-      userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0)",
-      blocked: false,
-    },
-    {
-      id: "dev-3",
-      ipAddress: "156.23.45.67",
-      deviceName: "Edge - Windows",
-      location: "חיפה, ישראל",
-      locationEn: "Haifa, Israel",
-      lastLogin: "2026-01-28T16:45:00",
-      loginCount: 5,
-      userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit",
-      blocked: false,
-    },
-  ]);
+  const [devices, setDevices] = useState([]);
 
   const [blockedIPs, setBlockedIPs] = useState([]);
   const [deviceSearchTerm, setDeviceSearchTerm] = useState("");
@@ -136,9 +102,6 @@ function Admin() {
 
   const fetchProducts = async () => {
     try {
-      setLoading(true);
-      const API_BASE_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(`${API_BASE_URL}/api/products`);
       const data = await response.json();
 
@@ -233,6 +196,33 @@ function Admin() {
     fetchUsers();
   }, []);
 
+  // Fetch devices from API
+  useEffect(() => {
+    fetchDevices();
+  }, []);
+
+  const fetchDevices = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/admin/devices`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setDevices(data.data);
+      } else {
+        console.error("Error fetching devices:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching devices:", error);
+    }
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     try {
@@ -260,8 +250,6 @@ function Admin() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const API_BASE_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:5000";
       const token = localStorage.getItem("token");
       const response = await fetch(`${API_BASE_URL}/api/users`, {
         method: "GET",
@@ -527,30 +515,48 @@ function Admin() {
   });
 
   const handleBlockIP = (deviceId) => {
-    const device = devices.find((d) => d.id === deviceId);
+    const device = devices.find((d) => d.id === deviceId || d._id === deviceId);
     if (!device) return;
 
-    setDevices(
-      devices.map((d) =>
-        d.id === deviceId ? { ...d, blocked: !d.blocked } : d,
-      ),
-    );
+    const newBlocked = !device.blocked;
+    const blockDeviceAsync = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `${API_BASE_URL}/api/admin/devices/${device._id || device.id}/block`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ blocked: newBlocked }),
+          },
+        );
 
-    if (!device.blocked) {
-      setBlockedIPs([...blockedIPs, device.ipAddress]);
-      showSuccess(
-        language === "he"
-          ? `כתובת IP ${device.ipAddress} חסומה בהצלחה`
-          : `IP address ${device.ipAddress} blocked successfully`,
-      );
-    } else {
-      setBlockedIPs(blockedIPs.filter((ip) => ip !== device.ipAddress));
-      showSuccess(
-        language === "he"
-          ? `כתובת IP ${device.ipAddress} הוסרה מחסימה`
-          : `IP address ${device.ipAddress} unblocked successfully`,
-      );
-    }
+        const data = await response.json();
+        if (data.success) {
+          setDevices(
+            devices.map((d) =>
+              (d.id === deviceId || d._id === deviceId)
+                ? { ...d, blocked: newBlocked }
+                : d,
+            ),
+          );
+          showSuccess(
+            language === "he"
+              ? `כתובת IP ${device.ipAddress} ${newBlocked ? "חסומה" : "הוסרה מחסימה"} בהצלחה`
+              : `IP address ${device.ipAddress} ${newBlocked ? "blocked" : "unblocked"} successfully`,
+          );
+        } else {
+          showError(data.message || "Error updating block status");
+        }
+      } catch (error) {
+        console.error("Error blocking device:", error);
+        showError(language === "he" ? "שגיאה בחיבור לשרת" : "Connection error");
+      }
+    };
+    blockDeviceAsync();
   };
 
   const handleAddToFirewall = () => {
@@ -662,13 +668,15 @@ function Admin() {
   const filteredDevices = devices
     .filter((device) => {
       return (
-        device.ipAddress
+        (device.ipAddress || "")
           .toLowerCase()
           .includes(deviceSearchTerm.toLowerCase()) ||
-        device.deviceName
+        (device.deviceName || "")
           .toLowerCase()
           .includes(deviceSearchTerm.toLowerCase()) ||
-        device.location.toLowerCase().includes(deviceSearchTerm.toLowerCase())
+        (device.location || "")
+          .toLowerCase()
+          .includes(deviceSearchTerm.toLowerCase())
       );
     })
     .sort((a, b) => new Date(b.lastLogin) - new Date(a.lastLogin));
