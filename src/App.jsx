@@ -78,6 +78,9 @@ function DeviceTracker() {
         const API_BASE_URL =
           import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+        const storedUser = localStorage.getItem("user");
+        const userId = storedUser ? JSON.parse(storedUser)?._id : undefined;
+
         await fetch(`${API_BASE_URL}/api/admin/devices/track`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -93,6 +96,7 @@ function DeviceTracker() {
             os: getOS(),
             screen: `${screen.width}x${screen.height}`,
             language: navigator.language,
+            ...(userId && { userId }),
           }),
         });
 

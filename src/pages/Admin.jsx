@@ -1432,7 +1432,9 @@ function Admin() {
                 <thead>
                   <tr>
                     <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
-                    <th>{language === "he" ? "מכשיר / דפדפן" : "Device / Browser"}</th>
+                    <th>
+                      {language === "he" ? "מכשיר / דפדפן" : "Device / Browser"}
+                    </th>
                     <th>{language === "he" ? "מערכת הפעלה" : "OS"}</th>
                     <th>{language === "he" ? "מיקום" : "Location"}</th>
                     <th>{language === "he" ? "מסך / שפה" : "Screen / Lang"}</th>
@@ -1487,7 +1489,9 @@ function Admin() {
                         <div style={{ fontSize: "0.85em" }}>
                           {device.screen || "-"}
                           {device.language && (
-                            <div style={{ color: "#888" }}>{device.language}</div>
+                            <div style={{ color: "#888" }}>
+                              {device.language}
+                            </div>
                           )}
                         </div>
                       </td>
