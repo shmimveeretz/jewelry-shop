@@ -1432,8 +1432,10 @@ function Admin() {
                 <thead>
                   <tr>
                     <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
-                    <th>{language === "he" ? "שם מכשיר" : "Device name"}</th>
+                    <th>{language === "he" ? "מכשיר / דפדפן" : "Device / Browser"}</th>
+                    <th>{language === "he" ? "מערכת הפעלה" : "OS"}</th>
                     <th>{language === "he" ? "מיקום" : "Location"}</th>
+                    <th>{language === "he" ? "מסך / שפה" : "Screen / Lang"}</th>
                     <th>
                       {language === "he" ? "ספירת כניסות" : "Login Count"}
                     </th>
@@ -1450,7 +1452,21 @@ function Admin() {
                       <td>
                         <code className="ip-address">{device.ipAddress}</code>
                       </td>
-                      <td>{device.deviceName}</td>
+                      <td>
+                        <div>
+                          <strong>{device.deviceName || "-"}</strong>
+                          {device.browser && (
+                            <div style={{ fontSize: "0.8em", color: "#666" }}>
+                              {device.browser}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: "0.85em" }}>
+                          {device.os || "-"}
+                        </div>
+                      </td>
                       <td>
                         <div>
                           <strong>
@@ -1465,6 +1481,14 @@ function Admin() {
                               ? device.location.timezone
                               : ""}
                           </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: "0.85em" }}>
+                          {device.screen || "-"}
+                          {device.language && (
+                            <div style={{ color: "#888" }}>{device.language}</div>
+                          )}
                         </div>
                       </td>
                       <td>
