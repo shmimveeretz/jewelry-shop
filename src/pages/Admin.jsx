@@ -667,6 +667,10 @@ function Admin() {
 
   const filteredDevices = devices
     .filter((device) => {
+      const locationStr = [device.location?.city, device.location?.country, device.location?.timezone]
+        .filter(Boolean)
+        .join(", ")
+        .toLowerCase();
       return (
         (device.ipAddress || "")
           .toLowerCase()
@@ -674,9 +678,7 @@ function Admin() {
         (device.deviceName || "")
           .toLowerCase()
           .includes(deviceSearchTerm.toLowerCase()) ||
-        (device.location || "")
-          .toLowerCase()
-          .includes(deviceSearchTerm.toLowerCase())
+        locationStr.includes(deviceSearchTerm.toLowerCase())
       );
     })
     .sort((a, b) => new Date(b.lastLogin) - new Date(a.lastLogin));
@@ -1446,9 +1448,13 @@ function Admin() {
                       <td>{device.deviceName}</td>
                       <td>
                         <div>
-                          <strong>{device.location}</strong>
+                          <strong>
+                            {device.location?.city && device.location?.country
+                              ? `${device.location.city}, ${device.location.country}`
+                              : device.location?.city || device.location?.country || "-"}
+                          </strong>
                           <div style={{ fontSize: "0.8em", color: "#666" }}>
-                            {device.locationEn}
+                            {device.location?.timezone || ""}
                           </div>
                         </div>
                       </td>
