@@ -214,6 +214,7 @@ function Admin() {
 
       const data = await response.json();
       if (data.success) {
+        console.log("Device sample:", JSON.stringify(data.data[0], null, 2));
         setDevices(data.data);
       } else {
         console.error("Error fetching devices:", data.message);
@@ -538,7 +539,7 @@ function Admin() {
         if (data.success) {
           setDevices(
             devices.map((d) =>
-              (d.id === deviceId || d._id === deviceId)
+              d.id === deviceId || d._id === deviceId
                 ? { ...d, blocked: newBlocked }
                 : d,
             ),
@@ -667,7 +668,11 @@ function Admin() {
 
   const filteredDevices = devices
     .filter((device) => {
-      const locationStr = [device.location?.city, device.location?.country, device.location?.timezone]
+      const locationStr = [
+        device.location?.city,
+        device.location?.country,
+        device.location?.timezone,
+      ]
         .filter(Boolean)
         .join(", ")
         .toLowerCase();
@@ -1451,10 +1456,14 @@ function Admin() {
                           <strong>
                             {device.location?.city && device.location?.country
                               ? `${device.location.city}, ${device.location.country}`
-                              : device.location?.city || device.location?.country || "-"}
+                              : device.location?.city ||
+                                device.location?.country ||
+                                "-"}
                           </strong>
                           <div style={{ fontSize: "0.8em", color: "#666" }}>
-                            {device.location?.timezone || ""}
+                            {typeof device.location?.timezone === "string"
+                              ? device.location.timezone
+                              : ""}
                           </div>
                         </div>
                       </td>
