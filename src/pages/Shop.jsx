@@ -131,9 +131,6 @@ function Shop() {
   return (
     <div className="shop">
       <div className="container">
-        <div className="shop-header">
-          <h1>{language === "he" ? "החנות שלנו" : "Our Shop"}</h1>
-        </div>
 
         {/* Category Hero Section */}
         {currentCollection && (
