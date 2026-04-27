@@ -92,8 +92,14 @@ function Cart() {
                 />
 
                 <div className="cart-item-details">
-                  <h3>{language === "en" && item.nameEn ? item.nameEn : item.name}</h3>
-                  <p className="cart-item-description">{language === "en" && item.descriptionEn ? item.descriptionEn : item.description}</p>
+                  <h3>
+                    {language === "en" && item.nameEn ? item.nameEn : item.name}
+                  </h3>
+                  <p className="cart-item-description">
+                    {language === "en" && item.descriptionEn
+                      ? item.descriptionEn
+                      : item.description}
+                  </p>
 
                   {/* Display selected options */}
                   {item.selectedOptions && (
@@ -122,7 +128,11 @@ function Cart() {
                   )}
 
                   <div className="cart-item-meta">
-                    <span className="cart-item-category">{language === "en" && item.categoryEn ? item.categoryEn : item.category}</span>
+                    <span className="cart-item-category">
+                      {language === "en" && item.categoryEn
+                        ? item.categoryEn
+                        : item.category}
+                    </span>
                     <span className="cart-item-price-single">
                       {item.price} ₪ ליחידה
                     </span>

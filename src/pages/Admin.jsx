@@ -911,7 +911,15 @@ function Admin() {
   if (!isAuthorized) {
     return (
       <div className="admin-page">
-        <div className="loading-state" style={{ minHeight: "50vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div
+          className="loading-state"
+          style={{
+            minHeight: "50vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <p>{language === "he" ? "טוען..." : "Loading..."}</p>
         </div>
       </div>
@@ -974,7 +982,9 @@ function Admin() {
             {/* Section Header */}
             <div className="section-header">
               <div>
-                <h1>{language === "he" ? "ניהול מוצרים" : "Product Management"}</h1>
+                <h1>
+                  {language === "he" ? "ניהול מוצרים" : "Product Management"}
+                </h1>
                 <p className="section-subtitle">
                   {language === "he"
                     ? `מנהל ${filteredProducts.length} פריטים בחנות`
@@ -1026,13 +1036,17 @@ function Admin() {
                   {loading ? (
                     <tr>
                       <td colSpan="6" className="empty-table">
-                        {language === "he" ? "טוען מוצרים..." : "Loading products..."}
+                        {language === "he"
+                          ? "טוען מוצרים..."
+                          : "Loading products..."}
                       </td>
                     </tr>
                   ) : filteredProducts.length === 0 ? (
                     <tr>
                       <td colSpan="6" className="empty-table">
-                        {language === "he" ? "לא נמצאו מוצרים" : "No products found"}
+                        {language === "he"
+                          ? "לא נמצאו מוצרים"
+                          : "No products found"}
                       </td>
                     </tr>
                   ) : (
@@ -1040,7 +1054,8 @@ function Admin() {
                       <tr key={product._id || product.id}>
                         <td>
                           <div className="product-thumb">
-                            {Array.isArray(product.images) && product.images[0] ? (
+                            {Array.isArray(product.images) &&
+                            product.images[0] ? (
                               <img
                                 src={product.images[0]}
                                 alt={product.name}
@@ -1059,13 +1074,17 @@ function Admin() {
                         <td className="product-name-cell">
                           {product.name}
                           {product.nameEn && (
-                            <span className="product-name-sub">{product.nameEn}</span>
+                            <span className="product-name-sub">
+                              {product.nameEn}
+                            </span>
                           )}
                         </td>
                         <td className="text-muted">
                           {product.category}
                           {product.categoryEn && (
-                            <span className="product-name-sub">{product.categoryEn}</span>
+                            <span className="product-name-sub">
+                              {product.categoryEn}
+                            </span>
                           )}
                         </td>
                         <td className="text-bold">₪{product.price}</td>
@@ -1131,7 +1150,10 @@ function Admin() {
                 </p>
               ) : (
                 filteredProducts.map((product) => (
-                  <div key={product._id || product.id} className="product-card-mobile">
+                  <div
+                    key={product._id || product.id}
+                    className="product-card-mobile"
+                  >
                     <div className="product-card-image">
                       {Array.isArray(product.images) && product.images[0] ? (
                         <img
@@ -1164,7 +1186,9 @@ function Admin() {
                           <button
                             className="icon-btn icon-btn-delete"
                             onClick={() =>
-                              handleDeleteProductWithImage(product._id || product.id)
+                              handleDeleteProductWithImage(
+                                product._id || product.id,
+                              )
                             }
                           >
                             <FaTrash />
@@ -1205,7 +1229,9 @@ function Admin() {
           <>
             <div className="section-header">
               <div>
-                <h1>{language === "he" ? "ניהול משתמשים" : "User Management"}</h1>
+                <h1>
+                  {language === "he" ? "ניהול משתמשים" : "User Management"}
+                </h1>
                 <p className="section-subtitle">
                   {language === "he"
                     ? `סה"כ ${users.length} משתמשים רשומים`
@@ -1269,11 +1295,13 @@ function Admin() {
                               }
                               disabled={
                                 user.id ===
-                                  JSON.parse(localStorage.getItem("user") || "{}")
-                                    .id ||
+                                  JSON.parse(
+                                    localStorage.getItem("user") || "{}",
+                                  ).id ||
                                 user._id ===
-                                  JSON.parse(localStorage.getItem("user") || "{}")
-                                    ._id
+                                  JSON.parse(
+                                    localStorage.getItem("user") || "{}",
+                                  )._id
                               }
                             >
                               <option value="user">
@@ -1292,7 +1320,9 @@ function Admin() {
                           <td>
                             <span
                               className={`status-badge ${
-                                user.blocked ? "status-blocked" : "status-active"
+                                user.blocked
+                                  ? "status-blocked"
+                                  : "status-active"
                               }`}
                             >
                               <span className="status-dot"></span>
@@ -1344,7 +1374,9 @@ function Admin() {
           <>
             <div className="section-header">
               <div>
-                <h1>{language === "he" ? "ניהול הזמנות" : "Order Management"}</h1>
+                <h1>
+                  {language === "he" ? "ניהול הזמנות" : "Order Management"}
+                </h1>
                 <p className="section-subtitle">
                   {language === "he"
                     ? `סה"כ ${filteredOrders.length} הזמנות`
@@ -1462,7 +1494,9 @@ function Admin() {
                     {filteredOrders.length === 0 && (
                       <tr>
                         <td colSpan="7" className="empty-table">
-                          {language === "he" ? "לא נמצאו הזמנות" : "No orders found"}
+                          {language === "he"
+                            ? "לא נמצאו הזמנות"
+                            : "No orders found"}
                         </td>
                       </tr>
                     )}
@@ -1478,7 +1512,9 @@ function Admin() {
           <>
             <div className="section-header">
               <div>
-                <h1>{language === "he" ? "ניהול מכשירים" : "Device Management"}</h1>
+                <h1>
+                  {language === "he" ? "ניהול מכשירים" : "Device Management"}
+                </h1>
                 <p className="section-subtitle">
                   {language === "he"
                     ? `סה"כ ${filteredDevices.length} מכשירים`
@@ -1506,7 +1542,9 @@ function Admin() {
             {/* Firewall Section */}
             <div className="firewall-section">
               <h3>
-                {language === "he" ? "🔥 ניהול חומת אש" : "🔥 Firewall Management"}
+                {language === "he"
+                  ? "🔥 ניהול חומת אש"
+                  : "🔥 Firewall Management"}
               </h3>
               <div className="firewall-input-group">
                 <div className="search-input-wrapper" style={{ flex: 1 }}>
@@ -1535,7 +1573,12 @@ function Admin() {
 
               {firewall.length > 0 && (
                 <div className="firewall-list">
-                  <h4 style={{ marginBottom: "var(--spacing-sm)", color: "#e74c3c" }}>
+                  <h4
+                    style={{
+                      marginBottom: "var(--spacing-sm)",
+                      color: "#e74c3c",
+                    }}
+                  >
                     {language === "he"
                       ? `כתובות IP חסומות (${firewall.length})`
                       : `Blocked IPs (${firewall.length})`}
@@ -1547,7 +1590,11 @@ function Admin() {
                         <button
                           className="icon-btn icon-btn-delete"
                           onClick={() => removeFromFirewall(ip)}
-                          title={language === "he" ? "הסר מחומת אש" : "Remove from firewall"}
+                          title={
+                            language === "he"
+                              ? "הסר מחומת אש"
+                              : "Remove from firewall"
+                          }
                         >
                           {language === "he" ? "🗑️ הסר" : "🗑️ Remove"}
                         </button>
@@ -1564,12 +1611,22 @@ function Admin() {
                   <thead>
                     <tr>
                       <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
-                      <th>{language === "he" ? "מכשיר / דפדפן" : "Device / Browser"}</th>
+                      <th>
+                        {language === "he"
+                          ? "מכשיר / דפדפן"
+                          : "Device / Browser"}
+                      </th>
                       <th>{language === "he" ? "מערכת הפעלה" : "OS"}</th>
                       <th>{language === "he" ? "מיקום" : "Location"}</th>
-                      <th>{language === "he" ? "מסך / שפה" : "Screen / Lang"}</th>
-                      <th>{language === "he" ? "ספירת כניסות" : "Login Count"}</th>
-                      <th>{language === "he" ? "כניסה אחרונה" : "Last Login"}</th>
+                      <th>
+                        {language === "he" ? "מסך / שפה" : "Screen / Lang"}
+                      </th>
+                      <th>
+                        {language === "he" ? "ספירת כניסות" : "Login Count"}
+                      </th>
+                      <th>
+                        {language === "he" ? "כניסה אחרונה" : "Last Login"}
+                      </th>
                       <th>{language === "he" ? "סטטוס" : "Status"}</th>
                       <th>{language === "he" ? "פעולות" : "Actions"}</th>
                     </tr>
@@ -1583,7 +1640,9 @@ function Admin() {
                         <td>
                           <strong>{device.deviceName || "-"}</strong>
                           {device.browser && (
-                            <span className="product-name-sub">{device.browser}</span>
+                            <span className="product-name-sub">
+                              {device.browser}
+                            </span>
                           )}
                         </td>
                         <td className="text-muted">{device.os || "-"}</td>
@@ -1591,7 +1650,9 @@ function Admin() {
                           <strong>
                             {device.location?.city && device.location?.country
                               ? `${device.location.city}, ${device.location.country}`
-                              : device.location?.city || device.location?.country || "-"}
+                              : device.location?.city ||
+                                device.location?.country ||
+                                "-"}
                           </strong>
                           <span className="product-name-sub">
                             {typeof device.location?.timezone === "string"
@@ -1602,34 +1663,50 @@ function Admin() {
                         <td className="text-muted">
                           {device.screen || "-"}
                           {device.language && (
-                            <span className="product-name-sub">{device.language}</span>
+                            <span className="product-name-sub">
+                              {device.language}
+                            </span>
                           )}
                         </td>
                         <td>
-                          <span className="login-count">{device.loginCount}</span>
+                          <span className="login-count">
+                            {device.loginCount}
+                          </span>
                         </td>
                         <td>{formatDate(device.lastLogin)}</td>
                         <td>
                           <span
                             className={`status-badge ${
-                              device.blocked ? "status-blocked" : "status-active"
+                              device.blocked
+                                ? "status-blocked"
+                                : "status-active"
                             }`}
                           >
                             <span className="status-dot"></span>
                             {device.blocked
-                              ? language === "he" ? "חסום" : "Blocked"
-                              : language === "he" ? "פעיל" : "Active"}
+                              ? language === "he"
+                                ? "חסום"
+                                : "Blocked"
+                              : language === "he"
+                                ? "פעיל"
+                                : "Active"}
                           </span>
                         </td>
                         <td>
                           <div className="row-actions">
                             <button
                               className={`action-btn ${device.blocked ? "unblock" : "block"}`}
-                              onClick={() => handleBlockIP(device._id || device.id)}
+                              onClick={() =>
+                                handleBlockIP(device._id || device.id)
+                              }
                             >
                               {device.blocked
-                                ? language === "he" ? "בטל חסימה" : "Unblock"
-                                : language === "he" ? "חסום IP" : "Block IP"}
+                                ? language === "he"
+                                  ? "בטל חסימה"
+                                  : "Unblock"
+                                : language === "he"
+                                  ? "חסום IP"
+                                  : "Block IP"}
                             </button>
                           </div>
                         </td>
@@ -1638,7 +1715,9 @@ function Admin() {
                     {filteredDevices.length === 0 && (
                       <tr>
                         <td colSpan="9" className="empty-table">
-                          {language === "he" ? "לא נמצאו מכשירים" : "No devices found"}
+                          {language === "he"
+                            ? "לא נמצאו מכשירים"
+                            : "No devices found"}
                         </td>
                       </tr>
                     )}

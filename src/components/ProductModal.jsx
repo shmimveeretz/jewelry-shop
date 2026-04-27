@@ -104,7 +104,14 @@ function ProductModal({ product, onClose }) {
     };
 
     addToCart(productWithOptions, 1);
-    showCartToast(`${product.name} נוסף לעגלה!`, productImages[0]);
+    const displayName =
+      language === "en" && product.nameEn ? product.nameEn : product.name;
+    showCartToast(
+      language === "en"
+        ? `${displayName} added to cart!`
+        : `${displayName} נוסף לעגלה!`,
+      productImages[0],
+    );
     onClose();
   };
 
@@ -319,13 +326,19 @@ function ProductModal({ product, onClose }) {
             {calculateTotalPrice() > product.price && (
               <div className="price-breakdown">
                 <div className="price-item">
-                  <span>מחיר בסיס:</span>
+                  <span>
+                    {language === "en" ? "Base price:" : "מחיר בסיס:"}
+                  </span>
                   <span>{product.price} ₪</span>
                 </div>
                 {selectedOptions.metalType &&
                   priceAdditions.metalType[selectedOptions.metalType] > 0 && (
                     <div className="price-item addition">
-                      <span>תוספת {selectedOptions.metalType}:</span>
+                      <span>
+                        {language === "en"
+                          ? `${selectedOptions.metalType} addition:`
+                          : `תוספת ${selectedOptions.metalType}:`}
+                      </span>
                       <span>
                         +{priceAdditions.metalType[selectedOptions.metalType]} ₪
                       </span>
@@ -334,7 +347,11 @@ function ProductModal({ product, onClose }) {
                 {selectedOptions.chainType &&
                   priceAdditions.chainType[selectedOptions.chainType] > 0 && (
                     <div className="price-item addition">
-                      <span>תוספת {selectedOptions.chainType}:</span>
+                      <span>
+                        {language === "en"
+                          ? `${selectedOptions.chainType} addition:`
+                          : `תוספת ${selectedOptions.chainType}:`}
+                      </span>
                       <span>
                         +{priceAdditions.chainType[selectedOptions.chainType]} ₪
                       </span>
@@ -343,14 +360,18 @@ function ProductModal({ product, onClose }) {
                 {selectedOptions.length &&
                   priceAdditions.length[selectedOptions.length] > 0 && (
                     <div className="price-item addition">
-                      <span>תוספת אורך {selectedOptions.length} מ״מ:</span>
+                      <span>
+                        {language === "en"
+                          ? `Length ${selectedOptions.length} cm addition:`
+                          : `תוספת אורך ${selectedOptions.length} מ״מ:`}
+                      </span>
                       <span>
                         +{priceAdditions.length[selectedOptions.length]} ₪
                       </span>
                     </div>
                   )}
                 <div className="price-item total">
-                  <span>סה״כ:</span>
+                  <span>{language === "en" ? "Total:" : "סה״כ:"}</span>
                   <span>{calculateTotalPrice()} ₪</span>
                 </div>
               </div>
@@ -381,10 +402,18 @@ function ProductModal({ product, onClose }) {
                   <option value="">
                     {language === "he" ? "בחר אורך" : "Select Length"}
                   </option>
-                  <option value="40">40 ס״מ</option>
-                  <option value="42">42 ס״מ</option>
-                  <option value="45">45 ס״מ</option>
-                  <option value="50">50 ס״מ</option>
+                  <option value="40">
+                    {language === "en" ? "40 cm" : "40 ס״מ"}
+                  </option>
+                  <option value="42">
+                    {language === "en" ? "42 cm" : "42 ס״מ"}
+                  </option>
+                  <option value="45">
+                    {language === "en" ? "45 cm" : "45 ס״מ"}
+                  </option>
+                  <option value="50">
+                    {language === "en" ? "50 cm" : "50 ס״מ"}
+                  </option>
                 </select>
               </div>
 
