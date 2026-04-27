@@ -42,7 +42,18 @@ function Cart() {
       <div className="cart-page">
         <div className="cart-container">
           <div className="empty-cart">
-            <div className="empty-cart-icon"><span className="material-symbols-outlined" style={{fontSize:"3rem",color:"var(--color-secondary)",fontVariationSettings:"'FILL' 0, 'wght' 200"}}>shopping_bag</span></div>
+            <div className="empty-cart-icon">
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: "3rem",
+                  color: "var(--color-secondary)",
+                  fontVariationSettings: "'FILL' 0, 'wght' 200",
+                }}
+              >
+                shopping_bag
+              </span>
+            </div>
             <h2>{t("emptyCart")}</h2>
             <p>{t("startShopping")}</p>
             <Link to="/shop" className="btn">
@@ -81,8 +92,8 @@ function Cart() {
                 />
 
                 <div className="cart-item-details">
-                  <h3>{item.name}</h3>
-                  <p className="cart-item-description">{item.description}</p>
+                  <h3>{language === "en" && item.nameEn ? item.nameEn : item.name}</h3>
+                  <p className="cart-item-description">{language === "en" && item.descriptionEn ? item.descriptionEn : item.description}</p>
 
                   {/* Display selected options */}
                   {item.selectedOptions && (
@@ -111,7 +122,7 @@ function Cart() {
                   )}
 
                   <div className="cart-item-meta">
-                    <span className="cart-item-category">{item.category}</span>
+                    <span className="cart-item-category">{language === "en" && item.categoryEn ? item.categoryEn : item.category}</span>
                     <span className="cart-item-price-single">
                       {item.price} ₪ ליחידה
                     </span>

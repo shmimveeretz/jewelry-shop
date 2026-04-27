@@ -1,5 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaSearch,
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaUsers,
+  FaShieldAlt,
+  FaBoxOpen,
+  FaShoppingCart,
+} from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import ProductForm from "../components/ProductForm";
@@ -24,43 +34,43 @@ function Admin() {
 
   // Orders State - Mock data
   const [orders, setOrders] = useState([
-    {
-      id: "ORD-001",
-      customerId: "user-1",
-      customerName: "רוי רביב",
-      email: "raviroi@gmail.com",
-      totalPrice: 2890,
-      status: "pending",
-      createdAt: "2026-01-28T14:30:00",
-      items: [
-        { id: "aleph", name: "אלף", price: 890, quantity: 2 },
-        { id: "ruby-odem", name: "אבן רובי", price: 1290, quantity: 1 },
-      ],
-    },
-    {
-      id: "ORD-002",
-      customerId: "user-2",
-      customerName: "דנה כהן",
-      email: "dana@gmail.com",
-      totalPrice: 950,
-      status: "shipped",
-      createdAt: "2026-01-27T10:15:00",
-      items: [
-        { id: "aries-pendant", name: "תליון מזל טלה", price: 950, quantity: 1 },
-      ],
-    },
-    {
-      id: "ORD-003",
-      customerId: "user-3",
-      customerName: "אברהם לוי",
-      email: "abraham@gmail.com",
-      totalPrice: 1690,
-      status: "delivered",
-      createdAt: "2026-01-25T08:45:00",
-      items: [
-        { id: "trinity-aries", name: "שלישיית טלה", price: 1690, quantity: 1 },
-      ],
-    },
+    // {
+    //   id: "ORD-001",
+    //   customerId: "user-1",
+    //   customerName: "רוי רביב",
+    //   email: "raviroi@gmail.com",
+    //   totalPrice: 2890,
+    //   status: "pending",
+    //   createdAt: "2026-01-28T14:30:00",
+    //   items: [
+    //     { id: "aleph", name: "אלף", price: 890, quantity: 2 },
+    //     { id: "ruby-odem", name: "אבן רובי", price: 1290, quantity: 1 },
+    //   ],
+    // },
+    // {
+    //   id: "ORD-002",
+    //   customerId: "user-2",
+    //   customerName: "דנה כהן",
+    //   email: "dana@gmail.com",
+    //   totalPrice: 950,
+    //   status: "shipped",
+    //   createdAt: "2026-01-27T10:15:00",
+    //   items: [
+    //     { id: "aries-pendant", name: "תליון מזל טלה", price: 950, quantity: 1 },s
+    //   ],
+    // },
+    // {
+    //   id: "ORD-003",
+    //   customerId: "user-3",
+    //   customerName: "אברהם לוי",
+    //   email: "abraham@gmail.com",
+    //   totalPrice: 1690,
+    //   status: "delivered",
+    //   createdAt: "2026-01-25T08:45:00",
+    //   items: [
+    //     { id: "trinity-aries", name: "שלישיית טלה", price: 1690, quantity: 1 },
+    //   ],
+    // },
   ]);
 
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
@@ -901,7 +911,7 @@ function Admin() {
   if (!isAuthorized) {
     return (
       <div className="admin-page">
-        <div className="admin-header">
+        <div className="loading-state" style={{ minHeight: "50vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <p>{language === "he" ? "טוען..." : "Loading..."}</p>
         </div>
       </div>
@@ -910,84 +920,102 @@ function Admin() {
 
   return (
     <div className="admin-page">
-      <div className="admin-header">
-        <h1>{language === "he" ? "🔓 ניהול חנות" : "🔓 Store Management"}</h1>
-        <p>
-          {language === "he"
-            ? "ממשק ניהול למשתמשי החנות"
-            : "Management interface for store users"}
-        </p>
-      </div>
+      {/* ── Navigation Tabs ── */}
+      <nav className="admin-nav-tabs">
+        <ul className="admin-nav-pill">
+          <li>
+            <button
+              className={`admin-nav-item ${activeTab === "products" ? "active" : ""}`}
+              onClick={() => setActiveTab("products")}
+            >
+              <FaBoxOpen className="nav-icon" />
+              {language === "he" ? "מוצרים" : "Products"}
+            </button>
+          </li>
+          <li>
+            <button
+              className={`admin-nav-item ${activeTab === "orders" ? "active" : ""}`}
+              onClick={() => setActiveTab("orders")}
+            >
+              <FaShoppingCart className="nav-icon" />
+              {language === "he" ? "הזמנות" : "Orders"}
+            </button>
+          </li>
+          {isROI() && (
+            <li>
+              <button
+                className={`admin-nav-item ${activeTab === "users" ? "active" : ""}`}
+                onClick={() => setActiveTab("users")}
+              >
+                <FaUsers className="nav-icon" />
+                {language === "he" ? "משתמשים" : "Users"}
+              </button>
+            </li>
+          )}
+          {isROI() && (
+            <li>
+              <button
+                className={`admin-nav-item ${activeTab === "devices" ? "active" : ""}`}
+                onClick={() => setActiveTab("devices")}
+              >
+                <FaShieldAlt className="nav-icon" />
+                {language === "he" ? "מכשירים" : "Devices"}
+              </button>
+            </li>
+          )}
+        </ul>
+      </nav>
 
-      {/* Tabs */}
-      <div className="admin-tabs">
-        <button
-          className={`tab-btn ${activeTab === "products" ? "active" : ""}`}
-          onClick={() => setActiveTab("products")}
-        >
-          {language === "he" ? "📦 ניהול מוצרים" : "📦 Manage Products"}
-        </button>
-
-        {/* Show Users tab only for ROI */}
-        {isROI() && (
-          <button
-            className={`tab-btn ${activeTab === "users" ? "active" : ""}`}
-            onClick={() => setActiveTab("users")}
-          >
-            {language === "he" ? "👥 ניהול משתמשים" : "👥 Manage Users"}
-          </button>
-        )}
-
-        <button
-          className={`tab-btn ${activeTab === "orders" ? "active" : ""}`}
-          onClick={() => setActiveTab("orders")}
-        >
-          {language === "he" ? "📋 ניהול הזמנות" : "📋 Manage Orders"}
-        </button>
-
-        {/* Show Devices tab only for ROI */}
-        {isROI() && (
-          <button
-            className={`tab-btn ${activeTab === "devices" ? "active" : ""}`}
-            onClick={() => setActiveTab("devices")}
-          >
-            {language === "he" ? "🔒 ניהול מכשירים" : "🔒 Device Management"}
-          </button>
-        )}
-      </div>
-
+      {/* ── Main Content ── */}
       <div className="admin-container">
-        {/* Products Tab */}
+        {/* ───────────────── PRODUCTS TAB ───────────────── */}
         {activeTab === "products" && (
           <>
-            <div className="admin-actions">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder={
-                  language === "he" ? "חיפוש מוצרים..." : "Search products..."
-                }
-                value={searchTerm}
-                onChange={handleSearch}
-              />
-              <button className="add-product-btn" onClick={handleAddProduct}>
-                {language === "he" ? "➕ הוסף מוצר חדש" : "➕ Add New Product"}
-              </button>
-              <button
-                className="add-product-btn"
-                onClick={() => setShowProductForm(true)}
-                style={{ backgroundColor: "#28a745", marginLeft: "10px" }}
-              >
-                {language === "he" ? "📸 הוסף עם תמונה" : "📸 Add with Image"}
-              </button>
+            {/* Section Header */}
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "ניהול מוצרים" : "Product Management"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? `מנהל ${filteredProducts.length} פריטים בחנות`
+                    : `Managing ${filteredProducts.length} items in store`}
+                </p>
+              </div>
+              <div className="section-actions">
+                <div className="search-input-wrapper">
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder={
+                      language === "he"
+                        ? "חיפוש מוצר, קטגוריה..."
+                        : "Search product, category..."
+                    }
+                    value={searchTerm}
+                    onChange={handleSearch}
+                  />
+                </div>
+                <button
+                  className="btn-gold"
+                  onClick={() => {
+                    setEditingProduct(null);
+                    setShowProductForm(true);
+                  }}
+                >
+                  <FaPlus />
+                  {language === "he" ? "הוסף מוצר" : "Add Product"}
+                </button>
+              </div>
             </div>
 
-            <div className="admin-products-table">
-              <table className="products-table">
+            {/* Desktop Table */}
+            <div className="admin-table-card desktop-only">
+              <table className="admin-table">
                 <thead>
                   <tr>
                     <th>{language === "he" ? "תמונה" : "Image"}</th>
-                    <th>{language === "he" ? "שם המוצר" : "Product name"}</th>
+                    <th>{language === "he" ? "שם מוצר" : "Product Name"}</th>
                     <th>{language === "he" ? "קטגוריה" : "Category"}</th>
                     <th>{language === "he" ? "מחיר" : "Price"}</th>
                     <th>{language === "he" ? "סטטוס" : "Status"}</th>
@@ -995,58 +1023,166 @@ function Admin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProducts.map((product) => (
-                    <tr key={product.id}>
-                      <td>
-                        {Array.isArray(product.images) && product.images[0] ? (
-                          <img
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="product-thumbnail"
-                            onError={(e) => {
-                              e.target.src =
-                                "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400";
-                            }}
-                          />
-                        ) : product.images ? (
-                          <img
-                            src={product.images}
-                            alt={product.name}
-                            className="product-thumbnail"
-                            onError={(e) => {
-                              e.target.src =
-                                "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400";
-                            }}
-                          />
-                        ) : (
-                          <div className="product-thumbnail-placeholder">
-                            {language === "he" ? "ללא תמונה" : "No image"}
+                  {loading ? (
+                    <tr>
+                      <td colSpan="6" className="empty-table">
+                        {language === "he" ? "טוען מוצרים..." : "Loading products..."}
+                      </td>
+                    </tr>
+                  ) : filteredProducts.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="empty-table">
+                        {language === "he" ? "לא נמצאו מוצרים" : "No products found"}
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredProducts.map((product) => (
+                      <tr key={product._id || product.id}>
+                        <td>
+                          <div className="product-thumb">
+                            {Array.isArray(product.images) && product.images[0] ? (
+                              <img
+                                src={product.images[0]}
+                                alt={product.name}
+                                onError={(e) => {
+                                  e.target.src =
+                                    "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400";
+                                }}
+                              />
+                            ) : (
+                              <div className="product-thumb-placeholder">
+                                {language === "he" ? "ללא תמונה" : "No image"}
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </td>
-                      <td>
-                        <div>
-                          <strong>{product.name}</strong>
+                        </td>
+                        <td className="product-name-cell">
+                          {product.name}
                           {product.nameEn && (
-                            <div style={{ fontSize: "0.8em", color: "#666" }}>
-                              {product.nameEn}
-                            </div>
+                            <span className="product-name-sub">{product.nameEn}</span>
                           )}
-                        </div>
-                      </td>
-                      <td>
-                        <div>
-                          <strong>{product.category}</strong>
+                        </td>
+                        <td className="text-muted">
+                          {product.category}
                           {product.categoryEn && (
-                            <div style={{ fontSize: "0.8em", color: "#666" }}>
-                              {product.categoryEn}
-                            </div>
+                            <span className="product-name-sub">{product.categoryEn}</span>
                           )}
+                        </td>
+                        <td className="text-bold">₪{product.price}</td>
+                        <td>
+                          <span
+                            className={`status-badge ${
+                              product.status === "active"
+                                ? "status-active"
+                                : "status-inactive"
+                            }`}
+                          >
+                            <span className="status-dot"></span>
+                            {product.status === "active"
+                              ? language === "he"
+                                ? "פעיל"
+                                : "Active"
+                              : language === "he"
+                                ? "לא פעיל"
+                                : "Inactive"}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="row-actions">
+                            <button
+                              className="icon-btn icon-btn-edit"
+                              onClick={() => {
+                                setEditingProduct(product);
+                                setShowProductForm(true);
+                              }}
+                              title={language === "he" ? "ערוך" : "Edit"}
+                            >
+                              <FaEdit />
+                            </button>
+                            <button
+                              className="icon-btn icon-btn-delete"
+                              onClick={() =>
+                                handleDeleteProductWithImage(
+                                  product._id || product.id,
+                                )
+                              }
+                              title={language === "he" ? "מחק" : "Delete"}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Cards */}
+            <div className="mobile-cards mobile-only">
+              {loading ? (
+                <div className="loading-state">
+                  {language === "he" ? "טוען..." : "Loading..."}
+                </div>
+              ) : filteredProducts.length === 0 ? (
+                <p className="empty-table">
+                  {language === "he" ? "לא נמצאו מוצרים" : "No products found"}
+                </p>
+              ) : (
+                filteredProducts.map((product) => (
+                  <div key={product._id || product.id} className="product-card-mobile">
+                    <div className="product-card-image">
+                      {Array.isArray(product.images) && product.images[0] ? (
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          onError={(e) => {
+                            e.target.src =
+                              "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400";
+                          }}
+                        />
+                      ) : (
+                        <div className="product-thumb-placeholder">
+                          {language === "he" ? "ללא תמונה" : "No image"}
                         </div>
-                      </td>
-                      <td>₪{product.price}</td>
-                      <td>
-                        <span className={`product-status ${product.status}`}>
+                      )}
+                    </div>
+                    <div className="product-card-body">
+                      <div className="product-card-header">
+                        <h3>{product.name}</h3>
+                        <div className="card-actions">
+                          <button
+                            className="icon-btn icon-btn-edit"
+                            onClick={() => {
+                              setEditingProduct(product);
+                              setShowProductForm(true);
+                            }}
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            className="icon-btn icon-btn-delete"
+                            onClick={() =>
+                              handleDeleteProductWithImage(product._id || product.id)
+                            }
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-muted" style={{ fontSize: "0.8rem" }}>
+                        {product.category}
+                      </p>
+                      <div className="product-card-footer">
+                        <span className="text-bold">₪{product.price}</span>
+                        <span
+                          className={`status-badge ${
+                            product.status === "active"
+                              ? "status-active"
+                              : "status-inactive"
+                          }`}
+                        >
                           {product.status === "active"
                             ? language === "he"
                               ? "פעיל"
@@ -1055,354 +1191,353 @@ function Admin() {
                               ? "לא פעיל"
                               : "Inactive"}
                         </span>
-                      </td>
-                      <td>
-                        <div className="table-actions">
-                          <button
-                            className="action-btn edit"
-                            onClick={() => handleEditProduct(product)}
-                          >
-                            {language === "he" ? "✏️ ערוך" : "✏️ Edit"}
-                          </button>
-                          <button
-                            className="action-btn delete"
-                            onClick={() => handleDeleteProduct(product.id)}
-                          >
-                            {language === "he" ? "🗑️ מחק" : "🗑️ Delete"}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-
-        {/* Users Tab - ROI Only */}
-        {activeTab === "users" && isROI() && (
-          <>
-            <div className="admin-actions">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder={
-                  language === "he" ? "חיפוש משתמשים..." : "Search users..."
-                }
-                value={userSearchTerm}
-                onChange={handleUserSearch}
-              />
-              <span className="user-count">
-                {language === "he"
-                  ? `סה"כ משתמשים: ${users.length}`
-                  : `Total Users: ${users.length}`}
-              </span>
-            </div>
-
-            <div className="admin-products-table">
-              {loading ? (
-                <div className="loading-message">
-                  {language === "he" ? "טוען משתמשים..." : "Loading users..."}
-                </div>
-              ) : (
-                <table className="users-table">
-                  <thead>
-                    <tr>
-                      <th>{language === "he" ? "שם פרטי" : "First name"}</th>
-                      <th>{language === "he" ? "שם משפחה" : "Last name"}</th>
-                      <th>{language === "he" ? "אימייל" : "Email"}</th>
-                      <th>{language === "he" ? "טלפון" : "Phone"}</th>
-                      <th>{language === "he" ? "תפקיד" : "Role"}</th>
-                      <th>{language === "he" ? "סטטוס" : "Status"}</th>
-                      <th>{language === "he" ? "הצטרף" : "Joined"}</th>
-                      <th>{language === "he" ? "פעולות" : "Actions"}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredUsers.map((user) => (
-                      <tr key={user.id}>
-                        <td>{user.firstname}</td>
-                        <td>{user.lastname}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone}</td>
-                        <td>
-                          <select
-                            className="role-select"
-                            value={user.role}
-                            onChange={(e) =>
-                              handleChangeUserRole(user.id, e.target.value)
-                            }
-                            disabled={
-                              user.id ===
-                                JSON.parse(localStorage.getItem("user") || "{}")
-                                  .id ||
-                              user._id ===
-                                JSON.parse(localStorage.getItem("user") || "{}")
-                                  ._id
-                            }
-                          >
-                            <option value="user">
-                              {language === "he" ? "משתמש" : "User"}
-                            </option>
-                            <option value="admin">
-                              {language === "he" ? "מנהל" : "Admin"}
-                            </option>
-                            <option value="roi">
-                              {language === "he"
-                                ? "🔒 מנהל ניטור (ROI)"
-                                : "🔒 Device Manager (ROI)"}
-                            </option>
-                          </select>
-                        </td>
-                        <td>
-                          <span
-                            className={`user-status ${user.blocked ? "blocked" : "active"}`}
-                          >
-                            {user.blocked
-                              ? language === "he"
-                                ? "🚫 חסום"
-                                : "🚫 Blocked"
-                              : language === "he"
-                                ? "✅ פעיל"
-                                : "✅ Active"}
-                          </span>
-                        </td>
-                        <td>{formatDate(user.createdAt)}</td>
-                        <td>
-                          <div className="table-actions">
-                            <button
-                              className={`action-btn ${user.blocked ? "unblock" : "block"}`}
-                              onClick={() => handleBlockUser(user.id)}
-                              title={
-                                language === "he"
-                                  ? user.blocked
-                                    ? "ביטול חסימה"
-                                    : "חסום"
-                                  : user.blocked
-                                    ? "Unblock"
-                                    : "Block"
-                              }
-                            >
-                              {user.blocked
-                                ? language === "he"
-                                  ? "🔓 בטל חסימה"
-                                  : "🔓 Unblock"
-                                : language === "he"
-                                  ? "🔒 חסום"
-                                  : "🔒 Block"}
-                            </button>
-                            <button
-                              className="action-btn delete"
-                              onClick={() => handleDeleteUser(user.id)}
-                            >
-                              {language === "he" ? "🗑️ מחק" : "🗑️ Delete"}
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                      </div>
+                    </div>
+                  </div>
+                ))
               )}
             </div>
           </>
         )}
 
-        {/* Orders Tab */}
-        {activeTab === "orders" && (
+        {/* ───────────────── USERS TAB ───────────────── */}
+        {activeTab === "users" && isROI() && (
           <>
-            <div className="admin-actions">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder={
-                  language === "he"
-                    ? "חיפוש הזמנה או לקוח..."
-                    : "Search order or customer..."
-                }
-                value={orderSearchTerm}
-                onChange={(e) => setOrderSearchTerm(e.target.value)}
-              />
-              <select
-                className="filter-select"
-                value={orderStatusFilter}
-                onChange={(e) => setOrderStatusFilter(e.target.value)}
-              >
-                <option value="all">
-                  {language === "he" ? "כל ההזמנות" : "All Orders"}
-                </option>
-                <option value="pending">
-                  {language === "he" ? "בהמתנה" : "Pending"}
-                </option>
-                <option value="processing">
-                  {language === "he" ? "בעיבוד" : "Processing"}
-                </option>
-                <option value="shipped">
-                  {language === "he" ? "נשלחה" : "Shipped"}
-                </option>
-                <option value="delivered">
-                  {language === "he" ? "הוסלמה" : "Delivered"}
-                </option>
-                <option value="cancelled">
-                  {language === "he" ? "בוטלה" : "Cancelled"}
-                </option>
-              </select>
-              <span className="user-count">
-                {language === "he"
-                  ? `סה"כ הזמנות: ${filteredOrders.length}`
-                  : `Total Orders: ${filteredOrders.length}`}
-              </span>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "ניהול משתמשים" : "User Management"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? `סה"כ ${users.length} משתמשים רשומים`
+                    : `Total ${users.length} registered users`}
+                </p>
+              </div>
+              <div className="section-actions">
+                <div className="search-input-wrapper">
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder={
+                      language === "he" ? "חיפוש משתמשים..." : "Search users..."
+                    }
+                    value={userSearchTerm}
+                    onChange={handleUserSearch}
+                  />
+                </div>
+                <span className="user-count-badge">
+                  {language === "he"
+                    ? `${filteredUsers.length} תוצאות`
+                    : `${filteredUsers.length} results`}
+                </span>
+              </div>
             </div>
 
-            <div className="admin-products-table">
-              <table className="orders-table">
-                <thead>
-                  <tr>
-                    <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
-                    <th>{language === "he" ? "לקוח" : "Customer"}</th>
-                    <th>{language === "he" ? "אימייל" : "Email"}</th>
-                    <th>{language === "he" ? "סכום" : "Total"}</th>
-                    <th>{language === "he" ? "סטטוס" : "Status"}</th>
-                    <th>{language === "he" ? "תאריך הזמנה" : "Order Date"}</th>
-                    <th>{language === "he" ? "פרטים" : "Items"}</th>
-                    <th>{language === "he" ? "פעולות" : "Actions"}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredOrders.map((order) => (
-                    <tr key={order.id}>
-                      <td>
-                        <strong>{order.id}</strong>
-                      </td>
-                      <td>{order.customerName}</td>
-                      <td>{order.email}</td>
-                      <td className="price">₪{order.totalPrice}</td>
-                      <td>
-                        <select
-                          className={`status-select status-${order.status}`}
-                          value={order.status}
-                          onChange={(e) =>
-                            handleOrderStatusChange(order.id, e.target.value)
-                          }
-                        >
-                          <option value="pending">
-                            {language === "he" ? "בהמתנה" : "Pending"}
-                          </option>
-                          <option value="processing">
-                            {language === "he" ? "בעיבוד" : "Processing"}
-                          </option>
-                          <option value="shipped">
-                            {language === "he" ? "נשלחה" : "Shipped"}
-                          </option>
-                          <option value="delivered">
-                            {language === "he" ? "הוסלמה" : "Delivered"}
-                          </option>
-                          <option value="cancelled">
-                            {language === "he" ? "בוטלה" : "Cancelled"}
-                          </option>
-                        </select>
-                      </td>
-                      <td>{formatDate(order.createdAt)}</td>
-                      <td>
-                        <details>
-                          <summary className="items-summary">
-                            {language === "he"
-                              ? `${order.items.length} פריטים`
-                              : `${order.items.length} items`}
-                          </summary>
-                          <ul className="items-list">
-                            {order.items.map((item) => (
-                              <li key={item.id}>
-                                {item.name} x{item.quantity} - ₪
-                                {item.price * item.quantity}
-                              </li>
-                            ))}
-                          </ul>
-                        </details>
-                      </td>
-                      <td>
-                        <div className="table-actions">
-                          <button
-                            className="action-btn view"
-                            title={
-                              language === "he" ? "צפה בפרטים" : "View details"
-                            }
-                          >
-                            {language === "he" ? "👁️ צפה" : "👁️ View"}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="admin-table-card">
+              {loading ? (
+                <div className="loading-state">
+                  {language === "he" ? "טוען משתמשים..." : "Loading users..."}
+                </div>
+              ) : (
+                <div style={{ overflowX: "auto" }}>
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>{language === "he" ? "שם פרטי" : "First Name"}</th>
+                        <th>{language === "he" ? "שם משפחה" : "Last Name"}</th>
+                        <th>{language === "he" ? "אימייל" : "Email"}</th>
+                        <th>{language === "he" ? "טלפון" : "Phone"}</th>
+                        <th>{language === "he" ? "תפקיד" : "Role"}</th>
+                        <th>{language === "he" ? "סטטוס" : "Status"}</th>
+                        <th>{language === "he" ? "הצטרף" : "Joined"}</th>
+                        <th>{language === "he" ? "פעולות" : "Actions"}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredUsers.map((user) => (
+                        <tr key={user.id}>
+                          <td>{user.firstname}</td>
+                          <td>{user.lastname}</td>
+                          <td>{user.email}</td>
+                          <td>{user.phone}</td>
+                          <td>
+                            <select
+                              className="role-select"
+                              value={user.role}
+                              onChange={(e) =>
+                                handleChangeUserRole(user.id, e.target.value)
+                              }
+                              disabled={
+                                user.id ===
+                                  JSON.parse(localStorage.getItem("user") || "{}")
+                                    .id ||
+                                user._id ===
+                                  JSON.parse(localStorage.getItem("user") || "{}")
+                                    ._id
+                              }
+                            >
+                              <option value="user">
+                                {language === "he" ? "משתמש" : "User"}
+                              </option>
+                              <option value="admin">
+                                {language === "he" ? "מנהל" : "Admin"}
+                              </option>
+                              <option value="roi">
+                                {language === "he"
+                                  ? "🔒 מנהל ניטור (ROI)"
+                                  : "🔒 Device Manager (ROI)"}
+                              </option>
+                            </select>
+                          </td>
+                          <td>
+                            <span
+                              className={`status-badge ${
+                                user.blocked ? "status-blocked" : "status-active"
+                              }`}
+                            >
+                              <span className="status-dot"></span>
+                              {user.blocked
+                                ? language === "he"
+                                  ? "חסום"
+                                  : "Blocked"
+                                : language === "he"
+                                  ? "פעיל"
+                                  : "Active"}
+                            </span>
+                          </td>
+                          <td>{formatDate(user.createdAt)}</td>
+                          <td>
+                            <div className="row-actions">
+                              <button
+                                className={`action-btn ${user.blocked ? "unblock" : "block"}`}
+                                onClick={() => handleBlockUser(user.id)}
+                              >
+                                {user.blocked
+                                  ? language === "he"
+                                    ? "בטל חסימה"
+                                    : "Unblock"
+                                  : language === "he"
+                                    ? "חסום"
+                                    : "Block"}
+                              </button>
+                              <button
+                                className="icon-btn icon-btn-delete"
+                                onClick={() => handleDeleteUser(user.id)}
+                                title={language === "he" ? "מחק" : "Delete"}
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </>
         )}
 
-        {/* Devices Tab - ROI Only */}
+        {/* ───────────────── ORDERS TAB ───────────────── */}
+        {activeTab === "orders" && (
+          <>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "ניהול הזמנות" : "Order Management"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? `סה"כ ${filteredOrders.length} הזמנות`
+                    : `Total ${filteredOrders.length} orders`}
+                </p>
+              </div>
+              <div className="section-actions">
+                <div className="search-input-wrapper">
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder={
+                      language === "he"
+                        ? "חיפוש הזמנה או לקוח..."
+                        : "Search order or customer..."
+                    }
+                    value={orderSearchTerm}
+                    onChange={(e) => setOrderSearchTerm(e.target.value)}
+                  />
+                </div>
+                <select
+                  className="filter-select"
+                  value={orderStatusFilter}
+                  onChange={(e) => setOrderStatusFilter(e.target.value)}
+                >
+                  <option value="all">
+                    {language === "he" ? "כל ההזמנות" : "All Orders"}
+                  </option>
+                  <option value="pending">
+                    {language === "he" ? "בהמתנה" : "Pending"}
+                  </option>
+                  <option value="processing">
+                    {language === "he" ? "בעיבוד" : "Processing"}
+                  </option>
+                  <option value="shipped">
+                    {language === "he" ? "נשלחה" : "Shipped"}
+                  </option>
+                  <option value="delivered">
+                    {language === "he" ? "הוסלמה" : "Delivered"}
+                  </option>
+                  <option value="cancelled">
+                    {language === "he" ? "בוטלה" : "Cancelled"}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div className="admin-table-card">
+              <div style={{ overflowX: "auto" }}>
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
+                      <th>{language === "he" ? "לקוח" : "Customer"}</th>
+                      <th>{language === "he" ? "אימייל" : "Email"}</th>
+                      <th>{language === "he" ? "סכום" : "Total"}</th>
+                      <th>{language === "he" ? "סטטוס" : "Status"}</th>
+                      <th>{language === "he" ? "תאריך" : "Date"}</th>
+                      <th>{language === "he" ? "פרטים" : "Items"}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredOrders.map((order) => (
+                      <tr key={order.id}>
+                        <td className="text-bold">{order.id}</td>
+                        <td>{order.customerName}</td>
+                        <td className="text-muted">{order.email}</td>
+                        <td className="price-cell">₪{order.totalPrice}</td>
+                        <td>
+                          <select
+                            className={`status-select status-${order.status}`}
+                            value={order.status}
+                            onChange={(e) =>
+                              handleOrderStatusChange(order.id, e.target.value)
+                            }
+                          >
+                            <option value="pending">
+                              {language === "he" ? "בהמתנה" : "Pending"}
+                            </option>
+                            <option value="processing">
+                              {language === "he" ? "בעיבוד" : "Processing"}
+                            </option>
+                            <option value="shipped">
+                              {language === "he" ? "נשלחה" : "Shipped"}
+                            </option>
+                            <option value="delivered">
+                              {language === "he" ? "הוסלמה" : "Delivered"}
+                            </option>
+                            <option value="cancelled">
+                              {language === "he" ? "בוטלה" : "Cancelled"}
+                            </option>
+                          </select>
+                        </td>
+                        <td>{formatDate(order.createdAt)}</td>
+                        <td>
+                          <details>
+                            <summary className="items-summary">
+                              {language === "he"
+                                ? `${order.items.length} פריטים`
+                                : `${order.items.length} items`}
+                            </summary>
+                            <ul className="items-list">
+                              {order.items.map((item) => (
+                                <li key={item.id}>
+                                  {item.name} x{item.quantity} – ₪
+                                  {item.price * item.quantity}
+                                </li>
+                              ))}
+                            </ul>
+                          </details>
+                        </td>
+                      </tr>
+                    ))}
+                    {filteredOrders.length === 0 && (
+                      <tr>
+                        <td colSpan="7" className="empty-table">
+                          {language === "he" ? "לא נמצאו הזמנות" : "No orders found"}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* ───────────────── DEVICES TAB ───────────────── */}
         {activeTab === "devices" && isROI() && (
           <>
-            <div className="admin-actions">
-              <input
-                type="text"
-                className="search-bar"
-                placeholder={
-                  language === "he"
-                    ? "חיפוש לפי IP או שם מכשיר..."
-                    : "Search by IP or device name..."
-                }
-                value={deviceSearchTerm}
-                onChange={(e) => setDeviceSearchTerm(e.target.value)}
-              />
-              <span className="user-count">
-                {language === "he"
-                  ? `סה"כ מכשירים: ${filteredDevices.length}`
-                  : `Total Devices: ${filteredDevices.length}`}
-              </span>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "ניהול מכשירים" : "Device Management"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? `סה"כ ${filteredDevices.length} מכשירים`
+                    : `Total ${filteredDevices.length} devices`}
+                </p>
+              </div>
+              <div className="section-actions">
+                <div className="search-input-wrapper">
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder={
+                      language === "he"
+                        ? "חיפוש לפי IP או מכשיר..."
+                        : "Search by IP or device..."
+                    }
+                    value={deviceSearchTerm}
+                    onChange={(e) => setDeviceSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Firewall Section */}
             <div className="firewall-section">
               <h3>
-                {language === "he"
-                  ? "🔥 ניהול חומת אש"
-                  : "🔥 Firewall Management"}
+                {language === "he" ? "🔥 ניהול חומת אש" : "🔥 Firewall Management"}
               </h3>
               <div className="firewall-input-group">
-                <input
-                  type="text"
-                  className="search-bar"
-                  placeholder={
-                    language === "he"
-                      ? "הזן כתובת IP להוספה לחומת אש (דוגמה: 192.168.1.100)"
-                      : "Enter IP address to add to firewall (e.g., 192.168.1.100)"
-                  }
-                  value={newFirewallIP}
-                  onChange={(e) => setNewFirewallIP(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleAddToFirewall();
+                <div className="search-input-wrapper" style={{ flex: 1 }}>
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    className="search-input"
+                    style={{ width: "100%" }}
+                    placeholder={
+                      language === "he"
+                        ? "הזן כתובת IP (דוגמה: 192.168.1.100)"
+                        : "Enter IP address (e.g. 192.168.1.100)"
                     }
-                  }}
-                />
-                <button
-                  className="add-product-btn"
-                  onClick={handleAddToFirewall}
-                >
-                  {language === "he"
-                    ? "➕ הוסף לחומת אש"
-                    : "➕ Add to Firewall"}
+                    value={newFirewallIP}
+                    onChange={(e) => setNewFirewallIP(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") handleAddToFirewall();
+                    }}
+                  />
+                </div>
+                <button className="btn-gold" onClick={handleAddToFirewall}>
+                  <FaPlus />
+                  {language === "he" ? "הוסף לחומת אש" : "Add to Firewall"}
                 </button>
               </div>
 
-              {/* Firewall List */}
               {firewall.length > 0 && (
                 <div className="firewall-list">
-                  <h4>
+                  <h4 style={{ marginBottom: "var(--spacing-sm)", color: "#e74c3c" }}>
                     {language === "he"
-                      ? `IP כתובות בחומת אש (${firewall.length})`
+                      ? `כתובות IP חסומות (${firewall.length})`
                       : `Blocked IPs (${firewall.length})`}
                   </h4>
                   <div className="firewall-grid">
@@ -1410,13 +1545,9 @@ function Admin() {
                       <div key={index} className="firewall-item">
                         <code className="ip-address">{ip}</code>
                         <button
-                          className="action-btn delete"
+                          className="icon-btn icon-btn-delete"
                           onClick={() => removeFromFirewall(ip)}
-                          title={
-                            language === "he"
-                              ? "הסר מחומת אש"
-                              : "Remove from firewall"
-                          }
+                          title={language === "he" ? "הסר מחומת אש" : "Remove from firewall"}
                         >
                           {language === "he" ? "🗑️ הסר" : "🗑️ Remove"}
                         </button>
@@ -1427,124 +1558,93 @@ function Admin() {
               )}
             </div>
 
-            <div className="admin-products-table">
-              <table className="devices-table">
-                <thead>
-                  <tr>
-                    <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
-                    <th>
-                      {language === "he" ? "מכשיר / דפדפן" : "Device / Browser"}
-                    </th>
-                    <th>{language === "he" ? "מערכת הפעלה" : "OS"}</th>
-                    <th>{language === "he" ? "מיקום" : "Location"}</th>
-                    <th>{language === "he" ? "מסך / שפה" : "Screen / Lang"}</th>
-                    <th>
-                      {language === "he" ? "ספירת כניסות" : "Login Count"}
-                    </th>
-                    <th>
-                      {language === "he" ? "התחברות אחרונה" : "Last Login"}
-                    </th>
-                    <th>{language === "he" ? "סטטוס" : "Status"}</th>
-                    <th>{language === "he" ? "פעולות" : "Actions"}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredDevices.map((device) => (
-                    <tr key={device.id}>
-                      <td>
-                        <code className="ip-address">{device.ipAddress}</code>
-                      </td>
-                      <td>
-                        <div>
+            <div className="admin-table-card">
+              <div style={{ overflowX: "auto" }}>
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
+                      <th>{language === "he" ? "מכשיר / דפדפן" : "Device / Browser"}</th>
+                      <th>{language === "he" ? "מערכת הפעלה" : "OS"}</th>
+                      <th>{language === "he" ? "מיקום" : "Location"}</th>
+                      <th>{language === "he" ? "מסך / שפה" : "Screen / Lang"}</th>
+                      <th>{language === "he" ? "ספירת כניסות" : "Login Count"}</th>
+                      <th>{language === "he" ? "כניסה אחרונה" : "Last Login"}</th>
+                      <th>{language === "he" ? "סטטוס" : "Status"}</th>
+                      <th>{language === "he" ? "פעולות" : "Actions"}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredDevices.map((device) => (
+                      <tr key={device._id || device.id}>
+                        <td>
+                          <code className="ip-address">{device.ipAddress}</code>
+                        </td>
+                        <td>
                           <strong>{device.deviceName || "-"}</strong>
                           {device.browser && (
-                            <div style={{ fontSize: "0.8em", color: "#666" }}>
-                              {device.browser}
-                            </div>
+                            <span className="product-name-sub">{device.browser}</span>
                           )}
-                        </div>
-                      </td>
-                      <td>
-                        <div style={{ fontSize: "0.85em" }}>
-                          {device.os || "-"}
-                        </div>
-                      </td>
-                      <td>
-                        <div>
+                        </td>
+                        <td className="text-muted">{device.os || "-"}</td>
+                        <td>
                           <strong>
                             {device.location?.city && device.location?.country
                               ? `${device.location.city}, ${device.location.country}`
-                              : device.location?.city ||
-                                device.location?.country ||
-                                "-"}
+                              : device.location?.city || device.location?.country || "-"}
                           </strong>
-                          <div style={{ fontSize: "0.8em", color: "#666" }}>
+                          <span className="product-name-sub">
                             {typeof device.location?.timezone === "string"
                               ? device.location.timezone
                               : ""}
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div style={{ fontSize: "0.85em" }}>
+                          </span>
+                        </td>
+                        <td className="text-muted">
                           {device.screen || "-"}
                           {device.language && (
-                            <div style={{ color: "#888" }}>
-                              {device.language}
-                            </div>
+                            <span className="product-name-sub">{device.language}</span>
                           )}
-                        </div>
-                      </td>
-                      <td>
-                        <span className="login-count">{device.loginCount}</span>
-                      </td>
-                      <td>{formatDate(device.lastLogin)}</td>
-                      <td>
-                        <span
-                          className={`device-status ${
-                            device.blocked ? "blocked" : "active"
-                          }`}
-                        >
-                          {device.blocked
-                            ? language === "he"
-                              ? "🚫 חסום"
-                              : "🚫 Blocked"
-                            : language === "he"
-                              ? "✅ פעיל"
-                              : "✅ Active"}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="table-actions">
-                          <button
-                            className={`action-btn ${
-                              device.blocked ? "unblock" : "block"
+                        </td>
+                        <td>
+                          <span className="login-count">{device.loginCount}</span>
+                        </td>
+                        <td>{formatDate(device.lastLogin)}</td>
+                        <td>
+                          <span
+                            className={`status-badge ${
+                              device.blocked ? "status-blocked" : "status-active"
                             }`}
-                            onClick={() => handleBlockIP(device.id)}
-                            title={
-                              language === "he"
-                                ? device.blocked
-                                  ? "בטל חסימה"
-                                  : "חסום IP"
-                                : device.blocked
-                                  ? "Unblock"
-                                  : "Block IP"
-                            }
                           >
+                            <span className="status-dot"></span>
                             {device.blocked
-                              ? language === "he"
-                                ? "🔓 בטל"
-                                : "🔓 Unblock"
-                              : language === "he"
-                                ? "🔒 חסום"
-                                : "🔒 Block"}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                              ? language === "he" ? "חסום" : "Blocked"
+                              : language === "he" ? "פעיל" : "Active"}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="row-actions">
+                            <button
+                              className={`action-btn ${device.blocked ? "unblock" : "block"}`}
+                              onClick={() => handleBlockIP(device._id || device.id)}
+                            >
+                              {device.blocked
+                                ? language === "he" ? "בטל חסימה" : "Unblock"
+                                : language === "he" ? "חסום IP" : "Block IP"}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {filteredDevices.length === 0 && (
+                      <tr>
+                        <td colSpan="9" className="empty-table">
+                          {language === "he" ? "לא נמצאו מכשירים" : "No devices found"}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             {/* Blocked IPs Summary */}
@@ -1574,217 +1674,24 @@ function Admin() {
         )}
       </div>
 
-      {/* Product Form Modal */}
-      {showForm && (
-        <div className="product-form-modal" onClick={handleFormCancel}>
-          <form
-            className="product-form"
-            onClick={(e) => e.stopPropagation()}
-            onSubmit={handleFormSubmit}
-          >
-            <h2>
-              {editingProduct
-                ? language === "he"
-                  ? "עריכת מוצר"
-                  : "Edit Product"
-                : language === "he"
-                  ? "הוספת מוצר חדש"
-                  : "Add New Product"}
-            </h2>
-
-            <div className="form-group">
-              <label>
-                {language === "he"
-                  ? "שם המוצר (עברית) *"
-                  : "Product name (Hebrew) *"}
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleFormChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he"
-                  ? "שם המוצר (אנגלית)"
-                  : "Product name (English)"}
-              </label>
-              <input
-                type="text"
-                name="nameEn"
-                value={formData.nameEn}
-                onChange={handleFormChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he"
-                  ? "קטגוריה (עברית) *"
-                  : "Category (Hebrew) *"}
-              </label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleFormChange}
-                required
-              >
-                <option value="">
-                  {language === "he" ? "בחר קטגוריה" : "Select Category"}
-                </option>
-                <option value="אותיות עבריות">
-                  {language === "he" ? "אותיות עבריות" : "Hebrew Letters"}
-                </option>
-                <option value="אבני חושן">
-                  {language === "he" ? "אבני חושן" : "Hoshen Stones"}
-                </option>
-                <option value="תליוני מזלות">
-                  {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
-                </option>
-                <option value="שלישיות מיוחדות">
-                  {language === "he" ? "שלישיות מיוחדות" : "Trinity Pendants"}
-                </option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he" ? "קטגוריה (אנגלית)" : "Category (English)"}
-              </label>
-              <input
-                type="text"
-                name="categoryEn"
-                value={formData.categoryEn}
-                onChange={handleFormChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he" ? "תיאור (עברית)" : "Description (Hebrew)"}
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleFormChange}
-                rows="3"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he" ? "תיאור (אנגלית)" : "Description (English)"}
-              </label>
-              <textarea
-                name="descriptionEn"
-                value={formData.descriptionEn}
-                onChange={handleFormChange}
-                rows="3"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>{language === "he" ? "מחיר (₪) *" : "Price (₪) *"}</label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleFormChange}
-                required
-                min="0"
-                step="0.01"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he"
-                  ? "סוגי מתכות (מופרדים בפסיק)"
-                  : "Metal Types (comma separated)"}
-              </label>
-              <input
-                type="text"
-                name="metals"
-                value={formData.metals}
-                onChange={handleFormChange}
-                placeholder={language === "he" ? "זהב, כסף" : "Gold, Silver"}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                {language === "he"
-                  ? "כתובות תמונה (מופרדות בפסיק)"
-                  : "Image URLs (comma separated)"}
-              </label>
-              <textarea
-                name="images"
-                value={formData.images}
-                onChange={handleFormChange}
-                rows="2"
-                placeholder={
-                  language === "he"
-                    ? "https://example.com/image1.jpg, https://example.com/image2.jpg"
-                    : "https://example.com/image1.jpg, https://example.com/image2.jpg"
-                }
-              />
-            </div>
-
-            <div className="form-group">
-              <label>{language === "he" ? "סטטוס" : "Status"}</label>
-              <select
-                name="status"
-                value={formData.status}
-                onChange={handleFormChange}
-              >
-                <option value="active">
-                  {language === "he" ? "פעיל" : "Active"}
-                </option>
-                <option value="inactive">
-                  {language === "he" ? "לא פעיל" : "Inactive"}
-                </option>
-              </select>
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="btn">
-                {editingProduct
-                  ? language === "he"
-                    ? "שמור שינויים"
-                    : "Save Changes"
-                  : language === "he"
-                    ? "הוסף מוצר"
-                    : "Add Product"}
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleFormCancel}
-              >
-                {language === "he" ? "ביטול" : "Cancel"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* ProductForm Component Modal - For Image Upload */}
+      {/* ─── ProductForm Modal (with image upload) ─── */}
       {showProductForm && (
         <div
           className="product-form-modal"
-          onClick={() => setShowProductForm(false)}
+          onClick={() => {
+            setShowProductForm(false);
+            setEditingProduct(null);
+          }}
         >
           <div
             className="product-form-container"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="close-btn"
-              onClick={() => setShowProductForm(false)}
+              onClick={() => {
+                setShowProductForm(false);
+                setEditingProduct(null);
+              }}
               style={{
                 position: "absolute",
                 top: "10px",
