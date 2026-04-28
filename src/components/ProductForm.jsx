@@ -12,6 +12,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
     descriptionEn: initialProduct?.descriptionEn || "",
     price: initialProduct?.price || "",
     category: initialProduct?.category || "",
+    categoryEn: initialProduct?.categoryEn || "",
     zodiacSign: initialProduct?.zodiacSign || "",
     stock: initialProduct?.stock || "",
     metals: initialProduct?.metals?.join(", ") || "",
@@ -38,11 +39,21 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
     }
   };
 
+  const categoryEnMap = {
+    "אותיות עבריות": "Ancient Hebrew Script",
+    "תליוני מזלות": "Zodiac Pendants",
+    "אבני חושן": "Hoshen Stones",
+    "כוכבים": "Planets",
+    "מזל, אבן חושן וכוכב": "Trinity Pendants",
+    "אחר": "Other",
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      ...(name === "category" && { categoryEn: categoryEnMap[value] || "" }),
     }));
   };
 
@@ -59,6 +70,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
       data.append("descriptionEn", formData.descriptionEn);
       data.append("price", formData.price);
       data.append("category", formData.category);
+      data.append("categoryEn", formData.categoryEn);
       data.append("zodiacSign", formData.zodiacSign);
       data.append("stock", formData.stock);
 
@@ -187,6 +199,7 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
           <option value="תליוני מזלות">תליוני מזלות</option>
           <option value="אבני חושן">אבני חושן</option>
           <option value="כוכבים">כוכבים</option>
+          <option value="מזל, אבן חושן וכוכב">מזל, אבן חושן וכוכב</option>
           <option value="אחר">אחר</option>
         </select>
       </div>

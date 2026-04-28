@@ -9,6 +9,7 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useProducts } from "../hooks/useProducts";
 import ProductModal from "../components/ProductModal";
+import NewsletterPopup from "../components/NewsletterPopup";
 import "../styles/pages/Home.css";
 
 function Home() {
@@ -65,7 +66,7 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Hero Section */}
+      <NewsletterPopup />
       <section className="hero">
         <div className="hero-bg" />
         <div className="hero-overlay" />

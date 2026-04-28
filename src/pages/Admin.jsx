@@ -9,6 +9,7 @@ import {
   FaShieldAlt,
   FaBoxOpen,
   FaShoppingCart,
+  FaTag,
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -78,6 +79,15 @@ function Admin() {
   const [devices, setDevices] = useState([]);
 
   const [blockedIPs, setBlockedIPs] = useState([]);
+
+  // Coupons State
+  const [coupons, setCoupons] = useState([]);
+  const [newCoupon, setNewCoupon] = useState({
+    code: "",
+    discountPercent: "",
+    description: "",
+  });
+  const [couponLoading, setCouponLoading] = useState(false);
   const [deviceSearchTerm, setDeviceSearchTerm] = useState("");
   const [newFirewallIP, setNewFirewallIP] = useState("");
   const [firewall, setFirewall] = useState([]);
@@ -205,6 +215,102 @@ function Admin() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  // Fetch coupons from API
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
+  const fetchCoupons = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/coupons`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) setCoupons(data.data || []);
+    } catch (error) {
+      console.error("Error fetching coupons:", error);
+    }
+  };
+
+  const handleCreateCoupon = async () => {
+    if (!newCoupon.code.trim() || !newCoupon.discountPercent) {
+      showError(
+        language === "he"
+          ? "אנא מלא קוד ואחוז הנחה"
+          : "Please fill in code and discount percent",
+      );
+      return;
+    }
+    const pct = Number(newCoupon.discountPercent);
+    if (isNaN(pct) || pct <= 0 || pct > 100) {
+      showError(language === "he" ? "אחוז הנחה חייב להיות בין 1-100" : "Discount must be between 1 and 100");
+      return;
+    }
+    setCouponLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/coupons`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          code: newCoupon.code.trim().toUpperCase(),
+          discountPercent: pct,
+          description: newCoupon.description.trim(),
+          type: "manual",
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setCoupons((prev) => [...prev, data.data]);
+        setNewCoupon({ code: "", discountPercent: "", description: "" });
+        showSuccess(
+          language === "he" ? "קופון נוצר בהצלחה" : "Coupon created successfully",
+        );
+      } else {
+        showError(data.message || "Error creating coupon");
+      }
+    } catch (error) {
+      console.error("Error creating coupon:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleDeleteCoupon = async (couponId) => {
+    if (
+      !window.confirm(
+        language === "he"
+          ? "האם אתה בטוח שברצונך למחוק קופון זה?"
+          : "Are you sure you want to delete this coupon?",
+      )
+    )
+      return;
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/coupons/${couponId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) {
+        setCoupons((prev) => prev.filter((c) => (c._id || c.id) !== couponId));
+        showSuccess(
+          language === "he" ? "קופון נמחק בהצלחה" : "Coupon deleted successfully",
+        );
+      } else {
+        showError(data.message || "Error deleting coupon");
+      }
+    } catch (error) {
+      console.error("Error deleting coupon:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
+  };
 
   // Fetch devices from API
   useEffect(() => {
@@ -971,6 +1077,15 @@ function Admin() {
               </button>
             </li>
           )}
+          <li>
+            <button
+              className={`admin-nav-item ${activeTab === "coupons" ? "active" : ""}`}
+              onClick={() => setActiveTab("coupons")}
+            >
+              <FaTag className="nav-icon" />
+              {language === "he" ? "קופונים" : "Coupons"}
+            </button>
+          </li>
         </ul>
       </nav>
 
@@ -1748,6 +1863,196 @@ function Admin() {
                     : "No blocked IP addresses at the moment"}
                 </p>
               )}
+            </div>
+          </>
+        )}
+
+        {/* ───────────────── COUPONS TAB ───────────────── */}
+        {activeTab === "coupons" && (
+          <>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "קודי קופון" : "Coupon Codes"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? `${coupons.length} קודים פעילים`
+                    : `${coupons.length} active codes`}
+                </p>
+              </div>
+            </div>
+
+            {/* Create Coupon Form */}
+            <div className="admin-table-card" style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ marginBottom: "1rem", color: "var(--color-primary)" }}>
+                {language === "he" ? "צור קופון חדש" : "Create New Coupon"}
+              </h3>
+              <div className="coupon-create-form">
+                <div className="form-group">
+                  <label>{language === "he" ? "קוד" : "Code"}</label>
+                  <input
+                    type="text"
+                    className="search-input"
+                    style={{ textTransform: "uppercase" }}
+                    placeholder={language === "he" ? "לדוגמא: SUMMER20" : "e.g. SUMMER20"}
+                    value={newCoupon.code}
+                    onChange={(e) =>
+                      setNewCoupon((p) => ({
+                        ...p,
+                        code: e.target.value.toUpperCase(),
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{language === "he" ? "אחוז הנחה" : "Discount %"}</label>
+                  <input
+                    type="number"
+                    className="search-input"
+                    min="1"
+                    max="100"
+                    placeholder="10"
+                    value={newCoupon.discountPercent}
+                    onChange={(e) =>
+                      setNewCoupon((p) => ({
+                        ...p,
+                        discountPercent: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label>{language === "he" ? "תיאור (אפציונלי)" : "Description (optional)"}</label>
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder={
+                      language === "he" ? "דוגמא: קופון קיץ" : "e.g. Summer sale"
+                    }
+                    value={newCoupon.description}
+                    onChange={(e) =>
+                      setNewCoupon((p) => ({
+                        ...p,
+                        description: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <button
+                  className="btn-gold"
+                  onClick={handleCreateCoupon}
+                  disabled={couponLoading}
+                  style={{ alignSelf: "flex-end" }}
+                >
+                  <FaPlus />
+                  {couponLoading
+                    ? language === "he"
+                      ? "יוצר..."
+                      : "Creating..."
+                    : language === "he"
+                      ? "צור קופון"
+                      : "Create Coupon"}
+                </button>
+              </div>
+            </div>
+
+            {/* Coupons Table */}
+            <div className="admin-table-card">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>{language === "he" ? "קוד" : "Code"}</th>
+                    <th>{language === "he" ? "הנחה" : "Discount"}</th>
+                    <th>{language === "he" ? "סוג" : "Type"}</th>
+                    <th>{language === "he" ? "תיאור" : "Description"}</th>
+                    <th>{language === "he" ? "סטאטוס" : "Status"}</th>
+                    <th>{language === "he" ? "פעולות" : "Actions"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {coupons.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="empty-table">
+                        {language === "he"
+                          ? "אין קודי קופון עדיין"
+                          : "No coupon codes yet"}
+                      </td>
+                    </tr>
+                  ) : (
+                    coupons.map((coupon) => (
+                      <tr key={coupon._id || coupon.id}>
+                        <td>
+                          <code
+                            style={{
+                              fontWeight: 700,
+                              letterSpacing: "0.08rem",
+                              color: "var(--color-secondary)",
+                            }}
+                          >
+                            {coupon.code}
+                          </code>
+                        </td>
+                        <td style={{ fontWeight: 700 }}>
+                          {coupon.discountPercent}%
+                        </td>
+                        <td>
+                          <span
+                            className={`status-badge ${
+                              coupon.type === "newsletter"
+                                ? "status-pending"
+                                : "status-active"
+                            }`}
+                          >
+                            <span className="status-dot"></span>
+                            {coupon.type === "newsletter"
+                              ? language === "he"
+                                ? "ניוזלטר"
+                                : "Newsletter"
+                              : language === "he"
+                                ? "ידני"
+                                : "Manual"}
+                          </span>
+                        </td>
+                        <td className="text-muted">
+                          {coupon.description || "-"}
+                        </td>
+                        <td>
+                          <span
+                            className={`status-badge ${
+                              coupon.isActive !== false
+                                ? "status-active"
+                                : "status-blocked"
+                            }`}
+                          >
+                            <span className="status-dot"></span>
+                            {coupon.isActive !== false
+                              ? language === "he"
+                                ? "פעיל"
+                                : "Active"
+                              : language === "he"
+                                ? "לא פעיל"
+                                : "Inactive"}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="row-actions">
+                            <button
+                              className="icon-btn icon-btn-delete"
+                              onClick={() =>
+                                handleDeleteCoupon(coupon._id || coupon.id)
+                              }
+                              title={
+                                language === "he" ? "מחק קופון" : "Delete coupon"
+                              }
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           </>
         )}

@@ -5,7 +5,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Auth.css";
 
 function VerifyCode() {
-  const { language } = useLanguage();
+  const { language } = useLanguage(); 
   const navigate = useNavigate();
   const location = useLocation();
   const { showSuccess, showError } = useToast();

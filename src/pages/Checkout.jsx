@@ -11,6 +11,14 @@ function Checkout() {
   const { cartItems, total } = location.state || { cartItems: [], total: 0 };
   const { showError } = useToast();
 
+  const [couponCode, setCouponCode] = useState("");
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [appliedCoupon, setAppliedCoupon] = useState(null); // { code, discountPercent }
+
+  const discountedTotal = appliedCoupon
+    ? Math.round(total * (1 - appliedCoupon.discountPercent / 100))
+    : total;
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -54,6 +62,38 @@ function Checkout() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/coupons/validate`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: couponCode.trim().toUpperCase() }),
+        },
+      );
+      const data = await response.json();
+      if (data.success) {
+        setAppliedCoupon({
+          code: couponCode.trim().toUpperCase(),
+          discountPercent: data.discountPercent,
+        });
+      } else {
+        showError(
+          data.message ||
+            (language === "he" ? "קוד קופון לא תקין" : "Invalid coupon code"),
+        );
+        setAppliedCoupon(null);
+      }
+    } catch {
+      showError(language === "he" ? "שגיאה בחיבור לשרת" : "Connection error");
+    } finally {
+      setCouponLoading(false);
+    }
   };
 
   const getFieldLabel = (field) => {
@@ -130,7 +170,9 @@ function Checkout() {
       },
       itemsPrice,
       shippingPrice,
-      totalPrice: total,
+      totalPrice: discountedTotal,
+      couponCode: appliedCoupon?.code || null,
+      discountPercent: appliedCoupon?.discountPercent || 0,
     };
 
     localStorage.setItem("pendingOrder", JSON.stringify(pendingOrder));
@@ -149,9 +191,6 @@ function Checkout() {
     );
 
     navigate("/payment");
-  };
-
-  if (!cartItems || cartItems.length === 0) {
     return null;
   }
 
@@ -234,7 +273,52 @@ function Checkout() {
             </div>
             <div className="order-total">
               <span>סה"כ לתשלום:</span>
-              <span className="total-amount">{total} ₪</span>
+              <span className="total-amount">{discountedTotal} ₪</span>
+            </div>
+
+            {/* Coupon Code */}
+            <div className="coupon-section">
+              <p className="coupon-label">
+                {language === "he" ? "קוד קופון" : "Coupon Code"}
+              </p>
+              {appliedCoupon ? (
+                <div className="coupon-applied">
+                  <span>
+                    ✅ {appliedCoupon.code} &mdash; {appliedCoupon.discountPercent}%{" "}
+                    {language === "he" ? "הנחה" : "off"}
+                  </span>
+                  <button
+                    className="coupon-remove-btn"
+                    onClick={() => {
+                      setAppliedCoupon(null);
+                      setCouponCode("");
+                    }}
+                  >
+                    {language === "he" ? "הסר" : "Remove"}
+                  </button>
+                </div>
+              ) : (
+                <div className="coupon-input-row">
+                  <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder={language === "he" ? "הזן קוד קופון" : "Enter coupon code"}
+                    onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
+                  />
+                  <button
+                    className="coupon-apply-btn"
+                    onClick={handleApplyCoupon}
+                    disabled={couponLoading || !couponCode.trim()}
+                  >
+                    {couponLoading
+                      ? "..."
+                      : language === "he"
+                        ? "הפעל"
+                        : "Apply"}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -321,8 +405,8 @@ function Checkout() {
 
             <button type="submit" className="btn submit-order-btn">
               {language === "he"
-                ? `סכום הזמנה ומעבר לתשלום - ${total} ₪`
-                : `Review & Proceed to Payment - ${total} ₪`}
+                ? `סכום הזמנה ומעבר לתשלום - ${discountedTotal} ₪`
+                : `Review & Proceed to Payment - ${discountedTotal} ₪`}
             </button>
 
             <p className="secure-payment-note">

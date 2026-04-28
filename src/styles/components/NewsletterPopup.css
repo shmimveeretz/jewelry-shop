@@ -1,0 +1,228 @@
+.nl-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 40, 57, 0.55);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: nl-fade-in 0.4s ease;
+}
+
+@keyframes nl-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.nl-popup {
+  position: relative;
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 3rem 2.5rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 30px 60px -20px rgba(22, 40, 57, 0.3);
+  border-top: 4px solid var(--color-secondary);
+  animation: nl-slide-up 0.4s ease;
+}
+
+@keyframes nl-slide-up {
+  from { transform: translateY(30px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.nl-close {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(44, 62, 80, 0.45);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.nl-close:hover {
+  color: var(--color-primary);
+}
+
+.nl-icon-wrap {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+}
+
+.nl-popup h2 {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.nl-subtitle {
+  font-size: var(--font-size-base);
+  color: rgba(44, 62, 80, 0.6);
+  margin-bottom: 1.5rem;
+}
+
+/* Form */
+.nl-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nl-input-row {
+  display: flex;
+  gap: 0;
+  border: 2px solid #e0e0e0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.nl-input-row:focus-within {
+  border-color: var(--color-secondary);
+}
+
+.nl-input-row input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.nl-input-row button {
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.nl-input-row button:hover:not(:disabled) {
+  background: #c4a12e;
+}
+
+.nl-input-row button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.nl-error {
+  font-size: var(--font-size-sm);
+  color: #e74c3c;
+  margin: 0;
+}
+
+.nl-disclaimer {
+  font-size: 0.75rem;
+  color: rgba(44, 62, 80, 0.4);
+  margin-top: 0.75rem;
+}
+
+/* Success state */
+.nl-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nl-success h2 {
+  margin-bottom: 0.75rem;
+}
+
+.nl-success > p {
+  font-size: var(--font-size-base);
+  color: rgba(44, 62, 80, 0.65);
+  margin-bottom: 1rem;
+}
+
+.nl-coupon-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(212, 175, 55, 0.08);
+  border: 2px dashed var(--color-secondary);
+  border-radius: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.nl-coupon-display span {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.2rem;
+  color: var(--color-primary);
+}
+
+.nl-copy-btn {
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.nl-copy-btn:hover {
+  background: #c4a12e;
+}
+
+.nl-fine-print {
+  font-size: 0.75rem;
+  color: rgba(44, 62, 80, 0.45);
+  margin-bottom: 1.25rem;
+}
+
+.nl-done-btn {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 2rem;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.nl-done-btn:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 480px) {
+  .nl-popup {
+    padding: 2.5rem 1.5rem 1.5rem;
+  }
+
+  .nl-coupon-display span {
+    font-size: 1.1rem;
+    letter-spacing: 0.1rem;
+  }
+}

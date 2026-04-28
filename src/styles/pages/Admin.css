@@ -765,9 +765,32 @@
 }
 
 /* ─────────────────────────────────────────
-   Product Form Modal
+   Coupon Create Form
 ───────────────────────────────────────── */
-.product-form-modal {
+.coupon-create-form {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.coupon-create-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+  min-width: 160px;
+}
+
+.coupon-create-form .form-group label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: rgba(44, 62, 80, 0.6);
+}
+
+/* ─────────────────────────────────────────
+   Product Form Modal
+───────────────────────────────────────── */.product-form-modal {
   position: fixed;
   top: 0;
   left: 0;
