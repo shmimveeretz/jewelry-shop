@@ -29,25 +29,13 @@ function ShippingPolicy() {
                   <FaClock /> זמני אספקה
                 </h2>
                 <p>
-                  אנו עושים כל מאמץ לספק את המוצרים במהירות האפשרית. זמני האספקה
-                  המשוערים הם:
+                  כל תכשיט מיוצר בהזמנה אישית. זמן האספקה הכולל (ייצור + משלוח)
+                  הוא עד <strong>14 ימי עסקים</strong> מיום אישור ההזמנה.
                 </p>
-                <ul>
-                  <li>
-                    <strong>משלוח רגיל:</strong> 5-7 ימי עסקים מיום ביצוע ההזמנה
-                  </li>
-                  <li>
-                    <strong>משלוח מהיר:</strong> 2-3 ימי עסקים מיום ביצוע ההזמנה
-                  </li>
-                  <li>
-                    <strong>איסוף עצמי:</strong> ניתן לתאם איסוף תוך 1-2 ימי
-                    עסקים
-                  </li>
-                </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> שימו לב: זמני המשלוח אינם כוללים את
-                  זמן הייצור של תכשיטים מותאמים אישית, שעשוי להימשך עד 14 ימי
-                  עסקים נוספים.
+                  <FaExclamationTriangle /> שימו לב: במקרים של עומס הזמנות או
+                  מוצרים מיוחדים, זמן האספקה עשוי להתארך מעט. נעדכן אתכם בכל
+                  שינוי.
                 </p>
               </section>
 
@@ -57,32 +45,12 @@ function ShippingPolicy() {
                 </h2>
 
                 <div className="shipping-option">
-                  <h3>משלוח רגיל - ₪30</h3>
+                  <h3>משלוח עד הבית - ₪30</h3>
                   <p>משלוח באמצעות דואר רשום או שליח עד הבית</p>
                   <ul>
                     <li>משלוח לכל רחבי הארץ</li>
                     <li>מעקב אחר משלוח</li>
-                    <li>5-7 ימי עסקים</li>
-                  </ul>
-                </div>
-
-                <div className="shipping-option">
-                  <h3>משלוח מהיר - ₪60</h3>
-                  <p>משלוח באמצעות שליח מהיר</p>
-                  <ul>
-                    <li>משלוח לכל רחבי הארץ</li>
-                    <li>מעקב אחר משלוח בזמן אמת</li>
-                    <li>2-3 ימי עסקים</li>
-                  </ul>
-                </div>
-
-                <div className="shipping-option">
-                  <h3>איסוף עצמי - חינם</h3>
-                  <p>ניתן לאסוף את המוצרים בתיאום מראש</p>
-                  <ul>
-                    <li>תיאום מראש דרך וואטסאפ או טלפון</li>
-                    <li>איסוף מתל אביב</li>
-                    <li>ללא עלות</li>
+                    <li>עד 14 ימי עסקים מיום ביצוע ההזמנה</li>
                   </ul>
                 </div>
               </section>
@@ -189,27 +157,15 @@ function ShippingPolicy() {
                   <FaClock /> Delivery Times
                 </h2>
                 <p>
-                  We make every effort to deliver products as quickly as
-                  possible. Estimated delivery times:
+                  Every piece of jewelry is made to order. The total delivery
+                  time (production + shipping) is up to{" "}
+                  <strong>14 business days</strong> from the date your order is
+                  confirmed.
                 </p>
-                <ul>
-                  <li>
-                    <strong>Standard Shipping:</strong> 5-7 business days from
-                    order date
-                  </li>
-                  <li>
-                    <strong>Express Shipping:</strong> 2-3 business days from
-                    order date
-                  </li>
-                  <li>
-                    <strong>Self Pickup:</strong> Available within 1-2 business
-                    days
-                  </li>
-                </ul>
                 <p className="note">
-                  <FaExclamationTriangle /> Note: Delivery times do not include
-                  production time for custom jewelry, which may take up to an
-                  additional 14 business days.
+                  <FaExclamationTriangle /> Note: During high demand periods or
+                  for special items, delivery may take slightly longer. We will
+                  keep you informed of any changes.
                 </p>
               </section>
 
@@ -219,34 +175,14 @@ function ShippingPolicy() {
                 </h2>
 
                 <div className="shipping-option">
-                  <h3>Standard Shipping - ₪30</h3>
+                  <h3>Home Delivery - ₪30</h3>
                   <p>
                     Delivery via registered mail or courier to your doorstep
                   </p>
                   <ul>
                     <li>Nationwide delivery</li>
                     <li>Package tracking</li>
-                    <li>5-7 business days</li>
-                  </ul>
-                </div>
-
-                <div className="shipping-option">
-                  <h3>Express Shipping - ₪60</h3>
-                  <p>Delivery via express courier</p>
-                  <ul>
-                    <li>Nationwide delivery</li>
-                    <li>Real-time package tracking</li>
-                    <li>2-3 business days</li>
-                  </ul>
-                </div>
-
-                <div className="shipping-option">
-                  <h3>Self Pickup - Free</h3>
-                  <p>Pick up products by appointment</p>
-                  <ul>
-                    <li>Schedule via WhatsApp or phone</li>
-                    <li>Pickup from Tel Aviv</li>
-                    <li>No cost</li>
+                    <li>Up to 14 business days from order date</li>
                   </ul>
                 </div>
               </section>
