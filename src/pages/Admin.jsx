@@ -245,7 +245,11 @@ function Admin() {
     }
     const pct = Number(newCoupon.discountPercent);
     if (isNaN(pct) || pct <= 0 || pct > 100) {
-      showError(language === "he" ? "אחוז הנחה חייב להיות בין 1-100" : "Discount must be between 1 and 100");
+      showError(
+        language === "he"
+          ? "אחוז הנחה חייב להיות בין 1-100"
+          : "Discount must be between 1 and 100",
+      );
       return;
     }
     setCouponLoading(true);
@@ -269,7 +273,9 @@ function Admin() {
         setCoupons((prev) => [...prev, data.data]);
         setNewCoupon({ code: "", discountPercent: "", description: "" });
         showSuccess(
-          language === "he" ? "קופון נוצר בהצלחה" : "Coupon created successfully",
+          language === "he"
+            ? "קופון נוצר בהצלחה"
+            : "Coupon created successfully",
         );
       } else {
         showError(data.message || "Error creating coupon");
@@ -301,7 +307,9 @@ function Admin() {
       if (data.success) {
         setCoupons((prev) => prev.filter((c) => (c._id || c.id) !== couponId));
         showSuccess(
-          language === "he" ? "קופון נמחק בהצלחה" : "Coupon deleted successfully",
+          language === "he"
+            ? "קופון נמחק בהצלחה"
+            : "Coupon deleted successfully",
         );
       } else {
         showError(data.message || "Error deleting coupon");
@@ -1882,8 +1890,13 @@ function Admin() {
             </div>
 
             {/* Create Coupon Form */}
-            <div className="admin-table-card" style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ marginBottom: "1rem", color: "var(--color-primary)" }}>
+            <div
+              className="admin-table-card"
+              style={{ marginBottom: "1.5rem" }}
+            >
+              <h3
+                style={{ marginBottom: "1rem", color: "var(--color-primary)" }}
+              >
                 {language === "he" ? "צור קופון חדש" : "Create New Coupon"}
               </h3>
               <div className="coupon-create-form">
@@ -1893,7 +1906,9 @@ function Admin() {
                     type="text"
                     className="search-input"
                     style={{ textTransform: "uppercase" }}
-                    placeholder={language === "he" ? "לדוגמא: SUMMER20" : "e.g. SUMMER20"}
+                    placeholder={
+                      language === "he" ? "לדוגמא: SUMMER20" : "e.g. SUMMER20"
+                    }
                     value={newCoupon.code}
                     onChange={(e) =>
                       setNewCoupon((p) => ({
@@ -1904,7 +1919,9 @@ function Admin() {
                   />
                 </div>
                 <div className="form-group">
-                  <label>{language === "he" ? "אחוז הנחה" : "Discount %"}</label>
+                  <label>
+                    {language === "he" ? "אחוז הנחה" : "Discount %"}
+                  </label>
                   <input
                     type="number"
                     className="search-input"
@@ -1921,12 +1938,18 @@ function Admin() {
                   />
                 </div>
                 <div className="form-group">
-                  <label>{language === "he" ? "תיאור (אפציונלי)" : "Description (optional)"}</label>
+                  <label>
+                    {language === "he"
+                      ? "תיאור (אפציונלי)"
+                      : "Description (optional)"}
+                  </label>
                   <input
                     type="text"
                     className="search-input"
                     placeholder={
-                      language === "he" ? "דוגמא: קופון קיץ" : "e.g. Summer sale"
+                      language === "he"
+                        ? "דוגמא: קופון קיץ"
+                        : "e.g. Summer sale"
                     }
                     value={newCoupon.description}
                     onChange={(e) =>
@@ -2041,7 +2064,9 @@ function Admin() {
                                 handleDeleteCoupon(coupon._id || coupon.id)
                               }
                               title={
-                                language === "he" ? "מחק קופון" : "Delete coupon"
+                                language === "he"
+                                  ? "מחק קופון"
+                                  : "Delete coupon"
                               }
                             >
                               <FaTrash />

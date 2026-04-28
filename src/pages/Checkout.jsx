@@ -192,7 +192,7 @@ function Checkout() {
 
     navigate("/payment");
     return null;
-  }
+  };
 
   return (
     <div className="checkout-page">
@@ -284,7 +284,8 @@ function Checkout() {
               {appliedCoupon ? (
                 <div className="coupon-applied">
                   <span>
-                    ✅ {appliedCoupon.code} &mdash; {appliedCoupon.discountPercent}%{" "}
+                    ✅ {appliedCoupon.code} &mdash;{" "}
+                    {appliedCoupon.discountPercent}%{" "}
                     {language === "he" ? "הנחה" : "off"}
                   </span>
                   <button
@@ -302,8 +303,12 @@ function Checkout() {
                   <input
                     type="text"
                     value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                    placeholder={language === "he" ? "הזן קוד קופון" : "Enter coupon code"}
+                    onChange={(e) =>
+                      setCouponCode(e.target.value.toUpperCase())
+                    }
+                    placeholder={
+                      language === "he" ? "הזן קוד קופון" : "Enter coupon code"
+                    }
                     onKeyDown={(e) => e.key === "Enter" && handleApplyCoupon()}
                   />
                   <button

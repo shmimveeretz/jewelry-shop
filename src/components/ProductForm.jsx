@@ -43,9 +43,9 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
     "אותיות עבריות": "Ancient Hebrew Script",
     "תליוני מזלות": "Zodiac Pendants",
     "אבני חושן": "Hoshen Stones",
-    "כוכבים": "Planets",
+    כוכבים: "Planets",
     "מזל, אבן חושן וכוכב": "Trinity Pendants",
-    "אחר": "Other",
+    אחר: "Other",
   };
 
   const handleInputChange = (e) => {

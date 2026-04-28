@@ -182,7 +182,9 @@
   cursor: pointer;
   white-space: nowrap;
   min-height: 44px;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
   box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
   font-family: var(--font-primary);
 }
@@ -548,11 +550,21 @@
   border-color: var(--color-primary);
 }
 
-.status-select.status-pending { border-color: #f39c12; }
-.status-select.status-processing { border-color: #3498db; }
-.status-select.status-shipped { border-color: #9b59b6; }
-.status-select.status-delivered { border-color: #27ae60; }
-.status-select.status-cancelled { border-color: #e74c3c; }
+.status-select.status-pending {
+  border-color: #f39c12;
+}
+.status-select.status-processing {
+  border-color: #3498db;
+}
+.status-select.status-shipped {
+  border-color: #9b59b6;
+}
+.status-select.status-delivered {
+  border-color: #27ae60;
+}
+.status-select.status-cancelled {
+  border-color: #e74c3c;
+}
 
 /* ─────────────────────────────────────────
    Filter Select
@@ -587,8 +599,13 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 .empty-table {
@@ -652,12 +669,27 @@
   font-family: var(--font-primary);
 }
 
-.action-btn.block { background-color: #e67e22; color: white; }
-.action-btn.block:hover { background-color: #d35400; }
-.action-btn.unblock { background-color: #27ae60; color: white; }
-.action-btn.unblock:hover { background-color: #229954; }
-.action-btn.delete { background-color: #e74c3c; color: white; }
-.action-btn.delete:hover { background-color: #c0392b; }
+.action-btn.block {
+  background-color: #e67e22;
+  color: white;
+}
+.action-btn.block:hover {
+  background-color: #d35400;
+}
+.action-btn.unblock {
+  background-color: #27ae60;
+  color: white;
+}
+.action-btn.unblock:hover {
+  background-color: #229954;
+}
+.action-btn.delete {
+  background-color: #e74c3c;
+  color: white;
+}
+.action-btn.delete:hover {
+  background-color: #c0392b;
+}
 
 /* ─────────────────────────────────────────
    Devices Tab
@@ -790,7 +822,8 @@
 
 /* ─────────────────────────────────────────
    Product Form Modal
-───────────────────────────────────────── */.product-form-modal {
+───────────────────────────────────────── */
+.product-form-modal {
   position: fixed;
   top: 0;
   left: 0;

@@ -60,9 +60,7 @@ function NewsletterPopup() {
         );
       }
     } catch {
-      setError(
-        language === "he" ? "שגיאה בחיבור לשרת" : "Connection error",
-      );
+      setError(language === "he" ? "שגיאה בחיבור לשרת" : "Connection error");
     } finally {
       setLoading(false);
     }
@@ -84,7 +82,9 @@ function NewsletterPopup() {
               <FaGem />
             </div>
             <h2>
-              {language === "he" ? "ברוך הבא למשפחה!" : "Welcome to the family!"}
+              {language === "he"
+                ? "ברוך הבא למשפחה!"
+                : "Welcome to the family!"}
             </h2>
             <p>
               {language === "he"
@@ -134,7 +134,9 @@ function NewsletterPopup() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={
-                    language === "he" ? "כתובת האימייל שלך" : "Your email address"
+                    language === "he"
+                      ? "כתובת האימייל שלך"
+                      : "Your email address"
                   }
                   required
                 />
