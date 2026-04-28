@@ -131,7 +131,6 @@ function Shop() {
   return (
     <div className="shop">
       <div className="container">
-
         {/* Category Hero Section */}
         {currentCollection && (
           <div className="category-hero">
