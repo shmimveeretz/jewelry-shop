@@ -11,6 +11,12 @@ import {
   FaShoppingCart,
   FaTag,
   FaEnvelope,
+  FaChartBar,
+  FaUserPlus,
+  FaEye,
+  FaMoneyBillWave,
+  FaArrowUp,
+  FaArrowDown,
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -25,7 +31,7 @@ function Admin() {
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [activeTab, setActiveTab] = useState("products");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [loading, setLoading] = useState(false);
 
   // Products State - Load from data files
@@ -34,46 +40,14 @@ function Admin() {
   // Users State
   const [users, setUsers] = useState([]);
 
-  // Orders State - Mock data
-  const [orders, setOrders] = useState([
-    // {
-    //   id: "ORD-001",
-    //   customerId: "user-1",
-    //   customerName: "רוי רביב",
-    //   email: "raviroi@gmail.com",
-    //   totalPrice: 2890,
-    //   status: "pending",
-    //   createdAt: "2026-01-28T14:30:00",
-    //   items: [
-    //     { id: "aleph", name: "אלף", price: 890, quantity: 2 },
-    //     { id: "ruby-odem", name: "אבן רובי", price: 1290, quantity: 1 },
-    //   ],
-    // },
-    // {
-    //   id: "ORD-002",
-    //   customerId: "user-2",
-    //   customerName: "דנה כהן",
-    //   email: "dana@gmail.com",
-    //   totalPrice: 950,
-    //   status: "shipped",
-    //   createdAt: "2026-01-27T10:15:00",
-    //   items: [
-    //     { id: "aries-pendant", name: "תליון מזל טלה", price: 950, quantity: 1 },s
-    //   ],
-    // },
-    // {
-    //   id: "ORD-003",
-    //   customerId: "user-3",
-    //   customerName: "אברהם לוי",
-    //   email: "abraham@gmail.com",
-    //   totalPrice: 1690,
-    //   status: "delivered",
-    //   createdAt: "2026-01-25T08:45:00",
-    //   items: [
-    //     { id: "trinity-aries", name: "שלישיית טלה", price: 1690, quantity: 1 },
-    //   ],
-    // },
-  ]);
+  // Dashboard Stats State
+  const [dashboardStats, setDashboardStats] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [statsTimePeriod, setStatsTimePeriod] = useState("week");
+
+  // Orders State
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
 
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
@@ -217,6 +191,53 @@ function Admin() {
     }
   }, [navigate, language, showError]);
 
+  // Fetch dashboard stats
+  useEffect(() => {
+    if (isAuthorized) fetchDashboardStats(statsTimePeriod);
+  }, [isAuthorized, statsTimePeriod]);
+
+  const fetchDashboardStats = async (period) => {
+    setStatsLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${API_BASE_URL}/api/admin/stats?period=${period}`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      const data = await response.json();
+      if (data.success) setDashboardStats(data.data);
+    } catch (error) {
+      console.error("Error fetching dashboard stats:", error);
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  // Fetch orders from API
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    setOrdersLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/orders`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) {
+        setOrders(data.data || []);
+      } else {
+        console.error("Failed to fetch orders:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setOrdersLoading(false);
+    }
+  };
+
   // Fetch users from API
   useEffect(() => {
     fetchUsers();
@@ -231,9 +252,12 @@ function Admin() {
     setNewsletterLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE_URL}/api/newsletter/subscribers`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/api/newsletter/subscribers`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       const data = await response.json();
       if (data.success) setSubscribers(data.data || []);
     } catch (error) {
@@ -267,7 +291,9 @@ function Admin() {
           prev.filter((s) => (s._id || s.id) !== subscriberId),
         );
         showSuccess(
-          language === "he" ? "המנוי נמחק בהצלחה" : "Subscriber deleted successfully",
+          language === "he"
+            ? "המנוי נמחק בהצלחה"
+            : "Subscriber deleted successfully",
         );
       } else {
         showError(data.message || "Error deleting subscriber");
@@ -676,24 +702,43 @@ function Admin() {
   };
 
   const handleOrderStatusChange = (orderId, newStatus) => {
-    setOrders(
-      orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o)),
+    // Optimistic update
+    setOrders((prev) =>
+      prev.map((o) =>
+        (o._id || o.id) === orderId ? { ...o, status: newStatus } : o,
+      ),
     );
-    const order = orders.find((o) => o.id === orderId);
+    // Persist to backend
+    const updateAsync = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        await fetch(`${API_BASE_URL}/api/orders/${orderId}/status`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: newStatus }),
+        });
+      } catch (error) {
+        console.error("Error updating order status:", error);
+      }
+    };
+    updateAsync();
     showSuccess(
-      language === "he"
-        ? `סטטוס ההזמנה ${orderId} עודכן`
-        : `Order ${orderId} status updated`,
+      language === "he" ? `סטטוס ההזמנה עודכן` : `Order status updated`,
     );
   };
 
   const filteredOrders = orders.filter((order) => {
+    const searchLower = orderSearchTerm.toLowerCase();
     const matchesSearch =
-      order.id.toLowerCase().includes(orderSearchTerm.toLowerCase()) ||
-      order.customerName
+      (order._id || order.id || "").toLowerCase().includes(searchLower) ||
+      (order.customerName || "").toLowerCase().includes(searchLower) ||
+      (order.customerEmail || order.email || "")
         .toLowerCase()
-        .includes(orderSearchTerm.toLowerCase()) ||
-      order.email.toLowerCase().includes(orderSearchTerm.toLowerCase());
+        .includes(searchLower) ||
+      (order.customerPhone || "").toLowerCase().includes(searchLower);
 
     const matchesStatus =
       orderStatusFilter === "all" || order.status === orderStatusFilter;
@@ -1109,6 +1154,15 @@ function Admin() {
         <ul className="admin-nav-pill">
           <li>
             <button
+              className={`admin-nav-item ${activeTab === "dashboard" ? "active" : ""}`}
+              onClick={() => setActiveTab("dashboard")}
+            >
+              <FaChartBar className="nav-icon" />
+              {language === "he" ? "דשבורד" : "Dashboard"}
+            </button>
+          </li>
+          <li>
+            <button
               className={`admin-nav-item ${activeTab === "products" ? "active" : ""}`}
               onClick={() => setActiveTab("products")}
             >
@@ -1170,6 +1224,238 @@ function Admin() {
 
       {/* ── Main Content ── */}
       <div className="admin-container">
+        {/* ───────────────── DASHBOARD TAB ───────────────── */}
+        {activeTab === "dashboard" && (
+          <>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "סקירה כללית" : "Overview"}</h1>
+                <p className="section-subtitle">
+                  {language === "he" ? "נתוני האתר לפי תקופה נבחרת" : "Site statistics for selected period"}
+                </p>
+              </div>
+              <div className="period-toggle">
+                {[
+                  { key: "day", he: "יום", en: "Today" },
+                  { key: "week", he: "שבוע", en: "Week" },
+                  { key: "month", he: "חודש", en: "Month" },
+                ].map(({ key, he, en }) => (
+                  <button
+                    key={key}
+                    className={`period-btn ${statsTimePeriod === key ? "active" : ""}`}
+                    onClick={() => setStatsTimePeriod(key)}
+                  >
+                    {language === "he" ? he : en}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {statsLoading ? (
+              <div className="loading-state">
+                {language === "he" ? "טוען נתונים..." : "Loading stats..."}
+              </div>
+            ) : (
+              <>
+                {/* ── Stat Cards ── */}
+                <div className="dashboard-grid">
+                  {/* Orders */}
+                  <div className="stat-card">
+                    <div className="stat-icon-wrap stat-icon-orders">
+                      <FaShoppingCart />
+                    </div>
+                    <div className="stat-body">
+                      <p className="stat-value">{dashboardStats?.orders?.count ?? "-"}</p>
+                      <p className="stat-label">{language === "he" ? "הזמנות" : "Orders"}</p>
+                      {dashboardStats?.orders?.trend !== undefined && (
+                        <span className={`stat-trend ${dashboardStats.orders.trend >= 0 ? "trend-up" : "trend-down"}`}>
+                          {dashboardStats.orders.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                          {Math.abs(dashboardStats.orders.trend)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Revenue */}
+                  <div className="stat-card">
+                    <div className="stat-icon-wrap stat-icon-revenue">
+                      <FaMoneyBillWave />
+                    </div>
+                    <div className="stat-body">
+                      <p className="stat-value">₪{(dashboardStats?.revenue?.total ?? 0).toLocaleString()}</p>
+                      <p className="stat-label">{language === "he" ? "הכנסות" : "Revenue"}</p>
+                      {dashboardStats?.revenue?.trend !== undefined && (
+                        <span className={`stat-trend ${dashboardStats.revenue.trend >= 0 ? "trend-up" : "trend-down"}`}>
+                          {dashboardStats.revenue.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                          {Math.abs(dashboardStats.revenue.trend)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* New Users */}
+                  <div className="stat-card">
+                    <div className="stat-icon-wrap stat-icon-users">
+                      <FaUserPlus />
+                    </div>
+                    <div className="stat-body">
+                      <p className="stat-value">{dashboardStats?.newUsers?.count ?? "-"}</p>
+                      <p className="stat-label">{language === "he" ? "משתמשים חדשים" : "New Users"}</p>
+                      {dashboardStats?.newUsers?.trend !== undefined && (
+                        <span className={`stat-trend ${dashboardStats.newUsers.trend >= 0 ? "trend-up" : "trend-down"}`}>
+                          {dashboardStats.newUsers.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                          {Math.abs(dashboardStats.newUsers.trend)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Site Visits */}
+                  <div className="stat-card">
+                    <div className="stat-icon-wrap stat-icon-visits">
+                      <FaEye />
+                    </div>
+                    <div className="stat-body">
+                      <p className="stat-value">{(dashboardStats?.visits?.count ?? 0).toLocaleString()}</p>
+                      <p className="stat-label">{language === "he" ? "ביקורים" : "Site Visits"}</p>
+                      {dashboardStats?.visits?.trend !== undefined && (
+                        <span className={`stat-trend ${dashboardStats.visits.trend >= 0 ? "trend-up" : "trend-down"}`}>
+                          {dashboardStats.visits.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                          {Math.abs(dashboardStats.visits.trend)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Recent Orders preview ── */}
+                <div className="admin-table-card" style={{ marginTop: "1.5rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <h3 style={{ color: "var(--color-primary)", margin: 0 }}>
+                      {language === "he" ? "הזמנות אחרונות" : "Recent Orders"}
+                    </h3>
+                    <button
+                      className="btn-gold"
+                      style={{ padding: "0.4rem 1rem", fontSize: "0.8rem" }}
+                      onClick={() => setActiveTab("orders")}
+                    >
+                      {language === "he" ? "צפייה בכל ההזמנות" : "View All Orders"}
+                    </button>
+                  </div>
+                  <div style={{ overflowX: "auto" }}>
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
+                          <th>{language === "he" ? "לקוח" : "Customer"}</th>
+                          <th>{language === "he" ? "סכום" : "Amount"}</th>
+                          <th>{language === "he" ? "תשלום" : "Payment"}</th>
+                          <th>{language === "he" ? "סטטוס" : "Status"}</th>
+                          <th>{language === "he" ? "תאריך" : "Date"}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...orders]
+                          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                          .slice(0, 8)
+                          .map((order) => (
+                            <tr key={order._id || order.id}>
+                              <td>
+                                <code
+                                  style={{
+                                    fontSize: "0.78rem",
+                                    color: "var(--color-secondary)",
+                                    fontWeight: 700,
+                                  }}
+                                >
+                                  {String(order._id || order.id)
+                                    .slice(-8)
+                                    .toUpperCase()}
+                                </code>
+                              </td>
+                              <td className="text-bold">
+                                {order.customerName || "-"}
+                              </td>
+                              <td className="text-bold">₪{order.totalPrice || 0}</td>
+                              <td>
+                                <span
+                                  className={`status-badge ${
+                                    order.paymentStatus === "completed"
+                                      ? "status-active"
+                                      : order.paymentStatus === "failed"
+                                        ? "status-blocked"
+                                        : "status-pending"
+                                  }`}
+                                >
+                                  <span className="status-dot"></span>
+                                  {order.paymentStatus === "completed"
+                                    ? language === "he"
+                                      ? "שולם"
+                                      : "Paid"
+                                    : order.paymentStatus === "failed"
+                                      ? language === "he"
+                                        ? "נכשל"
+                                        : "Failed"
+                                      : language === "he"
+                                        ? "ממתין"
+                                        : "Pending"}
+                                </span>
+                              </td>
+                              <td>
+                                <span
+                                  className={`status-badge ${
+                                    order.status === "delivered"
+                                      ? "status-active"
+                                      : order.status === "cancelled"
+                                        ? "status-blocked"
+                                        : "status-pending"
+                                  }`}
+                                >
+                                  <span className="status-dot"></span>
+                                  {{
+                                    pending:
+                                      language === "he" ? "בהמתנה" : "Pending",
+                                    processing:
+                                      language === "he" ? "בעיבוד" : "Processing",
+                                    shipped:
+                                      language === "he" ? "נשלחה" : "Shipped",
+                                    delivered:
+                                      language === "he" ? "נמסרה" : "Delivered",
+                                    cancelled:
+                                      language === "he" ? "בוטלה" : "Cancelled",
+                                  }[order.status] || order.status}
+                                </span>
+                              </td>
+                              <td className="text-muted">
+                                {formatDate(order.createdAt)}
+                              </td>
+                            </tr>
+                          ))}
+                        {orders.length === 0 && (
+                          <tr>
+                            <td colSpan="6" className="empty-table">
+                              {language === "he"
+                                ? "אין הזמנות עדיין"
+                                : "No orders yet"}
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </>
+            )}
+          </>
+        )}
+
         {/* ───────────────── PRODUCTS TAB ───────────────── */}
         {activeTab === "products" && (
           <>
@@ -1585,8 +1871,8 @@ function Admin() {
                     className="search-input"
                     placeholder={
                       language === "he"
-                        ? "חיפוש הזמנה או לקוח..."
-                        : "Search order or customer..."
+                        ? "חיפוש לפי שם, אימייל, טלפון..."
+                        : "Search by name, email, phone..."
                     }
                     value={orderSearchTerm}
                     onChange={(e) => setOrderSearchTerm(e.target.value)}
@@ -1610,93 +1896,228 @@ function Admin() {
                     {language === "he" ? "נשלחה" : "Shipped"}
                   </option>
                   <option value="delivered">
-                    {language === "he" ? "הוסלמה" : "Delivered"}
+                    {language === "he" ? "נמסרה" : "Delivered"}
                   </option>
                   <option value="cancelled">
                     {language === "he" ? "בוטלה" : "Cancelled"}
                   </option>
                 </select>
+                <button className="btn-gold" onClick={fetchOrders} title="רענן">
+                  ↻
+                </button>
               </div>
             </div>
 
             <div className="admin-table-card">
-              <div style={{ overflowX: "auto" }}>
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
-                      <th>{language === "he" ? "לקוח" : "Customer"}</th>
-                      <th>{language === "he" ? "אימייל" : "Email"}</th>
-                      <th>{language === "he" ? "סכום" : "Total"}</th>
-                      <th>{language === "he" ? "סטטוס" : "Status"}</th>
-                      <th>{language === "he" ? "תאריך" : "Date"}</th>
-                      <th>{language === "he" ? "פרטים" : "Items"}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredOrders.map((order) => (
-                      <tr key={order.id}>
-                        <td className="text-bold">{order.id}</td>
-                        <td>{order.customerName}</td>
-                        <td className="text-muted">{order.email}</td>
-                        <td className="price-cell">₪{order.totalPrice}</td>
-                        <td>
-                          <select
-                            className={`status-select status-${order.status}`}
-                            value={order.status}
-                            onChange={(e) =>
-                              handleOrderStatusChange(order.id, e.target.value)
-                            }
-                          >
-                            <option value="pending">
-                              {language === "he" ? "בהמתנה" : "Pending"}
-                            </option>
-                            <option value="processing">
-                              {language === "he" ? "בעיבוד" : "Processing"}
-                            </option>
-                            <option value="shipped">
-                              {language === "he" ? "נשלחה" : "Shipped"}
-                            </option>
-                            <option value="delivered">
-                              {language === "he" ? "הוסלמה" : "Delivered"}
-                            </option>
-                            <option value="cancelled">
-                              {language === "he" ? "בוטלה" : "Cancelled"}
-                            </option>
-                          </select>
-                        </td>
-                        <td>{formatDate(order.createdAt)}</td>
-                        <td>
-                          <details>
-                            <summary className="items-summary">
-                              {language === "he"
-                                ? `${order.items.length} פריטים`
-                                : `${order.items.length} items`}
-                            </summary>
-                            <ul className="items-list">
-                              {order.items.map((item) => (
-                                <li key={item.id}>
-                                  {item.name} x{item.quantity} – ₪
-                                  {item.price * item.quantity}
-                                </li>
-                              ))}
-                            </ul>
-                          </details>
-                        </td>
-                      </tr>
-                    ))}
-                    {filteredOrders.length === 0 && (
+              {ordersLoading ? (
+                <div className="loading-state">
+                  {language === "he" ? "טוען הזמנות..." : "Loading orders..."}
+                </div>
+              ) : (
+                <div style={{ overflowX: "auto" }}>
+                  <table className="admin-table">
+                    <thead>
                       <tr>
-                        <td colSpan="7" className="empty-table">
+                        <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
+                        <th>{language === "he" ? "לקוח" : "Customer"}</th>
+                        <th>
                           {language === "he"
-                            ? "לא נמצאו הזמנות"
-                            : "No orders found"}
-                        </td>
+                            ? "אימייל / טלפון"
+                            : "Email / Phone"}
+                        </th>
+                        <th>
+                          {language === "he" ? "כתובת משלוח" : "Shipping"}
+                        </th>
+                        <th>{language === "he" ? "סכום ששולם" : "Paid"}</th>
+                        <th>{language === "he" ? "קופון" : "Coupon"}</th>
+                        <th>{language === "he" ? "תשלום" : "Payment"}</th>
+                        <th>
+                          {language === "he" ? "סטטוס הזמנה" : "Order Status"}
+                        </th>
+                        <th>{language === "he" ? "תאריך" : "Date"}</th>
+                        <th>{language === "he" ? "פריטים" : "Items"}</th>
                       </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {filteredOrders.map((order) => {
+                        const orderId = order._id || order.id;
+                        const items = order.items || [];
+                        const shipping = order.shippingAddress || {};
+                        return (
+                          <tr key={orderId}>
+                            <td>
+                              <code
+                                style={{
+                                  fontSize: "0.78rem",
+                                  color: "var(--color-secondary)",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {String(orderId).slice(-8).toUpperCase()}
+                              </code>
+                            </td>
+                            <td className="text-bold">
+                              {order.customerName || "-"}
+                            </td>
+                            <td>
+                              <span>
+                                {order.customerEmail || order.email || "-"}
+                              </span>
+                              {(order.customerPhone || order.phone) && (
+                                <span className="product-name-sub">
+                                  {order.customerPhone || order.phone}
+                                </span>
+                              )}
+                            </td>
+                            <td>
+                              {shipping.address ? (
+                                <>
+                                  <span style={{ fontSize: "0.82rem" }}>
+                                    {shipping.address}
+                                  </span>
+                                  <span className="product-name-sub">
+                                    {[shipping.city, shipping.zipCode]
+                                      .filter(Boolean)
+                                      .join(", ")}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="text-muted">-</span>
+                              )}
+                            </td>
+                            <td className="text-bold">
+                              ₪{order.totalPrice || 0}
+                              {order.discountPercent > 0 && (
+                                <span
+                                  className="product-name-sub"
+                                  style={{ color: "#27ae60" }}
+                                >
+                                  {language === "he"
+                                    ? `הנחה ${order.discountPercent}%`
+                                    : `${order.discountPercent}% off`}
+                                </span>
+                              )}
+                            </td>
+                            <td>
+                              {order.couponCode ? (
+                                <code
+                                  style={{
+                                    fontSize: "0.78rem",
+                                    color: "var(--color-secondary)",
+                                    fontWeight: 700,
+                                  }}
+                                >
+                                  {order.couponCode}
+                                </code>
+                              ) : (
+                                <span className="text-muted">-</span>
+                              )}
+                            </td>
+                            <td>
+                              <span
+                                className={`status-badge ${
+                                  order.paymentStatus === "completed"
+                                    ? "status-active"
+                                    : order.paymentStatus === "failed"
+                                      ? "status-blocked"
+                                      : "status-pending"
+                                }`}
+                              >
+                                <span className="status-dot"></span>
+                                {order.paymentStatus === "completed"
+                                  ? language === "he"
+                                    ? "שולם"
+                                    : "Paid"
+                                  : order.paymentStatus === "failed"
+                                    ? language === "he"
+                                      ? "נכשל"
+                                      : "Failed"
+                                    : language === "he"
+                                      ? "ממתין"
+                                      : "Pending"}
+                              </span>
+                            </td>
+                            <td>
+                              <select
+                                className={`status-select status-${order.status}`}
+                                value={order.status || "pending"}
+                                onChange={(e) =>
+                                  handleOrderStatusChange(
+                                    orderId,
+                                    e.target.value,
+                                  )
+                                }
+                              >
+                                <option value="pending">
+                                  {language === "he" ? "בהמתנה" : "Pending"}
+                                </option>
+                                <option value="processing">
+                                  {language === "he" ? "בעיבוד" : "Processing"}
+                                </option>
+                                <option value="shipped">
+                                  {language === "he" ? "נשלחה" : "Shipped"}
+                                </option>
+                                <option value="delivered">
+                                  {language === "he" ? "נמסרה" : "Delivered"}
+                                </option>
+                                <option value="cancelled">
+                                  {language === "he" ? "בוטלה" : "Cancelled"}
+                                </option>
+                              </select>
+                            </td>
+                            <td className="text-muted">
+                              {formatDate(order.createdAt)}
+                            </td>
+                            <td>
+                              <details>
+                                <summary className="items-summary">
+                                  {language === "he"
+                                    ? `${items.length} פריטים`
+                                    : `${items.length} items`}
+                                </summary>
+                                <ul className="items-list">
+                                  {items.map((item, i) => (
+                                    <li key={item.productId || item.id || i}>
+                                      {item.name} x{item.quantity} – ₪
+                                      {item.price * item.quantity}
+                                      {item.selectedOptions &&
+                                        Object.keys(item.selectedOptions)
+                                          .length > 0 && (
+                                          <span
+                                            style={{
+                                              fontSize: "0.75rem",
+                                              color: "rgba(44,62,80,0.5)",
+                                              display: "block",
+                                            }}
+                                          >
+                                            {Object.entries(
+                                              item.selectedOptions,
+                                            )
+                                              .map(([k, v]) => `${k}: ${v}`)
+                                              .join(", ")}
+                                          </span>
+                                        )}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </details>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {filteredOrders.length === 0 && (
+                        <tr>
+                          <td colSpan="10" className="empty-table">
+                            {language === "he"
+                              ? "לא נמצאו הזמנות"
+                              : "No orders found"}
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </>
         )}
@@ -2157,7 +2578,11 @@ function Admin() {
           <>
             <div className="section-header">
               <div>
-                <h1>{language === "he" ? "ניהול ניוזלטר" : "Newsletter Management"}</h1>
+                <h1>
+                  {language === "he"
+                    ? "ניהול ניוזלטר"
+                    : "Newsletter Management"}
+                </h1>
                 <p className="section-subtitle">
                   {language === "he"
                     ? `${subscribers.length} מנויים רשומים`
@@ -2171,7 +2596,9 @@ function Admin() {
                     type="text"
                     className="search-input"
                     placeholder={
-                      language === "he" ? "חיפוש לפי אימייל..." : "Search by email..."
+                      language === "he"
+                        ? "חיפוש לפי אימייל..."
+                        : "Search by email..."
                     }
                     value={newsletterSearchTerm}
                     onChange={(e) => setNewsletterSearchTerm(e.target.value)}
@@ -2191,7 +2618,12 @@ function Admin() {
             >
               <div
                 className="admin-table-card"
-                style={{ flex: 1, minWidth: 160, textAlign: "center", padding: "1.25rem" }}
+                style={{
+                  flex: 1,
+                  minWidth: 160,
+                  textAlign: "center",
+                  padding: "1.25rem",
+                }}
               >
                 <p
                   style={{
@@ -2203,13 +2635,24 @@ function Admin() {
                 >
                   {subscribers.length}
                 </p>
-                <p style={{ margin: 0, color: "rgba(44,62,80,0.6)", fontSize: "0.85rem" }}>
+                <p
+                  style={{
+                    margin: 0,
+                    color: "rgba(44,62,80,0.6)",
+                    fontSize: "0.85rem",
+                  }}
+                >
                   {language === "he" ? 'סה"כ מנויים' : "Total Subscribers"}
                 </p>
               </div>
               <div
                 className="admin-table-card"
-                style={{ flex: 1, minWidth: 160, textAlign: "center", padding: "1.25rem" }}
+                style={{
+                  flex: 1,
+                  minWidth: 160,
+                  textAlign: "center",
+                  padding: "1.25rem",
+                }}
               >
                 <p
                   style={{
@@ -2219,16 +2662,24 @@ function Admin() {
                     margin: 0,
                   }}
                 >
-                  {subscribers.filter((s) => {
-                    const d = new Date(s.subscribedAt || s.createdAt);
-                    const now = new Date();
-                    return (
-                      d.getMonth() === now.getMonth() &&
-                      d.getFullYear() === now.getFullYear()
-                    );
-                  }).length}
+                  {
+                    subscribers.filter((s) => {
+                      const d = new Date(s.subscribedAt || s.createdAt);
+                      const now = new Date();
+                      return (
+                        d.getMonth() === now.getMonth() &&
+                        d.getFullYear() === now.getFullYear()
+                      );
+                    }).length
+                  }
                 </p>
-                <p style={{ margin: 0, color: "rgba(44,62,80,0.6)", fontSize: "0.85rem" }}>
+                <p
+                  style={{
+                    margin: 0,
+                    color: "rgba(44,62,80,0.6)",
+                    fontSize: "0.85rem",
+                  }}
+                >
                   {language === "he" ? "הצטרפו החודש" : "Joined This Month"}
                 </p>
               </div>
@@ -2237,7 +2688,13 @@ function Admin() {
             {/* Subscribers Table */}
             <div className="admin-table-card">
               {newsletterLoading ? (
-                <p style={{ textAlign: "center", padding: "2rem", color: "rgba(44,62,80,0.5)" }}>
+                <p
+                  style={{
+                    textAlign: "center",
+                    padding: "2rem",
+                    color: "rgba(44,62,80,0.5)",
+                  }}
+                >
                   {language === "he" ? "טוען..." : "Loading..."}
                 </p>
               ) : (
@@ -2247,14 +2704,18 @@ function Admin() {
                       <th>#</th>
                       <th>{language === "he" ? "אימייל" : "Email"}</th>
                       <th>{language === "he" ? "קוד קופון" : "Coupon Code"}</th>
-                      <th>{language === "he" ? "תאריך הרשמה" : "Subscribed At"}</th>
+                      <th>
+                        {language === "he" ? "תאריך הרשמה" : "Subscribed At"}
+                      </th>
                       <th>{language === "he" ? "פעולות" : "Actions"}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {subscribers
                       .filter((s) =>
-                        (s.email || "").toLowerCase().includes(newsletterSearchTerm.toLowerCase()),
+                        (s.email || "")
+                          .toLowerCase()
+                          .includes(newsletterSearchTerm.toLowerCase()),
                       )
                       .map((s, idx) => (
                         <tr key={s._id || s.id}>
@@ -2286,7 +2747,9 @@ function Admin() {
                                   handleDeleteSubscriber(s._id || s.id)
                                 }
                                 title={
-                                  language === "he" ? "מחק מנוי" : "Delete subscriber"
+                                  language === "he"
+                                    ? "מחק מנוי"
+                                    : "Delete subscriber"
                                 }
                               >
                                 <FaTrash />
@@ -2296,11 +2759,15 @@ function Admin() {
                         </tr>
                       ))}
                     {subscribers.filter((s) =>
-                      (s.email || "").toLowerCase().includes(newsletterSearchTerm.toLowerCase()),
+                      (s.email || "")
+                        .toLowerCase()
+                        .includes(newsletterSearchTerm.toLowerCase()),
                     ).length === 0 && (
                       <tr>
                         <td colSpan="5" className="empty-table">
-                          {language === "he" ? "אין מנויים עדיין" : "No subscribers yet"}
+                          {language === "he"
+                            ? "אין מנויים עדיין"
+                            : "No subscribers yet"}
                         </td>
                       </tr>
                     )}

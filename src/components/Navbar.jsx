@@ -116,7 +116,7 @@ function Navbar() {
                     setIsDropdownOpen(false);
                   }}
                 >
-                  {language === "he" ? "כוכבים" : "Planets"}
+                  {language === "he" ? "כוכבים" : "Stars"}
                 </Link>
               </li>
               <li>

@@ -18,7 +18,7 @@ const SACRED_NUMBERS = (language) => [
   {
     icon: "nights_stay",
     number: 7,
-    label: language === "he" ? "כוכבי לכת" : "Planets",
+    label: language === "he" ? "כוכבי לכת" : "Stars",
     desc:
       language === "he"
         ? "שבעת המאורות המייצגים את מחזורי הזמן והשפעת השמיים על חיי האדם."
