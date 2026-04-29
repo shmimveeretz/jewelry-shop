@@ -305,6 +305,64 @@ function ProductModal({ product, onClose }) {
               </div>
             )}
 
+            {/* Special info for Trinity Pendants */}
+            {product.category === "שלישיות מיוחדות" && (
+              <div className="zodiac-info">
+                {product.zodiacSign && (
+                  <p>
+                    <strong>{language === "he" ? "מזל:" : "Zodiac:"}</strong>{" "}
+                    {language === "en" && product.zodiacSignEn
+                      ? product.zodiacSignEn
+                      : product.zodiacSign}
+                  </p>
+                )}
+                {product.stone && (
+                  <p>
+                    <strong>
+                      {language === "he" ? "אבן חושן:" : "Hoshen Stone:"}
+                    </strong>{" "}
+                    {language === "en" && product.stoneEn
+                      ? product.stoneEn
+                      : product.stone}
+                  </p>
+                )}
+                {product.tribe && (
+                  <p>
+                    <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
+                    {language === "en" && product.tribeEn
+                      ? product.tribeEn
+                      : product.tribe}
+                  </p>
+                )}
+                {product.planet && (
+                  <p>
+                    <strong>{language === "he" ? "כוכב:" : "Planet:"}</strong>{" "}
+                    {language === "en" && product.planetEn
+                      ? product.planetEn
+                      : product.planet}
+                  </p>
+                )}
+                {product.element && (
+                  <p>
+                    <strong>{language === "he" ? "יסוד:" : "Element:"}</strong>{" "}
+                    {language === "en" && product.elementEn
+                      ? product.elementEn
+                      : product.element}
+                  </p>
+                )}
+                {product.meaningHe && (
+                  <p>
+                    <strong>
+                      {language === "he" ? "משמעות:" : "Meaning:"}
+                    </strong>{" "}
+                    {language === "en" && product.meaningEn
+                      ? product.meaningEn
+                      : product.meaningHe}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Special info for Hoshen stones */}
             {product.category === "אבני חושן" && (
               <div className="hoshen-info">
