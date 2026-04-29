@@ -106,7 +106,7 @@ function Shop() {
           : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
     },
     {
-      id: "מזל, אבן חושן וכוכב",
+      id: "שלישיות מיוחדות",
       name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
       image:
         "https://res.cloudinary.com/dhayarvh3/image/upload/v1771406947/Trinity.jpg",

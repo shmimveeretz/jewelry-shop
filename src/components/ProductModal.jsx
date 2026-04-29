@@ -15,7 +15,7 @@ function ProductModal({ product, onClose }) {
     "תליוני מזלות": "Zodiac Pendants",
     "אבני חושן": "Hoshen Stones",
     כוכבים: "Stars Pendants",
-    "מזל, אבן חושן וכוכב": "Trinity Pendants",
+    "שלישיות מיוחדות": "Trinity Pendants",
     אחר: "Other",
   };
 
@@ -64,6 +64,7 @@ function ProductModal({ product, onClose }) {
       "ציפוי זהב": 50,
     },
     length: {
+      "מעדיף חוט שעווה": -70,
       40: 0,
       42: 0,
       45: 0,
@@ -415,6 +416,11 @@ function ProductModal({ product, onClose }) {
                   value={selectedOptions.length}
                   onChange={(e) => handleOptionChange("length", e.target.value)}
                 >
+                  <option value="מעדיף חוט שעווה">
+                    {language === "he"
+                      ? "מעדיף חוט שעווה"
+                      : "Prefer Wax Thread"}
+                  </option>
                   <option value="">
                     {language === "he" ? "בחר אורך" : "Select Length"}
                   </option>
