@@ -17,10 +17,12 @@ import {
   FaMoneyBillWave,
   FaArrowUp,
   FaArrowDown,
+  FaFileInvoice,
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import ProductForm from "../components/ProductForm";
+import PayPlusDocumentForm from "../components/PayPlusDocumentForm";
 import { getAllProducts, deleteProduct } from "../services/productApi";
 import "../styles/pages/Admin.css";
 
@@ -1217,6 +1219,15 @@ function Admin() {
             >
               <FaEnvelope className="nav-icon" />
               {language === "he" ? "ניוזלטר" : "Newsletter"}
+            </button>
+          </li>
+          <li>
+            <button
+              className={`admin-nav-item ${activeTab === "documents" ? "active" : ""}`}
+              onClick={() => setActiveTab("documents")}
+            >
+              <FaFileInvoice className="nav-icon" />
+              {language === "he" ? "מסמכים" : "Documents"}
             </button>
           </li>
         </ul>
@@ -2834,6 +2845,9 @@ function Admin() {
             </div>
           </>
         )}
+
+        {/* ───────────────── DOCUMENTS TAB ───────────────── */}
+        {activeTab === "documents" && <PayPlusDocumentForm />}
       </div>
 
       {/* ─── ProductForm Modal (with image upload) ─── */}
