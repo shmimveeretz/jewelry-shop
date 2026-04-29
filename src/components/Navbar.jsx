@@ -110,17 +110,6 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/shop?category=כוכבים"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {language === "he" ? "כוכבים" : "Stars"}
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/shop?category=תליוני מזלות"
                   onClick={() => {
                     setIsMenuOpen(false);
@@ -128,6 +117,17 @@ function Navbar() {
                   }}
                 >
                   {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=כוכבים"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "כוכבים" : "Stars"}
                 </Link>
               </li>
               <li>
