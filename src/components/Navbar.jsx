@@ -121,6 +121,17 @@ function Navbar() {
               </li>
               <li>
                 <Link
+                  to="/shop?category=תליוני מזלות"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/shop?category=מזל, אבן חושן וכוכב"
                   onClick={() => {
                     setIsMenuOpen(false);

@@ -1231,7 +1231,9 @@ function Admin() {
               <div>
                 <h1>{language === "he" ? "סקירה כללית" : "Overview"}</h1>
                 <p className="section-subtitle">
-                  {language === "he" ? "נתוני האתר לפי תקופה נבחרת" : "Site statistics for selected period"}
+                  {language === "he"
+                    ? "נתוני האתר לפי תקופה נבחרת"
+                    : "Site statistics for selected period"}
                 </p>
               </div>
               <div className="period-toggle">
@@ -1265,11 +1267,21 @@ function Admin() {
                       <FaShoppingCart />
                     </div>
                     <div className="stat-body">
-                      <p className="stat-value">{dashboardStats?.orders?.count ?? "-"}</p>
-                      <p className="stat-label">{language === "he" ? "הזמנות" : "Orders"}</p>
+                      <p className="stat-value">
+                        {dashboardStats?.orders?.count ?? "-"}
+                      </p>
+                      <p className="stat-label">
+                        {language === "he" ? "הזמנות" : "Orders"}
+                      </p>
                       {dashboardStats?.orders?.trend !== undefined && (
-                        <span className={`stat-trend ${dashboardStats.orders.trend >= 0 ? "trend-up" : "trend-down"}`}>
-                          {dashboardStats.orders.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                        <span
+                          className={`stat-trend ${dashboardStats.orders.trend >= 0 ? "trend-up" : "trend-down"}`}
+                        >
+                          {dashboardStats.orders.trend >= 0 ? (
+                            <FaArrowUp />
+                          ) : (
+                            <FaArrowDown />
+                          )}
                           {Math.abs(dashboardStats.orders.trend)}%
                         </span>
                       )}
@@ -1282,11 +1294,22 @@ function Admin() {
                       <FaMoneyBillWave />
                     </div>
                     <div className="stat-body">
-                      <p className="stat-value">₪{(dashboardStats?.revenue?.total ?? 0).toLocaleString()}</p>
-                      <p className="stat-label">{language === "he" ? "הכנסות" : "Revenue"}</p>
+                      <p className="stat-value">
+                        ₪
+                        {(dashboardStats?.revenue?.total ?? 0).toLocaleString()}
+                      </p>
+                      <p className="stat-label">
+                        {language === "he" ? "הכנסות" : "Revenue"}
+                      </p>
                       {dashboardStats?.revenue?.trend !== undefined && (
-                        <span className={`stat-trend ${dashboardStats.revenue.trend >= 0 ? "trend-up" : "trend-down"}`}>
-                          {dashboardStats.revenue.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                        <span
+                          className={`stat-trend ${dashboardStats.revenue.trend >= 0 ? "trend-up" : "trend-down"}`}
+                        >
+                          {dashboardStats.revenue.trend >= 0 ? (
+                            <FaArrowUp />
+                          ) : (
+                            <FaArrowDown />
+                          )}
                           {Math.abs(dashboardStats.revenue.trend)}%
                         </span>
                       )}
@@ -1299,11 +1322,21 @@ function Admin() {
                       <FaUserPlus />
                     </div>
                     <div className="stat-body">
-                      <p className="stat-value">{dashboardStats?.newUsers?.count ?? "-"}</p>
-                      <p className="stat-label">{language === "he" ? "משתמשים חדשים" : "New Users"}</p>
+                      <p className="stat-value">
+                        {dashboardStats?.newUsers?.count ?? "-"}
+                      </p>
+                      <p className="stat-label">
+                        {language === "he" ? "משתמשים חדשים" : "New Users"}
+                      </p>
                       {dashboardStats?.newUsers?.trend !== undefined && (
-                        <span className={`stat-trend ${dashboardStats.newUsers.trend >= 0 ? "trend-up" : "trend-down"}`}>
-                          {dashboardStats.newUsers.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                        <span
+                          className={`stat-trend ${dashboardStats.newUsers.trend >= 0 ? "trend-up" : "trend-down"}`}
+                        >
+                          {dashboardStats.newUsers.trend >= 0 ? (
+                            <FaArrowUp />
+                          ) : (
+                            <FaArrowDown />
+                          )}
                           {Math.abs(dashboardStats.newUsers.trend)}%
                         </span>
                       )}
@@ -1316,11 +1349,21 @@ function Admin() {
                       <FaEye />
                     </div>
                     <div className="stat-body">
-                      <p className="stat-value">{(dashboardStats?.visits?.count ?? 0).toLocaleString()}</p>
-                      <p className="stat-label">{language === "he" ? "ביקורים" : "Site Visits"}</p>
+                      <p className="stat-value">
+                        {(dashboardStats?.visits?.count ?? 0).toLocaleString()}
+                      </p>
+                      <p className="stat-label">
+                        {language === "he" ? "ביקורים" : "Site Visits"}
+                      </p>
                       {dashboardStats?.visits?.trend !== undefined && (
-                        <span className={`stat-trend ${dashboardStats.visits.trend >= 0 ? "trend-up" : "trend-down"}`}>
-                          {dashboardStats.visits.trend >= 0 ? <FaArrowUp /> : <FaArrowDown />}
+                        <span
+                          className={`stat-trend ${dashboardStats.visits.trend >= 0 ? "trend-up" : "trend-down"}`}
+                        >
+                          {dashboardStats.visits.trend >= 0 ? (
+                            <FaArrowUp />
+                          ) : (
+                            <FaArrowDown />
+                          )}
                           {Math.abs(dashboardStats.visits.trend)}%
                         </span>
                       )}
@@ -1329,7 +1372,10 @@ function Admin() {
                 </div>
 
                 {/* ── Recent Orders preview ── */}
-                <div className="admin-table-card" style={{ marginTop: "1.5rem" }}>
+                <div
+                  className="admin-table-card"
+                  style={{ marginTop: "1.5rem" }}
+                >
                   <div
                     style={{
                       display: "flex",
@@ -1346,14 +1392,18 @@ function Admin() {
                       style={{ padding: "0.4rem 1rem", fontSize: "0.8rem" }}
                       onClick={() => setActiveTab("orders")}
                     >
-                      {language === "he" ? "צפייה בכל ההזמנות" : "View All Orders"}
+                      {language === "he"
+                        ? "צפייה בכל ההזמנות"
+                        : "View All Orders"}
                     </button>
                   </div>
                   <div style={{ overflowX: "auto" }}>
                     <table className="admin-table">
                       <thead>
                         <tr>
-                          <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
+                          <th>
+                            {language === "he" ? "מספר הזמנה" : "Order #"}
+                          </th>
                           <th>{language === "he" ? "לקוח" : "Customer"}</th>
                           <th>{language === "he" ? "סכום" : "Amount"}</th>
                           <th>{language === "he" ? "תשלום" : "Payment"}</th>
@@ -1363,7 +1413,10 @@ function Admin() {
                       </thead>
                       <tbody>
                         {[...orders]
-                          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                          .sort(
+                            (a, b) =>
+                              new Date(b.createdAt) - new Date(a.createdAt),
+                          )
                           .slice(0, 8)
                           .map((order) => (
                             <tr key={order._id || order.id}>
@@ -1383,7 +1436,9 @@ function Admin() {
                               <td className="text-bold">
                                 {order.customerName || "-"}
                               </td>
-                              <td className="text-bold">₪{order.totalPrice || 0}</td>
+                              <td className="text-bold">
+                                ₪{order.totalPrice || 0}
+                              </td>
                               <td>
                                 <span
                                   className={`status-badge ${
@@ -1423,7 +1478,9 @@ function Admin() {
                                     pending:
                                       language === "he" ? "בהמתנה" : "Pending",
                                     processing:
-                                      language === "he" ? "בעיבוד" : "Processing",
+                                      language === "he"
+                                        ? "בעיבוד"
+                                        : "Processing",
                                     shipped:
                                       language === "he" ? "נשלחה" : "Shipped",
                                     delivered:
