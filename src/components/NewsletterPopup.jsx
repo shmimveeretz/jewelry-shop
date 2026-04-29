@@ -71,7 +71,11 @@ function NewsletterPopup() {
   return (
     <div className="nl-overlay" onClick={handleDismiss}>
       <div className="nl-popup" onClick={(e) => e.stopPropagation()}>
-        <button className="nl-close" onClick={handleDismiss} aria-label="סגור">
+        <button
+          className="nl-close"
+          onClick={handleDismiss}
+          aria-label={language === "en" ? "Close" : "סגור"}
+        >
           <FaTimes />
         </button>
 

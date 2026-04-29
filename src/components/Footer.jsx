@@ -25,16 +25,22 @@ function Footer() {
                 : "Shamaim VeEretz - A Jewish jewelry store specializing in quality jewelry with Jewish symbols. Each piece is made with love and great care."}
             </p>
             <div className="footer-social">
-              <a href="#" aria-label="פייסבוק">
+              <a
+                href="#"
+                aria-label={language === "he" ? "פייסבוק" : "Facebook"}
+              >
                 <FaFacebook />
               </a>
               <a
                 href="https://www.instagram.com/shamaim_ve_eretz"
-                aria-label="אינסטגרם"
+                aria-label={language === "he" ? "אינסטגרם" : "Instagram"}
               >
                 <FaInstagram />
               </a>
-              <a href="#" aria-label="וואטסאפ">
+              <a
+                href="#"
+                aria-label={language === "he" ? "וואטסאפ" : "WhatsApp"}
+              >
                 <FaWhatsapp />
               </a>
             </div>

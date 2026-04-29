@@ -58,7 +58,11 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={logo} alt="שמים וארץ" className="logo-image" />
+          <img
+            src={logo}
+            alt={language === "he" ? "שמים וארץ" : "Shamaim VeEretz"}
+            className="logo-image"
+          />
         </Link>
 
         <ul className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
@@ -110,17 +114,6 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/shop?category=תליוני מזלות"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
-                </Link>
-              </li>
-              <li>
-                <Link
                   to="/shop?category=כוכבים"
                   onClick={() => {
                     setIsMenuOpen(false);
@@ -128,6 +121,17 @@ function Navbar() {
                   }}
                 >
                   {language === "he" ? "כוכבים" : "Stars Pendants"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=תליוני מזלות"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
                 </Link>
               </li>
               <li>

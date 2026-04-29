@@ -174,7 +174,8 @@ function App() {
                         color: "#888",
                       }}
                     >
-                      טוען...
+                      {/* language not available here — default to Hebrew loading text */}
+                      Loading...
                     </div>
                   }
                 >

@@ -228,7 +228,7 @@ function Checkout() {
 
         <div className="checkout-content">
           <div className="order-summary-section">
-            <h2>סיכום הזמנה</h2>
+            <h2>{language === "he" ? "סיכום הזמנה" : "Order Summary"}</h2>
             <div className="order-items">
               {cartItems.map((item) => (
                 <div key={item.id} className="order-item">
@@ -272,7 +272,7 @@ function Checkout() {
               ))}
             </div>
             <div className="order-total">
-              <span>סה"כ לתשלום:</span>
+              <span>{language === "he" ? 'סה"כ לתשלום:' : "Total:"}</span>
               <span className="total-amount">{discountedTotal} ₪</span>
             </div>
 
@@ -329,10 +329,12 @@ function Checkout() {
 
           <form className="checkout-form" onSubmit={handleSubmit}>
             <div className="form-section">
-              <h2>פרטי משלוח</h2>
+              <h2>{language === "he" ? "פרטי משלוח" : "Shipping Details"}</h2>
 
               <div className="form-group">
-                <label htmlFor="fullname">שם מלא *</label>
+                <label htmlFor="fullname">
+                  {language === "he" ? "שם מלא *" : "Full Name *"}
+                </label>
                 <input
                   type="text"
                   id="fullname"
@@ -345,7 +347,9 @@ function Checkout() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="email">אימייל *</label>
+                  <label htmlFor="email">
+                    {language === "he" ? "אימייל *" : "Email *"}
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -357,7 +361,9 @@ function Checkout() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="phone">טלפון *</label>
+                  <label htmlFor="phone">
+                    {language === "he" ? "טלפון *" : "Phone *"}
+                  </label>
                   <input
                     type="tel"
                     id="phone"
@@ -370,7 +376,9 @@ function Checkout() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="address">כתובת *</label>
+                <label htmlFor="address">
+                  {language === "he" ? "כתובת *" : "Address *"}
+                </label>
                 <input
                   type="text"
                   id="address"
@@ -383,7 +391,9 @@ function Checkout() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="city">עיר *</label>
+                  <label htmlFor="city">
+                    {language === "he" ? "עיר *" : "City *"}
+                  </label>
                   <input
                     type="text"
                     id="city"
@@ -395,7 +405,9 @@ function Checkout() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="zipCode">מיקוד *</label>
+                  <label htmlFor="zipCode">
+                    {language === "he" ? "מיקוד *" : "Zip Code *"}
+                  </label>
                   <input
                     type="text"
                     id="zipCode"

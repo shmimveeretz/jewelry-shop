@@ -14,9 +14,9 @@ function ProductModal({ product, onClose }) {
     "אותיות עבריות": "Ancient Hebrew Script",
     "תליוני מזלות": "Zodiac Pendants",
     "אבני חושן": "Hoshen Stones",
-    "כוכבים": "Stars Pendants",
+    כוכבים: "Stars Pendants",
     "מזל, אבן חושן וכוכב": "Trinity Pendants",
-    "אחר": "Other",
+    אחר: "Other",
   };
 
   const displayCategory =
@@ -171,7 +171,9 @@ function ProductModal({ product, onClose }) {
                         prev === 0 ? productImages.length - 1 : prev - 1,
                       )
                     }
-                    aria-label="תמונה קודמת"
+                    aria-label={
+                      language === "en" ? "Previous image" : "תמונה קודמת"
+                    }
                   >
                     ‹
                   </button>
@@ -182,7 +184,7 @@ function ProductModal({ product, onClose }) {
                         prev === productImages.length - 1 ? 0 : prev + 1,
                       )
                     }
-                    aria-label="תמונה הבאה"
+                    aria-label={language === "en" ? "Next image" : "תמונה הבאה"}
                   >
                     ›
                   </button>

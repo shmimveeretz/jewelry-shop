@@ -162,7 +162,9 @@ function Cart() {
                   <button
                     className="remove-item"
                     onClick={() => removeFromCart(item.id)}
-                    title="הסר מהעגלה"
+                    title={
+                      language === "he" ? "הסר מהעגלה" : "Remove from cart"
+                    }
                   >
                     <FaTrash />
                   </button>

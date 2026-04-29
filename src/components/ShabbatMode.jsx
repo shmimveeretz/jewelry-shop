@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 // Tel Aviv geonameid for HebCal
 const TEL_AVIV_ID = 293397;
@@ -96,6 +97,7 @@ function isWithin(now, start, end) {
 
 function ShabbatMode() {
   const [status, setStatus] = useState({ active: false, reason: "" });
+  const { language } = useLanguage();
 
   const checkNow = useCallback(async () => {
     const now = new Date();
@@ -147,29 +149,57 @@ function ShabbatMode() {
       <div>
         {isHoliday ? (
           <>
-            <h2>✡️ חג שמח ✡️</h2>
+            <h2>
+              {language === "he" ? "✡️ חג שמח ✡️" : "✡️ Happy Holiday ✡️"}
+            </h2>
             <p style={{ fontSize: "1.1rem", marginBottom: "1rem" }}>
               {status.reason}
             </p>
             <p>
-              האתר סגור לכבוד החג.
-              <br />
-              נשוב לאחר צאת החג.
+              {language === "he" ? (
+                <>
+                  האתר סגור לכבוד החג.
+                  <br />
+                  נשוב לאחר צאת החג.
+                </>
+              ) : (
+                <>
+                  The site is closed for the holiday.
+                  <br />
+                  We will return after the holiday ends.
+                </>
+              )}
             </p>
             <p style={{ marginTop: "2rem", fontSize: "1.2rem" }}>
-              💫 מועדים לשמחה 💫
+              {language === "he"
+                ? "💫 מועדים לשמחה 💫"
+                : "💫 Moadim LeSimcha 💫"}
             </p>
           </>
         ) : (
           <>
-            <h2>🕯️ שבת שלום 🕯️</h2>
+            <h2>
+              {language === "he" ? "🕯️ שבת שלום 🕯️" : "🕯️ Shabbat Shalom 🕯️"}
+            </h2>
             <p>
-              האתר נמצא במצב שומר שבת.
-              <br />
-              האתר יפעל מחדש במוצאי שבת.
+              {language === "he" ? (
+                <>
+                  האתר נמצא במצב שומר שבת.
+                  <br />
+                  האתר יפעל מחדש במוצאי שבת.
+                </>
+              ) : (
+                <>
+                  The site is in Shabbat mode.
+                  <br />
+                  We will return after Shabbat ends.
+                </>
+              )}
             </p>
             <p style={{ marginTop: "2rem", fontSize: "1.2rem" }}>
-              💫 שבת שלום ומבורכת 💫
+              {language === "he"
+                ? "💫 שבת שלום ומבורכת 💫"
+                : "💫 Shabbat Shalom 💫"}
             </p>
           </>
         )}
