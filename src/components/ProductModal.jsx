@@ -14,9 +14,9 @@ function ProductModal({ product, onClose }) {
     "אותיות עבריות": "Ancient Hebrew Script",
     "תליוני מזלות": "Zodiac Pendants",
     "אבני חושן": "Hoshen Stones",
-    כוכבים: "Planets",
+    "כוכבים": "Stars Pendants",
     "מזל, אבן חושן וכוכב": "Trinity Pendants",
-    אחר: "Other",
+    "אחר": "Other",
   };
 
   const displayCategory =

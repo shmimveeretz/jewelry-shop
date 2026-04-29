@@ -6,6 +6,7 @@ import {
   FaTimes,
   FaShoppingCart,
 } from "react-icons/fa";
+import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/Toast.css";
 
 function Toast({
@@ -16,6 +17,7 @@ function Toast({
   productImage,
 }) {
   const [isClosing, setIsClosing] = useState(false);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -61,7 +63,7 @@ function Toast({
           {message}
           {type === "cart" && (
             <a href="/cart" className="toast-cart-link" onClick={handleClose}>
-              עבור לעגלה ←
+              {language === "en" ? "Go to Cart →" : "עבור לעגלה ←"}
             </a>
           )}
         </div>
