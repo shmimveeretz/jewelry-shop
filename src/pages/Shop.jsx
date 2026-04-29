@@ -97,7 +97,7 @@ function Shop() {
     },
     {
       id: "כוכבים",
-      name: language === "he" ? "כוכבים" : "Planets",
+      name: language === "he" ? "כוכבים" : "Stars Pendants",
       image:
         "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410177/Planets.jpg",
       description:

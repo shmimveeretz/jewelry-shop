@@ -8,6 +8,28 @@ function ProductModal({ product, onClose }) {
   const { t, language } = useLanguage();
   const { addToCart } = useCart();
   const { showCartToast } = useToast();
+
+  // Fallback map for categories that may not have categoryEn saved in DB
+  const categoryEnMap = {
+    "אותיות עבריות": "Ancient Hebrew Script",
+    "תליוני מזלות": "Zodiac Pendants",
+    "אבני חושן": "Hoshen Stones",
+    כוכבים: "Planets",
+    "מזל, אבן חושן וכוכב": "Trinity Pendants",
+    אחר: "Other",
+  };
+
+  const displayCategory =
+    language === "en"
+      ? product.categoryEn ||
+        categoryEnMap[product.category] ||
+        product.category
+      : product.category;
+
+  const displayDescription =
+    language === "en" && product.descriptionEn
+      ? product.descriptionEn
+      : product.description;
   const [selectedOptions, setSelectedOptions] = useState({
     length: "",
     metalType: "כסף 925",
@@ -185,21 +207,13 @@ function ProductModal({ product, onClose }) {
           </div>
 
           <div className="product-modal-details">
-            <div className="product-modal-category">
-              {language === "en" && product.categoryEn
-                ? product.categoryEn
-                : product.category}
-            </div>
+            <div className="product-modal-category">{displayCategory}</div>
             <h2>
               {language === "en" && product.nameEn
                 ? product.nameEn
                 : product.name}
             </h2>
-            <p className="product-modal-description">
-              {language === "en" && product.descriptionEn
-                ? product.descriptionEn
-                : product.description}
-            </p>
+            <p className="product-modal-description">{displayDescription}</p>
 
             {/* Special info for zodiac pendants */}
             {product.category === "תליוני מזלות" && (

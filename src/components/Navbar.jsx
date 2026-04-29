@@ -127,7 +127,7 @@ function Navbar() {
                     setIsDropdownOpen(false);
                   }}
                 >
-                  {language === "he" ? "כוכבים" : "Stars"}
+                  {language === "he" ? "כוכבים" : "Stars Pendants"}
                 </Link>
               </li>
               <li>
