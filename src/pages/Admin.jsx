@@ -10,6 +10,7 @@ import {
   FaBoxOpen,
   FaShoppingCart,
   FaTag,
+  FaEnvelope,
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -79,6 +80,11 @@ function Admin() {
   const [devices, setDevices] = useState([]);
 
   const [blockedIPs, setBlockedIPs] = useState([]);
+
+  // Newsletter State
+  const [subscribers, setSubscribers] = useState([]);
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [newsletterSearchTerm, setNewsletterSearchTerm] = useState("");
 
   // Coupons State
   const [coupons, setCoupons] = useState([]);
@@ -215,6 +221,62 @@ function Admin() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  // Fetch newsletter subscribers from API
+  useEffect(() => {
+    fetchSubscribers();
+  }, []);
+
+  const fetchSubscribers = async () => {
+    setNewsletterLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/newsletter/subscribers`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (data.success) setSubscribers(data.data || []);
+    } catch (error) {
+      console.error("Error fetching subscribers:", error);
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
+
+  const handleDeleteSubscriber = async (subscriberId) => {
+    if (
+      !window.confirm(
+        language === "he"
+          ? "האם אתה בטוח שברצונך למחוק מנוי זה?"
+          : "Are you sure you want to delete this subscriber?",
+      )
+    )
+      return;
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${API_BASE_URL}/api/newsletter/subscribers/${subscriberId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      const data = await response.json();
+      if (data.success) {
+        setSubscribers((prev) =>
+          prev.filter((s) => (s._id || s.id) !== subscriberId),
+        );
+        showSuccess(
+          language === "he" ? "המנוי נמחק בהצלחה" : "Subscriber deleted successfully",
+        );
+      } else {
+        showError(data.message || "Error deleting subscriber");
+      }
+    } catch (error) {
+      console.error("Error deleting subscriber:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
+  };
 
   // Fetch coupons from API
   useEffect(() => {
@@ -1092,6 +1154,15 @@ function Admin() {
             >
               <FaTag className="nav-icon" />
               {language === "he" ? "קופונים" : "Coupons"}
+            </button>
+          </li>
+          <li>
+            <button
+              className={`admin-nav-item ${activeTab === "newsletter" ? "active" : ""}`}
+              onClick={() => setActiveTab("newsletter")}
+            >
+              <FaEnvelope className="nav-icon" />
+              {language === "he" ? "ניוזלטר" : "Newsletter"}
             </button>
           </li>
         </ul>
@@ -2078,6 +2149,164 @@ function Admin() {
                   )}
                 </tbody>
               </table>
+            </div>
+          </>
+        )}
+        {/* ───────────────── NEWSLETTER TAB ───────────────── */}
+        {activeTab === "newsletter" && (
+          <>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "ניהול ניוזלטר" : "Newsletter Management"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? `${subscribers.length} מנויים רשומים`
+                    : `${subscribers.length} registered subscribers`}
+                </p>
+              </div>
+              <div className="section-actions">
+                <div className="search-input-wrapper">
+                  <FaSearch className="search-icon" />
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder={
+                      language === "he" ? "חיפוש לפי אימייל..." : "Search by email..."
+                    }
+                    value={newsletterSearchTerm}
+                    onChange={(e) => setNewsletterSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Stats cards */}
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                marginBottom: "1.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <div
+                className="admin-table-card"
+                style={{ flex: 1, minWidth: 160, textAlign: "center", padding: "1.25rem" }}
+              >
+                <p
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: 800,
+                    color: "var(--color-secondary)",
+                    margin: 0,
+                  }}
+                >
+                  {subscribers.length}
+                </p>
+                <p style={{ margin: 0, color: "rgba(44,62,80,0.6)", fontSize: "0.85rem" }}>
+                  {language === "he" ? 'סה"כ מנויים' : "Total Subscribers"}
+                </p>
+              </div>
+              <div
+                className="admin-table-card"
+                style={{ flex: 1, minWidth: 160, textAlign: "center", padding: "1.25rem" }}
+              >
+                <p
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: 800,
+                    color: "var(--color-secondary)",
+                    margin: 0,
+                  }}
+                >
+                  {subscribers.filter((s) => {
+                    const d = new Date(s.subscribedAt || s.createdAt);
+                    const now = new Date();
+                    return (
+                      d.getMonth() === now.getMonth() &&
+                      d.getFullYear() === now.getFullYear()
+                    );
+                  }).length}
+                </p>
+                <p style={{ margin: 0, color: "rgba(44,62,80,0.6)", fontSize: "0.85rem" }}>
+                  {language === "he" ? "הצטרפו החודש" : "Joined This Month"}
+                </p>
+              </div>
+            </div>
+
+            {/* Subscribers Table */}
+            <div className="admin-table-card">
+              {newsletterLoading ? (
+                <p style={{ textAlign: "center", padding: "2rem", color: "rgba(44,62,80,0.5)" }}>
+                  {language === "he" ? "טוען..." : "Loading..."}
+                </p>
+              ) : (
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>{language === "he" ? "אימייל" : "Email"}</th>
+                      <th>{language === "he" ? "קוד קופון" : "Coupon Code"}</th>
+                      <th>{language === "he" ? "תאריך הרשמה" : "Subscribed At"}</th>
+                      <th>{language === "he" ? "פעולות" : "Actions"}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {subscribers
+                      .filter((s) =>
+                        (s.email || "").toLowerCase().includes(newsletterSearchTerm.toLowerCase()),
+                      )
+                      .map((s, idx) => (
+                        <tr key={s._id || s.id}>
+                          <td className="text-muted">{idx + 1}</td>
+                          <td style={{ fontWeight: 600 }}>{s.email}</td>
+                          <td>
+                            {s.couponCode ? (
+                              <code
+                                style={{
+                                  fontWeight: 700,
+                                  letterSpacing: "0.06rem",
+                                  color: "var(--color-secondary)",
+                                }}
+                              >
+                                {s.couponCode}
+                              </code>
+                            ) : (
+                              <span className="text-muted">-</span>
+                            )}
+                          </td>
+                          <td className="text-muted">
+                            {formatDate(s.subscribedAt || s.createdAt)}
+                          </td>
+                          <td>
+                            <div className="row-actions">
+                              <button
+                                className="icon-btn icon-btn-delete"
+                                onClick={() =>
+                                  handleDeleteSubscriber(s._id || s.id)
+                                }
+                                title={
+                                  language === "he" ? "מחק מנוי" : "Delete subscriber"
+                                }
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    {subscribers.filter((s) =>
+                      (s.email || "").toLowerCase().includes(newsletterSearchTerm.toLowerCase()),
+                    ).length === 0 && (
+                      <tr>
+                        <td colSpan="5" className="empty-table">
+                          {language === "he" ? "אין מנויים עדיין" : "No subscribers yet"}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              )}
             </div>
           </>
         )}
