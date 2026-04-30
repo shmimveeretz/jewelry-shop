@@ -14,9 +14,9 @@ function ProductModal({ product, onClose }) {
     "אותיות עבריות": "Ancient Hebrew Script",
     "תליוני מזלות": "Zodiac Pendants",
     "אבני חושן": "Hoshen Stones",
-    "כוכבים": "Stars Pendants",
+    כוכבים: "Stars Pendants",
     "שלישיות מיוחדות": "Trinity Pendants",
-    "אחר": "Other",
+    אחר: "Other",
   };
 
   const displayCategory =
@@ -27,9 +27,12 @@ function ProductModal({ product, onClose }) {
       : product.category;
 
   const displayDescription =
-    language === "en" && product.descriptionEn
-      ? product.descriptionEn
+    language === "en"
+      ? product.descriptionEn ||
+        categoryEnMap[product.descriptionEn] ||
+        product.description
       : product.description;
+
   const [selectedOptions, setSelectedOptions] = useState({
     length: "",
     metalType: "כסף 925",
@@ -151,10 +154,14 @@ function ProductModal({ product, onClose }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-drag-handle">
+          <div className="modal-drag-handle-pill"></div>
+        </div>
         <button className="modal-close" onClick={onClose}>
           ✕
         </button>
 
+        <div className="modal-scroll-area">
         <div className="product-modal-grid">
           <div className="product-image-gallery">
             <div className="main-image-container">
@@ -590,15 +597,15 @@ function ProductModal({ product, onClose }) {
                 ? "זמן אספקה: עד 14 ימי עסקים"
                 : "Delivery time: up to 14 business days"}
             </div>
-
-            <div className="add-to-cart-section">
-              <button className="btn add-to-cart-btn" onClick={handleAddToCart}>
-                {language === "he"
-                  ? `הוסף לעגלה - ${calculateTotalPrice()} ₪`
-                  : `Add to Cart - ₪${calculateTotalPrice()}`}
-              </button>
-            </div>
           </div>
+        </div>
+        </div>
+        <div className="modal-sticky-footer">
+          <button className="btn add-to-cart-btn" onClick={handleAddToCart}>
+            {language === "he"
+              ? `הוסף לעגלה — ${calculateTotalPrice()} ₪`
+              : `Add to Cart — ₪${calculateTotalPrice()}`}
+          </button>
         </div>
       </div>
     </div>
