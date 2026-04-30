@@ -103,30 +103,8 @@ function Navbar() {
                   }}
                 >
                   {language === "he"
-                    ? "אותיות עבריות עתיקות"
+                    ? "כתב עברי קדום"
                     : "Ancient Hebrew Letters"}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop?category=אבני חושן"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {language === "he" ? "אבני חושן" : "Hoshen Stones"}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/shop?category=תליוני מזלות"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {language === "he" ? "תליוני מזלות" : "Zodiac Pendants"}
                 </Link>
               </li>
               <li>
@@ -137,20 +115,42 @@ function Navbar() {
                     setIsDropdownOpen(false);
                   }}
                 >
-                  {language === "he" ? "כוכבים" : "Stars Pendants"}
+                  {language === "he" ? "כוכבי הלכת" : "Stars Pendants"}
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/shop?category=מזל, אבן חושן וכוכב"
+                  to="/shop?category=תליוני מזלות"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "מזלות" : "Zodiac Pendants"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=אבני חושן"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  {language === "he" ? "אבני החושן" : "Hoshen Stones"}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shop?category=שלישיות מיוחדות"
                   onClick={() => {
                     setIsMenuOpen(false);
                     setIsDropdownOpen(false);
                   }}
                 >
                   {language === "he"
-                    ? "כוכב + חושן + מזל"
-                    : "Star + Hoshen + Zodiac"}
+                    ? "מזל, אבן חושן וכוכב"
+                    : "Trinity Pendants"}
                 </Link>
               </li>
             </ul>

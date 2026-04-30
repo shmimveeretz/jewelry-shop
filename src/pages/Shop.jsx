@@ -5,6 +5,20 @@ import ProductModal from "../components/ProductModal";
 import { useProducts } from "../hooks/useProducts";
 import { useLanguage } from "../contexts/LanguageContext";
 
+// Calculate the min and max possible price for a product given its priceAdditions
+function getProductPriceRange(product) {
+  const base = product.price || 0;
+  const additions = product.priceAdditions;
+  if (!additions) return { min: base, max: base };
+
+  let maxAddition = 0;
+  for (const category of Object.values(additions)) {
+    const nums = Object.values(category).filter((v) => typeof v === "number");
+    if (nums.length > 0) maxAddition += Math.max(...nums);
+  }
+  return { min: base, max: base + maxAddition };
+}
+
 function Shop() {
   const { t, language } = useLanguage();
   const location = useLocation();
@@ -69,11 +83,31 @@ function Shop() {
       id: "אותיות עבריות",
       name: language === "he" ? "כתב עברי קדום" : "Ancient Hebrew Script",
       image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771407399/Ancient_Hebrew.jpg",
+      "https://res.cloudinary.com/dhayarvh3/image/upload/v1771407399/Ancient_Hebrew.jpg",
+      description:
+      language === "he"
+      ? "בכתב העברי הקדום זורם אורו של הבורא בימי ממלכת ישראל המאוחדת"
+      : "In the ancient Hebrew script flows the light of the Creator in the days of the united Kingdom of Israel",
+    },
+    {
+      id: "כוכבים",
+      name: language === "he" ? "כוכבי הלכת" : "Stars Pendants",
+      image:
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410177/Planets.jpg",
       description:
         language === "he"
-          ? "בכתב העברי הקדום זורם אורו של הבורא בימי ממלכת ישראל המאוחדת"
-          : "In the ancient Hebrew script flows the light of the Creator in the days of the united Kingdom of Israel",
+          ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
+          : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
+    },
+    {
+      id: "תליוני מזלות",
+      name: language === "he" ? "תליוני מזלות" : "Zodiac Pendants",
+      image:
+      "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
+      description:
+      language === "he"
+      ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
+      : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
     },
     {
       id: "אבני חושן",
@@ -84,26 +118,6 @@ function Shop() {
         language === "he"
           ? "וְהָאֲבָנִים תִּהְיֶינָה עַל שְׁמוֹת בְּנֵי יִשְׂרָאֵל, שְׁתֵּים־עֶשְׂרֵה עַל שְׁמוֹתָם, פִּתּוּחֵי חֹתָם, אִישׁ עַל שְׁמוֹ, לִשְׁנֵי עָשָׂר שָׁבֶט"
           : "And the stones shall be upon the names of the sons of Israel, twelve according to their names, engraved like signets, each one with his name, for the twelve tribes",
-    },
-    {
-      id: "תליוני מזלות",
-      name: language === "he" ? "תליוני מזלות" : "Zodiac Pendants",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
-      description:
-        language === "he"
-          ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
-          : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
-    },
-    {
-      id: "כוכבים",
-      name: language === "he" ? "כוכבים" : "Stars Pendants",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410177/Planets.jpg",
-      description:
-        language === "he"
-          ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
-          : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
     },
     {
       id: "שלישיות מיוחדות",
@@ -148,7 +162,17 @@ function Shop() {
             </div>
             <div className="category-hero-content">
               <h2>{currentCollection.name}</h2>
-              <p>{currentCollection.description}</p>
+              {currentCollection.description && (
+                <p className="hero-quote">
+                  <em>"{currentCollection.description}"</em>
+                  {currentCollection.source && (
+                    <span className="hero-quote-source">
+                      {" "}
+                      — {currentCollection.source}
+                    </span>
+                  )}
+                </p>
+              )}
             </div>
           </div>
         )}
@@ -228,7 +252,22 @@ function Shop() {
                           ? product.nameEn
                           : product.name}
                       </h3>
-                      <div className="product-price">{product.price} ₪</div>
+                      <div className="product-price">
+                        {(() => {
+                          const { min, max } = getProductPriceRange(product);
+                          if (max > min) {
+                            return (
+                              <>
+                                <span className="price-from">
+                                  {language === "he" ? "החל מ-" : "From "}
+                                </span>
+                                {min.toLocaleString()} ₪
+                              </>
+                            );
+                          }
+                          return <>{min.toLocaleString()} ₪</>;
+                        })()}
+                      </div>
                     </div>
                   </div>
                 ))}
