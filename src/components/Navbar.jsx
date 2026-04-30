@@ -77,13 +77,19 @@ function Navbar() {
           </li>
           <li
             className="dropdown"
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
+            onMouseEnter={() => !isMenuOpen && setIsDropdownOpen(true)}
+            onMouseLeave={() => !isMenuOpen && setIsDropdownOpen(false)}
           >
             <Link
               to="/shop"
               className={isActive("/shop")}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                if (isMenuOpen) {
+                  setIsDropdownOpen((prev) => !prev);
+                } else {
+                  setIsMenuOpen(false);
+                }
+              }}
             >
               {t("shop")} <FaChevronDown className="dropdown-icon" />
             </Link>
