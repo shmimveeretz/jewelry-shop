@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { useLanguage } from "../contexts/LanguageContext";
-import { payPlusService } from "../utils/payPlusService";
 import "../styles/pages/PaymentSuccess.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -14,24 +14,6 @@ const fmt = (n) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-
-async function saveOrderToDb(transactionUid, orderData) {
-  const token = localStorage.getItem("token");
-  const headers = { "Content-Type": "application/json" };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-
-  const res = await fetch(`${API_BASE_URL}/api/orders/success`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ transactionUid, ...orderData }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || err.error || `HTTP ${res.status}`);
-  }
-  return res.json();
-}
 
 // ── Loading screen ────────────────────────────────────────────────────────────
 
@@ -119,9 +101,6 @@ function PaymentSuccess() {
           searchParams.get("transaction_uid") ||
           searchParams.get("page_request_uid");
 
-        // ?status=success is sent directly by PayPlus on redirect
-        const urlStatus = searchParams.get("status");
-
         if (!transactionUid) {
           throw new Error(
             language === "he"
@@ -130,62 +109,39 @@ function PaymentSuccess() {
           );
         }
 
-        // Retrieve the order data we stored before redirecting to PayPlus
-        const raw = localStorage.getItem("pendingOrder");
-        const pendingOrder = raw ? JSON.parse(raw) : {};
+        const pendingOrder = JSON.parse(
+          localStorage.getItem("pendingOrder") || "{}",
+        );
 
-        let details = null;
+        const token = localStorage.getItem("token");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        if (urlStatus === "success") {
-          // ── Fast path: PayPlus confirmed success via URL ─────────────────
-          // POST to backend to persist the order; backend can re-verify
-          // the signature with the PayPlus API for extra security.
-          const saved = await saveOrderToDb(transactionUid, pendingOrder);
+        const { data } = await axios.post(
+          `${API_BASE_URL}/api/orders/verify-transaction`,
+          { transactionUid, ...pendingOrder },
+          { headers },
+        );
 
-          details = {
-            orderId: saved?.orderId ?? saved?.data?.orderId ?? null,
-            transactionUid,
-            amount: saved?.amount ?? pendingOrder?.amount,
-            customerName: saved?.customerName ?? pendingOrder?.customerName,
-            email: saved?.email ?? pendingOrder?.customerEmail,
-            shippingAddress: pendingOrder?.shippingAddress ?? null,
-            items: pendingOrder?.items ?? [],
-          };
-        } else {
-          // ── Full verification via PayPlus API ────────────────────────────
-          const result = await payPlusService.verifyPayment(
-            transactionUid,
-            pendingOrder,
-          );
-
-          if (!result.success || result.status !== "completed") {
-            throw new Error(
-              language === "he"
+        if (!data.success) {
+          throw new Error(
+            data.message ||
+              (language === "he"
                 ? "אימות התשלום נכשל"
-                : "Payment verification failed",
-            );
-          }
-
-          // Persist to DB — non-blocking; don't fail the success page on DB errors
-          saveOrderToDb(transactionUid, {
-            ...pendingOrder,
-            amount: result.transactionDetails?.amount,
-            customerName: result.transactionDetails?.customerName,
-            customerEmail: result.transactionDetails?.email,
-          }).catch((e) => console.warn("Order save failed (non-fatal):", e));
-
-          details = {
-            orderId: null,
-            transactionUid,
-            amount: result.transactionDetails?.amount,
-            customerName: result.transactionDetails?.customerName,
-            email: result.transactionDetails?.email,
-            shippingAddress: pendingOrder?.shippingAddress ?? null,
-            items: pendingOrder?.items ?? [],
-          };
+                : "Payment verification failed"),
+          );
         }
 
-        setOrderDetails(details);
+        setOrderDetails({
+          orderId: data.orderId ?? data.data?.orderId ?? null,
+          transactionUid,
+          amount: data.amount ?? pendingOrder.amount,
+          customerName: data.customerName ?? pendingOrder.customerName,
+          email: data.email ?? pendingOrder.customerEmail,
+          shippingAddress:
+            data.shippingAddress ?? pendingOrder.shippingAddress ?? null,
+          items: data.items ?? pendingOrder.items ?? [],
+        });
+
         clearCart();
         localStorage.removeItem("cart");
         localStorage.removeItem("pendingOrder");
@@ -193,7 +149,11 @@ function PaymentSuccess() {
         setPhase("success");
       } catch (err) {
         console.error("PaymentSuccess error:", err);
-        setError(err.message);
+        setError(
+          err.response?.data?.message ||
+            err.response?.data?.error ||
+            err.message,
+        );
         setPhase("error");
       }
     };

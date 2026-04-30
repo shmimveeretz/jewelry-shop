@@ -14,6 +14,7 @@ function Checkout() {
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null); // { code, discountPercent }
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   const discountedTotal = appliedCoupon
     ? Math.round(total * (1 - appliedCoupon.discountPercent / 100))
@@ -140,7 +141,7 @@ function Checkout() {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -150,7 +151,6 @@ function Checkout() {
     const shippingPrice = cartItems.length > 0 ? 30 : 0;
     const itemsPrice = total - shippingPrice;
 
-    // Save full order data to localStorage for the Payment page
     const pendingOrder = {
       customerName: formData.fullname,
       customerEmail: formData.email,
@@ -176,8 +176,6 @@ function Checkout() {
     };
 
     localStorage.setItem("pendingOrder", JSON.stringify(pendingOrder));
-
-    // Save shipping details for future use
     localStorage.setItem(
       "shippingDetails",
       JSON.stringify({
@@ -190,8 +188,47 @@ function Checkout() {
       }),
     );
 
-    navigate("/payment");
-    return null;
+    setPaymentLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/create-payment`,
+        {
+          method: "POST",
+          headers,
+          body: JSON.stringify(pendingOrder),
+        },
+      );
+
+      const data = await response.json();
+
+      const paymentLink =
+        data.payment_page_link ||
+        data.data?.payment_page_link ||
+        data.paymentLink;
+
+      if (!response.ok || !paymentLink) {
+        throw new Error(
+          data.message ||
+            data.error ||
+            (language === "he"
+              ? "שגיאה ביצירת דף תשלום"
+              : "Failed to create payment page"),
+        );
+      }
+
+      window.location.href = paymentLink;
+    } catch (err) {
+      console.error("Checkout error:", err);
+      showError(
+        err.message ||
+          (language === "he" ? "שגיאה בחיבור לשרת" : "Connection error"),
+      );
+      setPaymentLoading(false);
+    }
   };
 
   return (
@@ -420,10 +457,18 @@ function Checkout() {
               </div>
             </div>
 
-            <button type="submit" className="btn submit-order-btn">
-              {language === "he"
-                ? `סכום הזמנה ומעבר לתשלום - ${discountedTotal} ₪`
-                : `Review & Proceed to Payment - ${discountedTotal} ₪`}
+            <button
+              type="submit"
+              className="btn submit-order-btn"
+              disabled={paymentLoading}
+            >
+              {paymentLoading
+                ? language === "he"
+                  ? "מעביר לדף תשלום…"
+                  : "Redirecting to payment…"
+                : language === "he"
+                  ? `סכום הזמנה ומעבר לתשלום - ${discountedTotal} ₪`
+                  : `Review & Proceed to Payment - ${discountedTotal} ₪`}
             </button>
 
             <p className="secure-payment-note">
