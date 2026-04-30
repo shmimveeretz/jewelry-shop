@@ -1,0 +1,708 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   AdminPanel.css  –  shared styles for PayPlusAdminPanel & NewsletterAdmin
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+.ap-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ── Section card ────────────────────────────────────────────────────────── */
+.ap-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Section heading (icon + title + subtitle) ───────────────────────────── */
+.ap-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.ap-heading__icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  background: #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d97706;
+  font-size: 1rem;
+}
+
+.ap-heading__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.15rem 0;
+}
+
+.ap-heading__sub {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Result banner ───────────────────────────────────────────────────────── */
+.ap-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 10px;
+  border: 1px solid;
+  margin-bottom: 1.25rem;
+}
+
+.ap-banner--success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.ap-banner--error {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.ap-banner__body {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.ap-banner__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #b45309;
+  text-decoration: underline;
+}
+
+.ap-banner__link:hover {
+  color: #92400e;
+}
+
+.ap-banner__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.ap-banner__close:hover {
+  opacity: 1;
+}
+
+/* ── Copy chip ───────────────────────────────────────────────────────────── */
+.ap-copy-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ap-copy-chip__url {
+  flex: 1;
+  font-size: 0.8rem;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ap-copy-chip__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d97706;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.ap-copy-chip__btn:hover {
+  color: #92400e;
+}
+
+/* ── Form field group ────────────────────────────────────────────────────── */
+.ap-field {
+  margin-bottom: 1rem;
+}
+
+.ap-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.ap-field input,
+.ap-field select,
+.ap-field textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.ap-field input:focus,
+.ap-field select:focus,
+.ap-field textarea:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
+}
+
+.ap-field--error input,
+.ap-field--error select,
+.ap-field--error textarea {
+  border-color: #f87171;
+  background: #fff5f5;
+}
+
+.ap-field-error {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin: 0.2rem 0 0;
+}
+
+/* ── Grids ───────────────────────────────────────────────────────────────── */
+.ap-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.ap-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .ap-grid-2,
+  .ap-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Items table (document form) ─────────────────────────────────────────── */
+.ap-items-header {
+  display: grid;
+  grid-template-columns: 1fr 90px 110px 36px;
+  gap: 0.5rem;
+  padding: 0 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.ap-items-header span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 560px) {
+  .ap-items-header {
+    display: none;
+  }
+}
+
+.ap-item-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 110px 36px;
+  gap: 0.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 560px) {
+  .ap-item-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Totals box ──────────────────────────────────────────────────────────── */
+.ap-totals {
+  background: #f9fafb;
+  border: 1px solid #f3f4f6;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.ap-totals-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.35rem;
+}
+
+.ap-totals-row--total {
+  font-weight: 700;
+  color: #111827;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.ap-totals-row--total span:last-child {
+  color: #d97706;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.ap-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f59e0b;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ap-btn-primary:hover {
+  background: #d97706;
+}
+
+.ap-btn-primary:disabled {
+  background: #fcd34d;
+  cursor: not-allowed;
+}
+
+.ap-btn-outline-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+  background: #fffbeb;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.ap-btn-outline-sm:hover {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.ap-btn-icon-del {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  color: #f87171;
+  transition: background 0.2s, color 0.2s;
+}
+
+.ap-btn-icon-del:hover {
+  background: #fff5f5;
+  color: #dc2626;
+}
+
+.ap-btn-icon-del:disabled {
+  color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* ── Page heading ────────────────────────────────────────────────────────── */
+.ap-page-heading {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ap-page-heading h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+}
+
+.ap-page-heading p {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Stat cards ──────────────────────────────────────────────────────────── */
+.ap-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 640px) {
+  .ap-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ap-stat-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ap-stat-card__icon {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+}
+
+.ap-stat-card__icon--amber {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.ap-stat-card__icon--green {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.ap-stat-card__icon--blue {
+  background: #eff6ff;
+  color: #3b82f6;
+}
+
+.ap-stat-card__value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+  margin: 0 0 0.15rem 0;
+}
+
+.ap-stat-card__label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ── Toggle switch ───────────────────────────────────────────────────────── */
+.ap-toggle {
+  position: relative;
+  display: inline-flex;
+  width: 44px;
+  height: 24px;
+  align-items: center;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.ap-toggle--on {
+  background: #22c55e;
+}
+
+.ap-toggle--off {
+  background: #d1d5db;
+}
+
+.ap-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ap-toggle__knob {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  transition: transform 0.2s;
+}
+
+.ap-toggle--on .ap-toggle__knob {
+  transform: translateX(22px);
+}
+
+.ap-toggle--off .ap-toggle__knob {
+  transform: translateX(4px);
+}
+
+/* ── Subscribers table ───────────────────────────────────────────────────── */
+.ap-table-wrap {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.ap-table-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+}
+
+.ap-table-bar__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.ap-table-bar__badge {
+  background: #fef3c7;
+  color: #b45309;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+}
+
+.ap-search-wrap {
+  position: relative;
+}
+
+.ap-search-wrap input {
+  padding: 0.45rem 2rem 0.45rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #374151;
+  width: 200px;
+  font-family: inherit;
+}
+
+.ap-search-wrap input:focus {
+  outline: none;
+  border-color: #f59e0b;
+}
+
+.ap-search-icon {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+
+.ap-table-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem;
+  color: #9ca3af;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.ap-subscribers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+.ap-subscribers-table th {
+  padding: 0.75rem 1rem;
+  text-align: right;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+  white-space: nowrap;
+}
+
+.ap-subscribers-table th.center,
+.ap-subscribers-table td.center {
+  text-align: center;
+}
+
+.ap-subscribers-table tbody tr {
+  border-bottom: 1px solid #f9fafb;
+  transition: background 0.15s;
+}
+
+.ap-subscribers-table tbody tr:hover {
+  background: #fffbeb;
+}
+
+.ap-subscribers-table td {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  color: #4b5563;
+}
+
+.ap-subscribers-table .td-num {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.ap-subscribers-table .td-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.ap-subscribers-table .td-date {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.ap-subscribers-table .td-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+}
+
+.ap-del-btn {
+  padding: 0.35rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: #f87171;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ap-del-btn:hover {
+  background: #fff5f5;
+  color: #dc2626;
+}
+
+/* ── Compose email section header ────────────────────────────────────────── */
+.ap-compose-hdr {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.ap-compose-hdr__icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 10px;
+  background: #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d97706;
+}
+
+.ap-compose-hdr__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.15rem 0;
+}
+
+.ap-compose-hdr__sub {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.ap-send-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ap-send-footer p {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.ap-hint {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  margin: 0.35rem 0 0;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────────── */
+@keyframes ap-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ap-spin {
+  animation: ap-spin 0.8s linear infinite;
+}
