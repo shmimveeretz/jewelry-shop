@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
 import "../styles/pages/Checkout.css";
@@ -21,7 +22,7 @@ function Checkout() {
     : total;
 
   const [formData, setFormData] = useState({
-    fullName: "",
+    fullname: "",
     email: "",
     phone: "",
     address: "",
@@ -43,7 +44,7 @@ function Checkout() {
           const details = JSON.parse(savedDetails);
           setFormData((prev) => ({
             ...prev,
-            fullName: details.fullname || "",
+            fullname: details.fullname || details.fullName || "",
             email: details.email || "",
             phone: details.phone || "",
             address: details.address || "",
@@ -99,7 +100,7 @@ function Checkout() {
 
   const getFieldLabel = (field) => {
     const labels = {
-      fullName: "שם מלא",
+      fullname: "שם מלא",
       email: "אימייל",
       phone: "טלפון",
       address: "כתובת",
@@ -194,26 +195,34 @@ function Checkout() {
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/create-payment`,
+      const API_BASE_URL =
+        import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+      const response = await axios.post(
+        `${API_BASE_URL}/api/orders/create-payment`,
         {
-          method: "POST",
-          headers,
-          body: JSON.stringify(pendingOrder),
+          customerName: formData.fullname,
+          customerEmail: formData.email,
+          cartItems: cartItems.map((item) => ({
+            productId: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity || 1,
+            selectedOptions: item.selectedOptions || {},
+          })),
+          totalAmount: discountedTotal,
+          // full order details for invoice + fulfilment
+          ...pendingOrder,
         },
+        { headers },
       );
 
-      const data = await response.json();
+      const paymentLink = response.data.payment_page_link;
 
-      const paymentLink =
-        data.payment_page_link ||
-        data.data?.payment_page_link ||
-        data.paymentLink;
-
-      if (!response.ok || !paymentLink) {
+      if (!paymentLink) {
         throw new Error(
-          data.message ||
-            data.error ||
+          response.data.message ||
+            response.data.error ||
             (language === "he"
               ? "שגיאה ביצירת דף תשלום"
               : "Failed to create payment page"),
@@ -224,7 +233,9 @@ function Checkout() {
     } catch (err) {
       console.error("Checkout error:", err);
       showError(
-        err.message ||
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          err.message ||
           (language === "he" ? "שגיאה בחיבור לשרת" : "Connection error"),
       );
       setPaymentLoading(false);
