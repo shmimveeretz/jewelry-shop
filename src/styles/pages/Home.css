@@ -36,7 +36,7 @@
   z-index: 2;
   text-align: center;
   padding: 0 var(--spacing-md);
-  max-width: 900px;
+  max-width: 3600px;
 }
 
 .hero-content h1 {
@@ -50,8 +50,14 @@
 }
 
 @keyframes heroReveal {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-source {
@@ -81,7 +87,10 @@
   letter-spacing: 0.15em;
   font-family: var(--font-primary);
   text-decoration: none;
-  transition: background 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background 0.4s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   box-shadow: 0 4px 20px rgba(22, 40, 57, 0.4);
 }
 
@@ -103,7 +112,9 @@
   font-family: var(--font-primary);
   text-decoration: none;
   backdrop-filter: blur(8px);
-  transition: background 0.4s ease, transform 0.3s ease;
+  transition:
+    background 0.4s ease,
+    transform 0.3s ease;
 }
 
 .hero-btn-ghost:hover {
@@ -126,8 +137,15 @@
 }
 
 @keyframes scrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.55; }
-  50%       { transform: translateX(-50%) translateY(9px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateX(-50%) translateY(9px);
+    opacity: 1;
+  }
 }
 
 .hero-scroll-text {
@@ -153,7 +171,9 @@
 }
 
 @media (min-width: 1024px) {
-  .hero-mizrach { display: flex; }
+  .hero-mizrach {
+    display: flex;
+  }
 }
 
 .mizrach-line {
@@ -253,13 +273,23 @@
 }
 
 @keyframes expandWidth {
-  from { width: 0; }
-  to   { width: 100px; }
+  from {
+    width: 0;
+  }
+  to {
+    width: 100px;
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Product Grid ───────────────────────────────────────────────── */
@@ -289,16 +319,26 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  transition: box-shadow 0.5s ease, transform 0.4s ease;
+  transition:
+    box-shadow 0.5s ease,
+    transform 0.4s ease;
   cursor: pointer;
   position: relative;
   animation: fadeInUp 0.6s ease-out backwards;
 }
 
-.collection-card:nth-child(1) { animation-delay: 0.1s; }
-.collection-card:nth-child(2) { animation-delay: 0.2s; }
-.collection-card:nth-child(3) { animation-delay: 0.3s; }
-.collection-card:nth-child(4) { animation-delay: 0.4s; }
+.collection-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.collection-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.collection-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.collection-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
 
 .collection-card:hover {
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.11);
@@ -422,8 +462,12 @@
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .shimmer {
@@ -479,7 +523,10 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto var(--spacing-md);
-  transition: background 0.35s ease, border-color 0.35s ease, transform 0.3s ease;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.3s ease;
 }
 
 .feature-card:hover .feature-icon-wrap {
@@ -572,7 +619,10 @@
   letter-spacing: 0.1em;
   font-family: var(--font-primary);
   text-decoration: none;
-  transition: background 0.4s ease, color 0.4s ease, transform 0.3s ease;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease,
+    transform 0.3s ease;
 }
 
 .cta-btn:hover {

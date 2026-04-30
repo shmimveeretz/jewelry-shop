@@ -1,6 +1,10 @@
 ﻿/* ─── Material Symbols ─────────────────────────────────────────── */
 .material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 24;
   font-family: "Material Symbols Outlined";
   font-style: normal;
   display: inline-block;
@@ -25,14 +29,13 @@
 /* ─── Hero ──────────────────────────────────────────────────────── */
 .about-hero-new {
   position: relative;
-  height: 90vh;
+  height: 360vh;
   min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background:
-    url("https://res.cloudinary.com/dhayarvh3/image/upload/v1771152040/EverythingBG.jpg")
+  background: url("https://res.cloudinary.com/dhayarvh3/image/upload/v1771152040/EverythingBG.jpg")
     center / cover no-repeat;
 }
 
@@ -107,8 +110,15 @@
 }
 
 @keyframes heroScrollBounce {
-  0%, 100% { transform: translateY(0); opacity: 0.7; }
-  50%       { transform: translateY(8px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
 }
 
 /* ─── Story Section ─────────────────────────────────────────────── */
@@ -230,7 +240,10 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease;
+  transition:
+    border-color 0.5s ease,
+    box-shadow 0.5s ease,
+    transform 0.3s ease;
   animation: cardSlideUp 0.6s ease-out both;
   animation-delay: var(--delay, 0s);
 }
@@ -242,8 +255,14 @@
 }
 
 @keyframes cardSlideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .about-number-icon {
@@ -255,7 +274,10 @@
   align-items: center;
   justify-content: center;
   color: var(--color-secondary);
-  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 .about-number-icon .material-symbols-outlined {
@@ -293,7 +315,7 @@
 /* ─── Closing Section ────────────────────────────────────────────── */
 .about-closing-section {
   padding: 0 0 6rem;
-  max-width: 900px;
+  max-width: 3600px;
   margin: 0 auto;
 }
 
@@ -318,7 +340,11 @@
 
 .about-closing-bg-icon .material-symbols-outlined {
   font-size: 10rem;
-  font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 300,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 .about-closing-inner h3 {

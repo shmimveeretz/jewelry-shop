@@ -19,6 +19,7 @@ function Auth() {
     password: "",
     confirmPassword: "",
     phone: "",
+    newsletterSubscribe: true,
   });
 
   // Get return path and cart data from location state
@@ -27,9 +28,10 @@ function Auth() {
   const total = location.state?.total;
 
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -69,6 +71,7 @@ function Auth() {
             email: formData.email,
             password: formData.password,
             phone: formData.phone,
+            newsletterSubscribe: formData.newsletterSubscribe,
           };
 
       const API_BASE_URL =
@@ -100,8 +103,8 @@ function Auth() {
         const userName =
           data.data.fullname ||
           `${data.data.firstname} ${data.data.lastname}` ||
-          data.data.name ||s
-          (language === "he" ? "משתמש" : "User");
+          data.data.name ||
+          s(language === "he" ? "משתמש" : "User");
         showSuccess(
           isLogin
             ? `${language === "he" ? "שלום" : "Hello"} ${userName}! ${t("loginSuccess")}`
@@ -143,6 +146,7 @@ function Auth() {
       email: "",
       password: "",
       confirmPassword: "",
+      newsletterSubscribe: true,
     });
   };
 
@@ -227,17 +231,37 @@ function Auth() {
           </div>
 
           {!isLogin && (
-            <div className="form-group">
-              <label htmlFor="confirmPassword">{t("confirmPassword")}</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            <>
+              <div className="form-group">
+                <label htmlFor="confirmPassword">{t("confirmPassword")}</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              {/* Newsletter opt-in */}
+              <div className="form-group form-group--checkbox">
+                <label htmlFor="newsletterSubscribe" className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    id="newsletterSubscribe"
+                    name="newsletterSubscribe"
+                    checked={formData.newsletterSubscribe}
+                    onChange={handleChange}
+                  />
+                  <span>
+                    {language === "he"
+                      ? "קבלי עדכונים, מבצעים וחדשות בדואר אלקטרוני"
+                      : "Subscribe to our newsletter for updates & exclusive offers"}
+                  </span>
+                </label>
+              </div>
+            </>
           )}
 
           <button type="submit" className="btn auth-btn" disabled={loading}>

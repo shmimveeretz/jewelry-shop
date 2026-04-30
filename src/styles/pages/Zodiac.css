@@ -22,7 +22,7 @@
 }
 
 .zodiac-container {
-  max-width: 900px;
+  max-width: 3600px;
   margin: 0 auto;
   padding: var(--spacing-xl);
   background: var(--color-white);
@@ -475,7 +475,7 @@
   line-height: 1.7;
   text-align: right;
   font-style: italic;
-  max-height: 90px;
+  max-height: 360px;
   overflow-y: auto;
   width: 100%;
 }

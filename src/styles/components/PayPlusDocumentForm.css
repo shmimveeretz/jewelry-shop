@@ -16,7 +16,7 @@
   align-items: start;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 3600px) {
   .ppdf-grid {
     grid-template-columns: 1fr;
   }

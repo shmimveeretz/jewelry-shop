@@ -6,9 +6,9 @@
     letter: "א",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -40,9 +40,9 @@
     letter: "ב",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -74,9 +74,9 @@
     letter: "ג",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -108,9 +108,9 @@
     letter: "ד",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -142,9 +142,9 @@
     letter: "ה",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -176,9 +176,9 @@
     letter: "ו",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -210,9 +210,9 @@
     letter: "ז",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -244,9 +244,9 @@
     letter: "ח",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -278,9 +278,9 @@
     letter: "ט",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -312,9 +312,9 @@
     letter: "י",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -346,9 +346,9 @@
     letter: "כ",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -380,9 +380,9 @@
     letter: "ל",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -414,9 +414,9 @@
     letter: "מ",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -448,9 +448,9 @@
     letter: "נ",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -482,9 +482,9 @@
     letter: "ס",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -516,9 +516,9 @@
     letter: "ע",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -550,9 +550,9 @@
     letter: "פ",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -584,9 +584,9 @@
     letter: "צ",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -618,9 +618,9 @@
     letter: "ק",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -652,9 +652,9 @@
     letter: "ר",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -686,9 +686,9 @@
     letter: "ש",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -720,9 +720,9 @@
     letter: "ת",
     category: "אותיות עבריות",
     categoryEn: "Hebrew Letters",
-    price: 90,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 30, "זהב 14 קראט": 810 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -761,9 +761,9 @@
     monthEn: "Nisan",
     tribe: "ראובן",
     tribeEn: "Reuben",
-    price: 1290,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -800,9 +800,9 @@
     monthEn: "Iyar",
     tribe: "שמעון",
     tribeEn: "Simeon",
-    price: 1250,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -829,7 +829,7 @@
     id: "emerald-bareket",
     name: "אבן אמרלד",
     nameEn: "Emerald",
-    stone: "אמרלד / ברקת",
+    stone: "ברקת / אמרלד",
     stoneEn: "Emerald",
     category: "אבני חושן",
     categoryEn: "Hoshen Stones",
@@ -839,9 +839,9 @@
     monthEn: "Sivan",
     tribe: "לוי",
     tribeEn: "Levi",
-    price: 1380,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -877,9 +877,9 @@
     monthEn: "Tammuz",
     tribe: "יהודה",
     tribeEn: "Judah",
-    price: 1230,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -915,9 +915,9 @@
     monthEn: "Av",
     tribe: "יששכר",
     tribeEn: "Issachar",
-    price: 1420,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -953,9 +953,9 @@
     monthEn: "Elul",
     tribe: "זבולון",
     tribeEn: "Zebulun",
-    price: 2200,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -979,45 +979,6 @@
     types: ["תליון", "טבעת"],
   },
   {
-    id: "jasper-leshem",
-    name: "אבן ג'ספר",
-    nameEn: "Jasper",
-    stone: "ישפה / לאפיס",
-    stoneEn: "Jasper / Lapis",
-    category: "אבני חושן",
-    categoryEn: "Hoshen Stones",
-    zodiac: "מאזניים",
-    zodiacEn: "Libra",
-    month: "תשרי",
-    monthEn: "Tishrei",
-    tribe: "בנימין",
-    tribeEn: "Benjamin",
-    price: 1190,
-    priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
-      chain: {
-        "ללא שרשרת": 0,
-        "כסף 925": 270,
-        "ציפוי זהב": 300,
-        "זהב 14 קראט": 1500,
-      },
-      length: { 40: 0, 42: 0, 45: 0, 50: 0 },
-    },
-    metals: ["כסף 925", "ציפוי זהב", "זהב 14 קראט"],
-    images: [
-      "https://res.cloudinary.com/dhayarvh3/image/upload/f_auto,q_auto/Jesper_Stone.png",
-    ],
-    description:
-      "אבן הישפה - אבן החושן השביעית, משויכת לשבט בנימין ומזל מאזניים. אבן מקרקעת הקשורה לאיזון והגנה. מסמלת חיבור לאדמה וכוח חיים בסיסי. מגבירה מוטיבציה, חושניות ואיזון מיני. עושה איזון כללי למערכת האנושית ומצוינת כ'רפואה מונעת'.",
-    descriptionEn:
-      "Jasper Stone - The seventh Hoshen stone, associated with the tribe of Benjamin and Libra zodiac. A grounding stone related to balance and protection. Symbolizes connection to earth and basic life force. Increases motivation, sensuality and sexual balance. Creates general balance for the human system and excellent as 'preventive medicine'.",
-    properties:
-      "מקרקעת, מאזנת, מגינה מאנרגיות שליליות, מגבירה מוטיבציה וחושניות",
-    propertiesEn:
-      "Grounding, balancing, protects from negative energies, increases motivation and sensuality",
-    types: ["תליון", "טבעת"],
-  },
-  {
     id: "opal-shevo",
     name: "אבן אופל",
     nameEn: "Opal",
@@ -1031,9 +992,9 @@
     monthEn: "Cheshvan",
     tribe: "דן",
     tribeEn: "Dan",
-    price: 1310,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1070,9 +1031,9 @@
     monthEn: "Kislev",
     tribe: "נפתלי",
     tribeEn: "Naphtali",
-    price: 1180,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1109,9 +1070,9 @@
     monthEn: "Tevet",
     tribe: "גד",
     tribeEn: "Gad",
-    price: 1240,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1148,9 +1109,9 @@
     monthEn: "Shevat",
     tribe: "אשר",
     tribeEn: "Asher",
-    price: 1260,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1176,7 +1137,7 @@
     id: "onyx-shoham",
     name: "אבן אוניקס",
     nameEn: "Onyx",
-    stone: "אונקס / שוהם",
+    stone: "שוהם / אוניקס",
     stoneEn: "Onyx",
     category: "אבני חושן",
     categoryEn: "Hoshen Stones",
@@ -1186,9 +1147,9 @@
     monthEn: "Adar",
     tribe: "יוסף",
     tribeEn: "Joseph",
-    price: 1220,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 80, "זהב 14 קראט": 1800 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1212,6 +1173,45 @@
     types: ["תליון", "טבעת"],
   },
   {
+    id: "jasper-leshem",
+    name: "אבן ג'ספר",
+    nameEn: "Jasper",
+    stone: "ישפה",
+    stoneEn: "Jasper",
+    category: "אבני חושן",
+    categoryEn: "Hoshen Stones",
+    zodiac: "מאזניים",
+    zodiacEn: "Libra",
+    month: "תשרי",
+    monthEn: "Tishrei",
+    tribe: "בנימין",
+    tribeEn: "Benjamin",
+    price: 360,
+    priceAdditions: {
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
+      chain: {
+        "ללא שרשרת": 0,
+        "כסף 925": 270,
+        "ציפוי זהב": 300,
+        "זהב 14 קראט": 1500,
+      },
+      length: { 40: 0, 42: 0, 45: 0, 50: 0 },
+    },
+    metals: ["כסף 925", "ציפוי זהב", "זהב 14 קראט"],
+    images: [
+      "https://res.cloudinary.com/dhayarvh3/image/upload/f_auto,q_auto/Jesper_Stone.png",
+    ],
+    description:
+      "אבן הישפה - אבן החושן השביעית, משויכת לשבט בנימין ומזל מאזניים. אבן מקרקעת הקשורה לאיזון והגנה. מסמלת חיבור לאדמה וכוח חיים בסיסי. מגבירה מוטיבציה, חושניות ואיזון מיני. עושה איזון כללי למערכת האנושית ומצוינת כ'רפואה מונעת'.",
+    descriptionEn:
+      "Jasper Stone - The seventh Hoshen stone, associated with the tribe of Benjamin and Libra zodiac. A grounding stone related to balance and protection. Symbolizes connection to earth and basic life force. Increases motivation, sensuality and sexual balance. Creates general balance for the human system and excellent as 'preventive medicine'.",
+    properties:
+      "מקרקעת, מאזנת, מגינה מאנרגיות שליליות, מגבירה מוטיבציה וחושניות",
+    propertiesEn:
+      "Grounding, balancing, protects from negative energies, increases motivation and sensuality",
+    types: ["תליון", "טבעת"],
+  },
+  {
     id: "trinity-aries",
     name: "שלישיית טלה",
     nameEn: "Aries Trinity",
@@ -1225,9 +1225,9 @@
     tribeEn: "Reuben",
     planet: "מאדים",
     planetEn: "Mars",
-    price: 1690,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1266,9 +1266,9 @@
     tribeEn: "Simeon",
     planet: "נוגה",
     planetEn: "Venus",
-    price: 1650,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1301,15 +1301,15 @@
     categoryEn: "Trinity Pendants",
     zodiacSign: "תאומים",
     zodiacSignEn: "Gemini",
-    stone: "אמרלד / ברקת",
+    stone: "ברקת / אמרלד",
     stoneEn: "Emerald",
     tribe: "לוי",
     tribeEn: "Levi",
-    planet: "כוכב",
+    planet: "כוכב חמה",
     planetEn: "Mercury",
-    price: 1850,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1348,9 +1348,9 @@
     tribeEn: "Judah",
     planet: "ירח",
     planetEn: "Moon",
-    price: 1680,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1389,9 +1389,9 @@
     tribeEn: "Issachar",
     planet: "שמש",
     planetEn: "Sun",
-    price: 1980,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1428,11 +1428,11 @@
     stoneEn: "Diamond",
     tribe: "זבולון",
     tribeEn: "Zebulun",
-    planet: "כוכב",
+    planet: "כוכב חמה",
     planetEn: "Mercury",
-    price: 2600,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1458,47 +1458,6 @@
     types: ["תליון"],
   },
   {
-    id: "trinity-libra",
-    name: "שלישיית מאזניים",
-    nameEn: "Libra Trinity",
-    category: "שלישיות מיוחדות",
-    categoryEn: "Trinity Pendants",
-    zodiacSign: "מאזניים",
-    zodiacSignEn: "Libra",
-    stone: "ישפה / לשם",
-    stoneEn: "Jasper",
-    tribe: "בנימין",
-    tribeEn: "Benjamin",
-    planet: "נוגה",
-    planetEn: "Venus",
-    price: 1580,
-    priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
-      chain: {
-        "ללא שרשרת": 0,
-        "כסף 925": 270,
-        "ציפוי זהב": 300,
-        "זהב 14 קראט": 1500,
-      },
-      length: { 40: 0, 42: 0, 45: 0, 50: 0 },
-    },
-    metals: ["כסף 925", "ציפוי זהב", "זהב 14 קראט"],
-    images: [
-      "https://res.cloudinary.com/dhayarvh3/image/upload/f_auto,q_auto/Libra_Trinity.png",
-    ],
-    description:
-      "שלישיית מאזניים המיוחדת - משלבת את אבן הישפה המקרקעת (אבן החושן של שבט בנימין), סמל מזל מאזניים וכוכב נוגה. תכשיט מאזן המעניק הרמוניה, שלום ויופי. מגן מאנרגיות שליליות ומחזק איזון כללי.",
-    descriptionEn:
-      "Special Libra Trinity - Combines grounding Jasper stone (Hoshen stone of Benjamin tribe), Libra zodiac symbol and Venus planet. Balancing jewelry providing harmony, peace and beauty. Protects from negative energies and strengthens general balance.",
-    meaningHe: "איזון, הרמוניה, צדק, יופי",
-    meaningEn: "Balance, Harmony, Justice, Beauty",
-    element: "אוויר",
-    elementEn: "Air",
-    dates: "23.9-22.10",
-    hebrewMonth: "תשרי",
-    types: ["תליון"],
-  },
-  {
     id: "trinity-scorpio",
     name: "שלישיית עקרב",
     nameEn: "Scorpio Trinity",
@@ -1512,9 +1471,9 @@
     tribeEn: "Dan",
     planet: "פלוטו",
     planetEn: "Pluto",
-    price: 1780,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1553,9 +1512,9 @@
     tribeEn: "Naphtali",
     planet: "צדק",
     planetEn: "Jupiter",
-    price: 1550,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1594,9 +1553,9 @@
     tribeEn: "Gad",
     planet: "שבתאי",
     planetEn: "Saturn",
-    price: 1620,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1635,9 +1594,9 @@
     tribeEn: "Asher",
     planet: "אורנוס",
     planetEn: "Uranus",
-    price: 1720,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1676,9 +1635,9 @@
     tribeEn: "Joseph",
     planet: "נפטון",
     planetEn: "Neptune",
-    price: 1590,
+    price: 720,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 100, "זהב 14 קראט": 2200 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1704,6 +1663,47 @@
     types: ["תליון"],
   },
   {
+    id: "trinity-libra",
+    name: "שלישיית מאזניים",
+    nameEn: "Libra Trinity",
+    category: "שלישיות מיוחדות",
+    categoryEn: "Trinity Pendants",
+    zodiacSign: "מאזניים",
+    zodiacSignEn: "Libra",
+    stone: "ישפה / לשם",
+    stoneEn: "Jasper",
+    tribe: "בנימין",
+    tribeEn: "Benjamin",
+    planet: "נוגה",
+    planetEn: "Venus",
+    price: 720,
+    priceAdditions: {
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 3780 },
+      chain: {
+        "ללא שרשרת": 0,
+        "כסף 925": 270,
+        "ציפוי זהב": 300,
+        "זהב 14 קראט": 1500,
+      },
+      length: { 40: 0, 42: 0, 45: 0, 50: 0 },
+    },
+    metals: ["כסף 925", "ציפוי זהב", "זהב 14 קראט"],
+    images: [
+      "https://res.cloudinary.com/dhayarvh3/image/upload/f_auto,q_auto/Libra_Trinity.png",
+    ],
+    description:
+      "שלישיית מאזניים המיוחדת - משלבת את אבן הישפה המקרקעת (אבן החושן של שבט בנימין), סמל מזל מאזניים וכוכב נוגה. תכשיט מאזן המעניק הרמוניה, שלום ויופי. מגן מאנרגיות שליליות ומחזק איזון כללי.",
+    descriptionEn:
+      "Special Libra Trinity - Combines grounding Jasper stone (Hoshen stone of Benjamin tribe), Libra zodiac symbol and Venus planet. Balancing jewelry providing harmony, peace and beauty. Protects from negative energies and strengthens general balance.",
+    meaningHe: "איזון, הרמוניה, צדק, יופי",
+    meaningEn: "Balance, Harmony, Justice, Beauty",
+    element: "אוויר",
+    elementEn: "Air",
+    dates: "23.9-22.10",
+    hebrewMonth: "תשרי",
+    types: ["תליון"],
+  },
+  {
     id: "aries-pendant",
     name: "תליון מזל טלה",
     nameEn: "Aries Pendant",
@@ -1712,9 +1712,9 @@
     symbol: "♈",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1754,9 +1754,9 @@
     symbol: "♉",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1796,9 +1796,9 @@
     symbol: "♊",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1823,7 +1823,7 @@
     stoneEn: "Emerald",
     element: "אוויר",
     elementEn: "Air",
-    planet: "כוכב",
+    planet: "כוכב חמה",
     planetEn: "Mercury",
     dates: "21.5-20.6",
     hebrewMonth: "סיוון",
@@ -1838,9 +1838,9 @@
     symbol: "♋",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1880,9 +1880,9 @@
     symbol: "♌",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1922,9 +1922,9 @@
     symbol: "♍",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -1949,52 +1949,10 @@
     stoneEn: "Diamond",
     element: "אדמה",
     elementEn: "Earth",
-    planet: "כוכב",
+    planet: "כוכב חמה",
     planetEn: "Mercury",
     dates: "23.8-22.9",
     hebrewMonth: "אלול",
-    types: ["תליון"],
-  },
-  {
-    id: "libra-pendant",
-    name: "תליון מזל מאזניים",
-    nameEn: "Libra Pendant",
-    zodiacSign: "מאזניים",
-    zodiacSignEn: "Libra",
-    symbol: "♎",
-    category: "תליוני מזלות",
-    categoryEn: "Zodiac Pendants",
-    price: 950,
-    priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
-      chain: {
-        "ללא שרשרת": 0,
-        "כסף 925": 270,
-        "ציפוי זהב": 300,
-        "זהב 14 קראט": 1500,
-      },
-      length: { 40: 0, 42: 0, 45: 0, 50: 0 },
-    },
-    metals: ["כסף 925", "ציפוי זהב", "זהב 14 קראט"],
-    images: [
-      "https://res.cloudinary.com/dhayarvh3/image/upload/f_auto,q_auto/Libra_Zodiac.png",
-    ],
-    description:
-      "תליון מזל מאזניים - מזל האוויר השני. סמל של איזון, הרמוניה ויופי. מאזניים הוא דיפלומט, מחפש שלום וצדק. התליון משלב את סמל המאזניים עם אבן ישפה, אבן החושן המאזנת של שבט בנימין.",
-    descriptionEn:
-      "Libra Pendant - The second air sign. Symbol of balance, harmony and beauty. Libra is diplomatic, seeks peace and justice. The pendant combines the Libra symbol with jasper stone, the balancing Hoshen stone of the tribe of Benjamin.",
-    meaningHe: "איזון, הרמוניה, צדק, שותפות",
-    meaningEn: "Balance, Harmony, Justice, Partnership",
-    tribe: "בנימין",
-    tribeEn: "Benjamin",
-    stone: "ישפה",
-    stoneEn: "Jasper",
-    element: "אוויר",
-    elementEn: "Air",
-    planet: "נוגה",
-    planetEn: "Venus",
-    dates: "23.9-22.10",
-    hebrewMonth: "תשרי",
     types: ["תליון"],
   },
   {
@@ -2006,9 +1964,9 @@
     symbol: "♏",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -2048,9 +2006,9 @@
     symbol: "♐",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -2090,9 +2048,9 @@
     symbol: "♑",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -2132,9 +2090,9 @@
     symbol: "♒",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -2174,9 +2132,9 @@
     symbol: "♓",
     category: "תליוני מזלות",
     categoryEn: "Zodiac Pendants",
-    price: 950,
+    price: 360,
     priceAdditions: {
-      metalType: { "כסף 925": 0, "ציפוי זהב": 50, "זהב 14 קראט": 1500 },
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
       chain: {
         "ללא שרשרת": 0,
         "כסף 925": 270,
@@ -2205,6 +2163,48 @@
     planetEn: "Neptune",
     dates: "19.2-20.3",
     hebrewMonth: "אדר",
+    types: ["תליון"],
+  },
+  {
+    id: "libra-pendant",
+    name: "תליון מזל מאזניים",
+    nameEn: "Libra Pendant",
+    zodiacSign: "מאזניים",
+    zodiacSignEn: "Libra",
+    symbol: "♎",
+    category: "תליוני מזלות",
+    categoryEn: "Zodiac Pendants",
+    price: 360,
+    priceAdditions: {
+      metalType: { "כסף 925": 0, "ציפוי זהב": 60, "זהב 14 קראט": 2040 },
+      chain: {
+        "ללא שרשרת": 0,
+        "כסף 925": 270,
+        "ציפוי זהב": 300,
+        "זהב 14 קראט": 1500,
+      },
+      length: { 40: 0, 42: 0, 45: 0, 50: 0 },
+    },
+    metals: ["כסף 925", "ציפוי זהב", "זהב 14 קראט"],
+    images: [
+      "https://res.cloudinary.com/dhayarvh3/image/upload/f_auto,q_auto/Libra_Zodiac.png",
+    ],
+    description:
+      "תליון מזל מאזניים - מזל האוויר השני. סמל של איזון, הרמוניה ויופי. מאזניים הוא דיפלומט, מחפש שלום וצדק. התליון משלב את סמל המאזניים עם אבן ישפה, אבן החושן המאזנת של שבט בנימין.",
+    descriptionEn:
+      "Libra Pendant - The second air sign. Symbol of balance, harmony and beauty. Libra is diplomatic, seeks peace and justice. The pendant combines the Libra symbol with jasper stone, the balancing Hoshen stone of the tribe of Benjamin.",
+    meaningHe: "איזון, הרמוניה, צדק, שותפות",
+    meaningEn: "Balance, Harmony, Justice, Partnership",
+    tribe: "בנימין",
+    tribeEn: "Benjamin",
+    stone: "ישפה",
+    stoneEn: "Jasper",
+    element: "אוויר",
+    elementEn: "Air",
+    planet: "נוגה",
+    planetEn: "Venus",
+    dates: "23.9-22.10",
+    hebrewMonth: "תשרי",
     types: ["תליון"],
   },
 ];

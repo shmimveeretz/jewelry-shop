@@ -14,9 +14,9 @@ function ProductModal({ product, onClose }) {
     "אותיות עבריות": "Ancient Hebrew Script",
     "תליוני מזלות": "Zodiac Pendants",
     "אבני חושן": "Hoshen Stones",
-    כוכבים: "Stars Pendants",
+    "כוכבים": "Stars Pendants",
     "שלישיות מיוחדות": "Trinity Pendants",
-    אחר: "Other",
+    "אחר": "Other",
   };
 
   const displayCategory =
@@ -61,10 +61,10 @@ function ProductModal({ product, onClose }) {
     metalType: {
       "זהב 14 קראט": 3800,
       "כסף 925": 0,
-      "ציפוי זהב": 50,
+      "ציפוי זהב": 60,
     },
     length: {
-      "מעדיף חוט שעווה": -70,
+      // "מעדיף חוט שעווה": -70,
       40: 0,
       42: 0,
       45: 0,

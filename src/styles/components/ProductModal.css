@@ -17,9 +17,9 @@
 .modal-content {
   background: var(--color-white);
   border-radius: var(--radius-lg);
-  max-width: 900px;
+  max-width: 3600px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 360vh;
   overflow-y: auto;
   position: relative;
   animation: modalSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -320,7 +320,9 @@
 
 .color-option.selected {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-primary);
+  box-shadow:
+    0 0 0 2px var(--color-white),
+    0 0 0 4px var(--color-primary);
 }
 
 .color-option.disabled {

@@ -3,9 +3,9 @@
 
 const defaultPriceAdditions = {
   metalType: {
-    "זהב 14 קראט": 2200,
+    "זהב 14 קראט": 3780,
     "כסף 925": 0,
-    "ציפוי זהב": 100,
+    "ציפוי זהב": 60,
   },
   length: {
     40: 0,
@@ -30,7 +30,7 @@ export const trinityPendantsData = [
     tribeEn: "Reuben",
     planet: "מאדים",
     planetEn: "Mars",
-    price: 1690,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -63,7 +63,7 @@ export const trinityPendantsData = [
     tribeEn: "Simeon",
     planet: "נוגה",
     planetEn: "Venus",
-    price: 1650,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -94,9 +94,9 @@ export const trinityPendantsData = [
     stoneEn: "Emerald",
     tribe: "לוי",
     tribeEn: "Levi",
-    planet: "כוכב",
+    planet: "כוכב חמה",
     planetEn: "Mercury",
-    price: 1850,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -129,7 +129,7 @@ export const trinityPendantsData = [
     tribeEn: "Judah",
     planet: "ירח",
     planetEn: "Moon",
-    price: 1680,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -162,7 +162,7 @@ export const trinityPendantsData = [
     tribeEn: "Issachar",
     planet: "שמש",
     planetEn: "Sun",
-    price: 1980,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -193,9 +193,9 @@ export const trinityPendantsData = [
     stoneEn: "Diamond",
     tribe: "זבולון",
     tribeEn: "Zebulun",
-    planet: "כוכב",
+    planet: "כוכב חמה",
     planetEn: "Mercury",
-    price: 2600,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -215,39 +215,6 @@ export const trinityPendantsData = [
     types: ["תליון"],
   },
   {
-    id: "trinity-libra",
-    name: "שלישיית מאזניים",
-    nameEn: "Libra Trinity",
-    category: "שלישיות מיוחדות",
-    categoryEn: "Trinity Pendants",
-    zodiacSign: "מאזניים",
-    zodiacSignEn: "Libra",
-    stone: "ישפה / לשם",
-    stoneEn: "Jasper",
-    tribe: "בנימין",
-    tribeEn: "Benjamin",
-    planet: "נוגה",
-    planetEn: "Venus",
-    price: 1580,
-    priceAdditions: defaultPriceAdditions,
-    metals: ["זהב", "כסף", "זהב ורוד"],
-    images: [
-      "/src/assets/trinityPendants/מזל מאזניים.png",
-      "/src/assets/trinityPendants/מזל מאזניים.jpg",
-    ],
-    description:
-      "שלישיית מאזניים המיוחדת - משלבת את אבן הישפה המקרקעת (אבן החושן של שבט בנימין), סמל מזל מאזניים וכוכב נוגה. תכשיט מאזן המעניק הרמוניה, שלום ויופי. מגן מאנרגיות שליליות ומחזק איזון כללי.",
-    descriptionEn:
-      "Special Libra Trinity - Combines grounding Jasper stone (Hoshen stone of Benjamin tribe), Libra zodiac symbol and Venus planet. Balancing jewelry providing harmony, peace and beauty. Protects from negative energies and strengthens general balance.",
-    meaningHe: "איזון, הרמוניה, צדק, יופי",
-    meaningEn: "Balance, Harmony, Justice, Beauty",
-    element: "אוויר",
-    elementEn: "Air",
-    dates: "23.9-22.10",
-    hebrewMonth: "תשרי",
-    types: ["תליון"],
-  },
-  {
     id: "trinity-scorpio",
     name: "שלישיית עקרב",
     nameEn: "Scorpio Trinity",
@@ -261,7 +228,7 @@ export const trinityPendantsData = [
     tribeEn: "Dan",
     planet: "פלוטו",
     planetEn: "Pluto",
-    price: 1780,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -294,7 +261,7 @@ export const trinityPendantsData = [
     tribeEn: "Naphtali",
     planet: "צדק",
     planetEn: "Jupiter",
-    price: 1550,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -327,7 +294,7 @@ export const trinityPendantsData = [
     tribeEn: "Gad",
     planet: "שבתאי",
     planetEn: "Saturn",
-    price: 1620,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -360,7 +327,7 @@ export const trinityPendantsData = [
     tribeEn: "Asher",
     planet: "אורנוס",
     planetEn: "Uranus",
-    price: 1720,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -393,7 +360,7 @@ export const trinityPendantsData = [
     tribeEn: "Joseph",
     planet: "נפטון",
     planetEn: "Neptune",
-    price: 1590,
+    price: 720,
     priceAdditions: defaultPriceAdditions,
     metals: ["זהב", "כסף", "זהב ורוד"],
     images: [
@@ -410,6 +377,39 @@ export const trinityPendantsData = [
     elementEn: "Water",
     dates: "19.2-20.3",
     hebrewMonth: "אדר",
+    types: ["תליון"],
+  },
+  {
+    id: "trinity-libra",
+    name: "שלישיית מאזניים",
+    nameEn: "Libra Trinity",
+    category: "שלישיות מיוחדות",
+    categoryEn: "Trinity Pendants",
+    zodiacSign: "מאזניים",
+    zodiacSignEn: "Libra",
+    stone: "ישפה / לשם",
+    stoneEn: "Jasper",
+    tribe: "בנימין",
+    tribeEn: "Benjamin",
+    planet: "נוגה",
+    planetEn: "Venus",
+    price: 720,
+    priceAdditions: defaultPriceAdditions,
+    metals: ["זהב", "כסף", "זהב ורוד"],
+    images: [
+      "/src/assets/trinityPendants/מזל מאזניים.png",
+      "/src/assets/trinityPendants/מזל מאזניים.jpg",
+    ],
+    description:
+      "שלישיית מאזניים המיוחדת - משלבת את אבן הישפה המקרקעת (אבן החושן של שבט בנימין), סמל מזל מאזניים וכוכב נוגה. תכשיט מאזן המעניק הרמוניה, שלום ויופי. מגן מאנרגיות שליליות ומחזק איזון כללי.",
+    descriptionEn:
+      "Special Libra Trinity - Combines grounding Jasper stone (Hoshen stone of Benjamin tribe), Libra zodiac symbol and Venus planet. Balancing jewelry providing harmony, peace and beauty. Protects from negative energies and strengthens general balance.",
+    meaningHe: "איזון, הרמוניה, צדק, יופי",
+    meaningEn: "Balance, Harmony, Justice, Beauty",
+    element: "אוויר",
+    elementEn: "Air",
+    dates: "23.9-22.10",
+    hebrewMonth: "תשרי",
     types: ["תליון"],
   },
 ];
