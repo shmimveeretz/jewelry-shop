@@ -200,19 +200,18 @@ function Checkout() {
         shippingAddress: pendingOrder.shippingAddress,
       });
 
-      if (!result.success || !result.payment_page_link) {
+      const redirectUrl =
+        result.paymentPageUrl || result.payment_page_link || result.url;
+
+      if (!redirectUrl) {
         throw new Error(
-          result.message ||
-            result.error ||
-            (language === "he"
-              ? "שגיאה ביצירת דף תשלום"
-              : "Failed to create payment page"),
+          "Payment URL missing from server response: " + JSON.stringify(result),
         );
       }
 
-      window.location.href = result.payment_page_link;
+      window.location.href = redirectUrl;
     } catch (err) {
-      console.error("Checkout error:", err.message, err.response?.data ?? "");
+      console.error("Checkout crash details:", err);
       showError(
         err.message ||
           (language === "he" ? "שגיאה בחיבור לשרת" : "Connection error"),
