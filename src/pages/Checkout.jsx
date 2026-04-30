@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import { payPlusService } from "../utils/payPlusService";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
 import "../styles/pages/Checkout.css";
@@ -191,38 +191,21 @@ function Checkout() {
 
     setPaymentLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const headers = { "Content-Type": "application/json" };
-      if (token) headers["Authorization"] = `Bearer ${token}`;
+      const result = await payPlusService.createPayment({
+        amount: discountedTotal,
+        customerName: formData.fullname,
+        customerEmail: formData.email,
+        customerPhone: formData.phone,
+        items: pendingOrder.items,
+        shippingAddress: pendingOrder.shippingAddress,
+      });
 
-      const API_BASE_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-      const response = await axios.post(
-        `${API_BASE_URL}/api/orders/create-payment`,
-        {
-          customerName: formData.fullname,
-          customerEmail: formData.email,
-          cartItems: cartItems.map((item) => ({
-            productId: item.id,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity || 1,
-            selectedOptions: item.selectedOptions || {},
-          })),
-          totalAmount: discountedTotal,
-          // full order details for invoice + fulfilment
-          ...pendingOrder,
-        },
-        { headers },
-      );
-
-      const paymentLink = response.data.payment_page_link;
+      const paymentLink = result.payment_page_link;
 
       if (!paymentLink) {
         throw new Error(
-          response.data.message ||
-            response.data.error ||
+          result.message ||
+            result.error ||
             (language === "he"
               ? "שגיאה ביצירת דף תשלום"
               : "Failed to create payment page"),
