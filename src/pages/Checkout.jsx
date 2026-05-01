@@ -208,7 +208,11 @@ function Checkout() {
         customerName,
         customerEmail,
         customerPhone: formData.phone,
-        items: pendingOrder.items,
+        items: cartItems.map((item) => ({
+          name: item.name,
+          quantity: item.quantity || 1,
+          price: item.price,
+        })),
         shippingAddress: pendingOrder.shippingAddress,
       });
 
