@@ -149,12 +149,24 @@ function Checkout() {
       return;
     }
 
+    const customerName = formData.fullname?.trim();
+    const customerEmail = formData.email?.trim();
+
+    if (!customerName || !customerEmail) {
+      showError(
+        language === "he"
+          ? "אנא הזן שם מלא ואימייל כדי להמשיך"
+          : "Please enter your name and email to proceed",
+      );
+      return;
+    }
+
     const shippingPrice = cartItems.length > 0 ? 30 : 0;
     const itemsPrice = total - shippingPrice;
 
     const pendingOrder = {
-      customerName: formData.fullname,
-      customerEmail: formData.email,
+      customerName,
+      customerEmail,
       customerPhone: formData.phone,
       items: cartItems.map((item) => ({
         productId: item.id,
@@ -164,7 +176,7 @@ function Checkout() {
         selectedOptions: item.selectedOptions || {},
       })),
       shippingAddress: {
-        fullName: formData.fullname,
+        fullName: customerName,
         address: formData.address,
         city: formData.city,
         zipCode: formData.zipCode,
@@ -180,8 +192,8 @@ function Checkout() {
     localStorage.setItem(
       "shippingDetails",
       JSON.stringify({
-        fullName: formData.fullname,
-        email: formData.email,
+        fullName: customerName,
+        email: customerEmail,
         phone: formData.phone,
         address: formData.address,
         city: formData.city,
@@ -193,8 +205,8 @@ function Checkout() {
     try {
       const result = await payPlusService.createPayment({
         amount: discountedTotal,
-        customerName: formData.fullname,
-        customerEmail: formData.email,
+        customerName,
+        customerEmail,
         customerPhone: formData.phone,
         items: pendingOrder.items,
         shippingAddress: pendingOrder.shippingAddress,

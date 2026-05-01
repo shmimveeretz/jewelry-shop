@@ -83,11 +83,11 @@ function Shop() {
       id: "אותיות עבריות",
       name: language === "he" ? "כתב עברי קדום" : "Ancient Hebrew Script",
       image:
-      "https://res.cloudinary.com/dhayarvh3/image/upload/v1771407399/Ancient_Hebrew.jpg",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771407399/Ancient_Hebrew.jpg",
       description:
-      language === "he"
-      ? "בכתב העברי הקדום זורם אורו של הבורא בימי ממלכת ישראל המאוחדת"
-      : "In the ancient Hebrew script flows the light of the Creator in the days of the united Kingdom of Israel",
+        language === "he"
+          ? "בכתב העברי הקדום זורם אורו של הבורא בימי ממלכת ישראל המאוחדת"
+          : "In the ancient Hebrew script flows the light of the Creator in the days of the united Kingdom of Israel",
     },
     {
       id: "כוכבים",
@@ -98,16 +98,18 @@ function Shop() {
         language === "he"
           ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
           : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
+      source: language === "he" ? "בראשית א׳:ט״ז" : "Genesis 1:16",
     },
     {
       id: "תליוני מזלות",
       name: language === "he" ? "תליוני מזלות" : "Zodiac Pendants",
       image:
-      "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
       description:
-      language === "he"
-      ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
-      : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
+        language === "he"
+          ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
+          : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
+      source: language === "he" ? "תהלים ל״ג:ו׳" : "Psalms 33:6",
     },
     {
       id: "אבני חושן",
@@ -118,6 +120,7 @@ function Shop() {
         language === "he"
           ? "וְהָאֲבָנִים תִּהְיֶינָה עַל שְׁמוֹת בְּנֵי יִשְׂרָאֵל, שְׁתֵּים־עֶשְׂרֵה עַל שְׁמוֹתָם, פִּתּוּחֵי חֹתָם, אִישׁ עַל שְׁמוֹ, לִשְׁנֵי עָשָׂר שָׁבֶט"
           : "And the stones shall be upon the names of the sons of Israel, twelve according to their names, engraved like signets, each one with his name, for the twelve tribes",
+      source: language === "he" ? "שמות כ״ח:כ״א" : "Exodus 28:21",
     },
     {
       id: "שלישיות מיוחדות",
@@ -128,6 +131,7 @@ function Shop() {
         language === "he"
           ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
           : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
+      source: language === "he" ? "בראשית א׳:ט״ז" : "Genesis 1:16",
     },
   ];
 
