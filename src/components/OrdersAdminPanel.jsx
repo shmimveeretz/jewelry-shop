@@ -22,13 +22,14 @@ const STATUS_FILTER_OPTIONS = [
 
 function statusClass(status) {
   const map = {
+    pending: "ap-status--pending",
     paid: "ap-status--paid",
     processing: "ap-status--processing",
     shipped: "ap-status--shipped",
     delivered: "ap-status--delivered",
     cancelled: "ap-status--cancelled",
   };
-  return `ap-status-badge ${map[status] ?? "ap-status--processing"}`;
+  return `ap-status-badge ${map[String(status).toLowerCase()] ?? "ap-status--pending"}`;
 }
 
 function formatDate(dateStr) {
@@ -128,7 +129,8 @@ export default function OrdersAdminPanel() {
     const matchesSearch =
       !term || id.includes(term) || name.includes(term) || email.includes(term);
     const matchesStatus =
-      statusFilter === "all" || order.status === statusFilter;
+      statusFilter === "all" ||
+      String(order.status).toLowerCase() === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -244,7 +246,9 @@ export default function OrdersAdminPanel() {
                         />
                       ) : (
                         <select
-                          value={order.status ?? "processing"}
+                          value={String(
+                            order.status ?? "pending",
+                          ).toLowerCase()}
                           onChange={(e) =>
                             handleStatusChange(orderId, e.target.value)
                           }

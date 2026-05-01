@@ -759,6 +759,12 @@
 }
 
 /* Individual statuses */
+.ap-status--pending {
+  background: #f5f3ff;
+  color: #6d28d9;
+  border-color: #ddd6fe;
+}
+
 .ap-status--paid {
   background: #f0fdf4;
   color: #15803d;
