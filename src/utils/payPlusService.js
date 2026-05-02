@@ -30,7 +30,7 @@ export const payPlusService = {
         customerPhone: paymentData.customerPhone,
 
         // Order items & shipping (used by backend to build the order in DB)
-        orderItems: paymentData.items,
+        orderItems: paymentData.orderItems,
         shippingAddress: paymentData.shippingAddress,
       };
 

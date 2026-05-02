@@ -125,7 +125,7 @@ function ProductModal({ product, onClose }) {
         length: selectedOptions.length,
         metalType: selectedOptions.metalType,
         chainType: selectedOptions.chainType,
-        waxColor: selectedOptions.waxColor || null,
+        // waxColor: selectedOptions.waxColor || null,
       },
     };
 
@@ -162,406 +162,410 @@ function ProductModal({ product, onClose }) {
         </button>
 
         <div className="modal-scroll-area">
-        <div className="product-modal-grid">
-          <div className="product-image-gallery">
-            <div className="main-image-container">
-              <img
-                src={currentImage}
-                alt={product.name}
-                className="product-modal-image"
-              />
+          <div className="product-modal-grid">
+            <div className="product-image-gallery">
+              <div className="main-image-container">
+                <img
+                  src={currentImage}
+                  alt={product.name}
+                  className="product-modal-image"
+                />
+                {productImages.length > 1 && (
+                  <>
+                    <button
+                      className="gallery-nav prev"
+                      onClick={() =>
+                        setCurrentImageIndex((prev) =>
+                          prev === 0 ? productImages.length - 1 : prev - 1,
+                        )
+                      }
+                      aria-label={
+                        language === "en" ? "Previous image" : "תמונה קודמת"
+                      }
+                    >
+                      ‹
+                    </button>
+                    <button
+                      className="gallery-nav next"
+                      onClick={() =>
+                        setCurrentImageIndex((prev) =>
+                          prev === productImages.length - 1 ? 0 : prev + 1,
+                        )
+                      }
+                      aria-label={
+                        language === "en" ? "Next image" : "תמונה הבאה"
+                      }
+                    >
+                      ›
+                    </button>
+                  </>
+                )}
+              </div>
               {productImages.length > 1 && (
-                <>
-                  <button
-                    className="gallery-nav prev"
-                    onClick={() =>
-                      setCurrentImageIndex((prev) =>
-                        prev === 0 ? productImages.length - 1 : prev - 1,
-                      )
-                    }
-                    aria-label={
-                      language === "en" ? "Previous image" : "תמונה קודמת"
-                    }
-                  >
-                    ‹
-                  </button>
-                  <button
-                    className="gallery-nav next"
-                    onClick={() =>
-                      setCurrentImageIndex((prev) =>
-                        prev === productImages.length - 1 ? 0 : prev + 1,
-                      )
-                    }
-                    aria-label={language === "en" ? "Next image" : "תמונה הבאה"}
-                  >
-                    ›
-                  </button>
-                </>
+                <div className="thumbnail-container">
+                  {productImages.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`${product.name} ${index + 1}`}
+                      className={`thumbnail ${
+                        index === currentImageIndex ? "active" : ""
+                      }`}
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </div>
               )}
             </div>
-            {productImages.length > 1 && (
-              <div className="thumbnail-container">
-                {productImages.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`${product.name} ${index + 1}`}
-                    className={`thumbnail ${
-                      index === currentImageIndex ? "active" : ""
-                    }`}
-                    onClick={() => setCurrentImageIndex(index)}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
 
-          <div className="product-modal-details">
-            <div className="product-modal-category">{displayCategory}</div>
-            <h2>
-              {language === "en" && product.nameEn
-                ? product.nameEn
-                : product.name}
-            </h2>
-            <p className="product-modal-description">{displayDescription}</p>
+            <div className="product-modal-details">
+              <div className="product-modal-category">{displayCategory}</div>
+              <h2>
+                {language === "en" && product.nameEn
+                  ? product.nameEn
+                  : product.name}
+              </h2>
+              <p className="product-modal-description">{displayDescription}</p>
 
-            {/* Special info for zodiac pendants */}
-            {product.category === "תליוני מזלות" && (
-              <div className="zodiac-info">
-                {product.zodiacSign && (
-                  <p>
-                    <strong>{language === "he" ? "מזל:" : "Zodiac:"}</strong>{" "}
-                    {language === "en" && product.zodiacSignEn
-                      ? product.zodiacSignEn
-                      : product.zodiacSign}{" "}
-                    {product.symbol}
-                  </p>
-                )}
-                {product.tribe && (
-                  <p>
-                    <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
-                    {language === "en" && product.tribeEn
-                      ? product.tribeEn
-                      : product.tribe}
-                  </p>
-                )}
-                {product.stone && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "אבן חושן:" : "Hoshen Stone:"}
-                    </strong>{" "}
-                    {language === "en" && product.stoneEn
-                      ? product.stoneEn
-                      : product.stone}
-                  </p>
-                )}
-                {product.element && (
-                  <p>
-                    <strong>{language === "he" ? "יסוד:" : "Element:"}</strong>{" "}
-                    {language === "en" && product.elementEn
-                      ? product.elementEn
-                      : product.element}
-                  </p>
-                )}
-                {product.planet && (
-                  <p>
-                    <strong>{language === "he" ? "כוכב:" : "Planet:"}</strong>{" "}
-                    {language === "en" && product.planetEn
-                      ? product.planetEn
-                      : product.planet}
-                  </p>
-                )}
-                {product.meaningHe && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "משמעות:" : "Meaning:"}
-                    </strong>{" "}
-                    {language === "en" && product.meaningEn
-                      ? product.meaningEn
-                      : product.meaningHe}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Special info for Hebrew letters */}
-            {product.category === "אותיות עבריות" && product.letter && (
-              <div className="letter-info">
-                <p>
-                  <strong>{language === "he" ? "האות:" : "Letter:"}</strong>{" "}
-                  {product.letter}
-                </p>
-                {product.gematria && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "גימטריה:" : "Gematria:"}
-                    </strong>{" "}
-                    {product.gematria}
-                  </p>
-                )}
-                {product.meaningHe && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "משמעות:" : "Meaning:"}
-                    </strong>{" "}
-                    {language === "en" && product.meaningEn
-                      ? product.meaningEn
-                      : product.meaningHe}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Special info for Trinity Pendants */}
-            {product.category === "שלישיות מיוחדות" && (
-              <div className="zodiac-info">
-                {product.zodiacSign && (
-                  <p>
-                    <strong>{language === "he" ? "מזל:" : "Zodiac:"}</strong>{" "}
-                    {language === "en" && product.zodiacSignEn
-                      ? product.zodiacSignEn
-                      : product.zodiacSign}
-                  </p>
-                )}
-                {product.stone && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "אבן חושן:" : "Hoshen Stone:"}
-                    </strong>{" "}
-                    {language === "en" && product.stoneEn
-                      ? product.stoneEn
-                      : product.stone}
-                  </p>
-                )}
-                {product.tribe && (
-                  <p>
-                    <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
-                    {language === "en" && product.tribeEn
-                      ? product.tribeEn
-                      : product.tribe}
-                  </p>
-                )}
-                {product.planet && (
-                  <p>
-                    <strong>{language === "he" ? "כוכב:" : "Planet:"}</strong>{" "}
-                    {language === "en" && product.planetEn
-                      ? product.planetEn
-                      : product.planet}
-                  </p>
-                )}
-                {product.element && (
-                  <p>
-                    <strong>{language === "he" ? "יסוד:" : "Element:"}</strong>{" "}
-                    {language === "en" && product.elementEn
-                      ? product.elementEn
-                      : product.element}
-                  </p>
-                )}
-                {product.meaningHe && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "משמעות:" : "Meaning:"}
-                    </strong>{" "}
-                    {language === "en" && product.meaningEn
-                      ? product.meaningEn
-                      : product.meaningHe}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Special info for Hoshen stones */}
-            {product.category === "אבני חושן" && (
-              <div className="hoshen-info">
-                {product.tribe && (
-                  <p>
-                    <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
-                    {language === "en" && product.tribeEn
-                      ? product.tribeEn
-                      : product.tribe}
-                  </p>
-                )}
-                {product.stoneName && (
-                  <p>
-                    <strong>{language === "he" ? "אבן:" : "Stone:"}</strong>{" "}
-                    {language === "en" && product.stoneNameEn
-                      ? product.stoneNameEn
-                      : product.stoneName}
-                  </p>
-                )}
-                {product.meaningHe && (
-                  <p>
-                    <strong>
-                      {language === "he" ? "משמעות:" : "Meaning:"}
-                    </strong>{" "}
-                    {language === "en" && product.meaningEn
-                      ? product.meaningEn
-                      : product.meaningHe}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div className="product-modal-price">{calculateTotalPrice()} ₪</div>
-
-            {/* Price breakdown if there are additions */}
-            {calculateTotalPrice() > product.price && (
-              <div className="price-breakdown">
-                <div className="price-item">
-                  <span>
-                    {language === "en" ? "Base price:" : "מחיר בסיס:"}
-                  </span>
-                  <span>{product.price} ₪</span>
+              {/* Special info for zodiac pendants */}
+              {product.category === "תליוני מזלות" && (
+                <div className="zodiac-info">
+                  {product.zodiacSign && (
+                    <p>
+                      <strong>{language === "he" ? "מזל:" : "Zodiac:"}</strong>{" "}
+                      {language === "en" && product.zodiacSignEn
+                        ? product.zodiacSignEn
+                        : product.zodiacSign}{" "}
+                      {product.symbol}
+                    </p>
+                  )}
+                  {product.tribe && (
+                    <p>
+                      <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
+                      {language === "en" && product.tribeEn
+                        ? product.tribeEn
+                        : product.tribe}
+                    </p>
+                  )}
+                  {product.stone && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "אבן חושן:" : "Hoshen Stone:"}
+                      </strong>{" "}
+                      {language === "en" && product.stoneEn
+                        ? product.stoneEn
+                        : product.stone}
+                    </p>
+                  )}
+                  {product.element && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "יסוד:" : "Element:"}
+                      </strong>{" "}
+                      {language === "en" && product.elementEn
+                        ? product.elementEn
+                        : product.element}
+                    </p>
+                  )}
+                  {product.planet && (
+                    <p>
+                      <strong>{language === "he" ? "כוכב:" : "Planet:"}</strong>{" "}
+                      {language === "en" && product.planetEn
+                        ? product.planetEn
+                        : product.planet}
+                    </p>
+                  )}
+                  {product.meaningHe && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "משמעות:" : "Meaning:"}
+                      </strong>{" "}
+                      {language === "en" && product.meaningEn
+                        ? product.meaningEn
+                        : product.meaningHe}
+                    </p>
+                  )}
                 </div>
-                {selectedOptions.metalType &&
-                  priceAdditions.metalType[selectedOptions.metalType] > 0 && (
-                    <div className="price-item addition">
-                      <span>
-                        {language === "en"
-                          ? `${selectedOptions.metalType} addition:`
-                          : `תוספת ${selectedOptions.metalType}:`}
-                      </span>
-                      <span>
-                        +{priceAdditions.metalType[selectedOptions.metalType]} ₪
-                      </span>
-                    </div>
+              )}
+
+              {/* Special info for Hebrew letters */}
+              {product.category === "אותיות עבריות" && product.letter && (
+                <div className="letter-info">
+                  <p>
+                    <strong>{language === "he" ? "האות:" : "Letter:"}</strong>{" "}
+                    {product.letter}
+                  </p>
+                  {product.gematria && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "גימטריה:" : "Gematria:"}
+                      </strong>{" "}
+                      {product.gematria}
+                    </p>
                   )}
-                {selectedOptions.chainType &&
-                  priceAdditions.chainType[selectedOptions.chainType] > 0 && (
-                    <div className="price-item addition">
-                      <span>
-                        {language === "en"
-                          ? `${selectedOptions.chainType} addition:`
-                          : `תוספת ${selectedOptions.chainType}:`}
-                      </span>
-                      <span>
-                        +{priceAdditions.chainType[selectedOptions.chainType]} ₪
-                      </span>
-                    </div>
+                  {product.meaningHe && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "משמעות:" : "Meaning:"}
+                      </strong>{" "}
+                      {language === "en" && product.meaningEn
+                        ? product.meaningEn
+                        : product.meaningHe}
+                    </p>
                   )}
-                {selectedOptions.length &&
-                  priceAdditions.length[selectedOptions.length] > 0 && (
-                    <div className="price-item addition">
-                      <span>
-                        {language === "en"
-                          ? `Length ${selectedOptions.length} cm addition:`
-                          : `תוספת אורך ${selectedOptions.length} מ״מ:`}
-                      </span>
-                      <span>
-                        +{priceAdditions.length[selectedOptions.length]} ₪
-                      </span>
-                    </div>
-                  )}
-                <div className="price-item total">
-                  <span>{language === "en" ? "Total:" : "סה״כ:"}</span>
-                  <span>{calculateTotalPrice()} ₪</span>
                 </div>
-              </div>
-            )}
+              )}
 
-            {showWarning && (
-              <div className="selection-warning">
-                ⚠️{" "}
-                {language === "he"
-                  ? "יש לבחור את כל המאפיינים הנדרשים לפני הוספה לעגלה"
-                  : "Please select all required options before adding to cart"}
-              </div>
-            )}
+              {/* Special info for Trinity Pendants */}
+              {product.category === "שלישיות מיוחדות" && (
+                <div className="zodiac-info">
+                  {product.zodiacSign && (
+                    <p>
+                      <strong>{language === "he" ? "מזל:" : "Zodiac:"}</strong>{" "}
+                      {language === "en" && product.zodiacSignEn
+                        ? product.zodiacSignEn
+                        : product.zodiacSign}
+                    </p>
+                  )}
+                  {product.stone && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "אבן חושן:" : "Hoshen Stone:"}
+                      </strong>{" "}
+                      {language === "en" && product.stoneEn
+                        ? product.stoneEn
+                        : product.stone}
+                    </p>
+                  )}
+                  {product.tribe && (
+                    <p>
+                      <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
+                      {language === "en" && product.tribeEn
+                        ? product.tribeEn
+                        : product.tribe}
+                    </p>
+                  )}
+                  {product.planet && (
+                    <p>
+                      <strong>{language === "he" ? "כוכב:" : "Planet:"}</strong>{" "}
+                      {language === "en" && product.planetEn
+                        ? product.planetEn
+                        : product.planet}
+                    </p>
+                  )}
+                  {product.element && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "יסוד:" : "Element:"}
+                      </strong>{" "}
+                      {language === "en" && product.elementEn
+                        ? product.elementEn
+                        : product.element}
+                    </p>
+                  )}
+                  {product.meaningHe && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "משמעות:" : "Meaning:"}
+                      </strong>{" "}
+                      {language === "en" && product.meaningEn
+                        ? product.meaningEn
+                        : product.meaningHe}
+                    </p>
+                  )}
+                </div>
+              )}
 
-            <div className="product-options">
-              {/* Length Selection */}
-              <div className="product-option">
-                <label>
-                  <span className="required">*</span>
+              {/* Special info for Hoshen stones */}
+              {product.category === "אבני חושן" && (
+                <div className="hoshen-info">
+                  {product.tribe && (
+                    <p>
+                      <strong>{language === "he" ? "שבט:" : "Tribe:"}</strong>{" "}
+                      {language === "en" && product.tribeEn
+                        ? product.tribeEn
+                        : product.tribe}
+                    </p>
+                  )}
+                  {product.stoneName && (
+                    <p>
+                      <strong>{language === "he" ? "אבן:" : "Stone:"}</strong>{" "}
+                      {language === "en" && product.stoneNameEn
+                        ? product.stoneNameEn
+                        : product.stoneName}
+                    </p>
+                  )}
+                  {product.meaningHe && (
+                    <p>
+                      <strong>
+                        {language === "he" ? "משמעות:" : "Meaning:"}
+                      </strong>{" "}
+                      {language === "en" && product.meaningEn
+                        ? product.meaningEn
+                        : product.meaningHe}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <div className="product-modal-price">
+                {calculateTotalPrice()} ₪
+              </div>
+
+              {/* Price breakdown if there are additions */}
+              {calculateTotalPrice() > product.price && (
+                <div className="price-breakdown">
+                  <div className="price-item">
+                    <span>
+                      {language === "en" ? "Base price:" : "מחיר בסיס:"}
+                    </span>
+                    <span>{product.price} ₪</span>
+                  </div>
+                  {selectedOptions.metalType &&
+                    priceAdditions.metalType[selectedOptions.metalType] > 0 && (
+                      <div className="price-item addition">
+                        <span>
+                          {language === "en"
+                            ? `${selectedOptions.metalType} addition:`
+                            : `תוספת ${selectedOptions.metalType}:`}
+                        </span>
+                        <span>
+                          +{priceAdditions.metalType[selectedOptions.metalType]}{" "}
+                          ₪
+                        </span>
+                      </div>
+                    )}
+                  {selectedOptions.chainType &&
+                    priceAdditions.chainType[selectedOptions.chainType] > 0 && (
+                      <div className="price-item addition">
+                        <span>
+                          {language === "en"
+                            ? `${selectedOptions.chainType} addition:`
+                            : `תוספת ${selectedOptions.chainType}:`}
+                        </span>
+                        <span>
+                          +{priceAdditions.chainType[selectedOptions.chainType]}{" "}
+                          ₪
+                        </span>
+                      </div>
+                    )}
+                  {selectedOptions.length &&
+                    priceAdditions.length[selectedOptions.length] > 0 && (
+                      <div className="price-item addition">
+                        <span>
+                          {language === "en"
+                            ? `Length ${selectedOptions.length} cm addition:`
+                            : `תוספת אורך ${selectedOptions.length} מ״מ:`}
+                        </span>
+                        <span>
+                          +{priceAdditions.length[selectedOptions.length]} ₪
+                        </span>
+                      </div>
+                    )}
+                  <div className="price-item total">
+                    <span>{language === "en" ? "Total:" : "סה״כ:"}</span>
+                    <span>{calculateTotalPrice()} ₪</span>
+                  </div>
+                </div>
+              )}
+
+              {showWarning && (
+                <div className="selection-warning">
+                  ⚠️{" "}
                   {language === "he"
-                    ? "אורך השרשרת (ס״מ)"
-                    : "Chain Length (cm)"}
-                </label>
-                <select
-                  value={selectedOptions.length}
-                  onChange={(e) => handleOptionChange("length", e.target.value)}
-                >
-                  <option value="מעדיף חוט שעווה">
+                    ? "יש לבחור את כל המאפיינים הנדרשים לפני הוספה לעגלה"
+                    : "Please select all required options before adding to cart"}
+                </div>
+              )}
+
+              <div className="product-options">
+                {/* Length Selection */}
+                <div className="product-option">
+                  <label>
+                    <span className="required">*</span>
                     {language === "he"
-                      ? "מעדיף חוט שעווה"
-                      : "Prefer Wax Thread"}
-                  </option>
-                  <option value="">
-                    {language === "he" ? "בחר אורך" : "Select Length"}
-                  </option>
-                  <option value="40">
-                    {language === "en" ? "40 cm" : "40 ס״מ"}
-                  </option>
-                  <option value="42">
-                    {language === "en" ? "42 cm" : "42 ס״מ"}
-                  </option>
-                  <option value="45">
-                    {language === "en" ? "45 cm" : "45 ס״מ"}
-                  </option>
-                  <option value="50">
-                    {language === "en" ? "50 cm" : "50 ס״מ"}
-                  </option>
-                </select>
-              </div>
+                      ? "אורך השרשרת (ס״מ)"
+                      : "Chain Length (cm)"}
+                  </label>
+                  <select
+                    value={selectedOptions.length}
+                    onChange={(e) =>
+                      handleOptionChange("length", e.target.value)
+                    }
+                  >
+                    <option value="">
+                      {language === "he" ? "בחר אורך" : "Select Length"}
+                    </option>
+                    {Object.entries(priceAdditions.length || {}).map(
+                      ([key, value]) => (
+                        <option key={key} value={key}>
+                          {language === "en" ? `${key} cm` : `${key} ס״מ`}
+                          {value > 0 ? ` (+${value} ₪)` : ""}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                </div>
 
-              {/* Metal Type Selection */}
-              <div className="product-option">
-                <label>
-                  <span className="required">*</span>
-                  {language === "he" ? "סוג מתכת" : "Metal Type"}
-                </label>
-                <select
-                  value={selectedOptions.metalType}
-                  onChange={(e) =>
-                    handleOptionChange("metalType", e.target.value)
-                  }
-                >
-                  <option value="">
-                    {language === "he" ? "בחר סוג מתכת" : "Select Metal Type"}
-                  </option>
-                  <option value="זהב 14 קראט">
-                    {language === "he" ? "זהב 14 קראט" : "Gold 14K"}
-                  </option>
-                  <option value="כסף 925">
-                    {language === "he" ? "כסף 925" : "Silver 925"}
-                  </option>
-                  <option value="ציפוי זהב">
-                    {language === "he" ? "ציפוי זהב" : "Gold Plated"}
-                  </option>
-                </select>
-              </div>
+                {/* Metal Type Selection */}
+                <div className="product-option">
+                  <label>
+                    <span className="required">*</span>
+                    {language === "he" ? "סוג מתכת" : "Metal Type"}
+                  </label>
+                  <select
+                    value={selectedOptions.metalType}
+                    onChange={(e) =>
+                      handleOptionChange("metalType", e.target.value)
+                    }
+                  >
+                    <option value="">
+                      {language === "he" ? "בחר סוג מתכת" : "Select Metal Type"}
+                    </option>
+                    {Object.entries(priceAdditions.metalType || {}).map(
+                      ([key, value]) => (
+                        <option key={key} value={key}>
+                          {key}
+                          {value > 0 ? ` (+${value} ₪)` : ""}
+                        </option>
+                      ),
+                    )}
+                  </select>
+                </div>
 
-              {/* Chain Type Selection - Commented out for now */}
-              {/* 
-              <div className="product-option">
-                <label>
-                  <span className="required">*</span>
-                  {language === "he" ? "סוג שרשרת" : "Chain Type"}
-                </label>
-                <select
-                  value={selectedOptions.chainType}
-                  onChange={(e) =>
-                    handleOptionChange("chainType", e.target.value)
-                  }
-                >
-                  <option value="">
-                    {language === "he" ? "בחר סוג שרשרת" : "Select Chain Type"}
-                  </option>
-                  <option value="חוט שעווה">
-                    {language === "he" ? "חוט שעווה" : "Wax Thread"}
-                  </option>
-                  <option value="שרשרת זהב">
-                    {language === "he" ? "שרשרת זהב" : "Gold Chain"}
-                  </option>
-                  <option value="שרשרת כסף">
-                    {language === "he" ? "שרשרת כסף" : "Silver Chain"}
-                  </option>
-                </select>
-              </div>
-              */}
+                {/* Chain Type Selection - shown only when product has chainType price additions */}
+                {priceAdditions.chainType &&
+                  Object.keys(priceAdditions.chainType).length > 0 && (
+                    <div className="product-option">
+                      <label>
+                        <span className="required">*</span>
+                        {language === "he" ? "סוג שרשרת" : "Chain Type"}
+                      </label>
+                      <select
+                        value={selectedOptions.chainType}
+                        onChange={(e) =>
+                          handleOptionChange("chainType", e.target.value)
+                        }
+                      >
+                        <option value="">
+                          {language === "he"
+                            ? "בחר סוג שרשרת"
+                            : "Select Chain Type"}
+                        </option>
+                        {Object.entries(priceAdditions.chainType).map(
+                          ([key, value]) => (
+                            <option key={key} value={key}>
+                              {key}
+                              {value > 0 ? ` (+${value} ₪)` : ""}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </div>
+                  )}
 
-              {/* Wax Color Selection - Only shown when wax thread is selected */}
-              {/* 
+                {/* Wax Color Selection - Only shown when wax thread is selected */}
+                {/* 
               {selectedOptions.chainType === "חוט שעווה" && (
                 <div className="product-option">
                   <label>
@@ -590,15 +594,15 @@ function ProductModal({ product, onClose }) {
                 </div>
               )}
               */}
-            </div>
+              </div>
 
-            <div className="shipping-note">
-              {language === "he"
-                ? "זמן אספקה: עד 14 ימי עסקים"
-                : "Delivery time: up to 14 business days"}
+              <div className="shipping-note">
+                {language === "he"
+                  ? "זמן אספקה: עד 14 ימי עסקים"
+                  : "Delivery time: up to 14 business days"}
+              </div>
             </div>
           </div>
-        </div>
         </div>
         <div className="modal-sticky-footer">
           <button className="btn add-to-cart-btn" onClick={handleAddToCart}>

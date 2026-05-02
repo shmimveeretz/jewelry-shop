@@ -161,8 +161,8 @@ function Checkout() {
       return;
     }
 
-    const shippingPrice = cartItems.length > 0 ? 30 : 0;
-    const itemsPrice = total - shippingPrice;
+    const shippingPrice = 0; // You can calculate this based on the address or use a fixed value
+    const itemsPrice = total + shippingPrice;
 
     const pendingOrder = {
       customerName,
@@ -208,10 +208,10 @@ function Checkout() {
         customerName,
         customerEmail,
         customerPhone: formData.phone,
-        items: cartItems.map((item) => ({
+        orderItems: cartItems.map((item) => ({
           name: item.name,
-          quantity: item.quantity || 1,
           price: item.price,
+          quantity: item.quantity || 1,
         })),
         shippingAddress: pendingOrder.shippingAddress,
       });
