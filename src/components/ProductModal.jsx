@@ -397,32 +397,98 @@ function ProductModal({ product, onClose }) {
               )}
 
               <div className="product-options">
-                {Object.entries(priceAdditions).map(([key, options]) =>
-                  Object.keys(options).length === 0 ? null : (
-                    <div key={key} className="product-option">
+                {/* Length */}
+                {priceAdditions?.length &&
+                  Object.keys(priceAdditions.length).length > 0 && (
+                    <div className="product-option">
                       <label>
                         <span className="required">*</span>
-                        {key}
+                        {language === "he"
+                          ? "אורך השרשרת (ס״מ)"
+                          : "Chain Length (cm)"}
                       </label>
                       <select
-                        value={selectedOptions[key] ?? ""}
+                        value={selectedOptions["length"] ?? ""}
                         onChange={(e) =>
-                          handleOptionChange(key, e.target.value)
+                          handleOptionChange("length", e.target.value)
                         }
                       >
                         <option value="">
-                          {language === "he" ? `בחר ${key}` : `Select ${key}`}
+                          {language === "he" ? "בחר אורך" : "Select Length"}
                         </option>
-                        {Object.entries(options).map(([optKey, optValue]) => (
-                          <option key={optKey} value={optKey}>
-                            {optKey}
-                            {optValue > 0 ? ` (+${optValue} ₪)` : ""}
-                          </option>
-                        ))}
+                        {Object.entries(priceAdditions.length).map(
+                          ([key, value]) => (
+                            <option key={key} value={key}>
+                              {language === "en" ? `${key} cm` : `${key} ס״מ`}
+                              {value > 0 ? ` (+${value} ₪)` : ""}
+                            </option>
+                          ),
+                        )}
                       </select>
                     </div>
-                  ),
-                )}
+                  )}
+
+                {/* Metal Type */}
+                {priceAdditions?.metalType &&
+                  Object.keys(priceAdditions.metalType).length > 0 && (
+                    <div className="product-option">
+                      <label>
+                        <span className="required">*</span>
+                        {language === "he" ? "סוג מתכת" : "Metal Type"}
+                      </label>
+                      <select
+                        value={selectedOptions["metalType"] ?? ""}
+                        onChange={(e) =>
+                          handleOptionChange("metalType", e.target.value)
+                        }
+                      >
+                        <option value="">
+                          {language === "he"
+                            ? "בחר סוג מתכת"
+                            : "Select Metal Type"}
+                        </option>
+                        {Object.entries(priceAdditions.metalType).map(
+                          ([key, value]) => (
+                            <option key={key} value={key}>
+                              {key}
+                              {value > 0 ? ` (+${value} ₪)` : ""}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </div>
+                  )}
+
+                {/* Chain Type */}
+                {priceAdditions?.chain &&
+                  Object.keys(priceAdditions.chain).length > 0 && (
+                    <div className="product-option">
+                      <label>
+                        <span className="required">*</span>
+                        {language === "he" ? "סוג שרשרת" : "Chain Type"}
+                      </label>
+                      <select
+                        value={selectedOptions["chain"] ?? ""}
+                        onChange={(e) =>
+                          handleOptionChange("chain", e.target.value)
+                        }
+                      >
+                        <option value="">
+                          {language === "he"
+                            ? "בחר סוג שרשרת"
+                            : "Select Chain Type"}
+                        </option>
+                        {Object.entries(priceAdditions.chain).map(
+                          ([key, value]) => (
+                            <option key={key} value={key}>
+                              {key}
+                              {value > 0 ? ` (+${value} ₪)` : ""}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </div>
+                  )}
               </div>
 
               <div className="shipping-note">
