@@ -201,6 +201,10 @@ function Checkout() {
       }),
     );
 
+    const discountMultiplier = appliedCoupon
+      ? 1 - appliedCoupon.discountPercent / 100
+      : 1;
+
     setPaymentLoading(true);
     try {
       const result = await payPlusService.createPayment({
@@ -210,7 +214,7 @@ function Checkout() {
         customerPhone: formData.phone,
         orderItems: cartItems.map((item) => ({
           name: item.name,
-          price: item.price,
+          price: Math.round(item.price * discountMultiplier),
           quantity: item.quantity || 1,
         })),
         shippingAddress: pendingOrder.shippingAddress,
