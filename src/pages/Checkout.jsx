@@ -4,6 +4,7 @@ import { payPlusService } from "../utils/payPlusService";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
 import "../styles/pages/Checkout.css";
+import { FaRuler, FaStar, FaLink, FaPalette } from "react-icons/fa";
 
 function Checkout() {
   const navigate = useNavigate();
@@ -304,16 +305,26 @@ function Checkout() {
                     {item.selectedOptions && (
                       <div className="order-item-options">
                         {item.selectedOptions.length && (
-                          <span>📏 {item.selectedOptions.length} מ״מ</span>
+                          <span>
+                            {" "}
+                            <FaRuler />
+                            {item.selectedOptions.length} ס"מ
+                          </span>
                         )}
                         {item.selectedOptions.metalType && (
-                          <span>✨ {item.selectedOptions.metalType}</span>
+                          <span>
+                            <FaStar /> {item.selectedOptions.metalType}
+                          </span>
                         )}
                         {item.selectedOptions.chainType && (
-                          <span>🔗 {item.selectedOptions.chainType}</span>
+                          <span>
+                            <FaLink /> {item.selectedOptions.chainType}
+                          </span>
                         )}
                         {item.selectedOptions.waxColor && (
-                          <span>🎨 {item.selectedOptions.waxColor}</span>
+                          <span>
+                            <FaPalette /> {item.selectedOptions.waxColor}
+                          </span>
                         )}
                       </div>
                     )}
