@@ -208,7 +208,6 @@ function Checkout() {
     setPaymentLoading(true);
     try {
       const result = await payPlusService.createPayment({
-        amount: discountedTotal,
         customerName,
         customerEmail,
         customerPhone: formData.phone,
@@ -217,7 +216,14 @@ function Checkout() {
           price: Math.round(item.price * discountMultiplier),
           quantity: item.quantity || 1,
         })),
-        shippingAddress: pendingOrder.shippingAddress,
+        shippingAddress: {
+          name: customerName,
+          email: customerEmail,
+          phone: formData.phone,
+          street: formData.address,
+          city: formData.city,
+          zipCode: formData.zipCode,
+        },
       });
 
       const redirectUrl =

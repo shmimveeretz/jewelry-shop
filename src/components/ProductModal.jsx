@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -19,12 +19,12 @@ function ProductModal({ product, onClose }) {
       ? product.descriptionEn || product.description
       : product.description;
 
-  const [selectedOptions, setSelectedOptions] = useState({
-    length: "",
-    metalType: "",
-    chainType: "",
-    waxColor: "",
-  });
+  // Use product-specific price additions from DB
+  const priceAdditions = product.priceAdditions || {};
+
+  const [selectedOptions, setSelectedOptions] = useState(
+    Object.fromEntries(Object.keys(priceAdditions).map((key) => [key, ""])),
+  );
 
   const [showWarning, setShowWarning] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -44,38 +44,17 @@ function ProductModal({ product, onClose }) {
   //   { "name": "ורוד", hex: "#FF69B4" },
   // ];
 
-  // Use product-specific price additions from DB, falling back to empty structure
-  const priceAdditions = product.priceAdditions || {
-    metalType: {},
-    chainType: {},
-    length: {},
-  };
-
   // Calculate total price based on selections
   const calculateTotalPrice = () => {
     let totalPrice = product.price;
-
-    if (selectedOptions.chainType) {
-      totalPrice += priceAdditions.chainType[selectedOptions.chainType] || 0;
+    for (const key of Object.keys(selectedOptions)) {
+      const selected = selectedOptions[key];
+      if (selected && priceAdditions[key]) {
+        totalPrice += priceAdditions[key][selected] || 0;
+      }
     }
-
-    if (selectedOptions.metalType) {
-      totalPrice += priceAdditions.metalType[selectedOptions.metalType] || 0;
-    }
-
-    if (selectedOptions.length) {
-      totalPrice += priceAdditions.length[selectedOptions.length] || 0;
-    }
-
     return totalPrice;
   };
-
-  useEffect(() => {
-    // Reset wax color when chain type changes
-    if (selectedOptions.chainType !== "חוט שעווה") {
-      setSelectedOptions((prev) => ({ ...prev, waxColor: "" }));
-    }
-  }, [selectedOptions.chainType]);
 
   const handleOptionChange = (optionName, value) => {
     setSelectedOptions((prev) => ({
@@ -94,12 +73,7 @@ function ProductModal({ product, onClose }) {
       ...product,
       price: finalPrice,
       basePrice: product.price,
-      selectedOptions: {
-        length: selectedOptions.length,
-        metalType: selectedOptions.metalType,
-        chainType: selectedOptions.chainType,
-        // waxColor: selectedOptions.waxColor || null,
-      },
+      selectedOptions: { ...selectedOptions },
     };
 
     addToCart(productWithOptions, 1);
@@ -115,13 +89,10 @@ function ProductModal({ product, onClose }) {
   };
 
   const isAddToCartDisabled = () => {
-    const { length, metalType } = selectedOptions;
-
-    if (!length || !metalType) {
-      return true;
-    }
-
-    return false;
+    return Object.entries(priceAdditions).some(
+      ([key, options]) =>
+        Object.keys(options).length > 0 && !selectedOptions[key],
+    );
   };
 
   return (
@@ -394,47 +365,21 @@ function ProductModal({ product, onClose }) {
                     </span>
                     <span>{product.price} ₪</span>
                   </div>
-                  {selectedOptions.metalType &&
-                    priceAdditions.metalType[selectedOptions.metalType] > 0 && (
-                      <div className="price-item addition">
+                  {Object.entries(priceAdditions).map(([key, options]) => {
+                    const selected = selectedOptions[key];
+                    const addition = selected ? options[selected] : null;
+                    if (!addition || addition <= 0) return null;
+                    return (
+                      <div key={key} className="price-item addition">
                         <span>
                           {language === "en"
-                            ? `${selectedOptions.metalType} addition:`
-                            : `תוספת ${selectedOptions.metalType}:`}
+                            ? `${key} addition:`
+                            : `תוספת ${key}:`}
                         </span>
-                        <span>
-                          +{priceAdditions.metalType[selectedOptions.metalType]}{" "}
-                          ₪
-                        </span>
+                        <span>+{addition} ₪</span>
                       </div>
-                    )}
-                  {selectedOptions.chainType &&
-                    priceAdditions.chainType[selectedOptions.chainType] > 0 && (
-                      <div className="price-item addition">
-                        <span>
-                          {language === "en"
-                            ? `${selectedOptions.chainType} addition:`
-                            : `תוספת ${selectedOptions.chainType}:`}
-                        </span>
-                        <span>
-                          +{priceAdditions.chainType[selectedOptions.chainType]}{" "}
-                          ₪
-                        </span>
-                      </div>
-                    )}
-                  {selectedOptions.length &&
-                    priceAdditions.length[selectedOptions.length] > 0 && (
-                      <div className="price-item addition">
-                        <span>
-                          {language === "en"
-                            ? `Length ${selectedOptions.length} cm addition:`
-                            : `תוספת אורך ${selectedOptions.length} מ״מ:`}
-                        </span>
-                        <span>
-                          +{priceAdditions.length[selectedOptions.length]} ₪
-                        </span>
-                      </div>
-                    )}
+                    );
+                  })}
                   <div className="price-item total">
                     <span>{language === "en" ? "Total:" : "סה״כ:"}</span>
                     <span>{calculateTotalPrice()} ₪</span>
@@ -452,121 +397,32 @@ function ProductModal({ product, onClose }) {
               )}
 
               <div className="product-options">
-                {/* Length Selection */}
-                <div className="product-option">
-                  <label>
-                    <span className="required">*</span>
-                    {language === "he"
-                      ? "אורך השרשרת (ס״מ)"
-                      : "Chain Length (cm)"}
-                  </label>
-                  <select
-                    value={selectedOptions.length}
-                    onChange={(e) =>
-                      handleOptionChange("length", e.target.value)
-                    }
-                  >
-                    <option value="">
-                      {language === "he" ? "בחר אורך" : "Select Length"}
-                    </option>
-                    {Object.entries(priceAdditions.length || {}).map(
-                      ([key, value]) => (
-                        <option key={key} value={key}>
-                          {language === "en" ? `${key} cm` : `${key} ס״מ`}
-                          {value > 0 ? ` (+${value} ₪)` : ""}
-                        </option>
-                      ),
-                    )}
-                  </select>
-                </div>
-
-                {/* Metal Type Selection */}
-                <div className="product-option">
-                  <label>
-                    <span className="required">*</span>
-                    {language === "he" ? "סוג מתכת" : "Metal Type"}
-                  </label>
-                  <select
-                    value={selectedOptions.metalType}
-                    onChange={(e) =>
-                      handleOptionChange("metalType", e.target.value)
-                    }
-                  >
-                    <option value="">
-                      {language === "he" ? "בחר סוג מתכת" : "Select Metal Type"}
-                    </option>
-                    {Object.entries(priceAdditions.metalType || {}).map(
-                      ([key, value]) => (
-                        <option key={key} value={key}>
-                          {key}
-                          {value > 0 ? ` (+${value} ₪)` : ""}
-                        </option>
-                      ),
-                    )}
-                  </select>
-                </div>
-
-                {/* Chain Type Selection - shown only when product has chainType price additions */}
-                {priceAdditions.chainType &&
-                  Object.keys(priceAdditions.chainType).length > 0 && (
-                    <div className="product-option">
+                {Object.entries(priceAdditions).map(([key, options]) =>
+                  Object.keys(options).length === 0 ? null : (
+                    <div key={key} className="product-option">
                       <label>
                         <span className="required">*</span>
-                        {language === "he" ? "סוג שרשרת" : "Chain Type"}
+                        {key}
                       </label>
                       <select
-                        value={selectedOptions.chainType}
+                        value={selectedOptions[key] ?? ""}
                         onChange={(e) =>
-                          handleOptionChange("chainType", e.target.value)
+                          handleOptionChange(key, e.target.value)
                         }
                       >
                         <option value="">
-                          {language === "he"
-                            ? "בחר סוג שרשרת"
-                            : "Select Chain Type"}
+                          {language === "he" ? `בחר ${key}` : `Select ${key}`}
                         </option>
-                        {Object.entries(priceAdditions.chainType).map(
-                          ([key, value]) => (
-                            <option key={key} value={key}>
-                              {key}
-                              {value > 0 ? ` (+${value} ₪)` : ""}
-                            </option>
-                          ),
-                        )}
+                        {Object.entries(options).map(([optKey, optValue]) => (
+                          <option key={optKey} value={optKey}>
+                            {optKey}
+                            {optValue > 0 ? ` (+${optValue} ₪)` : ""}
+                          </option>
+                        ))}
                       </select>
                     </div>
-                  )}
-
-                {/* Wax Color Selection - Only shown when wax thread is selected */}
-                {/* 
-              {selectedOptions.chainType === "חוט שעווה" && (
-                <div className="product-option">
-                  <label>
-                    <span className="required">*</span>
-                    {language === "he"
-                      ? "בחר צבע חוט שעווה"
-                      : "Select Wax Thread Color"}
-                  </label>
-                  <div className="color-options">
-                    {waxColors.map((color) => (
-                      <button
-                        key={color.name}
-                        className={`color-option ${
-                          selectedOptions.waxColor === color.name
-                            ? "selected"
-                            : ""
-                        }`}
-                        style={{ backgroundColor: color.hex }}
-                        onClick={() =>
-                          handleOptionChange("waxColor", color.name)
-                        }
-                        title={color.name}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-              */}
+                  ),
+                )}
               </div>
 
               <div className="shipping-note">

@@ -14,24 +14,19 @@ export const payPlusService = {
   async createPayment(paymentData) {
     try {
       const body = {
-        // PayPlus-compatible fields
-        amount: paymentData.amount,
-        currency_code: paymentData.currency || "ILS",
-        charge_method: 1,
-        sendEmailApproval: true,
-        sendEmailFailure: false,
-        initial_invoice: true,
-        hide_identification_id: false,
-        more_info: `order-${Date.now()}`,
-
-        // Customer info (used by backend to build the PayPlus customer object)
+        // Customer info — primary source for PayPlus invoice
         customerName: paymentData.customerName,
         customerEmail: paymentData.customerEmail,
         customerPhone: paymentData.customerPhone,
 
-        // Order items & shipping (used by backend to build the order in DB)
+        // Order items — backend derives the total from these
         orderItems: paymentData.orderItems,
+
+        // Shipping address — fallback source for customer info
         shippingAddress: paymentData.shippingAddress,
+
+        // Currency (defaults to "ILS" on the backend)
+        currency: paymentData.currency || "ILS",
       };
 
       const response = await axios.post(
