@@ -9,33 +9,19 @@ function ProductModal({ product, onClose }) {
   const { addToCart } = useCart();
   const { showCartToast } = useToast();
 
-  // Fallback map for categories that may not have categoryEn saved in DB
-  const categoryEnMap = {
-    "אותיות עבריות": "Ancient Hebrew Script",
-    "תליוני מזלות": "Zodiac Pendants",
-    "אבני חושן": "Hoshen Stones",
-    כוכבים: "Stars Pendants",
-    "שלישיות מיוחדות": "Trinity Pendants",
-    אחר: "Other",
-  };
-
   const displayCategory =
     language === "en"
-      ? product.categoryEn ||
-        categoryEnMap[product.category] ||
-        product.category
+      ? product.categoryEn || product.category
       : product.category;
 
   const displayDescription =
     language === "en"
-      ? product.descriptionEn ||
-        categoryEnMap[product.descriptionEn] ||
-        product.description
+      ? product.descriptionEn || product.description
       : product.description;
 
   const [selectedOptions, setSelectedOptions] = useState({
     length: "",
-    metalType: "כסף 925",
+    metalType: "",
     chainType: "",
     waxColor: "",
   });
@@ -58,25 +44,12 @@ function ProductModal({ product, onClose }) {
   //   { "name": "ורוד", hex: "#FF69B4" },
   // ];
 
-  // Price additions for different options
-  // Can be overridden by product-specific priceAdditions
-  const defaultPriceAdditions = {
-    metalType: {
-      "זהב 14 קראט": 3800,
-      "כסף 925": 0,
-      "ציפוי זהב": 60,
-    },
-    length: {
-      // "מעדיף חוט שעווה": -70,
-      40: 0,
-      42: 0,
-      45: 0,
-      50: 0,
-    },
+  // Use product-specific price additions from DB, falling back to empty structure
+  const priceAdditions = product.priceAdditions || {
+    metalType: {},
+    chainType: {},
+    length: {},
   };
-
-  // Use product-specific price additions if available, otherwise use defaults
-  const priceAdditions = product.priceAdditions || defaultPriceAdditions;
 
   // Calculate total price based on selections
   const calculateTotalPrice = () => {
