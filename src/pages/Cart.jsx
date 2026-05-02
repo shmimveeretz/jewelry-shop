@@ -19,7 +19,7 @@ function Cart() {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
 
   const calculateShipping = () => {
-    return cartItems.length > 0 ? 30 : 0;
+    return 0; // cartItems.length > 0 ? 30 : 0;
   };
 
   const calculateTotal = () => {
