@@ -1,6 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { FaBoxOpen, FaSearch, FaSpinner, FaFilter } from "react-icons/fa";
+import {
+  FaBoxOpen,
+  FaSearch,
+  FaSpinner,
+  FaFilter,
+  FaTrash,
+} from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import "../styles/components/AdminPanel.css";
 
@@ -8,11 +14,12 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const getToken = () => localStorage.getItem("token");
 
 const STATUS_OPTIONS = [
-  { value: "paid", label: "שולם", labelEn: "Paid" },
-  { value: "processing", label: "בעיבוד", labelEn: "Processing" },
-  { value: "shipped", label: "נשלח", labelEn: "Shipped" },
-  { value: "delivered", label: "נמסר", labelEn: "Delivered" },
-  { value: "cancelled", label: "בוטל", labelEn: "Cancelled" },
+  { value: "Pending", label: "ממתין", labelEn: "Pending" },
+  { value: "Paid", label: "שולם", labelEn: "Paid" },
+  { value: "Processing", label: "בעיבוד", labelEn: "Processing" },
+  { value: "Shipped", label: "נשלח", labelEn: "Shipped" },
+  { value: "Delivered", label: "נמסר", labelEn: "Delivered" },
+  { value: "Cancelled", label: "בוטל", labelEn: "Cancelled" },
 ];
 
 const STATUS_FILTER_OPTIONS = [
@@ -20,16 +27,22 @@ const STATUS_FILTER_OPTIONS = [
   ...STATUS_OPTIONS,
 ];
 
+function normalize(status) {
+  if (!status) return "Pending";
+  const s = String(status);
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
 function statusClass(status) {
   const map = {
-    pending: "ap-status--pending",
-    paid: "ap-status--paid",
-    processing: "ap-status--processing",
-    shipped: "ap-status--shipped",
-    delivered: "ap-status--delivered",
-    cancelled: "ap-status--cancelled",
+    Pending: "ap-status--pending",
+    Paid: "ap-status--paid",
+    Processing: "ap-status--processing",
+    Shipped: "ap-status--shipped",
+    Delivered: "ap-status--delivered",
+    Cancelled: "ap-status--cancelled",
   };
-  return `ap-status-badge ${map[String(status).toLowerCase()] ?? "ap-status--pending"}`;
+  return `ap-status-badge ${map[normalize(status)] ?? "ap-status--pending"}`;
 }
 
 function formatDate(dateStr) {
@@ -120,6 +133,23 @@ export default function OrdersAdminPanel() {
     }
   };
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!window.confirm("האם אתה בטוח שברצונך למחוק הזמנה זו?")) return;
+    try {
+      await axios.delete(`${API_BASE_URL}/api/orders/${orderId}`, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      });
+      setOrders((prev) => prev.filter((o) => (o._id ?? o.id) !== orderId));
+      showSuccess("ההזמנה נמחקה בהצלחה");
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "שגיאה במחיקת ההזמנה";
+      showError(msg);
+    }
+  };
+
   const filtered = orders.filter((order) => {
     const id = String(order._id ?? order.id ?? "").toLowerCase();
     const name = String(order.customerName ?? "").toLowerCase();
@@ -129,8 +159,7 @@ export default function OrdersAdminPanel() {
     const matchesSearch =
       !term || id.includes(term) || name.includes(term) || email.includes(term);
     const matchesStatus =
-      statusFilter === "all" ||
-      String(order.status).toLowerCase() === statusFilter;
+      statusFilter === "all" || normalize(order.status) === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -205,6 +234,7 @@ export default function OrdersAdminPanel() {
                 <th className="center">סכום</th>
                 <th className="center">תאריך</th>
                 <th className="center">סטטוס</th>
+                <th className="center">פעולות</th>
               </tr>
             </thead>
             <tbody>
@@ -246,9 +276,7 @@ export default function OrdersAdminPanel() {
                         />
                       ) : (
                         <select
-                          value={String(
-                            order.status ?? "pending",
-                          ).toLowerCase()}
+                          value={normalize(order.status)}
                           onChange={(e) =>
                             handleStatusChange(orderId, e.target.value)
                           }
@@ -262,6 +290,16 @@ export default function OrdersAdminPanel() {
                           ))}
                         </select>
                       )}
+                    </td>
+                    <td className="center">
+                      <button
+                        className="ap-delete-btn"
+                        onClick={() => handleDeleteOrder(orderId)}
+                        aria-label={`מחק הזמנה ${orderId}`}
+                        title="מחק הזמנה"
+                      >
+                        <FaTrash />
+                      </button>
                     </td>
                   </tr>
                 );
