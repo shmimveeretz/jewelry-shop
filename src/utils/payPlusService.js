@@ -27,6 +27,13 @@ export const payPlusService = {
 
         // Currency (defaults to "ILS" on the backend)
         currency: paymentData.currency || "ILS",
+
+        // Extra metadata for PendingOrder persistence (webhook fallback)
+        itemsPrice: paymentData.itemsPrice,
+        shippingPrice: paymentData.shippingPrice,
+        totalPrice: paymentData.totalPrice,
+        couponCode: paymentData.couponCode ?? null,
+        discountPercent: paymentData.discountPercent ?? 0,
       };
 
       const response = await axios.post(

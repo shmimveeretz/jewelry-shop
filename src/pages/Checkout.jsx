@@ -216,6 +216,7 @@ function Checkout() {
           name: item.name,
           price: Math.round(item.price * discountMultiplier),
           quantity: item.quantity || 1,
+          selectedOptions: item.selectedOptions || {},
         })),
         shippingAddress: {
           name: customerName,
@@ -225,6 +226,14 @@ function Checkout() {
           city: formData.city,
           zipCode: formData.zipCode,
         },
+        // Extra metadata — backend saves this in PendingOrder so the webhook
+        // can reconstruct the full order even if the browser never loads the
+        // success page
+        itemsPrice,
+        shippingPrice,
+        totalPrice: discountedTotal,
+        couponCode: appliedCoupon?.code || null,
+        discountPercent: appliedCoupon?.discountPercent || 0,
       });
 
       const redirectUrl =
@@ -236,7 +245,7 @@ function Checkout() {
         );
       }
 
-      window.location.href = redirectUrl;
+      window.open(redirectUrl, "_blank", "noopener,noreferrer");
     } catch (err) {
       console.error("Checkout crash details:", err);
       showError(
