@@ -153,6 +153,15 @@ function Navbar() {
                     : "Trinity Pendants"}
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/shop?category=שילת"
+                  className={isActive("/shop?category=שילת")}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {language === "he" ? "שילת" : "Shilat"}
+                </Link>
+              </li>
             </ul>
           </li>
           <li>

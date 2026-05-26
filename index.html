@@ -27,6 +27,47 @@
       rel="stylesheet"
     />
 
+    <!-- Google Consent Mode v2 — must run before gtag.js loads -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      // 1. Set all consent signals to denied by default
+      gtag("consent", "default", {
+        analytics_storage: "denied",
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        wait_for_update: 500,
+      });
+
+      // 2. Restore consent immediately for returning visitors who already accepted
+      try {
+        if (localStorage.getItem("cookieConsent") === "granted") {
+          gtag("consent", "update", {
+            analytics_storage: "granted",
+            ad_storage: "granted",
+            ad_user_data: "granted",
+            ad_personalization: "granted",
+          });
+        }
+      } catch (e) {
+        // localStorage not available (private browsing edge case)
+      }
+
+      gtag("js", new Date());
+    </script>
+    <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+    ></script>
+    <script>
+      gtag("config", "G-XXXXXXXXXX");
+    </script>
+
     <!-- Meta Pixel Code -->
     <script>
       !(function (f, b, e, v, n, t, s) {

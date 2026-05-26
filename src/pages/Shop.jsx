@@ -133,6 +133,17 @@ function Shop() {
           : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
       source: language === "he" ? "בראשית א׳:ט״ז" : "Genesis 1:16",
     },
+    {
+      id: "שילת",
+      name: language === "he" ? "שילת" : "Shilat",
+      image:
+        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771406947/Shilat.jpg",
+      description:
+        language === "he"
+          ? "שִׁוִּ֬יתִי יְהֹוָ֣ה לְנֶגְדִּ֣י תָמִ֑יד"
+          : "I have set the LORD always before me",
+      source: language === "he" ? "תהילים ט״ז:ח׳" : "Psalms 16:8",
+    },
   ];
 
   const handleFilterChange = (filterType, value) => {

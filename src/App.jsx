@@ -124,6 +124,7 @@ import Footer from "./components/Footer";
 import ShabbatMode from "./components/ShabbatMode";
 import ScrollToTop from "./components/ScrollToTop";
 import AccessibilityWidget from "./components/AccessibilityWidget";
+import CookieBanner from "./components/CookieBanner";
 
 // Pages (lazy loaded - only when route is visited)
 const Home = lazy(() => import("./pages/Home"));
@@ -156,6 +157,7 @@ function App() {
           <Router>
             <MetaPixelPageView />
             <DeviceTracker />
+            <CookieBanner />
             <ScrollToTop />
             <AccessibilityWidget />
             <div className="App">
