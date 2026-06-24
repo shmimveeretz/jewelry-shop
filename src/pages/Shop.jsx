@@ -19,11 +19,25 @@ function getProductPriceRange(product) {
   return { min: base, max: base + maxAddition };
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const ALL_COLLECTION = {
+  id: "הכל",
+  nameHe: "הכל",
+  nameEn: "All",
+  image:
+    "https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg",
+  descriptionHe: "מסע מבראשית דרך שמים וארץ ומה שביניהם",
+  descriptionEn:
+    "A journey from Genesis through Heaven and Earth and what lies between",
+};
+
 function Shop() {
   const { t, language } = useLanguage();
   const location = useLocation();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState("הכל");
+  const [apiCategories, setApiCategories] = useState([]);
 
   // Handle category filter from URL query params or navigation state
   useEffect(() => {
@@ -36,6 +50,34 @@ function Shop() {
     }
   }, [location.search, location.state]);
 
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/categories`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) setApiCategories(data.data || []);
+      })
+      .catch(() => {});
+  }, []);
+
+  const collections = [
+    {
+      ...ALL_COLLECTION,
+      name: language === "he" ? ALL_COLLECTION.nameHe : ALL_COLLECTION.nameEn,
+      description:
+        language === "he"
+          ? ALL_COLLECTION.descriptionHe
+          : ALL_COLLECTION.descriptionEn,
+    },
+    ...apiCategories.map((cat) => ({
+      id: cat.slug,
+      name: language === "he" ? cat.nameHe : cat.nameEn || cat.nameHe,
+      image: cat.image,
+      description:
+        language === "he" ? cat.descriptionHe : cat.descriptionEn || cat.descriptionHe,
+      source: language === "he" ? cat.sourceHe : cat.sourceEn,
+    })),
+  ];
+
   // Preload main collection image
   useEffect(() => {
     const img = new Image();
@@ -45,7 +87,7 @@ function Shop() {
     if (currentCollection?.image) {
       img.src = currentCollection.image;
     }
-  }, [selectedCollection]);
+  }, [selectedCollection, collections]);
 
   // Use the custom hook to fetch products from Firebase
   const apiFilters = {
@@ -67,88 +109,6 @@ function Shop() {
       });
     }
   }, [products]);
-
-  const collections = [
-    {
-      id: "הכל",
-      name: language === "he" ? "הכל" : "All",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg",
-      description:
-        language === "he"
-          ? "מסע מבראשית דרך שמים וארץ ומה שביניהם"
-          : "A journey from Genesis through Heaven and Earth and what lies between",
-    },
-    {
-      id: "אותיות עבריות",
-      name: language === "he" ? "כתב עברי קדום" : "Ancient Hebrew Script",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771407399/Ancient_Hebrew.jpg",
-      description:
-        language === "he"
-          ? "בכתב העברי הקדום זורם אורו של הבורא בימי ממלכת ישראל המאוחדת"
-          : "In the ancient Hebrew script flows the light of the Creator in the days of the united Kingdom of Israel",
-    },
-    {
-      id: "כוכבים",
-      name: language === "he" ? "כוכבי הלכת" : "Stars Pendants",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410177/Planets.jpg",
-      description:
-        language === "he"
-          ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
-          : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
-      source: language === "he" ? "בראשית א׳:ט״ז" : "Genesis 1:16",
-    },
-    {
-      id: "תליוני מזלות",
-      name: language === "he" ? "תליוני מזלות" : "Zodiac Pendants",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410086/Zodiac_Pendants.jpg",
-      description:
-        language === "he"
-          ? "בִּדְבַ֣ר יְ֭הֹוָה שָׁמַ֣יִם נַעֲשׂ֑וּ וּבְר֥וּחַ פִּ֝֗יו כׇּל־צְבָאָֽם"
-          : "By the word of the LORD the heavens were made, and by the breath of His mouth all their host",
-      source: language === "he" ? "תהלים ל״ג:ו׳" : "Psalms 33:6",
-    },
-    {
-      id: "אבני חושן",
-      name: language === "he" ? "אבני חושן" : "Hoshen Stones",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771410296/Hoshen_Stones.jpg",
-      description:
-        language === "he"
-          ? "וְהָאֲבָנִים תִּהְיֶינָה עַל שְׁמוֹת בְּנֵי יִשְׂרָאֵל, שְׁתֵּים־עֶשְׂרֵה עַל שְׁמוֹתָם, פִּתּוּחֵי חֹתָם, אִישׁ עַל שְׁמוֹ, לִשְׁנֵי עָשָׂר שָׁבֶט"
-          : "And the stones shall be upon the names of the sons of Israel, twelve according to their names, engraved like signets, each one with his name, for the twelve tribes",
-      source: language === "he" ? "שמות כ״ח:כ״א" : "Exodus 28:21",
-    },
-    {
-      id: "שלישיות מיוחדות",
-      name: language === "he" ? "מזל, אבן חושן וכוכב" : "Trinity Pendants",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771406947/Trinity.jpg",
-      description:
-        language === "he"
-          ? "וַיַּעַשׂ אֱלֹהִים אֶת שְׁנֵי הַמְּאֹרֹת הַגְּדֹלִים— אֶת הַמָּאוֹר הַגָּדֹל לְמֶמְשֶׁלֶת הַיּוֹם, וְאֶת הַמָּאוֹר הַקָּטֹן לְמֶמְשֶׁלֶת הַלַּיְלָה, וְאֵת הַכּוֹכָבִים"
-          : "And God made the two great lights—the greater light to govern the day and the lesser light to govern the night—and the stars",
-      source: language === "he" ? "בראשית א׳:ט״ז" : "Genesis 1:16",
-    },
-    {
-      id: "שילת",
-      name: language === "he" ? "שילת" : "Shilat",
-      image:
-        "https://res.cloudinary.com/dhayarvh3/image/upload/v1771406947/Shilat.jpg",
-      description:
-        language === "he"
-          ? "שִׁוִּ֬יתִי יְהֹוָ֣ה לְנֶגְדִּ֣י תָמִ֑יד"
-          : "I have set the LORD always before me",
-      source: language === "he" ? "תהילים ט״ז:ח׳" : "Psalms 16:8",
-    },
-  ];
-
-  const handleFilterChange = (filterType, value) => {
-    setSelectedCollection(value);
-  };
 
   const filteredProducts = products;
 

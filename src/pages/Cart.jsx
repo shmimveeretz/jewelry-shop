@@ -10,6 +10,7 @@ import {
   FaLink,
   FaInfoCircle,
   FaRuler,
+  FaStar,
 } from "react-icons/fa";
 import "../styles/pages/Cart.css";
 
@@ -75,7 +76,7 @@ function Cart() {
         <div className="cart-content">
           <div className="cart-items">
             {cartItems.map((item) => (
-              <div key={item.id} className="cart-item">
+              <div key={item.cartItemId || item.id} className="cart-item">
                 <img
                   src={
                     Array.isArray(item.images)
@@ -114,6 +115,11 @@ function Cart() {
                           <FaGem /> {item.selectedOptions.metalType}
                         </span>
                       )}
+                      {item.selectedOptions.jewelryType && (
+                        <span className="option-tag">
+                          <FaStar /> {item.selectedOptions.jewelryType}
+                        </span>
+                      )}
                       {item.selectedOptions.chainType && (
                         <span className="option-tag">
                           <FaLink /> {item.selectedOptions.chainType}
@@ -122,6 +128,11 @@ function Cart() {
                       {item.selectedOptions.waxColor && (
                         <span className="option-tag">
                           <FaPalette /> {item.selectedOptions.waxColor}
+                        </span>
+                      )}
+                      {item.selections?.extraLetters?.length > 0 && (
+                        <span className="option-tag">
+                          אותיות: {item.selections.extraLetters.join(", ")}
                         </span>
                       )}
                     </div>
@@ -143,7 +154,12 @@ function Cart() {
                   <div className="quantity-controls">
                     <button
                       className="quantity-btn"
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() =>
+                        updateQuantity(
+                          item.cartItemId || item.id,
+                          item.quantity - 1,
+                        )
+                      }
                       disabled={item.quantity <= 1}
                     >
                       <FaMinus />
@@ -151,7 +167,12 @@ function Cart() {
                     <span className="quantity-display">{item.quantity}</span>
                     <button
                       className="quantity-btn"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() =>
+                        updateQuantity(
+                          item.cartItemId || item.id,
+                          item.quantity + 1,
+                        )
+                      }
                     >
                       <FaPlus />
                     </button>
@@ -161,7 +182,7 @@ function Cart() {
                   </div>
                   <button
                     className="remove-item"
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => removeFromCart(item.cartItemId || item.id)}
                     title={
                       language === "he" ? "הסר מהעגלה" : "Remove from cart"
                     }

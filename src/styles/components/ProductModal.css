@@ -232,6 +232,27 @@
   margin-bottom: var(--spacing-md);
 }
 
+.product-modal-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-modal-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.product-modal-header h2 {
+  margin-bottom: var(--spacing-xs);
+}
+
+.product-modal-selections {
+  order: 1;
+}
+
+.product-modal-info {
+  order: 2;
+}
+
 .product-modal-description {
   color: var(--color-text);
   line-height: 1.8;
@@ -336,6 +357,152 @@
 .product-option select:disabled {
   background-color: #f5f5f5;
   cursor: not-allowed;
+}
+
+.option-hint {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+.measurements-guide {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.measurements-guide--inline {
+  display: block;
+}
+
+.measurements-guide--wide {
+  display: none;
+}
+
+.measurements-guide__title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.measurements-guide__img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+@media (min-width: 769px) {
+  .modal-content {
+    max-width: 960px;
+  }
+
+  .measurements-guide--inline {
+    display: none;
+  }
+
+  .measurements-guide--wide {
+    display: block;
+    grid-column: 1 / -1;
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .measurements-guide--wide .measurements-guide__title {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .measurements-guide--wide .measurements-guide__img {
+    max-width: 100%;
+  }
+}
+
+.shipping-note {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--spacing-md);
+}
+
+/* ── Jewelry Type radio group (Hebrew Letters step flow) ── */
+.jewelry-type-radio-group {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.jewelry-type-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 5rem;
+  padding: 0.6rem 0.85rem;
+  border: 2px solid var(--color-border, #e0e0e0);
+  border-radius: var(--radius-sm, 0.375rem);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  transition:
+    border-color 0.18s,
+    background 0.18s;
+  user-select: none;
+}
+
+.jewelry-type-radio input[type="radio"] {
+  accent-color: var(--color-secondary);
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.jewelry-type-radio.selected {
+  border-color: var(--color-secondary);
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.jewelry-type-radio:hover:not(.selected) {
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+/* Extra letters input (bracelet feature) */
+.extra-letters-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-base);
+  background-color: var(--color-white);
+  transition: border-color var(--transition-fast);
+  direction: rtl;
+}
+
+.extra-letters-input:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+}
+
+.extra-letters-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.letter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0.2rem 0.55rem;
+  background: var(--color-secondary, #c9a96e);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 /* Color Options for Wax Thread */
@@ -476,6 +643,17 @@
 
   .product-modal-details {
     padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-modal-selections {
+    order: 1;
+  }
+
+  .product-modal-info {
+    order: 2;
+    margin-top: var(--spacing-md);
   }
 
   .product-modal-details h2 {

@@ -1,0 +1,137 @@
+.dash-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.dash-chart-card {
+  background: var(--color-white, #fff);
+  border: 1px solid rgba(201, 162, 39, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.dash-chart-title {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--color-primary, #2c1810);
+  font-weight: 600;
+}
+
+.dash-chart-empty {
+  color: #999;
+  text-align: center;
+  padding: 2rem 0;
+  margin: 0;
+}
+
+.dash-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 160px;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.dash-bar-col {
+  flex: 1;
+  min-width: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.dash-bar-value {
+  font-size: 0.65rem;
+  color: #666;
+  margin-bottom: 2px;
+}
+
+.dash-bar-track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100px;
+}
+
+.dash-bar-fill {
+  width: 100%;
+  border-radius: 4px 4px 0 0;
+  min-height: 2px;
+  transition: height 0.4s ease;
+}
+
+.dash-bar-label {
+  font-size: 0.6rem;
+  color: #888;
+  margin-top: 4px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48px;
+}
+
+.dash-donut-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.dash-donut {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.dash-donut-hole {
+  position: absolute;
+  inset: 22%;
+  background: var(--color-white, #fff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-donut-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-primary, #2c1810);
+}
+
+.dash-donut-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 140px;
+}
+
+.dash-donut-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  margin-bottom: 0.35rem;
+  color: #444;
+}
+
+.dash-donut-legend strong {
+  margin-inline-start: auto;
+}
+
+.dash-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

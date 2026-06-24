@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { FaTimes, FaEnvelope, FaGem } from "react-icons/fa";
+import { FaTimes, FaStar } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/NewsletterPopup.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const STORAGE_KEY = "newsletter_dismissed";
-const DISCOUNT_PERCENT = 5;
+const DISCOUNT_PERCENT = 10;
 
 function NewsletterPopup() {
   const { language } = useLanguage();
@@ -70,7 +70,14 @@ function NewsletterPopup() {
 
   return (
     <div className="nl-overlay" onClick={handleDismiss}>
-      <div className="nl-popup" onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`nl-popup${couponCode ? " nl-popup--success" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Decorative tiled background */}
+        <div className="nl-deco" aria-hidden="true" />
+
+        {/* Close button */}
         <button
           className="nl-close"
           onClick={handleDismiss}
@@ -82,86 +89,85 @@ function NewsletterPopup() {
         {couponCode ? (
           /* ── Success state ── */
           <div className="nl-success">
-            <div className="nl-icon-wrap">
-              <FaGem />
-            </div>
+            <FaStar className="nl-star-icon" />
             <h2>
               {language === "he"
-                ? "ברוך הבא למשפחה!"
-                : "Welcome to the family!"}
+                ? "ברוכים הבאים לקהילה שלנו"
+                : "Welcome to our community!"}
             </h2>
-            <p>
+            <p className="nl-success-sub">
               {language === "he"
-                ? `קוד הקופון שלך להנחה של ${DISCOUNT_PERCENT}% על ההזמנה הראשונה:`
-                : `Your ${DISCOUNT_PERCENT}% discount code for your first order:`}
+                ? `לקבלת ${DISCOUNT_PERCENT}% הנחה על הקנייה הראשונה`
+                : `To get ${DISCOUNT_PERCENT}% off your first order`}
             </p>
-            <div className="nl-coupon-display">
-              <span>{couponCode}</span>
-              <button
-                className="nl-copy-btn"
-                onClick={() => navigator.clipboard.writeText(couponCode)}
-              >
-                {language === "he" ? "העתק" : "Copy"}
-              </button>
+            <p className="nl-success-label">
+              {language === "he"
+                ? "הכניסו את קוד הקופון:"
+                : "Enter the coupon code:"}
+            </p>
+            <div
+              className="nl-coupon-code"
+              dir="ltr"
+              onClick={() => navigator.clipboard.writeText(couponCode)}
+              title={language === "he" ? "לחץ להעתקה" : "Click to copy"}
+            >
+              {couponCode}
             </div>
-            <p className="nl-fine-print">
-              {language === "he"
-                ? "הזן את הקוד בדף התשלום. תקף להזמנה ראשונה בלבד."
-                : "Enter the code at checkout. Valid for first order only."}
-            </p>
             <button className="nl-done-btn" onClick={handleDismiss}>
-              {language === "he" ? "תודה, נתחיל לקנות!" : "Thanks, let's shop!"}
+              {language === "he" ? "סיום" : "Done"}
             </button>
           </div>
         ) : (
           /* ── Sign-up state ── */
-          <>
-            <div className="nl-icon-wrap">
-              <FaEnvelope />
+          <div className="nl-form-wrap">
+            <div className="nl-badge" dir="ltr">
+              OFF {DISCOUNT_PERCENT}%
             </div>
             <h2>
               {language === "he"
-                ? `קבל ${DISCOUNT_PERCENT}% הנחה על ההזמנה הראשונה`
-                : `Get ${DISCOUNT_PERCENT}% off your first order`}
+                ? "הצטרפו לקהילה השמימית שלנו"
+                : "Join our celestial community"}
             </h2>
             <p className="nl-subtitle">
               {language === "he"
-                ? "הירשם לניוזלטר שלנו וקבל קוד קופון מיד"
-                : "Subscribe to our newsletter and get a coupon code instantly"}
+                ? `הירשמו ותקבלו ${DISCOUNT_PERCENT}% הנחה לקנייה הראשונה`
+                : `Subscribe and get ${DISCOUNT_PERCENT}% off your first purchase`}
             </p>
-
             <form className="nl-form" onSubmit={handleSubmit}>
               {error && <p className="nl-error">{error}</p>}
-              <div className="nl-input-row">
+              <div className="nl-field">
                 <input
                   type="email"
+                  id="nl-email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={
-                    language === "he"
-                      ? "כתובת האימייל שלך"
-                      : "Your email address"
-                  }
+                  placeholder={language === "he" ? 'דוא"ל' : "Email address"}
+                  dir="ltr"
                   required
                 />
-                <button type="submit" disabled={loading}>
-                  {loading
-                    ? language === "he"
-                      ? "שולח..."
-                      : "Sending..."
-                    : language === "he"
-                      ? "הרשם"
-                      : "Subscribe"}
-                </button>
               </div>
+              <button
+                type="submit"
+                className="nl-submit-btn"
+                disabled={loading}
+              >
+                {loading
+                  ? language === "he"
+                    ? "שולח..."
+                    : "Sending..."
+                  : language === "he"
+                    ? "אני רוצה הנחה"
+                    : "I want my discount"}
+              </button>
+              <button
+                type="button"
+                className="nl-dismiss-link"
+                onClick={handleDismiss}
+              >
+                {language === "he" ? "לא תודה" : "No thanks"}
+              </button>
             </form>
-
-            <p className="nl-disclaimer">
-              {language === "he"
-                ? "לא נשלח ספאם. ניתן לבטל בכל עת."
-                : "No spam. Unsubscribe at any time."}
-            </p>
-          </>
+          </div>
         )}
       </div>
     </div>

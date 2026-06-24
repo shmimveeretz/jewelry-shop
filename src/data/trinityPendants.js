@@ -8,9 +8,11 @@ const defaultPriceAdditions = {
     "ציפוי זהב": 60,
   },
   length: {
+    39: 0,
     40: 0,
     42: 0,
     45: 0,
+    47: 0,
     50: 0,
   },
 };

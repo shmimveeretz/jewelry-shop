@@ -18,6 +18,7 @@ import {
   FaArrowUp,
   FaArrowDown,
   FaFileInvoice,
+  FaCog,
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -25,6 +26,9 @@ import ProductForm from "../components/ProductForm";
 import PayPlusDocumentForm from "../components/PayPlusDocumentForm";
 import PayPlusAdminPanel from "../components/PayPlusAdminPanel";
 import NewsletterAdmin from "../components/NewsletterAdmin";
+import CouponStats from "../components/CouponStats";
+import DashboardCharts from "../components/DashboardCharts";
+import CategoryAdmin from "../components/CategoryAdmin";
 import { getAllProducts, deleteProduct } from "../services/productApi";
 import "../styles/pages/Admin.css";
 
@@ -64,6 +68,11 @@ function Admin() {
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [newsletterSearchTerm, setNewsletterSearchTerm] = useState("");
 
+  // MOTD State
+  const [motd, setMotd] = useState("");
+  const [motdInput, setMotdInput] = useState("");
+  const [motdLoading, setMotdLoading] = useState(false);
+
   // Coupons State
   const [coupons, setCoupons] = useState([]);
   const [newCoupon, setNewCoupon] = useState({
@@ -98,6 +107,54 @@ function Admin() {
     images: "",
     status: "active",
   });
+
+  // Fetch MOTD on mount
+  useEffect(() => {
+    const fetchMotd = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/settings/motd`);
+        const data = await response.json();
+        if (data.success && data.motd) {
+          setMotd(data.motd);
+          setMotdInput(data.motd);
+        }
+      } catch (error) {
+        console.error("Error fetching MOTD:", error);
+      }
+    };
+    fetchMotd();
+  }, []);
+
+  const handleMotdUpdate = async () => {
+    setMotdLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/settings/motd`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ motd: motdInput }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setMotd(motdInput);
+        showSuccess(
+          language === "he"
+            ? "הבאנר עודכן בהצלחה"
+            : "Banner updated successfully",
+        );
+      } else {
+        showError(data.message || "Error updating banner");
+      }
+    } catch (error) {
+      console.error("Error updating MOTD:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    } finally {
+      setMotdLoading(false);
+    }
+  };
 
   // Load products from MongoDB via API
   useEffect(() => {
@@ -219,8 +276,8 @@ function Admin() {
 
   // Fetch orders from API
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (isAuthorized) fetchOrders();
+  }, [isAuthorized]);
 
   const fetchOrders = async () => {
     setOrdersLoading(true);
@@ -244,13 +301,8 @@ function Admin() {
 
   // Fetch users from API
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  // Fetch newsletter subscribers from API
-  useEffect(() => {
-    fetchSubscribers();
-  }, []);
+    if (isAuthorized) fetchUsers();
+  }, [isAuthorized]);
 
   const fetchSubscribers = async () => {
     setNewsletterLoading(true);
@@ -310,8 +362,8 @@ function Admin() {
 
   // Fetch coupons from API
   useEffect(() => {
-    fetchCoupons();
-  }, []);
+    if (isAuthorized) fetchCoupons();
+  }, [isAuthorized]);
 
   const fetchCoupons = async () => {
     try {
@@ -412,10 +464,16 @@ function Admin() {
     }
   };
 
-  // Fetch devices from API
+  // Fetch devices from API (ROI only)
   useEffect(() => {
-    fetchDevices();
-  }, []);
+    if (!isAuthorized) return;
+    try {
+      const userData = JSON.parse(localStorage.getItem("user") || "{}");
+      if (userData.role === "roi") fetchDevices();
+    } catch {
+      /* ignore */
+    }
+  }, [isAuthorized]);
 
   const fetchDevices = async () => {
     try {
@@ -430,8 +488,16 @@ function Admin() {
 
       const data = await response.json();
       if (data.success) {
-        console.log("Device sample:", JSON.stringify(data.data[0], null, 2));
         setDevices(data.data);
+        const blocked = [
+          ...new Set(
+            (data.data || [])
+              .filter((d) => d.blocked)
+              .map((d) => d.ipAddress)
+              .filter(Boolean),
+          ),
+        ];
+        setFirewall(blocked);
       } else {
         console.error("Error fetching devices:", data.message);
       }
@@ -508,15 +574,20 @@ function Admin() {
     setUserSearchTerm(e.target.value);
   };
 
-  const filteredUsers = users.filter(
-    (user) =>
-      (user.firstname &&
-        user.firstname.toLowerCase().includes(userSearchTerm.toLowerCase())) ||
-      (user.lastname &&
-        user.lastname.toLowerCase().includes(userSearchTerm.toLowerCase())) ||
-      (user.email &&
-        user.email.toLowerCase().includes(userSearchTerm.toLowerCase())),
-  );
+  const getUserName = (user) => ({
+    first: user.firstName || user.firstname || "",
+    last: user.lastName || user.lastname || "",
+  });
+
+  const filteredUsers = users.filter((user) => {
+    const { first, last } = getUserName(user);
+    const q = userSearchTerm.toLowerCase();
+    return (
+      first.toLowerCase().includes(q) ||
+      last.toLowerCase().includes(q) ||
+      (user.email || "").toLowerCase().includes(q)
+    );
+  });
 
   const handleChangeUserRole = (userId, newRole) => {
     const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
@@ -550,8 +621,8 @@ function Admin() {
     if (newRole === "roi") {
       const confirmed = window.confirm(
         language === "he"
-          ? `⚠️ אתה עומד לתת ל-${targetUser?.firstname} גישה כמנהל ניטור (ROI). 👑 זה התפקיד הגבוה ביותר במערכת. האם אתה בטוח?`
-          : `⚠️ You are about to grant ${targetUser?.firstname} ROI access. 👑 This is the highest role in the system. Are you sure?`,
+          ? `⚠️ אתה עומד לתת ל-${getUserName(targetUser || {}).first} גישה כמנהל ניטור (ROI). 👑 זה התפקיד הגבוה ביותר במערכת. האם אתה בטוח?`
+          : `⚠️ You are about to grant ${getUserName(targetUser || {}).first} ROI access. 👑 This is the highest role in the system. Are you sure?`,
       );
       if (!confirmed) return;
     }
@@ -560,8 +631,8 @@ function Admin() {
     if (targetUser?.role === "roi" && newRole !== "roi") {
       const confirmed = window.confirm(
         language === "he"
-          ? `⚠️ אתה עומד להסיר מ-${targetUser?.firstname} את תפקיד מנהל ניטור (ROI). תפקיד זה הוא הגבוה ביותר. האם אתה בטוח?`
-          : `⚠️ You are about to remove ${targetUser?.firstname}'s ROI (highest) role. Are you sure?`,
+          ? `⚠️ אתה עומד להסיר מ-${getUserName(targetUser || {}).first} את תפקיד מנהל ניטור (ROI). תפקיד זה הוא הגבוה ביותר. האם אתה בטוח?`
+          : `⚠️ You are about to remove ${getUserName(targetUser || {}).first}'s ROI (highest) role. Are you sure?`,
       );
       if (!confirmed) return;
     }
@@ -598,8 +669,8 @@ function Admin() {
 
           showSuccess(
             language === "he"
-              ? `✅ תפקיד המשתמש ${targetUser?.firstname} עודכן ל-${roleDisplayNames[newRole]}`
-              : `✅ ${targetUser?.firstname}'s role updated to ${roleDisplayNames[newRole]}`,
+              ? `✅ תפקיד המשתמש ${getUserName(targetUser || {}).first} עודכן ל-${roleDisplayNames[newRole]}`
+              : `✅ ${getUserName(targetUser || {}).first}'s role updated to ${roleDisplayNames[newRole]}`,
           );
         } else {
           showError(
@@ -624,7 +695,8 @@ function Admin() {
       return;
     }
 
-    const username = `${user.firstname} ${user.lastname}`;
+    const { first, last } = getUserName(user);
+    const username = `${first} ${last}`.trim() || user.email;
     if (
       window.confirm(
         language === "he"
@@ -675,63 +747,102 @@ function Admin() {
     }
   };
 
-  const handleBlockUser = (userId) => {
+  const handleBlockUser = async (userId) => {
     const user = users.find((u) => u.id === userId || u._id === userId);
     if (!user) return;
 
-    const username = `${user.firstname} ${user.lastname}`;
+    const { first, last } = getUserName(user);
+    const username = `${first} ${last}`.trim() || user.email;
+    const newBlocked = !user.blocked;
     const action = user.blocked ? "ביטול חסימה" : "חסימה";
-    const actionEn = user.blocked ? "Unblock" : "Block";
+    const actionEn = user.blocked ? "unblock" : "block";
 
     if (
-      window.confirm(
+      !window.confirm(
         language === "he"
           ? `האם אתה בטוח שברצונך ${action} את המשתמש ${username}?`
           : `Are you sure you want to ${actionEn} ${username}?`,
       )
-    ) {
-      setUsers(
-        users.map((u) =>
-          u.id === userId || u._id === userId
-            ? { ...u, blocked: !u.blocked }
-            : u,
-        ),
-      );
-      showSuccess(
-        language === "he"
-          ? `המשתמש ${user.blocked ? "הוסר מחסימה" : "חסום"} בהצלחה`
-          : `User ${user.blocked ? "unblocked" : "blocked"} successfully`,
-      );
-    }
-  };
+    )
+      return;
 
-  const handleOrderStatusChange = (orderId, newStatus) => {
-    // Optimistic update
-    setOrders((prev) =>
-      prev.map((o) =>
-        (o._id || o.id) === orderId ? { ...o, status: newStatus } : o,
-      ),
-    );
-    // Persist to backend
-    const updateAsync = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        await fetch(`${API_BASE_URL}/api/orders/${orderId}/status`, {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${API_BASE_URL}/api/users/${user._id || userId}/block`,
+        {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ status: newStatus }),
-        });
-      } catch (error) {
-        console.error("Error updating order status:", error);
+          body: JSON.stringify({ blocked: newBlocked }),
+        },
+      );
+      const data = await response.json();
+      if (data.success) {
+        setUsers(
+          users.map((u) =>
+            u.id === userId || u._id === userId
+              ? { ...u, blocked: newBlocked }
+              : u,
+          ),
+        );
+        showSuccess(
+          language === "he"
+            ? `המשתמש ${newBlocked ? "חסום" : "הוסר מחסימה"} בהצלחה`
+            : `User ${newBlocked ? "blocked" : "unblocked"} successfully`,
+        );
+      } else {
+        showError(data.message || "Error updating user");
       }
-    };
-    updateAsync();
-    showSuccess(
-      language === "he" ? `סטטוס ההזמנה עודכן` : `Order status updated`,
+    } catch (error) {
+      console.error("Error blocking user:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
+  };
+
+  const normalizeOrderStatus = (status) => {
+    if (!status) return status;
+    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  };
+
+  const handleOrderStatusChange = async (orderId, newStatus) => {
+    const normalized = normalizeOrderStatus(newStatus);
+    const prevOrders = orders;
+    setOrders((prev) =>
+      prev.map((o) =>
+        (o._id || o.id) === orderId ? { ...o, status: normalized } : o,
+      ),
     );
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${API_BASE_URL}/api/orders/${orderId}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: normalized }),
+        },
+      );
+      const data = await response.json();
+      if (data.success) {
+        showSuccess(
+          language === "he" ? "סטטוס ההזמנה עודכן" : "Order status updated",
+        );
+      } else {
+        setOrders(prevOrders);
+        showError(data.message || "Error updating order");
+      }
+    } catch (error) {
+      setOrders(prevOrders);
+      console.error("Error updating order status:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
   };
 
   const filteredOrders = orders.filter((order) => {
@@ -745,7 +856,9 @@ function Admin() {
       (order.customerPhone || "").toLowerCase().includes(searchLower);
 
     const matchesStatus =
-      orderStatusFilter === "all" || order.status === orderStatusFilter;
+      orderStatusFilter === "all" ||
+      normalizeOrderStatus(order.status) ===
+        normalizeOrderStatus(orderStatusFilter);
 
     return matchesSearch && matchesStatus;
   });
@@ -795,8 +908,7 @@ function Admin() {
     blockDeviceAsync();
   };
 
-  const handleAddToFirewall = () => {
-    // Validate IP address format
+  const handleAddToFirewall = async () => {
     const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
     if (!newFirewallIP.trim()) {
       showError(
@@ -814,90 +926,84 @@ function Admin() {
       return;
     }
 
-    // Check if IP already in firewall
     if (firewall.includes(newFirewallIP)) {
       showError(
         language === "he"
-          ? `כתובת IP ${newFirewallIP} כבר קיימת בחומת אש`
-          : `IP address ${newFirewallIP} is already in the firewall`,
+          ? `כתובת IP ${newFirewallIP} כבר חסומה`
+          : `IP address ${newFirewallIP} is already blocked`,
       );
       return;
     }
 
-    // Add to firewall
-    setFirewall([...firewall, newFirewallIP]);
-    setNewFirewallIP("");
-
-    // Call backend to add to firewall
-    addToFirewall(newFirewallIP);
-
-    showSuccess(
-      language === "he"
-        ? `כתובת IP ${newFirewallIP} נוספה לחומת אש בהצלחה`
-        : `IP address ${newFirewallIP} added to firewall successfully`,
-    );
-  };
-
-  const addToFirewall = async (ipAddress) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE_URL}/api/firewall/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${API_BASE_URL}/api/admin/devices/ip/${encodeURIComponent(newFirewallIP)}/block`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ blocked: true }),
         },
-        body: JSON.stringify({ ipAddress }),
-      });
-
+      );
       const data = await response.json();
-      if (!data.success) {
-        console.error("Failed to add IP to firewall:", data.message);
+      if (data.success) {
+        setFirewall([...firewall, newFirewallIP]);
+        setNewFirewallIP("");
+        fetchDevices();
+        showSuccess(
+          language === "he"
+            ? `כתובת IP ${newFirewallIP} נחסמה בהצלחה`
+            : `IP address ${newFirewallIP} blocked successfully`,
+        );
+      } else {
+        showError(data.message || "Failed to block IP");
       }
     } catch (error) {
-      console.error("Error adding IP to firewall:", error);
+      console.error("Error blocking IP:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
     }
   };
 
-  const removeFromFirewall = (ipAddress) => {
+  const removeFromFirewall = async (ipAddress) => {
     const confirmed = window.confirm(
       language === "he"
-        ? `האם אתה בטוח שברצונך להסיר את ${ipAddress} מחומת האש?`
-        : `Are you sure you want to remove ${ipAddress} from firewall?`,
+        ? `האם אתה בטוח שברצונך לבטל חסימה של ${ipAddress}?`
+        : `Are you sure you want to unblock ${ipAddress}?`,
     );
 
-    if (confirmed) {
-      setFirewall(firewall.filter((ip) => ip !== ipAddress));
+    if (!confirmed) return;
 
-      // Call backend to remove from firewall
-      removeFromFirewallBackend(ipAddress);
-
-      showSuccess(
-        language === "he"
-          ? `כתובת IP ${ipAddress} הוסרה מחומת אש`
-          : `IP address ${ipAddress} removed from firewall`,
-      );
-    }
-  };
-
-  const removeFromFirewallBackend = async (ipAddress) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE_URL}/api/firewall/remove`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `${API_BASE_URL}/api/admin/devices/ip/${encodeURIComponent(ipAddress)}/block`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ blocked: false }),
         },
-        body: JSON.stringify({ ipAddress }),
-      });
-
+      );
       const data = await response.json();
-      if (!data.success) {
-        console.error("Failed to remove IP from firewall:", data.message);
+      if (data.success) {
+        setFirewall(firewall.filter((ip) => ip !== ipAddress));
+        fetchDevices();
+        showSuccess(
+          language === "he"
+            ? `חסימת ${ipAddress} בוטלה בהצלחה`
+            : `IP address ${ipAddress} unblocked successfully`,
+        );
+      } else {
+        showError(data.message || "Failed to unblock IP");
       }
     } catch (error) {
-      console.error("Error removing IP from firewall:", error);
+      console.error("Error unblocking IP:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
     }
   };
 
@@ -923,17 +1029,20 @@ function Admin() {
     })
     .sort((a, b) => new Date(b.lastLogin) - new Date(a.lastLogin));
 
-  // Check if user is "roi" (super admin)
-  const isROI = () => {
-    const user = localStorage.getItem("user");
-    if (!user) return false;
+  const getCurrentUser = () => {
     try {
-      const userData = JSON.parse(user);
-      return userData.role === "roi";
+      return JSON.parse(localStorage.getItem("user") || "{}");
     } catch {
-      return false;
+      return {};
     }
   };
+
+  const isAdmin = () => {
+    const role = getCurrentUser().role;
+    return role === "admin" || role === "roi";
+  };
+
+  const isROI = () => getCurrentUser().role === "roi";
 
   const filteredProducts = products.filter((product) => {
     const searchLower = searchTerm.toLowerCase();
@@ -1183,7 +1292,7 @@ function Admin() {
               {language === "he" ? "הזמנות" : "Orders"}
             </button>
           </li>
-          {isROI() && (
+          {isAdmin() && (
             <li>
               <button
                 className={`admin-nav-item ${activeTab === "users" ? "active" : ""}`}
@@ -1191,6 +1300,17 @@ function Admin() {
               >
                 <FaUsers className="nav-icon" />
                 {language === "he" ? "משתמשים" : "Users"}
+              </button>
+            </li>
+          )}
+          {isAdmin() && (
+            <li>
+              <button
+                className={`admin-nav-item ${activeTab === "categories" ? "active" : ""}`}
+                onClick={() => setActiveTab("categories")}
+              >
+                <FaTag className="nav-icon" />
+                {language === "he" ? "קטגוריות" : "Categories"}
               </button>
             </li>
           )}
@@ -1230,6 +1350,15 @@ function Admin() {
             >
               <FaFileInvoice className="nav-icon" />
               {language === "he" ? "מסמכים" : "Documents"}
+            </button>
+          </li>
+          <li>
+            <button
+              className={`admin-nav-item ${activeTab === "settings" ? "active" : ""}`}
+              onClick={() => setActiveTab("settings")}
+            >
+              <FaCog className="nav-icon" />
+              {language === "he" ? "הגדרות" : "Settings"}
             </button>
           </li>
         </ul>
@@ -1521,10 +1650,15 @@ function Admin() {
                     </table>
                   </div>
                 </div>
+
+                <DashboardCharts charts={dashboardStats?.charts} />
               </>
             )}
           </>
         )}
+
+        {/* ───────────────── CATEGORIES TAB ───────────────── */}
+        {activeTab === "categories" && isAdmin() && <CategoryAdmin />}
 
         {/* ───────────────── PRODUCTS TAB ───────────────── */}
         {activeTab === "products" && (
@@ -1672,7 +1806,7 @@ function Admin() {
                               className="icon-btn icon-btn-delete"
                               onClick={() =>
                                 handleDeleteProductWithImage(
-                                  product._id || product.id,
+                                  product.id || product._id,
                                 )
                               }
                               title={language === "he" ? "מחק" : "Delete"}
@@ -1737,7 +1871,7 @@ function Admin() {
                             className="icon-btn icon-btn-delete"
                             onClick={() =>
                               handleDeleteProductWithImage(
-                                product._id || product.id,
+                                product.id || product._id,
                               )
                             }
                           >
@@ -1775,7 +1909,7 @@ function Admin() {
         )}
 
         {/* ───────────────── USERS TAB ───────────────── */}
-        {activeTab === "users" && isROI() && (
+        {activeTab === "users" && isAdmin() && (
           <>
             <div className="section-header">
               <div>
@@ -1832,8 +1966,8 @@ function Admin() {
                     <tbody>
                       {filteredUsers.map((user) => (
                         <tr key={user.id}>
-                          <td>{user.firstname}</td>
-                          <td>{user.lastname}</td>
+                          <td>{user.firstName || user.firstname}</td>
+                          <td>{user.lastName || user.lastname}</td>
                           <td>{user.email}</td>
                           <td>{user.phone}</td>
                           <td>
@@ -1860,11 +1994,13 @@ function Admin() {
                               <option value="admin">
                                 {language === "he" ? "מנהל" : "Admin"}
                               </option>
-                              <option value="roi">
-                                {language === "he"
-                                  ? "🔒 מנהל ניטור (ROI)"
-                                  : "🔒 Device Manager (ROI)"}
-                              </option>
+                              {isROI() && (
+                                <option value="roi">
+                                  {language === "he"
+                                    ? "מנהל ניטור (ROI)"
+                                    : "Device Manager (ROI)"}
+                                </option>
+                              )}
                             </select>
                           </td>
                           <td>
@@ -1956,19 +2092,22 @@ function Admin() {
                   <option value="all">
                     {language === "he" ? "כל ההזמנות" : "All Orders"}
                   </option>
-                  <option value="pending">
+                  <option value="Pending">
                     {language === "he" ? "בהמתנה" : "Pending"}
                   </option>
-                  <option value="processing">
+                  <option value="Paid">
+                    {language === "he" ? "שולם" : "Paid"}
+                  </option>
+                  <option value="Processing">
                     {language === "he" ? "בעיבוד" : "Processing"}
                   </option>
-                  <option value="shipped">
+                  <option value="Shipped">
                     {language === "he" ? "נשלחה" : "Shipped"}
                   </option>
-                  <option value="delivered">
+                  <option value="Delivered">
                     {language === "he" ? "נמסרה" : "Delivered"}
                   </option>
-                  <option value="cancelled">
+                  <option value="Cancelled">
                     {language === "he" ? "בוטלה" : "Cancelled"}
                   </option>
                 </select>
@@ -2110,7 +2249,7 @@ function Admin() {
                             <td>
                               <select
                                 className={`status-select status-${order.status}`}
-                                value={order.status || "pending"}
+                                value={normalizeOrderStatus(order.status || "Pending")}
                                 onChange={(e) =>
                                   handleOrderStatusChange(
                                     orderId,
@@ -2118,19 +2257,22 @@ function Admin() {
                                   )
                                 }
                               >
-                                <option value="pending">
+                                <option value="Pending">
                                   {language === "he" ? "בהמתנה" : "Pending"}
                                 </option>
-                                <option value="processing">
+                                <option value="Paid">
+                                  {language === "he" ? "שולם" : "Paid"}
+                                </option>
+                                <option value="Processing">
                                   {language === "he" ? "בעיבוד" : "Processing"}
                                 </option>
-                                <option value="shipped">
+                                <option value="Shipped">
                                   {language === "he" ? "נשלחה" : "Shipped"}
                                 </option>
-                                <option value="delivered">
+                                <option value="Delivered">
                                   {language === "he" ? "נמסרה" : "Delivered"}
                                 </option>
-                                <option value="cancelled">
+                                <option value="Cancelled">
                                   {language === "he" ? "בוטלה" : "Cancelled"}
                                 </option>
                               </select>
@@ -2150,9 +2292,13 @@ function Admin() {
                                     <li key={item.productId || item.id || i}>
                                       {item.name} x{item.quantity} – ₪
                                       {item.price * item.quantity}
-                                      {item.selectedOptions &&
-                                        Object.keys(item.selectedOptions)
-                                          .length > 0 && (
+                                      {(() => {
+                                        const opts =
+                                          item.selections ||
+                                          item.selectedOptions;
+                                        if (!opts || !Object.keys(opts).length)
+                                          return null;
+                                        return (
                                           <span
                                             style={{
                                               fontSize: "0.75rem",
@@ -2160,13 +2306,24 @@ function Admin() {
                                               display: "block",
                                             }}
                                           >
-                                            {Object.entries(
-                                              item.selectedOptions,
-                                            )
-                                              .map(([k, v]) => `${k}: ${v}`)
-                                              .join(", ")}
+                                            {Object.entries(opts)
+                                              .filter(
+                                                ([, v]) =>
+                                                  v !== undefined &&
+                                                  v !== "" &&
+                                                  !(
+                                                    Array.isArray(v) &&
+                                                    v.length === 0
+                                                  ),
+                                              )
+                                              .map(
+                                                ([k, v]) =>
+                                                  `${k}: ${Array.isArray(v) ? v.join(",") : v}`,
+                                              )
+                                              .join(" · ")}
                                           </span>
-                                        )}
+                                        );
+                                      })()}
                                     </li>
                                   ))}
                                 </ul>
@@ -2648,6 +2805,110 @@ function Admin() {
 
         {/* ───────────────── DOCUMENTS TAB ───────────────── */}
         {activeTab === "documents" && <PayPlusAdminPanel />}
+
+        {/* ───────────────── SETTINGS TAB ───────────────── */}
+        {activeTab === "settings" && (
+          <>
+            <div className="section-header">
+              <div>
+                <h1>{language === "he" ? "הגדרות" : "Settings"}</h1>
+                <p className="section-subtitle">
+                  {language === "he"
+                    ? "ניהול הגדרות אתר ומעקב קופונים"
+                    : "Site settings and coupon tracking"}
+                </p>
+              </div>
+            </div>
+
+            {/* MOTD Manager */}
+            <div className="admin-table-card">
+              <h3
+                style={{
+                  color: "var(--color-primary)",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {language === "he" ? "ניהול באנר עליון" : "Top Banner Manager"}
+              </h3>
+              <p
+                style={{
+                  color: "#888",
+                  fontSize: "0.85rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                {language === "he"
+                  ? "הטקסט שיוצג בבאנר הגולש בראש האתר. השאר ריק כדי להסתיר את הבאנר."
+                  : "Text displayed in the scrolling banner at the top of the site. Leave empty to hide the banner."}
+              </p>
+              {motd && (
+                <p
+                  style={{
+                    fontSize: "0.82rem",
+                    color: "#666",
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  {language === "he" ? "נוכחי: " : "Current: "}
+                  <em
+                    style={{
+                      color: "var(--color-secondary)",
+                      fontStyle: "normal",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {motd}
+                  </em>
+                </p>
+              )}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "0.75rem",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <input
+                  type="text"
+                  value={motdInput}
+                  onChange={(e) => setMotdInput(e.target.value)}
+                  placeholder={
+                    language === "he"
+                      ? "הזן הודעה לבאנר..."
+                      : "Enter banner message..."
+                  }
+                  style={{
+                    flex: 1,
+                    minWidth: "220px",
+                    padding: "0.55rem 0.9rem",
+                    border: "1px solid #ddd",
+                    borderRadius: "0.5rem",
+                    fontSize: "0.9rem",
+                    outline: "none",
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && handleMotdUpdate()}
+                />
+                <button
+                  className="btn-gold"
+                  onClick={handleMotdUpdate}
+                  disabled={motdLoading}
+                >
+                  {motdLoading
+                    ? language === "he"
+                      ? "מעדכן..."
+                      : "Updating..."
+                    : language === "he"
+                      ? "עדכן באנר"
+                      : "Update Banner"}
+                </button>
+              </div>
+            </div>
+
+            {/* Coupon Stats */}
+            <CouponStats />
+          </>
+        )}
       </div>
 
       {/* ─── ProductForm Modal (with image upload) ─── */}

@@ -125,6 +125,7 @@ import ShabbatMode from "./components/ShabbatMode";
 import ScrollToTop from "./components/ScrollToTop";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 import CookieBanner from "./components/CookieBanner";
+import TopBanner from "./components/TopBanner";
 
 // Pages (lazy loaded - only when route is visited)
 const Home = lazy(() => import("./pages/Home"));
@@ -161,8 +162,7 @@ function App() {
             <ScrollToTop />
             <AccessibilityWidget />
             <div className="App">
-              {/* <ShabbatMode /> */}
-              <Navbar />
+              <ShabbatMode />              <TopBanner />              <Navbar />
               <main className="main-content">
                 <Suspense
                   fallback={

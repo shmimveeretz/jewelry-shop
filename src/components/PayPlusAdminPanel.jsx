@@ -100,7 +100,7 @@ function GeneratePaymentLink() {
     setResult(null);
     try {
       const res = await axios.post(
-        `${API_BASE_URL}/api/payplus/payment-link`,
+        `${API_BASE_URL}/api/payment/generate-link`,
         { amount: parseFloat(amount), description: description.trim() || undefined },
         { headers: { Authorization: `Bearer ${getToken()}` } },
       );
@@ -203,11 +203,12 @@ function CreateManualDocument() {
     setResult(null);
     try {
       const res = await axios.post(
-        `${API_BASE_URL}/api/payplus/manual-document`,
+        `${API_BASE_URL}/api/payment/create-document`,
         {
           docType,
           customer: { name: customerName.trim(), email: customerEmail.trim() },
           items: items.map((it) => ({ name: it.name.trim(), quantity: parseFloat(it.quantity), price: parseFloat(it.price) })),
+          totalAmount: total,
         },
         { headers: { Authorization: `Bearer ${getToken()}` } },
       );

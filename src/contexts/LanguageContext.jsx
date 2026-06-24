@@ -397,7 +397,6 @@ export const translations = {
     getInTouch: "Get in Touch",
     message: "Message",
     send: "Send",
-    phone: "Phone",
     address: "Address",
     followUs: "Follow Us",
 
@@ -439,7 +438,6 @@ export const translations = {
     highPrice: "Over ₪1000",
 
     // Contact Form
-    fullName: "Full name",
     phoneNumber: "Phone Number",
     subject: "Subject",
     yourMessage: "Your Message",

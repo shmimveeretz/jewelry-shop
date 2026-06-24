@@ -23,39 +23,44 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   const addToCart = (product, quantity = 1) => {
+    // cartItemId distinguishes the same product with different selections.
+    // Falls back to product.id for products that have no selections.
+    const key = product.cartItemId || product.id;
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
+      const existingItem = prevItems.find(
+        (item) => (item.cartItemId || item.id) === key,
+      );
 
       if (existingItem) {
-        // Update quantity if item exists
         return prevItems.map((item) =>
-          item.id === product.id
+          (item.cartItemId || item.id) === key
             ? { ...item, quantity: item.quantity + quantity }
-            : item
+            : item,
         );
       } else {
-        // Add new item
         return [...prevItems, { ...product, quantity }];
       }
     });
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (cartItemId) => {
     setCartItems((prevItems) =>
-      prevItems.filter((item) => item.id !== productId)
+      prevItems.filter((item) => (item.cartItemId || item.id) !== cartItemId),
     );
   };
 
-  const updateQuantity = (productId, quantity) => {
+  const updateQuantity = (cartItemId, quantity) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(cartItemId);
       return;
     }
 
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
+        (item.cartItemId || item.id) === cartItemId
+          ? { ...item, quantity }
+          : item,
+      ),
     );
   };
 
@@ -66,7 +71,7 @@ export const CartProvider = ({ children }) => {
   const getCartTotal = () => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
-      0
+      0,
     );
   };
 

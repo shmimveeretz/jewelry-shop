@@ -86,3 +86,34 @@ button[type="submit"]:disabled {
   margin-bottom: 20px;
   border: 1px solid #f5c6cb;
 }
+
+.form-hint {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin: -0.5rem 0 1rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.form-advanced {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  border: 1px dashed #ddd;
+  border-radius: 6px;
+}
+
+.form-advanced summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #555;
+}
+
+.product-form-submit {
+  background-color: var(--color-secondary, #c9a227) !important;
+  margin-top: 0.5rem;
+}

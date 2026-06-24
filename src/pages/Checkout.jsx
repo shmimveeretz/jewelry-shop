@@ -174,7 +174,8 @@ function Checkout() {
         name: item.name,
         price: item.price,
         quantity: item.quantity || 1,
-        selectedOptions: item.selectedOptions || {},
+        // Use the API-contract selections object when present; fall back to legacy selectedOptions
+        selections: item.selections || item.selectedOptions || {},
       })),
       shippingAddress: {
         fullName: customerName,

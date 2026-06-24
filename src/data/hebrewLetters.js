@@ -1,4 +1,4 @@
-// Hebrew Letters Collection - Ancient Hebrew Alphabet Jewelry
+﻿// Hebrew Letters Collection - Ancient Hebrew Alphabet Jewelry
 export const hebrewLettersData = [
   {
     id: "aleph",
@@ -19,6 +19,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -53,6 +59,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -87,6 +99,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -121,6 +139,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -155,6 +179,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -189,6 +219,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -223,6 +259,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -257,6 +299,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -291,6 +339,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -325,6 +379,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -359,6 +419,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -393,6 +459,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -427,6 +499,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -461,6 +539,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -495,6 +579,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -529,6 +619,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -563,6 +659,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -597,6 +699,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -631,6 +739,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -665,6 +779,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -699,6 +819,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
@@ -733,6 +859,12 @@ export const hebrewLettersData = [
         45: 0,
         50: 0,
       },
+      jewelryType: {
+        שרשרת: 0,
+        צמיד: 0,
+        טבעת: 50,
+      },
+      extraLetterForBracelet: 30,
     },
     metals: ["זהב", "כסף"],
     images: [
