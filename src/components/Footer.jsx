@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import {
-  FaFacebook,
   FaInstagram,
   FaWhatsapp,
   FaEnvelope,
@@ -26,19 +25,17 @@ function Footer() {
             </p>
             <div className="footer-social">
               <a
-                href="#"
-                aria-label={language === "he" ? "פייסבוק" : "Facebook"}
-              >
-                <FaFacebook />
-              </a>
-              <a
                 href="https://www.instagram.com/shamaim_ve_eretz"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={language === "he" ? "אינסטגרם" : "Instagram"}
               >
                 <FaInstagram />
               </a>
               <a
-                href="#"
+                href="https://wa.me/972525955389?text=היי,%20הייתי%20באתר%20ואני%20אשמח%20לעוד%20פרטים"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={language === "he" ? "וואטסאפ" : "WhatsApp"}
               >
                 <FaWhatsapp />
