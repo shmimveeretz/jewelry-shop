@@ -16,12 +16,16 @@ function Home() {
   const { t, language } = useLanguage();
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Fetch top 4 best-selling products
-  const { products, loading } = useProducts();
-  const topProducts = products.slice(0, 4);
+  // Fetch admin-selected best sellers for the home page
+  const { products: featuredProducts, loading } = useProducts({
+    featured: true,
+    limit: 4,
+  });
+  const { products: allProducts } = useProducts();
+  const topProducts = featuredProducts.slice(0, 4);
 
   // Get Trinity Pendants
-  const trinityProducts = products
+  const trinityProducts = allProducts
     .filter(
       (product) =>
         product.category === "מזל, אבן חושן וכוכב" ||

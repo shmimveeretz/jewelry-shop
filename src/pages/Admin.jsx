@@ -19,6 +19,7 @@ import {
   FaArrowDown,
   FaFileInvoice,
   FaCog,
+  FaStar,
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -29,6 +30,7 @@ import NewsletterAdmin from "../components/NewsletterAdmin";
 import CouponStats from "../components/CouponStats";
 import DashboardCharts from "../components/DashboardCharts";
 import CategoryAdmin from "../components/CategoryAdmin";
+import HomeFeaturedAdmin from "../components/HomeFeaturedAdmin";
 import { getAllProducts, deleteProduct } from "../services/productApi";
 import "../styles/pages/Admin.css";
 
@@ -1283,6 +1285,17 @@ function Admin() {
               {language === "he" ? "מוצרים" : "Products"}
             </button>
           </li>
+          {isAdmin() && (
+            <li>
+              <button
+                className={`admin-nav-item ${activeTab === "homeFeatured" ? "active" : ""}`}
+                onClick={() => setActiveTab("homeFeatured")}
+              >
+                <FaStar className="nav-icon" />
+                {language === "he" ? "דף הבית" : "Home Page"}
+              </button>
+            </li>
+          )}
           <li>
             <button
               className={`admin-nav-item ${activeTab === "orders" ? "active" : ""}`}
@@ -1659,6 +1672,8 @@ function Admin() {
 
         {/* ───────────────── CATEGORIES TAB ───────────────── */}
         {activeTab === "categories" && isAdmin() && <CategoryAdmin />}
+
+        {activeTab === "homeFeatured" && isAdmin() && <HomeFeaturedAdmin />}
 
         {/* ───────────────── PRODUCTS TAB ───────────────── */}
         {activeTab === "products" && (

@@ -8,6 +8,8 @@ import {
   isNecklaceJewelryType,
   getLengthOptions,
   getLengthAddition,
+  isLetterChainProduct,
+  allowsExtraLetters,
 } from "../data/productSizes";
 import { parseExtraHebrewLetters, getExtraLetterPerBraceletCost } from "../utils/extraHebrewLetters";
 import "../styles/components/ProductModal.css";
@@ -38,6 +40,8 @@ function ProductModal({ product, onClose }) {
   );
 
   const isHebrewLetters = product.category === "אותיות עבריות";
+  const isLetterChain = isLetterChainProduct(product);
+  const isSingleLetter = isHebrewLetters && !isLetterChain;
 
   const [selectedOptions, setSelectedOptions] = useState(
     Object.fromEntries(optionKeys.map((key) => [key, ""])),
@@ -85,7 +89,7 @@ function ProductModal({ product, onClose }) {
       isHebrewLetters,
     );
     if (
-      isBraceletJewelryType(selectedOptions.jewelryType) &&
+      allowsExtraLetters(product, selectedOptions.jewelryType) &&
       extraLetters.length > 0
     ) {
       const perLetterCost = getExtraLetterPerBraceletCost(
@@ -107,7 +111,7 @@ function ProductModal({ product, onClose }) {
       ...(optionName === "jewelryType" ? { length: "" } : {}),
     }));
     // Clear extra letters when switching away from bracelet
-    if (optionName === "jewelryType" && !isBraceletJewelryType(value)) {
+    if (optionName === "jewelryType" && !allowsExtraLetters(product, value)) {
       setExtraLetters([]);
       setExtraLettersInput("");
     }
@@ -136,12 +140,15 @@ function ProductModal({ product, onClose }) {
       selections.metalType = selectedOptions.metalType;
     if (selectedOptions.length) selections.length = selectedOptions.length;
     if (isHebrewLetters) {
-      if (selectedOptions.jewelryType)
+      if (isLetterChain && selectedOptions.jewelryType) {
         selections.jewelryType = selectedOptions.jewelryType;
-      selections.extraLetters =
-        isBraceletJewelryType(selectedOptions.jewelryType)
-          ? extraLetters
-          : [];
+      }
+      selections.extraLetters = allowsExtraLetters(
+        product,
+        selectedOptions.jewelryType,
+      )
+        ? extraLetters
+        : [];
     }
 
     // Cart item: full product data for display + selections for the backend
@@ -168,17 +175,24 @@ function ProductModal({ product, onClose }) {
   };
 
   const isAddToCartDisabled = () => {
-    if (isHebrewLetters) {
-      // Step 1: jewelry type is mandatory
+    if (isLetterChain) {
       if (!selectedOptions.jewelryType) return true;
-      // Metal type mandatory if present
       if (
         priceAdditions?.metalType &&
         Object.keys(priceAdditions.metalType).length > 0 &&
         !selectedOptions.metalType
       )
         return true;
-      // Length mandatory when length selector is shown
+      if (showLengthOptions && !selectedOptions.length) return true;
+      return false;
+    }
+    if (isSingleLetter) {
+      if (
+        priceAdditions?.metalType &&
+        Object.keys(priceAdditions.metalType).length > 0 &&
+        !selectedOptions.metalType
+      )
+        return true;
       if (showLengthOptions && !selectedOptions.length) return true;
       return false;
     }
@@ -200,20 +214,29 @@ function ProductModal({ product, onClose }) {
     priceAdditions,
     selectedOptions.jewelryType,
     isHebrewLetters,
+    product.id,
   );
 
-  const showLengthOptions = isHebrewLetters
-    ? Boolean(
-        selectedOptions.jewelryType &&
-          selectedOptions.jewelryType !== "טבעת" &&
-          (isNecklaceJewelryType(selectedOptions.jewelryType) ||
-            isBraceletJewelryType(selectedOptions.jewelryType)),
-      )
-    : Boolean(
-        priceAdditions?.length &&
-          Object.keys(priceAdditions.length).length > 0 &&
-          metalReady,
-      );
+  const showLengthOptions = isSingleLetter
+    ? metalReady && Object.keys(priceAdditions?.length || {}).length > 0
+    : isLetterChain
+      ? Boolean(
+          selectedOptions.jewelryType &&
+            (isNecklaceJewelryType(selectedOptions.jewelryType) ||
+              isBraceletJewelryType(selectedOptions.jewelryType)),
+        )
+      : isHebrewLetters
+        ? Boolean(
+            selectedOptions.jewelryType &&
+              selectedOptions.jewelryType !== "טבעת" &&
+              (isNecklaceJewelryType(selectedOptions.jewelryType) ||
+                isBraceletJewelryType(selectedOptions.jewelryType)),
+          )
+        : Boolean(
+            priceAdditions?.length &&
+              Object.keys(priceAdditions.length).length > 0 &&
+              metalReady,
+          );
 
   const extraLetterPerBraceletCost = getExtraLetterPerBraceletCost(
     priceAdditions,
@@ -331,10 +354,8 @@ function ProductModal({ product, onClose }) {
                 )}
 
                 <div className="product-options">
-                  {isHebrewLetters ? (
-                    /* ── Hebrew Letters: enforced step-by-step flow ── */
+                  {isLetterChain ? (
                     <>
-                      {/* Step 1: Jewelry Type — mandatory, shown as radio buttons */}
                       {priceAdditions?.jewelryType &&
                         Object.keys(priceAdditions.jewelryType).length > 0 && (
                           <div className="product-option">
@@ -375,7 +396,6 @@ function ProductModal({ product, onClose }) {
                           </div>
                         )}
 
-                      {/* Step 2: Metal Type — after jewelry type */}
                       {selectedOptions.jewelryType &&
                         priceAdditions?.metalType &&
                         Object.keys(priceAdditions.metalType).length > 0 && (
@@ -407,7 +427,6 @@ function ProductModal({ product, onClose }) {
                           </div>
                         )}
 
-                      {/* Step 3: Length — after jewelry type + metal */}
                       {showLengthOptions && (
                         <div className="product-option">
                           <label>
@@ -448,8 +467,10 @@ function ProductModal({ product, onClose }) {
                         </div>
                       )}
 
-                      {/* Extra Letters — only for Bracelet */}
-                      {isBraceletJewelryType(selectedOptions.jewelryType) && (
+                      {allowsExtraLetters(
+                        product,
+                        selectedOptions.jewelryType,
+                      ) && (
                         <div className="product-option">
                           <label>
                             {language === "he"
@@ -489,6 +510,67 @@ function ProductModal({ product, onClose }) {
                               ))}
                             </div>
                           )}
+                        </div>
+                      )}
+                    </>
+                  ) : isSingleLetter ? (
+                    <>
+                      {priceAdditions?.metalType &&
+                        Object.keys(priceAdditions.metalType).length > 0 && (
+                          <div className="product-option">
+                            <label>
+                              <span className="required">*</span>
+                              {language === "he" ? "סוג מתכת" : "Metal Type"}
+                            </label>
+                            <select
+                              value={selectedOptions["metalType"] ?? ""}
+                              onChange={(e) =>
+                                handleOptionChange("metalType", e.target.value)
+                              }
+                            >
+                              <option value="">
+                                {language === "he"
+                                  ? "בחר סוג מתכת"
+                                  : "Select Metal Type"}
+                              </option>
+                              {Object.entries(priceAdditions.metalType).map(
+                                ([key, value]) => (
+                                  <option key={key} value={key}>
+                                    {key}
+                                    {value > 0 ? ` (+${value} ₪)` : ""}
+                                  </option>
+                                ),
+                              )}
+                            </select>
+                          </div>
+                        )}
+
+                      {showLengthOptions && (
+                        <div className="product-option">
+                          <label>
+                            <span className="required">*</span>
+                            {language === "he"
+                              ? "אורך שרשרת (ס״מ)"
+                              : "Necklace length (cm)"}
+                          </label>
+                          <select
+                            value={selectedOptions["length"] ?? ""}
+                            onChange={(e) =>
+                              handleOptionChange("length", e.target.value)
+                            }
+                          >
+                            <option value="">
+                              {language === "he" ? "בחר אורך" : "Select Length"}
+                            </option>
+                            {lengthOptions.map(({ size, price }) => (
+                              <option key={size} value={size}>
+                                {language === "en"
+                                  ? `${size} cm`
+                                  : `${size} ס״מ`}
+                                {price > 0 ? ` (+${price} ₪)` : ""}
+                              </option>
+                            ))}
+                          </select>
                         </div>
                       )}
                     </>
@@ -652,7 +734,10 @@ function ProductModal({ product, onClose }) {
                           </span>
                         </div>
                       )}
-                    {isBraceletJewelryType(selectedOptions.jewelryType) &&
+                    {allowsExtraLetters(
+                      product,
+                      selectedOptions.jewelryType,
+                    ) &&
                       extraLetters.length > 0 &&
                       extraLetterPerBraceletCost > 0 && (
                         <div className="price-item addition">

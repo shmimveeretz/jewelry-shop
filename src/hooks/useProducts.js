@@ -12,7 +12,12 @@ export const useProducts = (filters = {}) => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_BASE_URL}/api/products`);
+      const params = new URLSearchParams();
+      if (filters.featured) params.set("featured", "true");
+      if (filters.limit) params.set("limit", String(filters.limit));
+      const query = params.toString() ? `?${params.toString()}` : "";
+
+      const response = await fetch(`${API_BASE_URL}/api/products${query}`);
       const data = await response.json();
 
       if (data.success && data.data) {

@@ -110,7 +110,11 @@ function Shop() {
     }
   }, [products]);
 
-  const filteredProducts = products;
+  const filteredProducts = [...products].sort((a, b) => {
+    if (a.id === "letter-chain") return -1;
+    if (b.id === "letter-chain") return 1;
+    return 0;
+  });
 
   // Get current collection data
   const currentCollection = collections.find(
