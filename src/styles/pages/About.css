@@ -29,14 +29,15 @@
 /* ─── Hero ──────────────────────────────────────────────────────── */
 .about-hero-new {
   position: relative;
-  height: 360vh;
-  min-height: 600px;
+  height: 50vh;
+  min-height: 360px;
+  max-height: 480px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: url("https://res.cloudinary.com/dhayarvh3/image/upload/v1771152040/EverythingBG.jpg")
-    center / cover no-repeat;
+  background: url("https://res.cloudinary.com/dhayarvh3/image/upload/v1771152721/AboutBG.jpg")
+    center 55% / cover no-repeat;
 }
 
 .about-hero-overlay {
@@ -82,7 +83,7 @@
 }
 
 .about-hero-content h1 {
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
   color: var(--color-white);
   line-height: 1.05;
   margin-bottom: var(--spacing-lg);
@@ -100,7 +101,7 @@
 }
 
 .about-hero-scroll {
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-md);
   color: var(--color-secondary);
 }
 
@@ -390,7 +391,10 @@
 
 @media (max-width: 768px) {
   .about-hero-new {
-    height: 70vh;
+    height: 52vh;
+    min-height: 300px;
+    max-height: 400px;
+    background-position: center 60%;
   }
 
   .about-story-section {

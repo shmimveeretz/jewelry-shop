@@ -17,7 +17,6 @@ import {
   FaMoneyBillWave,
   FaArrowUp,
   FaArrowDown,
-  FaFileInvoice,
   FaCog,
   FaStar,
 } from "react-icons/fa";
@@ -25,16 +24,26 @@ import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import ProductForm from "../components/ProductForm";
 import PayPlusDocumentForm from "../components/PayPlusDocumentForm";
-import PayPlusAdminPanel from "../components/PayPlusAdminPanel";
 import NewsletterAdmin from "../components/NewsletterAdmin";
 import CouponStats from "../components/CouponStats";
 import DashboardCharts from "../components/DashboardCharts";
 import CategoryAdmin from "../components/CategoryAdmin";
 import HomeFeaturedAdmin from "../components/HomeFeaturedAdmin";
+import { MAX_MOTD_LENGTH } from "../utils/motd";
 import { getAllProducts, deleteProduct } from "../services/productApi";
 import "../styles/pages/Admin.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+const parseApiResponse = async (response) => {
+  const raw = await response.text();
+  if (!raw) return {};
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { success: false, message: raw };
+  }
+};
 
 function Admin() {
   const { language, t } = useLanguage();
@@ -72,7 +81,9 @@ function Admin() {
 
   // MOTD State
   const [motd, setMotd] = useState("");
+  const [motd2, setMotd2] = useState("");
   const [motdInput, setMotdInput] = useState("");
+  const [motd2Input, setMotd2Input] = useState("");
   const [motdLoading, setMotdLoading] = useState(false);
 
   // Coupons State
@@ -115,10 +126,13 @@ function Admin() {
     const fetchMotd = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/settings/motd`);
-        const data = await response.json();
-        if (data.success && data.motd) {
-          setMotd(data.motd);
-          setMotdInput(data.motd);
+        const data = await parseApiResponse(response);
+        if (!response.ok) return;
+        if (data.success) {
+          setMotd(data.motd || "");
+          setMotd2(data.motd2 || "");
+          setMotdInput(data.motd || "");
+          setMotd2Input(data.motd2 || "");
         }
       } catch (error) {
         console.error("Error fetching MOTD:", error);
@@ -137,11 +151,25 @@ function Admin() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ motd: motdInput }),
+        body: JSON.stringify({ motd: motdInput, motd2: motd2Input }),
       });
-      const data = await response.json();
+      const data = await parseApiResponse(response);
+      if (!response.ok) {
+        showError(
+          data.message ||
+            (response.status === 429
+              ? language === "he"
+                ? "יותר מדי בקשות — נסה שוב בעוד כמה דקות"
+                : "Too many requests — try again in a few minutes"
+              : language === "he"
+                ? "שגיאה בעדכון הבאנר"
+                : "Error updating banner"),
+        );
+        return;
+      }
       if (data.success) {
         setMotd(motdInput);
+        setMotd2(motd2Input);
         showSuccess(
           language === "he"
             ? "הבאנר עודכן בהצלחה"
@@ -887,13 +915,7 @@ function Admin() {
 
         const data = await response.json();
         if (data.success) {
-          setDevices(
-            devices.map((d) =>
-              d.id === deviceId || d._id === deviceId
-                ? { ...d, blocked: newBlocked }
-                : d,
-            ),
-          );
+          await fetchDevices();
           showSuccess(
             language === "he"
               ? `כתובת IP ${device.ipAddress} ${newBlocked ? "חסומה" : "הוסרה מחסימה"} בהצלחה`
@@ -1354,15 +1376,6 @@ function Admin() {
             >
               <FaEnvelope className="nav-icon" />
               {language === "he" ? "ניוזלטר" : "Newsletter"}
-            </button>
-          </li>
-          <li>
-            <button
-              className={`admin-nav-item ${activeTab === "documents" ? "active" : ""}`}
-              onClick={() => setActiveTab("documents")}
-            >
-              <FaFileInvoice className="nav-icon" />
-              {language === "he" ? "מסמכים" : "Documents"}
             </button>
           </li>
           <li>
@@ -2562,8 +2575,8 @@ function Admin() {
                                   ? "בטל חסימה"
                                   : "Unblock"
                                 : language === "he"
-                                  ? "חסום IP"
-                                  : "Block IP"}
+                                  ? "חסום מכשיר"
+                                  : "Block Device"}
                             </button>
                           </div>
                         </td>
@@ -2818,9 +2831,6 @@ function Admin() {
         {/* ───────────────── NEWSLETTER TAB ───────────────── */}
         {activeTab === "newsletter" && <NewsletterAdmin />}
 
-        {/* ───────────────── DOCUMENTS TAB ───────────────── */}
-        {activeTab === "documents" && <PayPlusAdminPanel />}
-
         {/* ───────────────── SETTINGS TAB ───────────────── */}
         {activeTab === "settings" && (
           <>
@@ -2853,61 +2863,145 @@ function Admin() {
                 }}
               >
                 {language === "he"
-                  ? "הטקסט שיוצג בבאנר הגולש בראש האתר. השאר ריק כדי להסתיר את הבאנר."
-                  : "Text displayed in the scrolling banner at the top of the site. Leave empty to hide the banner."}
+                  ? "עד שתי הודעות שיוצגו בבאנר הגולש בראש האתר, מופרדות ב-◆. השאר ריק כדי להסתיר."
+                  : "Up to two messages in the scrolling top banner, separated by ◆. Leave both empty to hide."}
               </p>
-              {motd && (
-                <p
+              {(motd || motd2) && (
+                <div
                   style={{
                     fontSize: "0.82rem",
                     color: "#666",
                     marginBottom: "0.75rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.35rem",
                   }}
                 >
-                  {language === "he" ? "נוכחי: " : "Current: "}
-                  <em
-                    style={{
-                      color: "var(--color-secondary)",
-                      fontStyle: "normal",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {motd}
-                  </em>
-                </p>
+                  {motd && (
+                    <p style={{ margin: 0 }}>
+                      {language === "he" ? "הודעה 1: " : "Message 1: "}
+                      <em
+                        style={{
+                          color: "var(--color-secondary)",
+                          fontStyle: "normal",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {motd}
+                      </em>
+                    </p>
+                  )}
+                  {motd2 && (
+                    <p style={{ margin: 0 }}>
+                      {language === "he" ? "הודעה 2: " : "Message 2: "}
+                      <em
+                        style={{
+                          color: "var(--color-secondary)",
+                          fontStyle: "normal",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {motd2}
+                      </em>
+                    </p>
+                  )}
+                </div>
               )}
               <div
                 style={{
                   display: "flex",
+                  flexDirection: "column",
                   gap: "0.75rem",
-                  alignItems: "center",
-                  flexWrap: "wrap",
                 }}
               >
-                <input
-                  type="text"
-                  value={motdInput}
-                  onChange={(e) => setMotdInput(e.target.value)}
-                  placeholder={
-                    language === "he"
-                      ? "הזן הודעה לבאנר..."
-                      : "Enter banner message..."
-                  }
+                <div
                   style={{
-                    flex: 1,
-                    minWidth: "220px",
-                    padding: "0.55rem 0.9rem",
-                    border: "1px solid #ddd",
-                    borderRadius: "0.5rem",
-                    fontSize: "0.9rem",
-                    outline: "none",
+                    display: "flex",
+                    gap: "0.75rem",
+                    alignItems: "center",
+                    flexWrap: "wrap",
                   }}
-                  onKeyDown={(e) => e.key === "Enter" && handleMotdUpdate()}
-                />
+                >
+                  <label
+                    style={{
+                      minWidth: "4.5rem",
+                      fontSize: "0.82rem",
+                      color: "#666",
+                    }}
+                  >
+                    {language === "he" ? "הודעה 1" : "Message 1"}
+                  </label>
+                  <input
+                    type="text"
+                    value={motdInput}
+                    onChange={(e) => setMotdInput(e.target.value)}
+                    maxLength={MAX_MOTD_LENGTH}
+                    placeholder={
+                      language === "he"
+                        ? "הודעה ראשונה..."
+                        : "First message..."
+                    }
+                    style={{
+                      flex: 1,
+                      minWidth: "220px",
+                      padding: "0.55rem 0.9rem",
+                      border: "1px solid #ddd",
+                      borderRadius: "0.5rem",
+                      fontSize: "0.9rem",
+                      outline: "none",
+                    }}
+                  />
+                  <span style={{ fontSize: "0.75rem", color: "#999", whiteSpace: "nowrap" }}>
+                    {motdInput.length}/{MAX_MOTD_LENGTH}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "0.75rem",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <label
+                    style={{
+                      minWidth: "4.5rem",
+                      fontSize: "0.82rem",
+                      color: "#666",
+                    }}
+                  >
+                    {language === "he" ? "הודעה 2" : "Message 2"}
+                  </label>
+                  <input
+                    type="text"
+                    value={motd2Input}
+                    onChange={(e) => setMotd2Input(e.target.value)}
+                    maxLength={MAX_MOTD_LENGTH}
+                    placeholder={
+                      language === "he"
+                        ? "הודעה שנייה (אופציונלי)..."
+                        : "Second message (optional)..."
+                    }
+                    style={{
+                      flex: 1,
+                      minWidth: "220px",
+                      padding: "0.55rem 0.9rem",
+                      border: "1px solid #ddd",
+                      borderRadius: "0.5rem",
+                      fontSize: "0.9rem",
+                      outline: "none",
+                    }}
+                    onKeyDown={(e) => e.key === "Enter" && handleMotdUpdate()}
+                  />
+                  <span style={{ fontSize: "0.75rem", color: "#999", whiteSpace: "nowrap" }}>
+                    {motd2Input.length}/{MAX_MOTD_LENGTH}
+                  </span>
+                </div>
                 <button
                   className="btn-gold"
                   onClick={handleMotdUpdate}
                   disabled={motdLoading}
+                  style={{ alignSelf: "flex-start" }}
                 >
                   {motdLoading
                     ? language === "he"

@@ -104,10 +104,11 @@
 .contact-form-card {
   max-width: 700px;
   margin: 0 auto;
-  background: #ffffff;
+  background: linear-gradient(180deg, #faf8f4 0%, #ffffff 100%);
   padding: 3rem;
   border-radius: 0.75rem;
-  box-shadow: 0 20px 40px -15px rgba(22, 40, 57, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  box-shadow: 0 20px 40px -15px rgba(22, 40, 57, 0.08);
 }
 
 .contact-form {
@@ -130,37 +131,56 @@
 
 .form-group label {
   font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: rgba(44, 62, 80, 0.6);
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
 .required {
   color: #e74c3c;
 }
 
-.form-group input,
-.form-group textarea {
+.contact-form .form-group input,
+.contact-form .form-group textarea {
   width: 100%;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(44, 62, 80, 0.15);
-  padding: 0.75rem 0;
+  background: #ffffff;
+  border: 1px solid rgba(44, 62, 80, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.8rem 1rem;
   font-size: var(--font-size-base);
   font-family: inherit;
-  color: var(--color-primary);
-  transition: border-color 0.3s ease;
+  color: #1f2d3a;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease;
   outline: none;
   box-sizing: border-box;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-  border-bottom-color: var(--color-secondary);
+.contact-form .form-group input::placeholder,
+.contact-form .form-group textarea::placeholder {
+  color: rgba(44, 62, 80, 0.5);
+  opacity: 1;
 }
 
-.form-group textarea {
-  resize: none;
-  min-height: 120px;
+.contact-form .form-group input:focus,
+.contact-form .form-group textarea:focus {
+  border-color: var(--color-secondary);
+  background: #fffefb;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+.contact-form .form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.contact-form .form-group input:-webkit-autofill,
+.contact-form .form-group input:-webkit-autofill:hover,
+.contact-form .form-group input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #1f2d3a;
+  box-shadow: 0 0 0 1000px #ffffff inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 .status-message {

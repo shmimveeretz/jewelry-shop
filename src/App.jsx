@@ -85,7 +85,6 @@ function DeviceTracker() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ipAddress: geo.ip,
             location: {
               city: geo.city || "",
               country: geo.country_name || "",
