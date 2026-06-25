@@ -64,25 +64,30 @@ function CouponStats() {
               </tr>
             </thead>
             <tbody>
-              {stats.map((row) => (
-                <tr key={row.code}>
-                  <td>
-                    <code
-                      style={{
-                        fontWeight: 700,
-                        letterSpacing: "0.08rem",
-                        color: "var(--color-secondary)",
-                      }}
-                    >
-                      {row.code}
-                    </code>
-                  </td>
-                  <td style={{ fontWeight: 600 }}>{row.uses ?? row.count ?? 0}</td>
-                  <td style={{ fontWeight: 600 }}>
-                    ₪{(row.revenue ?? row.totalRevenue ?? 0).toLocaleString()}
-                  </td>
-                </tr>
-              ))}
+              {stats.map((row) => {
+                const code = row.code ?? row.couponCode ?? "";
+                const uses = row.uses ?? row.usageCount ?? row.count ?? 0;
+                const revenue = row.revenue ?? row.totalRevenue ?? 0;
+                return (
+                  <tr key={code}>
+                    <td>
+                      <code
+                        style={{
+                          fontWeight: 700,
+                          letterSpacing: "0.08rem",
+                          color: "var(--color-secondary)",
+                        }}
+                      >
+                        {code}
+                      </code>
+                    </td>
+                    <td style={{ fontWeight: 600 }}>{uses}</td>
+                    <td style={{ fontWeight: 600 }}>
+                      ₪{revenue.toLocaleString()}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

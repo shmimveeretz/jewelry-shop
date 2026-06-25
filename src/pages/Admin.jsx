@@ -1521,8 +1521,21 @@ function Admin() {
                         {(dashboardStats?.visits?.count ?? 0).toLocaleString()}
                       </p>
                       <p className="stat-label">
-                        {language === "he" ? "ביקורים" : "Site Visits"}
+                        {language === "he" ? "מבקרים בתקופה" : "Visitors (period)"}
                       </p>
+                      {(dashboardStats?.visits?.total ?? 0) > 0 && (
+                        <p
+                          style={{
+                            color: "#888",
+                            fontSize: "0.75rem",
+                            margin: "0.15rem 0 0",
+                          }}
+                        >
+                          {language === "he"
+                            ? `סה״כ מבקרים ייחודיים: ${dashboardStats.visits.total.toLocaleString()}`
+                            : `Total unique visitors: ${dashboardStats.visits.total.toLocaleString()}`}
+                        </p>
+                      )}
                       {dashboardStats?.visits?.trend !== undefined && (
                         <span
                           className={`stat-trend ${dashboardStats.visits.trend >= 0 ? "trend-up" : "trend-down"}`}
