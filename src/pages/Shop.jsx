@@ -1,9 +1,10 @@
 ﻿import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/pages/Shop.css";
 import ProductModal from "../components/ProductModal";
 import { useProducts } from "../hooks/useProducts";
 import { useLanguage } from "../contexts/LanguageContext";
+import { productMatchesZodiac } from "../utils/zodiacFilter";
 
 // Calculate the min and max possible price for a product given its priceAdditions
 function getProductPriceRange(product) {
@@ -35,20 +36,40 @@ const ALL_COLLECTION = {
 function Shop() {
   const { t, language } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState("הכל");
+  const [zodiacFilter, setZodiacFilter] = useState(null);
   const [apiCategories, setApiCategories] = useState([]);
 
-  // Handle category filter from URL query params or navigation state
+  // Handle category / zodiac filters from URL or navigation state
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const categoryParam = params.get("category");
+    const zodiacParam = params.get("zodiac");
+
+    if (zodiacParam) {
+      setZodiacFilter(zodiacParam);
+      setSelectedCollection("הכל");
+      return;
+    }
+
+    if (location.state?.zodiacFilter) {
+      const sign = location.state.zodiacFilter;
+      setZodiacFilter(sign);
+      setSelectedCollection("הכל");
+      navigate(`/shop?zodiac=${encodeURIComponent(sign)}`, {
+        replace: true,
+        state: null,
+      });
+      return;
+    }
+
+    setZodiacFilter(null);
     if (categoryParam) {
       setSelectedCollection(categoryParam);
-    } else if (location.state?.zodiacFilter) {
-      setSelectedCollection("תליוני מזלות");
     }
-  }, [location.search, location.state]);
+  }, [location.search, location.state, navigate]);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/categories`)
@@ -96,25 +117,80 @@ function Shop() {
 
   const { products, loading, error } = useProducts(apiFilters);
 
-  // Debug: Log products when they load
   useEffect(() => {
-    if (products.length > 0) {
-      console.log("📦 Products loaded from API:", products);
-      console.log("🖼️ First product structure:", {
-        name: products[0]?.name,
-        images: products[0]?.images,
-        firstImage: Array.isArray(products[0]?.images)
-          ? products[0]?.images[0]
-          : "No images",
-      });
-    }
-  }, [products]);
+    if (!zodiacFilter || loading) return;
 
-  const filteredProducts = [...products].sort((a, b) => {
-    if (a.id === "letter-chain") return -1;
-    if (b.id === "letter-chain") return 1;
-    return 0;
-  });
+    const withZodiacSign = products.filter((p) => p.zodiacSign).length;
+    const withZodiac = products.filter((p) => p.zodiac).length;
+    const withZodiacSigns = products.filter(
+      (p) => Array.isArray(p.zodiacSigns) && p.zodiacSigns.length > 0,
+    ).length;
+    const matched = products.filter((p) =>
+      productMatchesZodiac(p, zodiacFilter),
+    );
+
+    // #region agent log
+    fetch("http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "797a8e",
+      },
+      body: JSON.stringify({
+        sessionId: "797a8e",
+        runId: "post-fix",
+        hypothesisId: "H1-format-strips-zodiac",
+        location: "Shop.jsx:zodiacFilter",
+        message: "Zodiac filter runtime",
+        data: {
+          zodiacFilter,
+          totalProducts: products.length,
+          withZodiacSign,
+          withZodiac,
+          withZodiacSigns,
+          matchedCount: matched.length,
+          matchedIds: matched.slice(0, 8).map((p) => p.id),
+          sampleCancer: products.find((p) => p.id === "cancer-pendant")
+            ? {
+                id: "cancer-pendant",
+                zodiacSign: products.find((p) => p.id === "cancer-pendant")
+                  .zodiacSign,
+                zodiac: products.find((p) => p.id === "cancer-pendant").zodiac,
+              }
+            : null,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+  }, [products, zodiacFilter, loading]);
+
+  const filteredProducts = [...products]
+    .filter((product) => productMatchesZodiac(product, zodiacFilter))
+    .sort((a, b) => {
+      if (a.id === "letter-chain") return -1;
+      if (b.id === "letter-chain") return 1;
+      return 0;
+    });
+
+  const clearZodiacFilter = () => {
+    setZodiacFilter(null);
+    navigate("/shop", { replace: true });
+  };
+
+  const handleCollectionChange = (collectionId) => {
+    setSelectedCollection(collectionId);
+    if (zodiacFilter) {
+      setZodiacFilter(null);
+      if (collectionId === "הכל") {
+        navigate("/shop", { replace: true });
+      } else {
+        navigate(`/shop?category=${encodeURIComponent(collectionId)}`, {
+          replace: true,
+        });
+      }
+    }
+  };
 
   // Get current collection data
   const currentCollection = collections.find(
@@ -169,12 +245,29 @@ function Shop() {
                     className={`collection-btn ${
                       selectedCollection === collection.id ? "active" : ""
                     }`}
-                    onClick={() => setSelectedCollection(collection.id)}
+                    onClick={() => handleCollectionChange(collection.id)}
                   >
                     <span>{collection.name}</span>
                   </button>
                 ))}
               </div>
+
+              {zodiacFilter && (
+                <div className="shop-zodiac-filter">
+                  <span>
+                    {language === "he"
+                      ? `מציג תכשיטים למזל ${zodiacFilter}`
+                      : `Showing jewelry for ${zodiacFilter}`}
+                  </span>
+                  <button
+                    type="button"
+                    className="shop-zodiac-filter-clear"
+                    onClick={clearZodiacFilter}
+                  >
+                    {language === "he" ? "הסר סינון" : "Clear filter"}
+                  </button>
+                </div>
+              )}
             </div>
 
             {loading ? (

@@ -282,7 +282,8 @@ function Zodiac() {
   };
 
   const handleViewProducts = () => {
-    navigate("/shop", { state: { zodiacFilter: selectedZodiac.name } });
+    if (!selectedZodiac) return;
+    navigate(`/shop?zodiac=${encodeURIComponent(selectedZodiac.name)}`);
   };
 
   return (
