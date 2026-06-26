@@ -116,11 +116,65 @@ function PaymentSuccess() {
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
+        const payload = {
+          paymentPageRequestUid: transactionUid,
+          orderData: pendingOrder,
+        };
+
+        // #region agent log
+        fetch(
+          "http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Debug-Session-Id": "797a8e",
+            },
+            body: JSON.stringify({
+              sessionId: "797a8e",
+              location: "PaymentSuccess.jsx:before-verify",
+              message: "calling verify-transaction",
+              data: {
+                transactionUid,
+                hasPendingOrder: Boolean(pendingOrder?.items?.length),
+                pendingItemCount: pendingOrder?.items?.length ?? 0,
+              },
+              hypothesisId: "H1-field-mismatch",
+              timestamp: Date.now(),
+            }),
+          },
+        ).catch(() => {});
+        // #endregion
+
         const { data } = await axios.post(
           `${API_BASE_URL}/api/orders/verify-transaction`,
-          { transactionUid, ...pendingOrder },
+          payload,
           { headers },
         );
+
+        // #region agent log
+        fetch(
+          "http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Debug-Session-Id": "797a8e",
+            },
+            body: JSON.stringify({
+              sessionId: "797a8e",
+              location: "PaymentSuccess.jsx:after-verify",
+              message: "verify-transaction response",
+              data: {
+                success: data?.success,
+                orderId: data?.data?._id ?? data?.data?.id ?? null,
+              },
+              hypothesisId: "H3-db-save",
+              timestamp: Date.now(),
+            }),
+          },
+        ).catch(() => {});
+        // #endregion
 
         if (!data.success) {
           throw new Error(
@@ -132,7 +186,12 @@ function PaymentSuccess() {
         }
 
         setOrderDetails({
-          orderId: data.orderId ?? data.data?.orderId ?? null,
+          orderId:
+            data.orderId ??
+            data.data?._id ??
+            data.data?.id ??
+            data.data?.orderId ??
+            null,
           transactionUid,
           amount: data.amount ?? pendingOrder.amount,
           customerName: data.customerName ?? pendingOrder.customerName,
@@ -149,6 +208,30 @@ function PaymentSuccess() {
         setPhase("success");
       } catch (err) {
         console.error("PaymentSuccess error:", err);
+        // #region agent log
+        fetch(
+          "http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Debug-Session-Id": "797a8e",
+            },
+            body: JSON.stringify({
+              sessionId: "797a8e",
+              location: "PaymentSuccess.jsx:error",
+              message: "verify-transaction failed",
+              data: {
+                status: err.response?.status ?? null,
+                apiMessage:
+                  err.response?.data?.message || err.message || "unknown",
+              },
+              hypothesisId: "H1-field-mismatch",
+              timestamp: Date.now(),
+            }),
+          },
+        ).catch(() => {});
+        // #endregion
         setError(
           err.response?.data?.message ||
             err.response?.data?.error ||

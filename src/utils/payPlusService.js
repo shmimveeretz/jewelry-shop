@@ -20,7 +20,7 @@ export const payPlusService = {
         customerPhone: paymentData.customerPhone,
 
         // Order items — backend derives the total from these
-        orderItems: paymentData.orderItems,
+        orderItems: paymentData.orderItems || paymentData.items,
 
         // Shipping address — fallback source for customer info
         shippingAddress: paymentData.shippingAddress,

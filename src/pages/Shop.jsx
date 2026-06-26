@@ -117,54 +117,6 @@ function Shop() {
 
   const { products, loading, error } = useProducts(apiFilters);
 
-  useEffect(() => {
-    if (!zodiacFilter || loading) return;
-
-    const withZodiacSign = products.filter((p) => p.zodiacSign).length;
-    const withZodiac = products.filter((p) => p.zodiac).length;
-    const withZodiacSigns = products.filter(
-      (p) => Array.isArray(p.zodiacSigns) && p.zodiacSigns.length > 0,
-    ).length;
-    const matched = products.filter((p) =>
-      productMatchesZodiac(p, zodiacFilter),
-    );
-
-    // #region agent log
-    fetch("http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "797a8e",
-      },
-      body: JSON.stringify({
-        sessionId: "797a8e",
-        runId: "post-fix",
-        hypothesisId: "H1-format-strips-zodiac",
-        location: "Shop.jsx:zodiacFilter",
-        message: "Zodiac filter runtime",
-        data: {
-          zodiacFilter,
-          totalProducts: products.length,
-          withZodiacSign,
-          withZodiac,
-          withZodiacSigns,
-          matchedCount: matched.length,
-          matchedIds: matched.slice(0, 8).map((p) => p.id),
-          sampleCancer: products.find((p) => p.id === "cancer-pendant")
-            ? {
-                id: "cancer-pendant",
-                zodiacSign: products.find((p) => p.id === "cancer-pendant")
-                  .zodiacSign,
-                zodiac: products.find((p) => p.id === "cancer-pendant").zodiac,
-              }
-            : null,
-        },
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion
-  }, [products, zodiacFilter, loading]);
-
   const filteredProducts = [...products]
     .filter((product) => productMatchesZodiac(product, zodiacFilter))
     .sort((a, b) => {
