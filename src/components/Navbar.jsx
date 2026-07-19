@@ -149,17 +149,17 @@ function Navbar() {
                   }}
                 >
                   {language === "he"
-                    ? "מזל, אבן חושן וכוכב"
+                    ? "כוכב, מזל ואבן חושן"
                     : "Trinity Pendants"}
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/shop?category=שילת"
-                  className={isActive("/shop?category=שילת")}
+                  to="/shop?category=סמלי בני ישראל"
+                  className={isActive("/shop?category=סמלי בני ישראל")}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {language === "he" ? "שילת" : "Shilat"}
+                  {language === "he" ? "סמלי בני ישראל" : "Symbols of Israel"}
                 </Link>
               </li>
             </ul>
@@ -171,6 +171,15 @@ function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               {t("zodiac")}
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/track-order"
+              className={isActive("/track-order")}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {language === "he" ? "מעקב הזמנה" : "Track Order"}
             </Link>
           </li>
           <li>

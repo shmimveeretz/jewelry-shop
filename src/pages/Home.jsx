@@ -24,13 +24,9 @@ function Home() {
   const { products: allProducts } = useProducts();
   const topProducts = featuredProducts.slice(0, 4);
 
-  // Get Trinity Pendants
+  // Get Trinity Pendants (filter by product category slug)
   const trinityProducts = allProducts
-    .filter(
-      (product) =>
-        product.category === "מזל, אבן חושן וכוכב" ||
-        product.category === "Trinity Pendants",
-    )
+    .filter((product) => product.category === "שלישיות מיוחדות")
     .slice(0, 4);
 
   const features = [
@@ -206,12 +202,12 @@ function Home() {
             <div className="section-header centered">
               <h2 className="section-title">
                 {language === "he"
-                  ? "תכשיטי השלישיות - מזל, אבן חושן וכוכב"
-                  : "Trinity Pendants - Zodiac, Hoshen & Star"}
+                  ? "כוכב, מזל ואבן חושן"
+                  : "Star, Zodiac & Hoshen Stone"}
               </h2>
               <p className="section-subtitle">
                 {language === "he"
-                  ? "מזלות, חושן ומגן דוד - הסמלים המלווים את העם היהודי לדורותיו"
+                  ? "מזלות, חושן וכוכב — הסמלים המלווים את העם היהודי לדורותיו"
                   : "Zodiac, Hoshen & Star — symbols guiding the Jewish people through the generations"}
               </p>
             </div>

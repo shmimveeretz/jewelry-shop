@@ -65,6 +65,11 @@ function Footer() {
             <h3>{t("customerService")}</h3>
             <ul>
               <li>
+                <Link to="/track-order">
+                  {language === "he" ? "מעקב הזמנה" : "Track Order"}
+                </Link>
+              </li>
+              <li>
                 <Link to="/shipping-policy">
                   {language === "he" ? "מדיניות משלוחים" : "Shipping Policy"}
                 </Link>

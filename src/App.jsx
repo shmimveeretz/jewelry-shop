@@ -148,6 +148,7 @@ const ReturnPolicy = lazy(() => import("./pages/ReturnPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const Accessibility = lazy(() => import("./pages/Accessibility"));
+const TrackOrder = lazy(() => import("./pages/TrackOrder"));
 
 function App() {
   return (
@@ -224,6 +225,7 @@ function App() {
                     />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/accessibility" element={<Accessibility />} />
+                    <Route path="/track-order" element={<TrackOrder />} />
                   </Routes>
                 </Suspense>
               </main>

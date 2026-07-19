@@ -340,8 +340,8 @@ function PaymentSuccess() {
                 </li>
                 <li>
                   {he
-                    ? "תקבל מספר מעקב כשהחבילה תישלח"
-                    : "You'll get a tracking number when your order ships"}
+                    ? "ניתן לעקוב אחרי סטטוס ההזמנה בעמוד מעקב הזמנה"
+                    : "You can track your order status on the Track Order page"}
                 </li>
               </ul>
             </div>
@@ -359,8 +359,20 @@ function PaymentSuccess() {
 
         {/* ── Actions ──────────────────────────────────────────────────── */}
         <div className="ps-actions">
+          {orderDetails?.orderId && (
+            <button
+              className="ps-btn ps-btn--primary"
+              onClick={() =>
+                navigate(
+                  `/track-order?orderId=${encodeURIComponent(orderDetails.orderId)}`,
+                )
+              }
+            >
+              {he ? "עקוב אחרי ההזמנה" : "Track Order"}
+            </button>
+          )}
           <button
-            className="ps-btn ps-btn--primary"
+            className={`ps-btn ${orderDetails?.orderId ? "ps-btn--secondary" : "ps-btn--primary"}`}
             onClick={() => navigate("/")}
           >
             {he ? "חזרה לדף הבית" : "Back to Home"}

@@ -48,6 +48,10 @@ function Shop() {
     const categoryParam = params.get("category");
     const zodiacParam = params.get("zodiac");
 
+    // #region agent log
+    fetch('http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e05af8'},body:JSON.stringify({sessionId:'e05af8',runId:'pre-fix',hypothesisId:'A',location:'Shop.jsx:urlEffect',message:'URL category effect',data:{search:location.search,categoryParam,zodiacParam,selectedCollectionBefore:selectedCollection},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
+
     if (zodiacParam) {
       setZodiacFilter(zodiacParam);
       setSelectedCollection("הכל");
@@ -66,7 +70,19 @@ function Shop() {
     }
 
     setZodiacFilter(null);
+    if (categoryParam === "שילת") {
+      // #region agent log
+      fetch('http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e05af8'},body:JSON.stringify({sessionId:'e05af8',runId:'pre-fix',hypothesisId:'B',location:'Shop.jsx:shilatRedirect',message:'Hit שילת redirect branch',data:{from:categoryParam,to:'סמלי בני ישראל'},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
+      navigate(`/shop?category=${encodeURIComponent("סמלי בני ישראל")}`, {
+        replace: true,
+      });
+      return;
+    }
     if (categoryParam) {
+      // #region agent log
+      fetch('http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e05af8'},body:JSON.stringify({sessionId:'e05af8',runId:'pre-fix',hypothesisId:'C',location:'Shop.jsx:setCollection',message:'Setting selectedCollection from URL',data:{categoryParam},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
       setSelectedCollection(categoryParam);
     }
   }, [location.search, location.state, navigate]);
@@ -117,11 +133,47 @@ function Shop() {
 
   const { products, loading, error } = useProducts(apiFilters);
 
+  // #region agent log
+  useEffect(() => {
+    const cats = {};
+    for (const p of products) {
+      cats[p.category] = (cats[p.category] || 0) + 1;
+    }
+    fetch('http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e05af8'},body:JSON.stringify({sessionId:'e05af8',runId:'pre-fix',hypothesisId:'D',location:'Shop.jsx:productsState',message:'Products vs selectedCollection',data:{selectedCollection,apiFilterCategory:apiFilters.category,productCount:products.length,categoryCounts:cats,loading,error,hasSymbolsCat:apiCategories.some((c)=>c.slug==='סמלי בני ישראל'),hasShilatCat:apiCategories.some((c)=>c.slug==='שילת')},timestamp:Date.now()})}).catch(()=>{});
+  }, [products, selectedCollection, apiFilters.category, loading, error, apiCategories]);
+  // #endregion
+
+  const STAR_DISPLAY_ORDER = [
+    "maadim",
+    "venus",
+    "kochav-chama",
+    "yareach",
+    "shemesh",
+    "tzedek",
+    "saturn",
+  ];
+
   const filteredProducts = [...products]
     .filter((product) => productMatchesZodiac(product, zodiacFilter))
     .sort((a, b) => {
       if (a.id === "letter-chain") return -1;
       if (b.id === "letter-chain") return 1;
+
+      if (selectedCollection === "אותיות עבריות") {
+        if (a.letter && b.letter) {
+          return a.letter.localeCompare(b.letter, "he");
+        }
+        return (a.gematria ?? 9999) - (b.gematria ?? 9999);
+      }
+
+      if (selectedCollection === "כוכבים") {
+        const ai = STAR_DISPLAY_ORDER.indexOf(a.id);
+        const bi = STAR_DISPLAY_ORDER.indexOf(b.id);
+        const aOrder = ai === -1 ? (a.sortOrder ?? 999) : ai;
+        const bOrder = bi === -1 ? (b.sortOrder ?? 999) : bi;
+        return aOrder - bOrder;
+      }
+
       return 0;
     });
 
@@ -276,6 +328,32 @@ function Shop() {
                           ? product.nameEn
                           : product.name}
                       </h3>
+                      {(product.category === "סמלי בני ישראל" ||
+                        selectedCollection === "סמלי בני ישראל") &&
+                        (language === "he"
+                          ? product.quoteHe
+                          : product.quoteEn || product.quoteHe) && (
+                          <p className="product-card-quote">
+                            <em>
+                              "
+                              {language === "he"
+                                ? product.quoteHe
+                                : product.quoteEn || product.quoteHe}
+                              "
+                            </em>
+                            {(language === "he"
+                              ? product.sourceHe
+                              : product.sourceEn || product.sourceHe) && (
+                              <span className="product-card-quote-source">
+                                {" "}
+                                —{" "}
+                                {language === "he"
+                                  ? product.sourceHe
+                                  : product.sourceEn || product.sourceHe}
+                              </span>
+                            )}
+                          </p>
+                        )}
                       <div className="product-price">
                         {(() => {
                           const { min, max } = getProductPriceRange(product);

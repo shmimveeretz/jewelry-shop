@@ -239,6 +239,25 @@
   color: var(--color-secondary);
 }
 
+.product-card-quote {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-light);
+  margin: 0;
+  max-width: 28ch;
+}
+
+.product-card-quote em {
+  font-style: italic;
+}
+
+.product-card-quote-source {
+  display: inline;
+  font-style: normal;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
 .product-price {
   font-size: 1rem;
   color: var(--color-text-light);
