@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
@@ -39,6 +39,40 @@ function resolvePublicOrderId(data, searchParams, pendingOrder) {
     data?.data?._id ||
     data?.data?.id ||
     null
+  );
+}
+
+// ── Confetti ──────────────────────────────────────────────────────────────────
+
+const CONFETTI_COLORS = ["#735c00", "#e9c349", "#162839", "#e8e8e3"];
+
+function Confetti() {
+  const pieces = useMemo(
+    () =>
+      Array.from({ length: 40 }, (_, i) => ({
+        left: Math.random() * 100,
+        duration: 2 + Math.random() * 2,
+        delay: Math.random() * 2,
+        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      })),
+    [],
+  );
+
+  return (
+    <div className="ps-confetti" aria-hidden="true">
+      {pieces.map((p, i) => (
+        <span
+          key={i}
+          className="ps-confetti__piece"
+          style={{
+            left: `${p.left}vw`,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+            backgroundColor: p.color,
+          }}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -259,51 +293,67 @@ function PaymentSuccess() {
     );
 
   const he = language === "he";
+  const addr = orderDetails?.shippingAddress;
 
   return (
-    <div className="ps-page">
+    <div className="ps-page ps-page--success">
+      <Confetti />
+
       <div className="ps-card ps-card--success">
-        {/* ── Animated checkmark ──────────────────────────────────────── */}
-        <div className="ps-checkmark-wrap">
-          <svg className="ps-checkmark" viewBox="0 0 52 52" aria-hidden="true">
-            <circle
-              className="ps-checkmark__circle"
-              cx="26"
-              cy="26"
-              r="25"
-              fill="none"
-            />
-            <path
-              className="ps-checkmark__check"
-              fill="none"
-              d="M14.1 27.2l7.1 7.2 16.7-16.8"
-            />
-          </svg>
-        </div>
+        {/* ── Hero ─────────────────────────────────────────────────────── */}
+        <section className="ps-hero ps-fade ps-fade--1">
+          <div className="ps-hero__badge">
+            <svg
+              className="ps-checkmark"
+              viewBox="0 0 52 52"
+              aria-hidden="true"
+            >
+              <circle
+                className="ps-checkmark__circle"
+                cx="26"
+                cy="26"
+                r="25"
+                fill="none"
+              />
+              <path
+                className="ps-checkmark__check"
+                fill="none"
+                d="M14.1 27.2l7.1 7.2 16.7-16.8"
+              />
+            </svg>
+          </div>
+          <h1 className="ps-title ps-title--success">
+            {he ? "התשלום בוצע בהצלחה" : "Payment Successful"}
+          </h1>
+          <p className="ps-subtitle">
+            {he
+              ? "תודה על ההזמנה! שלחנו אליך אישור למייל עם מספר המעקב."
+              : "Thank you for your order! We sent a confirmation email with your tracking number."}
+          </p>
+          {countdown !== null && (
+            <p className="ps-countdown">
+              <span className="ps-countdown__icon" aria-hidden="true">
+                ⏱
+              </span>
+              {he
+                ? `מועבר לדף הבית בעוד ${countdown} שניות…`
+                : `Redirecting in ${countdown}s…`}
+            </p>
+          )}
+        </section>
 
-        {/* ── Hero copy ────────────────────────────────────────────────── */}
-        <h1 className="ps-title ps-title--success">
-          {he ? "תודה על ההזמנה!" : "Thank You for Your Order!"}
-        </h1>
-        <p className="ps-subtitle">
-          {he
-            ? "ההזמנה התקבלה בהצלחה. שלחנו אליך אישור למייל עם מספר המעקב."
-            : "Your order was received successfully. We sent a confirmation email with your tracking number."}
-        </p>
-
-        {/* ── Order summary ────────────────────────────────────────────── */}
+        {/* ── Summary + Shipping (side by side on desktop) ─────────────── */}
         {orderDetails && (
-          <div className="ps-summary">
-            {/* Transaction / order IDs */}
-            <div className="ps-summary__section">
-              <h3 className="ps-summary__heading">
-                {he ? "פרטי עסקה" : "Transaction Details"}
+          <div className="ps-panels ps-fade ps-fade--2">
+            <div className="ps-panel">
+              <h3 className="ps-panel__heading">
+                {he ? "סיכום הזמנה" : "Order Summary"}
               </h3>
 
               {orderDetails.orderId && (
                 <div className="ps-row">
                   <span className="ps-row__label">
-                    {he ? "מספר מעקב הזמנה:" : "Tracking #:"}
+                    {he ? "מספר מעקב" : "Tracking #"}
                   </span>
                   <span className="ps-row__value ps-row__value--mono">
                     {orderDetails.orderId}
@@ -314,7 +364,7 @@ function PaymentSuccess() {
               {orderDetails.transactionUid && (
                 <div className="ps-row">
                   <span className="ps-row__label">
-                    {he ? "מזהה עסקה:" : "Transaction ID:"}
+                    {he ? "מזהה עסקה" : "Transaction ID"}
                   </span>
                   <span className="ps-row__value ps-row__value--mono ps-row__value--truncate">
                     {orderDetails.transactionUid}
@@ -323,9 +373,9 @@ function PaymentSuccess() {
               )}
 
               {orderDetails.amount != null && orderDetails.amount !== "" && (
-                <div className="ps-row ps-row--total">
+                <div className="ps-row">
                   <span className="ps-row__label">
-                    {he ? "סכום שולם:" : "Amount Paid:"}
+                    {he ? "סכום שולם" : "Amount Paid"}
                   </span>
                   <span className="ps-row__value ps-row__value--amount">
                     {fmt(orderDetails.amount)} ₪
@@ -336,103 +386,74 @@ function PaymentSuccess() {
               {orderDetails.email && (
                 <div className="ps-row">
                   <span className="ps-row__label">
-                    {he ? "אישור נשלח ל:" : "Confirmation to:"}
+                    {he ? "אישור נשלח ל" : "Confirmation"}
                   </span>
-                  <span className="ps-row__value">{orderDetails.email}</span>
+                  <span className="ps-row__value ps-row__value--truncate">
+                    {orderDetails.email}
+                  </span>
                 </div>
               )}
             </div>
 
-            {/* Items list */}
-            {orderDetails.items?.length > 0 && (
-              <div className="ps-summary__section">
-                <h3 className="ps-summary__heading">
-                  {he ? "מוצרים שנרכשו" : "Items Purchased"}
-                </h3>
-                <ul className="ps-items">
-                  {orderDetails.items.map((item, i) => (
-                    <li key={i} className="ps-item">
-                      {item.image && (
-                        <img
-                          className="ps-item__img"
-                          src={item.image}
-                          alt={item.name}
-                          loading="lazy"
-                        />
-                      )}
-                      <span className="ps-item__name">{item.name}</span>
-                      <span className="ps-item__qty">×{item.quantity}</span>
-                      {item.price != null && (
-                        <span className="ps-item__price">
-                          {fmt(item.price)} ₪
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Shipping address */}
-            {orderDetails.shippingAddress && (
-              <div className="ps-summary__section">
-                <h3 className="ps-summary__heading">
-                  {he ? "כתובת למשלוח" : "Shipping Address"}
+            {addr && (
+              <div className="ps-panel">
+                <h3 className="ps-panel__heading">
+                  {he ? "כתובת למשלוח" : "Shipping Destination"}
                 </h3>
                 <address className="ps-address">
                   {[
-                    orderDetails.shippingAddress.fullName ||
-                      orderDetails.shippingAddress.name,
-                    orderDetails.shippingAddress.street ||
-                      orderDetails.shippingAddress.address,
-                    orderDetails.shippingAddress.city,
-                    orderDetails.shippingAddress.zip ||
-                      orderDetails.shippingAddress.zipCode,
-                    orderDetails.shippingAddress.country,
+                    addr.fullName || addr.name,
+                    addr.street || addr.address,
+                    addr.city,
+                    addr.zip || addr.zipCode,
+                    addr.country,
                   ]
                     .filter(Boolean)
-                    .join(", ")}
+                    .map((line, i) => (
+                      <span key={i} className="ps-address__line">
+                        {line}
+                      </span>
+                    ))}
                 </address>
               </div>
             )}
-
-            {/* Next steps */}
-            <div className="ps-next-steps">
-              <h3 className="ps-next-steps__heading">
-                {he ? "מה הלאה?" : "What's Next?"}
-              </h3>
-              <ul className="ps-next-steps__list">
-                <li>
-                  {he
-                    ? "שלחנו אישור הזמנה ומספר מעקב למייל שלך"
-                    : "We sent an order confirmation and tracking number to your email"}
-                </li>
-                <li>
-                  {he
-                    ? "נתחיל להכין את ההזמנה שלך בהקדם"
-                    : "We'll start preparing your order shortly"}
-                </li>
-                <li>
-                  {he
-                    ? "ניתן לעקוב אחרי סטטוס ההזמנה בעמוד מעקב הזמנה"
-                    : "You can track your order status on the Track Order page"}
-                </li>
-              </ul>
-            </div>
           </div>
         )}
 
-        {/* ── Countdown ────────────────────────────────────────────────── */}
-        {countdown !== null && (
-          <p className="ps-countdown">
-            {he
-              ? `מועבר לדף הבית בעוד ${countdown} שניות…`
-              : `Redirecting to home in ${countdown} seconds…`}
-          </p>
+        {/* ── Items purchased ──────────────────────────────────────────── */}
+        {orderDetails?.items?.length > 0 && (
+          <section className="ps-panel ps-fade ps-fade--3">
+            <h3 className="ps-panel__heading">
+              {he ? "מוצרים שנרכשו" : "Items Purchased"}
+            </h3>
+            <ul className="ps-items">
+              {orderDetails.items.map((item, i) => (
+                <li key={i} className="ps-item">
+                  {item.image && (
+                    <img
+                      className="ps-item__img"
+                      src={item.image}
+                      alt={item.name}
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="ps-item__info">
+                    <h4 className="ps-item__name">{item.name}</h4>
+                    <p className="ps-item__qty">
+                      {he ? "כמות" : "Qty"}: {item.quantity}
+                    </p>
+                  </div>
+                  {item.price != null && (
+                    <span className="ps-item__price">{fmt(item.price)} ₪</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
 
         {/* ── Actions ──────────────────────────────────────────────────── */}
-        <div className="ps-actions">
+        <section className="ps-actions ps-fade ps-fade--4">
           {orderDetails?.orderId && (
             <button
               className="ps-btn ps-btn--primary"
@@ -446,18 +467,12 @@ function PaymentSuccess() {
             </button>
           )}
           <button
-            className={`ps-btn ${orderDetails?.orderId ? "ps-btn--secondary" : "ps-btn--primary"}`}
-            onClick={() => navigate("/")}
-          >
-            {he ? "חזרה לדף הבית" : "Back to Home"}
-          </button>
-          <button
-            className="ps-btn ps-btn--secondary"
+            className={`ps-btn ${orderDetails?.orderId ? "ps-btn--gold" : "ps-btn--primary"}`}
             onClick={() => navigate("/shop")}
           >
             {he ? "המשך קניות" : "Continue Shopping"}
           </button>
-        </div>
+        </section>
       </div>
     </div>
   );
