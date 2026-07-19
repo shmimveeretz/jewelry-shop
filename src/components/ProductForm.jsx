@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
 import {
   createProductWithImage,
   updateProductWithImage,
@@ -8,7 +9,11 @@ import "../styles/productForm.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-export default function ProductForm({ onSuccess, initialProduct = null }) {
+export default function ProductForm({
+  onSuccess,
+  initialProduct = null,
+  onCancel,
+}) {
   const { language } = useLanguage();
   const L = (he, en) => (language === "en" ? en : he);
   const [categories, setCategories] = useState([]);
@@ -36,6 +41,8 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [dragOver, setDragOver] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/categories`)
@@ -46,14 +53,29 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
       .catch(() => {});
   }, []);
 
+  const applyImageFile = (file) => {
+    if (!file || !file.type?.startsWith("image/")) return;
+    setImage(file);
+    const reader = new FileReader();
+    reader.onload = (ev) => setPreview(ev.target.result);
+    reader.readAsDataURL(file);
+  };
+
   const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(file);
-      const reader = new FileReader();
-      reader.onload = (ev) => setPreview(ev.target.result);
-      reader.readAsDataURL(file);
-    }
+    applyImageFile(e.target.files?.[0]);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    applyImageFile(e.dataTransfer?.files?.[0]);
+  };
+
+  const removeImage = (e) => {
+    e.stopPropagation();
+    setImage(null);
+    setPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleInputChange = (e) => {
@@ -229,10 +251,58 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
 
       <div className="form-group">
         <label>{L("תמונת מוצר", "Product Image")}</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        {preview && (
-          <img src={preview} alt="preview" className="image-preview" />
-        )}
+        <div
+          className={`image-dropzone ${dragOver ? "image-dropzone--over" : ""}`}
+          onClick={() => fileInputRef.current?.click()}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragOver(true);
+          }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={handleDrop}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
+        >
+          <FaCloudUploadAlt className="image-dropzone-icon" />
+          <p className="image-dropzone-text">
+            {L("גררו ושחררו תמונה לכאן או ", "Drag & drop an image here or ")}
+            <span className="image-dropzone-cta">
+              {L("לחצו להעלאה", "click to upload")}
+            </span>
+          </p>
+          <p className="image-dropzone-hint">
+            {L(
+              "פורמטים נתמכים: JPG, PNG, WEBP",
+              "Supported formats: JPG, PNG, WEBP",
+            )}
+          </p>
+          {preview && (
+            <div className="image-preview-wrap">
+              <img src={preview} alt="preview" className="image-preview" />
+              <button
+                type="button"
+                className="image-preview-remove"
+                onClick={removeImage}
+                aria-label={L("הסר תמונה", "Remove image")}
+              >
+                <FaTrash />
+              </button>
+            </div>
+          )}
+        </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          hidden
+        />
       </div>
 
       <details className="form-advanced">
@@ -291,13 +361,29 @@ export default function ProductForm({ onSuccess, initialProduct = null }) {
         </div>
       </details>
 
-      <button type="submit" className="product-form-submit" disabled={loading}>
-        {loading
-          ? L("שומר...", "Saving...")
-          : initialProduct
-            ? L("שמור שינויים", "Save Changes")
-            : L("צור מוצר", "Create Product")}
-      </button>
+      <div className="product-form-footer">
+        {onCancel && (
+          <button
+            type="button"
+            className="product-form-cancel"
+            onClick={onCancel}
+            disabled={loading}
+          >
+            {L("ביטול", "Cancel")}
+          </button>
+        )}
+        <button
+          type="submit"
+          className="product-form-submit"
+          disabled={loading}
+        >
+          {loading
+            ? L("שומר...", "Saving...")
+            : initialProduct
+              ? L("שמירת שינויים", "Save Changes")
+              : L("צור מוצר", "Create Product")}
+        </button>
+      </div>
     </form>
   );
 }

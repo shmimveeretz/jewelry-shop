@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
-import ProductForm from "../components/ProductForm";
+import ProductFormModal from "../components/ProductFormModal";
 import PayPlusDocumentForm from "../components/PayPlusDocumentForm";
 import NewsletterAdmin from "../components/NewsletterAdmin";
 import CouponStats from "../components/CouponStats";
@@ -3035,41 +3035,14 @@ function Admin() {
 
       {/* ─── ProductForm Modal (with image upload) ─── */}
       {showProductForm && (
-        <div
-          className="product-form-modal"
-          onClick={() => {
+        <ProductFormModal
+          product={editingProduct}
+          onClose={() => {
             setShowProductForm(false);
             setEditingProduct(null);
           }}
-        >
-          <div
-            className="product-form-container"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => {
-                setShowProductForm(false);
-                setEditingProduct(null);
-              }}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                background: "none",
-                border: "none",
-                fontSize: "24px",
-                cursor: "pointer",
-                zIndex: 10,
-              }}
-            >
-              ✕
-            </button>
-            <ProductForm
-              onSuccess={handleProductFormSuccess}
-              initialProduct={editingProduct}
-            />
-          </div>
-        </div>
+          onSuccess={handleProductFormSuccess}
+        />
       )}
     </div>
   );

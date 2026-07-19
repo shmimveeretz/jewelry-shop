@@ -207,7 +207,7 @@ function Navbar() {
                 className={isActive("/admin")}
                 onClick={() => setIsMenuOpen(false)}
               >
-                {language === "he" ? "📊 ניהול" : "📊 Admin"}
+                {language === "he" ? " ניהול" : " Admin"}
               </Link>
             </li>
           )}

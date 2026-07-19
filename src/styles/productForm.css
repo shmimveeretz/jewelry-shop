@@ -2,94 +2,219 @@
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
   background-color: #fff;
 }
 
 .product-form h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
+  color: var(--color-primary, #2c3e50);
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #43474c);
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #c4c6cd;
+  border-radius: 8px;
   font-size: 16px;
+  font-family: inherit;
+  color: var(--color-text, #141d23);
+  background-color: #f6faff;
   box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  border-color: var(--color-primary, #2c3e50);
+  box-shadow: 0 0 0 1px var(--color-primary, #2c3e50);
 }
 
 .form-group textarea {
   resize: vertical;
   min-height: 100px;
-  font-family: inherit;
+}
+
+/* ── Image dropzone ─────────────────────────────────────────────────── */
+
+.image-dropzone {
+  border: 2px dashed #c4c6cd;
+  border-radius: 12px;
+  padding: 2rem 1rem;
+  text-align: center;
+  background: #f6faff;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.image-dropzone:hover,
+.image-dropzone--over {
+  background: #e6eff8;
+  border-color: var(--color-primary, #2c3e50);
+}
+
+.image-dropzone-icon {
+  font-size: 2.25rem;
+  color: #74777d;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.image-dropzone:hover .image-dropzone-icon,
+.image-dropzone--over .image-dropzone-icon {
+  color: var(--color-primary, #2c3e50);
+}
+
+.image-dropzone-text {
+  margin: 0 0 0.25rem;
+  color: var(--color-text-light, #43474c);
+  font-size: 0.95rem;
+}
+
+.image-dropzone-cta {
+  color: var(--color-primary, #2c3e50);
+  font-weight: 700;
+}
+
+.image-dropzone-hint {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #74777d;
+}
+
+.image-preview-wrap {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin: 1.25rem auto 0;
+  border: 1px solid #c4c6cd;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .image-preview {
-  max-width: 200px;
-  margin-top: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-}
-
-button[type="submit"] {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
   width: 100%;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-button[type="submit"]:hover:not(:disabled) {
-  background-color: #0056b3;
+.image-preview-remove {
+  position: absolute;
+  top: 4px;
+  inset-inline-end: 4px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #ba1a1a;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-button[type="submit"]:disabled {
-  background-color: #ccc;
+.image-preview-remove:hover {
+  background: #fff;
+}
+
+/* ── Footer buttons ─────────────────────────────────────────────────── */
+
+.product-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.product-form-cancel {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #74777d;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text, #141d23);
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.product-form-cancel:hover:not(:disabled) {
+  background: #e6eff8;
+}
+
+.product-form-submit {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--color-primary, #2c3e50);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(22, 40, 57, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.product-form-submit:hover:not(:disabled) {
+  background-color: #36485b;
+}
+
+.product-form-submit:disabled,
+.product-form-cancel:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
+/* ── Misc ───────────────────────────────────────────────────────────── */
+
 .error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 12px;
-  border-radius: 4px;
+  background-color: #ffdad6;
+  color: #93000a;
+  padding: 12px 16px;
+  border-radius: 8px;
   margin-bottom: 20px;
   border: 1px solid #f5c6cb;
 }
 
 .form-hint {
   text-align: center;
-  color: #666;
+  color: var(--color-text-light, #666);
   font-size: 0.9rem;
   margin: -0.5rem 0 1rem;
 }
@@ -97,23 +222,39 @@ button[type="submit"]:disabled {
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .form-advanced {
   margin: 1rem 0;
-  padding: 0.75rem;
-  border: 1px dashed #ddd;
-  border-radius: 6px;
+  padding: 1rem;
+  border: 1px dashed #c4c6cd;
+  border-radius: 12px;
+  background: #f6faff;
 }
 
 .form-advanced summary {
   cursor: pointer;
-  font-weight: 600;
-  color: #555;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-light, #555);
 }
 
-.product-form-submit {
-  background-color: var(--color-secondary, #c9a227) !important;
-  margin-top: 0.5rem;
+.form-advanced[open] summary {
+  margin-bottom: 1rem;
+}
+
+/* Mobile: stacked full-width footer buttons */
+@media (max-width: 640px) {
+  .product-form-footer {
+    flex-direction: column-reverse;
+  }
+
+  .product-form-cancel,
+  .product-form-submit {
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+  }
 }
