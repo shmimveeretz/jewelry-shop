@@ -141,12 +141,12 @@ function PaymentSuccess() {
         customerName:
           data.customerName ??
           data.data?.customerName ??
-          decodeURIComponent(
+          (decodeURIComponent(
             searchParams.get("customer_name") ||
               searchParams.get("customer_name_invoice") ||
               "",
           ) ||
-          pendingOrder.customerName,
+            pendingOrder.customerName),
         email:
           data.email ??
           data.data?.customerEmail ??
