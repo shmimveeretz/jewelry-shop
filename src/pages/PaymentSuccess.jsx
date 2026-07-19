@@ -15,6 +15,33 @@ const fmt = (n) =>
     maximumFractionDigits: 2,
   });
 
+function isPayPlusApproved(searchParams) {
+  const status = (searchParams.get("status") || "").toLowerCase();
+  const code = searchParams.get("status_code");
+  return status === "approved" || code === "000" || code === "0";
+}
+
+/** Prefer page_request_uid — PayPlus verify API & PendingOrder are keyed by it */
+function resolvePageRequestUid(searchParams) {
+  return (
+    searchParams.get("page_request_uid") ||
+    searchParams.get("transaction_uid") ||
+    null
+  );
+}
+
+function resolvePublicOrderId(data, searchParams, pendingOrder) {
+  return (
+    data?.orderId ||
+    data?.data?.orderId ||
+    pendingOrder?.orderId ||
+    searchParams.get("more_info") ||
+    data?.data?._id ||
+    data?.data?.id ||
+    null
+  );
+}
+
 // ── Loading screen ────────────────────────────────────────────────────────────
 
 function LoadingScreen({ language }) {
@@ -96,12 +123,45 @@ function PaymentSuccess() {
     ran.current = true;
 
     const run = async () => {
-      try {
-        const transactionUid =
-          searchParams.get("transaction_uid") ||
-          searchParams.get("page_request_uid");
+      const pendingOrder = JSON.parse(
+        localStorage.getItem("pendingOrder") || "{}",
+      );
+      const pageRequestUid = resolvePageRequestUid(searchParams);
+      const approvedInUrl = isPayPlusApproved(searchParams);
 
-        if (!transactionUid) {
+      const buildSuccessDetails = (data = {}) => ({
+        orderId: resolvePublicOrderId(data, searchParams, pendingOrder),
+        transactionUid: pageRequestUid,
+        amount:
+          data.amount ??
+          data.data?.totalPrice ??
+          searchParams.get("amount") ??
+          pendingOrder.totalPrice ??
+          pendingOrder.amount,
+        customerName:
+          data.customerName ??
+          data.data?.customerName ??
+          decodeURIComponent(
+            searchParams.get("customer_name") ||
+              searchParams.get("customer_name_invoice") ||
+              "",
+          ) ||
+          pendingOrder.customerName,
+        email:
+          data.email ??
+          data.data?.customerEmail ??
+          searchParams.get("customer_email") ??
+          pendingOrder.customerEmail,
+        shippingAddress:
+          data.shippingAddress ??
+          data.data?.shippingAddress ??
+          pendingOrder.shippingAddress ??
+          null,
+        items: data.items ?? data.data?.items ?? pendingOrder.items ?? [],
+      });
+
+      try {
+        if (!pageRequestUid) {
           throw new Error(
             language === "he"
               ? "מזהה עסקה לא נמצא בכתובת"
@@ -109,16 +169,26 @@ function PaymentSuccess() {
           );
         }
 
-        const pendingOrder = JSON.parse(
-          localStorage.getItem("pendingOrder") || "{}",
-        );
-
         const token = localStorage.getItem("token");
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
         const payload = {
-          paymentPageRequestUid: transactionUid,
-          orderData: pendingOrder,
+          paymentPageRequestUid: pageRequestUid,
+          page_request_uid: pageRequestUid,
+          orderData: {
+            ...pendingOrder,
+            orderId: pendingOrder.orderId || searchParams.get("more_info") || undefined,
+            customerEmail:
+              pendingOrder.customerEmail ||
+              searchParams.get("customer_email") ||
+              undefined,
+            customerName:
+              pendingOrder.customerName ||
+              decodeURIComponent(
+                searchParams.get("customer_name") || "",
+              ) ||
+              undefined,
+          },
         };
 
         const { data } = await axios.post(
@@ -136,29 +206,26 @@ function PaymentSuccess() {
           );
         }
 
-        setOrderDetails({
-          orderId:
-            data.orderId ??
-            data.data?._id ??
-            data.data?.id ??
-            data.data?.orderId ??
-            null,
-          transactionUid,
-          amount: data.amount ?? pendingOrder.amount,
-          customerName: data.customerName ?? pendingOrder.customerName,
-          email: data.email ?? pendingOrder.customerEmail,
-          shippingAddress:
-            data.shippingAddress ?? pendingOrder.shippingAddress ?? null,
-          items: data.items ?? pendingOrder.items ?? [],
-        });
-
+        setOrderDetails(buildSuccessDetails(data));
         clearCart();
         localStorage.removeItem("cart");
         localStorage.removeItem("pendingOrder");
-        setCountdown(10);
+        setCountdown(20);
         setPhase("success");
       } catch (err) {
         console.error("PaymentSuccess error:", err);
+
+        // PayPlus already confirmed approval in the redirect URL — still show thank-you
+        if (approvedInUrl) {
+          setOrderDetails(buildSuccessDetails({}));
+          clearCart();
+          localStorage.removeItem("cart");
+          localStorage.removeItem("pendingOrder");
+          setCountdown(20);
+          setPhase("success");
+          return;
+        }
+
         setError(
           err.response?.data?.message ||
             err.response?.data?.error ||
@@ -216,12 +283,12 @@ function PaymentSuccess() {
 
         {/* ── Hero copy ────────────────────────────────────────────────── */}
         <h1 className="ps-title ps-title--success">
-          {he ? "ההזמנה התקבלה בהצלחה!" : "Order Placed Successfully!"}
+          {he ? "תודה על ההזמנה!" : "Thank You for Your Order!"}
         </h1>
         <p className="ps-subtitle">
           {he
-            ? "תודה על הרכישה! אישור הזמנה נשלח לכתובת המייל שלך."
-            : "Thank you for your purchase! An order confirmation has been sent to your email."}
+            ? "ההזמנה התקבלה בהצלחה. שלחנו אליך אישור למייל עם מספר המעקב."
+            : "Your order was received successfully. We sent a confirmation email with your tracking number."}
         </p>
 
         {/* ── Order summary ────────────────────────────────────────────── */}
@@ -236,7 +303,7 @@ function PaymentSuccess() {
               {orderDetails.orderId && (
                 <div className="ps-row">
                   <span className="ps-row__label">
-                    {he ? "מספר הזמנה:" : "Order #:"}
+                    {he ? "מספר מעקב הזמנה:" : "Tracking #:"}
                   </span>
                   <span className="ps-row__value ps-row__value--mono">
                     {orderDetails.orderId}
@@ -244,16 +311,18 @@ function PaymentSuccess() {
                 </div>
               )}
 
-              <div className="ps-row">
-                <span className="ps-row__label">
-                  {he ? "מזהה עסקה:" : "Transaction ID:"}
-                </span>
-                <span className="ps-row__value ps-row__value--mono ps-row__value--truncate">
-                  {orderDetails.transactionUid}
-                </span>
-              </div>
+              {orderDetails.transactionUid && (
+                <div className="ps-row">
+                  <span className="ps-row__label">
+                    {he ? "מזהה עסקה:" : "Transaction ID:"}
+                  </span>
+                  <span className="ps-row__value ps-row__value--mono ps-row__value--truncate">
+                    {orderDetails.transactionUid}
+                  </span>
+                </div>
+              )}
 
-              {orderDetails.amount != null && (
+              {orderDetails.amount != null && orderDetails.amount !== "" && (
                 <div className="ps-row ps-row--total">
                   <span className="ps-row__label">
                     {he ? "סכום שולם:" : "Amount Paid:"}
@@ -293,9 +362,11 @@ function PaymentSuccess() {
                       )}
                       <span className="ps-item__name">{item.name}</span>
                       <span className="ps-item__qty">×{item.quantity}</span>
-                      <span className="ps-item__price">
-                        {fmt(item.price)} ₪
-                      </span>
+                      {item.price != null && (
+                        <span className="ps-item__price">
+                          {fmt(item.price)} ₪
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -310,10 +381,13 @@ function PaymentSuccess() {
                 </h3>
                 <address className="ps-address">
                   {[
-                    orderDetails.shippingAddress.fullName,
-                    orderDetails.shippingAddress.street,
+                    orderDetails.shippingAddress.fullName ||
+                      orderDetails.shippingAddress.name,
+                    orderDetails.shippingAddress.street ||
+                      orderDetails.shippingAddress.address,
                     orderDetails.shippingAddress.city,
-                    orderDetails.shippingAddress.zip,
+                    orderDetails.shippingAddress.zip ||
+                      orderDetails.shippingAddress.zipCode,
                     orderDetails.shippingAddress.country,
                   ]
                     .filter(Boolean)
@@ -330,8 +404,8 @@ function PaymentSuccess() {
               <ul className="ps-next-steps__list">
                 <li>
                   {he
-                    ? "קיבלת אישור הזמנה למייל"
-                    : "You'll receive an order confirmation email"}
+                    ? "שלחנו אישור הזמנה ומספר מעקב למייל שלך"
+                    : "We sent an order confirmation and tracking number to your email"}
                 </li>
                 <li>
                   {he

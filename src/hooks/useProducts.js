@@ -23,14 +23,6 @@ export const useProducts = (filters = {}) => {
       if (data.success && data.data) {
         let allProducts = data.data;
 
-        // #region agent log
-        const rawCats = {};
-        for (const p of allProducts) {
-          rawCats[p.category] = (rawCats[p.category] || 0) + 1;
-        }
-        fetch('http://127.0.0.1:7344/ingest/04171ffe-b9c7-4a68-aa80-feae36360d3e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'e05af8'},body:JSON.stringify({sessionId:'e05af8',runId:'pre-fix',hypothesisId:'E',location:'useProducts.js:beforeFilter',message:'API products before client filter',data:{filterCategory:filters.category||null,total:allProducts.length,rawCats,shilatCount:rawCats['שילת']||0,symbolsCount:rawCats['סמלי בני ישראל']||0},timestamp:Date.now()})}).catch(()=>{});
-        // #endregion
-
         // Apply filters
         if (filters.category && filters.category !== "הכל") {
           allProducts = allProducts.filter(

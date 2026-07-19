@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 
 function MetaPixelPageView() {
@@ -19,6 +20,23 @@ function MetaPixelPageView() {
       window.fbq("track", "PageView");
     }
   }, [location.pathname]);
+
+  return null;
+}
+
+/** PayPlus sometimes redirects to //payment-success when FRONTEND_URL has a trailing slash */
+function NormalizeDoubleSlashPath() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname.includes("//")) {
+      const cleanPath = location.pathname.replace(/\/{2,}/g, "/");
+      navigate(`${cleanPath}${location.search}${location.hash}`, {
+        replace: true,
+      });
+    }
+  }, [location.pathname, location.search, location.hash, navigate]);
 
   return null;
 }
@@ -156,6 +174,7 @@ function App() {
       <ToastProvider>
         <CartProvider>
           <Router>
+            <NormalizeDoubleSlashPath />
             <MetaPixelPageView />
             <DeviceTracker />
             <CookieBanner />

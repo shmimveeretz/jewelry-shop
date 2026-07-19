@@ -53,18 +53,24 @@ function Payment() {
           name: item.name,
           quantity: item.quantity,
           price: item.price,
-          selectedOptions: item.selectedOptions || {},
+          selectedOptions: item.selectedOptions || item.selections || {},
         })),
         shippingAddress: orderData.shippingAddress,
+        itemsPrice: orderData.itemsPrice,
+        shippingPrice: orderData.shippingPrice,
+        totalPrice: orderData.totalPrice,
+        couponCode: orderData.couponCode ?? null,
+        discountPercent: orderData.discountPercent ?? 0,
       };
 
       const result = await payPlusService.createPayment(paymentData);
 
       if (result.success && result.paymentPageUrl) {
-        // Update pendingOrder with transactionUid before redirect
+        // Update pendingOrder with PayPlus UIDs + public tracking orderId
         const updatedOrder = {
           ...orderData,
           transactionUid: result.transactionUid,
+          orderId: result.orderId || orderData.orderId,
         };
         localStorage.setItem("pendingOrder", JSON.stringify(updatedOrder));
 
