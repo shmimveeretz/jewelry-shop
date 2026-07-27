@@ -5,6 +5,8 @@ import {
   FaPalette,
   FaStar as FaStarSolid,
   FaShippingFast,
+  FaLock,
+  FaHandHoldingHeart,
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useProducts } from "../hooks/useProducts";
@@ -80,13 +82,32 @@ function Home() {
           <p className="hero-source">
             {language === "he" ? "בראשית א', א'" : "Genesis 1:1"}
           </p>
+          <p className="hero-value-prop">
+            {language === "he"
+              ? "תכשיטי מקור בעבודת יד עם משמעות — משלוח חינם לכל הארץ"
+              : "Handmade jewelry with meaning — free shipping nationwide"}
+          </p>
           <div className="hero-cta-row">
             <Link to="/shop" className="hero-btn-primary">
-              {language === "he" ? "לרכישה" : "Shop Now"}
+              {language === "he" ? "לרכישה" : "Shop the Collection"}
             </Link>
             <Link to="/about" className="hero-btn-ghost">
               {language === "he" ? "הסיפור שלנו" : "Our Story"}
             </Link>
+          </div>
+          <div className="hero-trust-strip">
+            <span>
+              <FaShippingFast />
+              {language === "he" ? "משלוח חינם ומהיר" : "Free fast shipping"}
+            </span>
+            <span>
+              <FaGem />
+              {language === "he" ? "תשלום מאובטח" : "Secure checkout"}
+            </span>
+            <span>
+              <FaStarSolid />
+              {language === "he" ? "החזרה קלה" : "Easy returns"}
+            </span>
           </div>
         </div>
 
@@ -150,6 +171,19 @@ function Home() {
                       {language === "he" ? "נמכר ביותר" : "BEST SELLER"}
                     </div>
                   )}
+                  {typeof product.stock === "number" &&
+                    product.stock > 0 &&
+                    product.stock <= 3 && (
+                      <div className="low-stock-badge">
+                        {language === "he"
+                          ? product.stock === 1
+                            ? "נותר אחרון במלאי"
+                            : `נותרו רק ${product.stock} במלאי`
+                          : product.stock === 1
+                            ? "LAST ONE LEFT"
+                            : `ONLY ${product.stock} LEFT`}
+                      </div>
+                    )}
                   <div className="collection-image-wrap">
                     <img
                       src={
@@ -300,6 +334,24 @@ function Home() {
               <Link to="/zodiac" className="cta-btn">
                 {t("findYourSign")}
               </Link>
+              <div className="cta-trust-strip">
+                <span>
+                  <FaLock />
+                  {language === "he" ? "תשלום מאובטח" : "Secure payments"}
+                </span>
+                <span>
+                  <FaHandHoldingHeart />
+                  {language === "he"
+                    ? "עבודת יד באהבה"
+                    : "Handcrafted with love"}
+                </span>
+                <span>
+                  <FaShippingFast />
+                  {language === "he"
+                    ? "משלוח חינם לכל הארץ"
+                    : "Free nationwide shipping"}
+                </span>
+              </div>
             </div>
           </div>
         </div>

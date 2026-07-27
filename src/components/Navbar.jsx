@@ -16,7 +16,7 @@ import "../styles/components/Navbar.css";
 import logo from "../assets/logo.svg";
 
 function Navbar() {
-  const { getCartCount } = useCart();
+  const { getCartCount, openCartDrawer } = useCart();
   const { showSuccess } = useToast();
   const { language, toggleLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -244,12 +244,17 @@ function Navbar() {
               <FaUser />
             </Link>
           )}
-          <Link to="/cart" className="navbar-icon cart-icon">
+          <button
+            type="button"
+            className="navbar-icon cart-icon"
+            onClick={openCartDrawer}
+            aria-label={language === "he" ? "עגלה" : "Cart"}
+          >
             <FaShoppingCart />
             {getCartCount() > 0 && (
               <span className="cart-badge">{getCartCount()}</span>
             )}
-          </Link>
+          </button>
           <button className="navbar-mobile-toggle" onClick={toggleMenu}>
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </button>

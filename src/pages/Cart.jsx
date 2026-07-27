@@ -204,7 +204,9 @@ function Cart() {
 
             <div className="summary-row">
               <span>{t("shipping")}:</span>
-              <span>{calculateShipping()} ₪</span>
+              <span style={{ color: "#2f6b3a", fontWeight: 700 }}>
+                {language === "he" ? "חינם" : "Free"}
+              </span>
             </div>
 
             <div className="summary-row total">

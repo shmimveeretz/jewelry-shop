@@ -63,9 +63,18 @@
 .hero-source {
   font-size: var(--font-size-lg);
   color: rgba(255, 255, 255, 0.78);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
   font-style: italic;
   animation: heroReveal 1.1s ease-out 0.2s both;
+}
+
+.hero-value-prop {
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0 auto var(--spacing-lg);
+  max-width: 36rem;
+  line-height: 1.5;
+  animation: heroReveal 1s ease-out 0.25s both;
 }
 
 .hero-cta-row {
@@ -79,47 +88,76 @@
 
 .hero-btn-primary {
   display: inline-block;
-  padding: 1rem 2.5rem;
-  background: var(--color-primary);
+  padding: 1.05rem 2.75rem;
+  min-height: 52px;
+  background: var(--color-secondary);
   color: var(--color-white);
   border-radius: var(--radius-md);
   font-size: var(--font-size-base);
   letter-spacing: 0.15em;
   font-family: var(--font-primary);
+  font-weight: 600;
   text-decoration: none;
   transition:
-    background 0.4s ease,
+    filter 0.35s ease,
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  box-shadow: 0 4px 20px rgba(22, 40, 57, 0.4);
+  box-shadow: 0 6px 24px rgba(201, 169, 110, 0.45);
 }
 
 .hero-btn-primary:hover {
-  background: #1a2e40;
+  filter: brightness(1.08);
   transform: translateY(-3px);
-  box-shadow: 0 8px 28px rgba(22, 40, 57, 0.5);
+  box-shadow: 0 10px 30px rgba(201, 169, 110, 0.55);
 }
 
 .hero-btn-ghost {
   display: inline-block;
-  padding: 1rem 2.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-white);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0.85rem 1.75rem;
+  min-height: 48px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  letter-spacing: 0.15em;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
   font-family: var(--font-primary);
   text-decoration: none;
   backdrop-filter: blur(8px);
   transition:
     background 0.4s ease,
-    transform 0.3s ease;
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  opacity: 0.9;
 }
 
 .hero-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.22);
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.hero-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: var(--spacing-lg);
+  animation: heroReveal 1s ease-out 0.55s both;
+}
+
+.hero-trust-strip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.hero-trust-strip svg {
+  color: var(--color-secondary);
+  font-size: 0.95rem;
 }
 
 .hero-scroll-indicator {
@@ -358,6 +396,22 @@
   text-transform: uppercase;
   padding: 0.28rem 0.7rem;
   border-radius: var(--radius-sm);
+}
+
+.low-stock-badge {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 10;
+  background: #8c2f22;
+  color: var(--color-white);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
 }
 
 .collection-image-wrap {
@@ -629,6 +683,29 @@
   background: var(--color-secondary);
   color: var(--color-white);
   transform: translateY(-2px);
+}
+
+/* Trust signals at the bottom of the page flow, near the last CTA */
+.cta-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.5rem;
+  margin-top: var(--spacing-lg);
+}
+
+.cta-trust-strip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.cta-trust-strip svg {
+  color: var(--color-secondary);
+  font-size: 0.95rem;
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */

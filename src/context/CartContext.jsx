@@ -12,19 +12,19 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
-    // Load from localStorage on init
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
-  // Save to localStorage whenever cart changes
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  const openCartDrawer = () => setIsCartDrawerOpen(true);
+  const closeCartDrawer = () => setIsCartDrawerOpen(false);
+
   const addToCart = (product, quantity = 1) => {
-    // cartItemId distinguishes the same product with different selections.
-    // Falls back to product.id for products that have no selections.
     const key = product.cartItemId || product.id;
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
@@ -87,6 +87,9 @@ export const CartProvider = ({ children }) => {
     clearCart,
     getCartTotal,
     getCartCount,
+    isCartDrawerOpen,
+    openCartDrawer,
+    closeCartDrawer,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaLock, FaShippingFast, FaUndoAlt } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -9,14 +11,20 @@ import {
   getLengthOptions,
   getLengthAddition,
   isLetterChainProduct,
+  isHebrewLetterProduct,
   allowsExtraLetters,
 } from "../data/productSizes";
-import { parseExtraHebrewLetters, getExtraLetterPerBraceletCost } from "../utils/extraHebrewLetters";
+import {
+  getExtraLetterPerBraceletCost,
+  isValidSingleHebrewLetter,
+  MAX_EXTRA_LETTERS,
+} from "../utils/extraHebrewLetters";
 import "../styles/components/ProductModal.css";
 
 function ProductModal({ product, onClose }) {
   const { t, language } = useLanguage();
-  const { addToCart } = useCart();
+  const navigate = useNavigate();
+  const { addToCart, openCartDrawer } = useCart();
   const { showCartToast } = useToast();
 
   const displayCategory =
@@ -39,7 +47,7 @@ function ProductModal({ product, onClose }) {
       typeof priceAdditions[key] === "object" && priceAdditions[key] !== null,
   );
 
-  const isHebrewLetters = product.category === "אותיות עבריות";
+  const isHebrewLetters = isHebrewLetterProduct(product);
   const isLetterChain = isLetterChainProduct(product);
   const isSingleLetter = isHebrewLetters && !isLetterChain;
 
@@ -47,9 +55,10 @@ function ProductModal({ product, onClose }) {
     Object.fromEntries(optionKeys.map((key) => [key, ""])),
   );
 
-  // Extra letters for bracelet (array of individual letter strings)
+  // Extra letters — chip builder (one Hebrew letter at a time)
   const [extraLetters, setExtraLetters] = useState([]);
   const [extraLettersInput, setExtraLettersInput] = useState("");
+  const [extraLettersError, setExtraLettersError] = useState("");
 
   const [showWarning, setShowWarning] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -110,27 +119,71 @@ function ProductModal({ product, onClose }) {
       // Reset length when jewelry type changes — each type has different sizes
       ...(optionName === "jewelryType" ? { length: "" } : {}),
     }));
-    // Clear extra letters when switching away from bracelet
     if (optionName === "jewelryType" && !allowsExtraLetters(product, value)) {
       setExtraLetters([]);
       setExtraLettersInput("");
+      setExtraLettersError("");
     }
     setShowWarning(false);
   };
 
-  const handleExtraLettersChange = (e) => {
-    const raw = e.target.value;
-    setExtraLettersInput(raw);
-    setExtraLetters(parseExtraHebrewLetters(raw));
-  };
-
-  const handleAddToCart = () => {
-    // Require all option selectors to be filled
-    if (isAddToCartDisabled()) {
-      setShowWarning(true);
+  const tryAddExtraLetter = (rawChar) => {
+    if (extraLetters.length >= MAX_EXTRA_LETTERS) {
+      setExtraLettersError(
+        language === "he"
+          ? `ניתן להוסיף עד ${MAX_EXTRA_LETTERS} אותיות`
+          : `You can add up to ${MAX_EXTRA_LETTERS} letters`,
+      );
       return;
     }
+    const char = (rawChar || "").trim();
+    if (!char) return;
+    if (!isValidSingleHebrewLetter(char)) {
+      setExtraLettersError(
+        language === "he"
+          ? "ניתן להזין אותיות בעברית בלבד (א-ת)"
+          : "Hebrew letters only (א–ת)",
+      );
+      return;
+    }
+    setExtraLetters((prev) => [...prev, char]);
+    setExtraLettersInput("");
+    setExtraLettersError("");
+  };
 
+  const handleExtraLettersChange = (e) => {
+    const raw = e.target.value.slice(-1);
+    setExtraLettersError("");
+    if (!raw) {
+      setExtraLettersInput("");
+      return;
+    }
+    if (!isValidSingleHebrewLetter(raw)) {
+      setExtraLettersInput("");
+      setExtraLettersError(
+        language === "he"
+          ? "ניתן להזין אותיות בעברית בלבד (א-ת)"
+          : "Hebrew letters only (א–ת)",
+      );
+      return;
+    }
+    setExtraLettersInput(raw);
+  };
+
+  const handleExtraLettersKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      tryAddExtraLetter(extraLettersInput);
+    }
+  };
+
+  const removeExtraLetter = (index) => {
+    setExtraLetters((prev) => prev.filter((_, i) => i !== index));
+    setExtraLettersError("");
+  };
+
+  // Build the cart item: full product data for display + selections for the backend
+  const buildCartItem = () => {
     const finalPrice = calculateTotalPrice();
 
     // Build the API-contract selections object.
@@ -151,9 +204,8 @@ function ProductModal({ product, onClose }) {
         : [];
     }
 
-    // Cart item: full product data for display + selections for the backend
     const cartItemId = `${product.id}__${JSON.stringify(selections)}`;
-    const productWithOptions = {
+    return {
       ...product,
       price: finalPrice,
       basePrice: product.price,
@@ -161,6 +213,16 @@ function ProductModal({ product, onClose }) {
       selections,
       cartItemId,
     };
+  };
+
+  const handleAddToCart = () => {
+    // Require all option selectors to be filled
+    if (isAddToCartDisabled()) {
+      setShowWarning(true);
+      return;
+    }
+
+    const productWithOptions = buildCartItem();
 
     addToCart(productWithOptions, 1);
     const displayName =
@@ -172,6 +234,24 @@ function ProductModal({ product, onClose }) {
       productImages[0],
     );
     onClose();
+    openCartDrawer?.();
+  };
+
+  // Frictionless checkout: skip the cart and go straight to the checkout page
+  const handleBuyNow = () => {
+    if (isAddToCartDisabled()) {
+      setShowWarning(true);
+      return;
+    }
+
+    const productWithOptions = buildCartItem();
+    onClose();
+    navigate("/checkout", {
+      state: {
+        cartItems: [{ ...productWithOptions, quantity: 1 }],
+        total: productWithOptions.price,
+      },
+    });
   };
 
   const isAddToCartDisabled = () => {
@@ -241,6 +321,86 @@ function ProductModal({ product, onClose }) {
   const extraLetterPerBraceletCost = getExtraLetterPerBraceletCost(
     priceAdditions,
     selectedOptions.metalType,
+  );
+
+  const atLetterCap = extraLetters.length >= MAX_EXTRA_LETTERS;
+
+  // Shared "add extra letters" section — chip builder for every letter product
+  const extraLettersSection = allowsExtraLetters(
+    product,
+    selectedOptions.jewelryType,
+  ) && (
+    <div className="product-option">
+      <label>
+        {language === "he"
+          ? `הוספת אותיות${
+              extraLetterPerBraceletCost > 0
+                ? ` (+${extraLetterPerBraceletCost} ₪ לאות)`
+                : ""
+            }`
+          : `Add Extra Letters${
+              extraLetterPerBraceletCost > 0
+                ? ` (+${extraLetterPerBraceletCost} ₪ each)`
+                : ""
+            }`}
+      </label>
+      <div className="extra-letters-row">
+        <input
+          type="text"
+          className="extra-letters-input"
+          maxLength={1}
+          inputMode="text"
+          autoComplete="off"
+          disabled={atLetterCap}
+          placeholder={language === "he" ? "הזינו אות אחת" : "Enter one letter"}
+          value={extraLettersInput}
+          onChange={handleExtraLettersChange}
+          onKeyDown={handleExtraLettersKeyDown}
+          aria-invalid={Boolean(extraLettersError)}
+          aria-describedby={
+            extraLettersError ? "extra-letters-error" : undefined
+          }
+        />
+        <button
+          type="button"
+          className="extra-letter-add-btn"
+          disabled={atLetterCap || !extraLettersInput}
+          onClick={() => tryAddExtraLetter(extraLettersInput)}
+          aria-label={language === "he" ? "הוסף אות" : "Add letter"}
+        >
+          +
+        </button>
+      </div>
+      <p className="option-hint">
+        {language === "he"
+          ? `הזינו אות אחת ולחצו Enter או + (עד ${MAX_EXTRA_LETTERS} אותיות)`
+          : `Type one letter and press Enter or + (up to ${MAX_EXTRA_LETTERS})`}
+      </p>
+      {extraLettersError && (
+        <p id="extra-letters-error" className="extra-letters-error" role="alert">
+          {extraLettersError}
+        </p>
+      )}
+      {extraLetters.length > 0 && (
+        <div className="extra-letters-preview">
+          {extraLetters.map((letter, i) => (
+            <span key={`${letter}-${i}`} className="letter-chip">
+              {letter}
+              <button
+                type="button"
+                className="letter-chip-remove"
+                onClick={() => removeExtraLetter(i)}
+                aria-label={
+                  language === "he" ? `הסר אות ${letter}` : `Remove ${letter}`
+                }
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
   );
 
   const measurementsGuide = showLengthOptions ? (
@@ -333,6 +493,25 @@ function ProductModal({ product, onClose }) {
             <div className="product-modal-details">
               <div className="product-modal-header">
                 <div className="product-modal-category">{displayCategory}</div>
+                {typeof product.rating === "number" && product.rating > 0 && (
+                  <div
+                    className="product-modal-rating"
+                    aria-label={
+                      language === "he"
+                        ? `דירוג ${product.rating} מתוך 5`
+                        : `Rated ${product.rating} out of 5`
+                    }
+                  >
+                    {"★".repeat(Math.round(Math.min(5, product.rating)))}
+                    {"☆".repeat(5 - Math.round(Math.min(5, product.rating)))}
+                    <span className="product-modal-rating-value">
+                      {product.rating.toFixed(1)}
+                      {typeof product.reviews === "number" &&
+                        product.reviews > 0 &&
+                        ` (${product.reviews})`}
+                    </span>
+                  </div>
+                )}
                 <h2>
                   {language === "en" && product.nameEn
                     ? product.nameEn
@@ -467,51 +646,7 @@ function ProductModal({ product, onClose }) {
                         </div>
                       )}
 
-                      {allowsExtraLetters(
-                        product,
-                        selectedOptions.jewelryType,
-                      ) && (
-                        <div className="product-option">
-                          <label>
-                            {language === "he"
-                              ? `הוספת אותיות${
-                                  extraLetterPerBraceletCost > 0
-                                    ? ` (+${extraLetterPerBraceletCost} ₪ לאות)`
-                                    : ""
-                                }`
-                              : `Add Extra Letters${
-                                  extraLetterPerBraceletCost > 0
-                                    ? ` (+${extraLetterPerBraceletCost} ₪ each)`
-                                    : ""
-                                }`}
-                          </label>
-                          <input
-                            type="text"
-                            className="extra-letters-input"
-                            placeholder={
-                              language === "he"
-                                ? "לדוגמה: בגד או ב, ג, ד"
-                                : "e.g. בגד or ב, ג, ד"
-                            }
-                            value={extraLettersInput}
-                            onChange={handleExtraLettersChange}
-                          />
-                          <p className="option-hint">
-                            {language === "he"
-                              ? "כל אות נספרת בנפרד — רצף כמו «בג» ייחשב כשתי אותיות"
-                              : "Each letter is counted separately — e.g. «בג» counts as two letters"}
-                          </p>
-                          {extraLetters.length > 0 && (
-                            <div className="extra-letters-preview">
-                              {extraLetters.map((letter, i) => (
-                                <span key={i} className="letter-chip">
-                                  {letter}
-                                </span>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      {extraLettersSection}
                     </>
                   ) : isSingleLetter ? (
                     <>
@@ -573,6 +708,8 @@ function ProductModal({ product, onClose }) {
                           </select>
                         </div>
                       )}
+
+                      {extraLettersSection}
                     </>
                   ) : (
                     /* ── Standard flow: metal → length ── */
@@ -967,11 +1104,35 @@ function ProductModal({ product, onClose }) {
           </div>
         </div>
         <div className="modal-sticky-footer">
-          <button className="btn add-to-cart-btn" onClick={handleAddToCart}>
+          <div className="modal-cta-row">
+            <button className="btn buy-now-btn" onClick={handleBuyNow}>
+              {language === "he"
+                ? `לרכישה מיידית — ${calculateTotalPrice()} ₪`
+                : `Buy Now — ₪${calculateTotalPrice()}`}
+            </button>
+            <button className="btn add-to-cart-btn" onClick={handleAddToCart}>
+              {language === "he" ? "הוסף לעגלה" : "Add to Cart"}
+            </button>
+          </div>
+          <p className="modal-ready-ship">
             {language === "he"
-              ? `הוסף לעגלה — ${calculateTotalPrice()} ₪`
-              : `Add to Cart — ₪${calculateTotalPrice()}`}
-          </button>
+              ? "עבודת יד בהזמנה אישית — נשלח תוך עד 14 ימי עסקים"
+              : "Custom handmade — ready to ship within 14 business days"}
+          </p>
+          <div className="modal-trust-signals">
+            <span className="trust-signal">
+              <FaLock />
+              {language === "he" ? "תשלום מאובטח" : "Secure checkout"}
+            </span>
+            <span className="trust-signal">
+              <FaShippingFast />
+              {language === "he" ? "משלוח חינם" : "Free shipping"}
+            </span>
+            <span className="trust-signal">
+              <FaUndoAlt />
+              {language === "he" ? "החזרה קלה" : "Easy returns"}
+            </span>
+          </div>
         </div>
       </div>
     </div>

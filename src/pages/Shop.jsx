@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/pages/Shop.css";
 import ProductModal from "../components/ProductModal";
 import { useProducts } from "../hooks/useProducts";
+import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import { productMatchesZodiac } from "../utils/zodiacFilter";
 
@@ -18,6 +20,27 @@ function getProductPriceRange(product) {
     if (nums.length > 0) maxAddition += Math.max(...nums);
   }
   return { min: base, max: base + maxAddition };
+}
+
+// A product needs the options modal when any priceAdditions group has choices
+// (metal, length, jewelry type, chain...). Only option-free products can be
+// added to the cart directly from the grid.
+function productRequiresOptions(product) {
+  const additions = product.priceAdditions || {};
+  return Object.keys(additions).some(
+    (key) =>
+      typeof additions[key] === "object" &&
+      additions[key] !== null &&
+      Object.keys(additions[key]).length > 0,
+  );
+}
+
+function isLowStock(product) {
+  return (
+    typeof product.stock === "number" &&
+    product.stock > 0 &&
+    product.stock <= 3
+  );
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -37,6 +60,8 @@ function Shop() {
   const { t, language } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
+  const { addToCart, openCartDrawer } = useCart();
+  const { showCartToast } = useToast();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCollection, setSelectedCollection] = useState("הכל");
   const [zodiacFilter, setZodiacFilter] = useState(null);
@@ -86,6 +111,10 @@ function Shop() {
       .catch(() => {});
   }, []);
 
+  // Auto-open a product modal when navigated with an openProductId
+  // (e.g. from the cart-drawer cross-sell for products that need options)
+  const openProductId = location.state?.openProductId;
+
   const collections = [
     {
       ...ALL_COLLECTION,
@@ -122,6 +151,18 @@ function Shop() {
   };
 
   const { products, loading, error } = useProducts(apiFilters);
+
+  useEffect(() => {
+    if (!openProductId || products.length === 0) return;
+    const productToOpen = products.find((p) => p.id === openProductId);
+    if (productToOpen) {
+      setSelectedProduct(productToOpen);
+      navigate(location.pathname + location.search, {
+        replace: true,
+        state: null,
+      });
+    }
+  }, [openProductId, products, navigate, location.pathname, location.search]);
 
   const STAR_DISPLAY_ORDER = [
     "maadim",
@@ -160,6 +201,37 @@ function Shop() {
   const clearZodiacFilter = () => {
     setZodiacFilter(null);
     navigate("/shop", { replace: true });
+  };
+
+  // Quick Add: option-free products go straight to the cart; products that
+  // need a metal/length/type choice open the options modal instead.
+  const handleQuickAdd = (e, product) => {
+    e.stopPropagation();
+
+    if (productRequiresOptions(product)) {
+      setSelectedProduct(product);
+      return;
+    }
+
+    // Mirror the cart-item shape built by ProductModal so dedupe keys match
+    const cartItem = {
+      ...product,
+      basePrice: product.price,
+      selectedOptions: {},
+      selections: {},
+      cartItemId: `${product.id}__${JSON.stringify({})}`,
+    };
+    addToCart(cartItem, 1);
+
+    const displayName =
+      language === "en" && product.nameEn ? product.nameEn : product.name;
+    showCartToast(
+      language === "en"
+        ? `${displayName} added to cart!`
+        : `${displayName} נוסף לעגלה!`,
+      Array.isArray(product.images) ? product.images[0] : product.image,
+    );
+    openCartDrawer?.();
   };
 
   const handleCollectionChange = (collectionId) => {
@@ -277,6 +349,22 @@ function Shop() {
                     onClick={() => setSelectedProduct(product)}
                     style={{ cursor: "pointer" }}
                   >
+                    {product.featured && (
+                      <div className="best-seller-badge">
+                        {language === "he" ? "נמכר ביותר" : "BEST SELLER"}
+                      </div>
+                    )}
+                    {isLowStock(product) && (
+                      <div className="low-stock-badge">
+                        {language === "he"
+                          ? product.stock === 1
+                            ? "נותר אחרון במלאי"
+                            : `נותרו רק ${product.stock} במלאי`
+                          : product.stock === 1
+                            ? "LAST ONE LEFT"
+                            : `ONLY ${product.stock} LEFT`}
+                      </div>
+                    )}
                     <img
                       src={
                         Array.isArray(product.images) &&
@@ -350,6 +438,24 @@ function Shop() {
                           return <>{min.toLocaleString()} ₪</>;
                         })()}
                       </div>
+                      <button
+                        type="button"
+                        className="quick-add-btn"
+                        onClick={(e) => handleQuickAdd(e, product)}
+                        aria-label={
+                          language === "he"
+                            ? `הוסף ${product.name} לעגלה`
+                            : `Add ${product.nameEn || product.name} to cart`
+                        }
+                      >
+                        {productRequiresOptions(product)
+                          ? language === "he"
+                            ? "בחירה והוספה לעגלה"
+                            : "Choose Options"
+                          : language === "he"
+                            ? "הוספה מהירה לעגלה"
+                            : "Quick Add to Cart"}
+                      </button>
                     </div>
                   </div>
                 ))}

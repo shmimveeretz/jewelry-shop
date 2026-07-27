@@ -3,8 +3,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { payPlusService } from "../utils/payPlusService";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
+import { formatItemNameWithExtraLetters } from "../utils/extraHebrewLetters";
 import "../styles/pages/Checkout.css";
 import { FaRuler, FaStar, FaLink, FaPalette } from "react-icons/fa";
+
+const GIFT_WRAP_PRODUCT_ID = "gift-wrap";
+const GIFT_WRAP_PRICE = 15;
+const GIFT_WRAP_NAME = "אריזת מתנה יוקרתית";
+const GIFT_WRAP_NAME_EN = "Luxury gift wrapping";
 
 function Checkout() {
   const navigate = useNavigate();
@@ -17,10 +23,14 @@ function Checkout() {
   const [couponLoading, setCouponLoading] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null); // { code, discountPercent }
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [includeGiftWrap, setIncludeGiftWrap] = useState(false);
+
+  const giftWrapAmount = includeGiftWrap ? GIFT_WRAP_PRICE : 0;
+  const baseWithBump = (total || 0) + giftWrapAmount;
 
   const discountedTotal = appliedCoupon
-    ? Math.round(total * (1 - appliedCoupon.discountPercent / 100))
-    : total;
+    ? Math.round(baseWithBump * (1 - appliedCoupon.discountPercent / 100))
+    : baseWithBump;
 
   const [formData, setFormData] = useState({
     fullname: "",
@@ -162,21 +172,40 @@ function Checkout() {
       return;
     }
 
-    const shippingPrice = 0; // You can calculate this based on the address or use a fixed value
-    const itemsPrice = total + shippingPrice;
+    const shippingPrice = 0;
+    const itemsPrice = baseWithBump + shippingPrice;
+
+    const mappedItems = cartItems.map((item) => {
+      const selections = item.selections || item.selectedOptions || {};
+      const extraLetters = Array.isArray(selections.extraLetters)
+        ? selections.extraLetters
+        : [];
+      return {
+        productId: item.id,
+        name: formatItemNameWithExtraLetters(item.name, extraLetters),
+        price: item.price,
+        quantity: item.quantity || 1,
+        selections,
+        selectedOptions: item.selectedOptions || {},
+      };
+    });
+
+    if (includeGiftWrap) {
+      mappedItems.push({
+        productId: GIFT_WRAP_PRODUCT_ID,
+        name: GIFT_WRAP_NAME,
+        price: GIFT_WRAP_PRICE,
+        quantity: 1,
+        selections: {},
+        selectedOptions: {},
+      });
+    }
 
     const pendingOrder = {
       customerName,
       customerEmail,
       customerPhone: formData.phone,
-      items: cartItems.map((item) => ({
-        productId: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity || 1,
-        // Use the API-contract selections object when present; fall back to legacy selectedOptions
-        selections: item.selections || item.selectedOptions || {},
-      })),
+      items: mappedItems,
       shippingAddress: {
         fullName: customerName,
         address: formData.address,
@@ -213,11 +242,13 @@ function Checkout() {
         customerName,
         customerEmail,
         customerPhone: formData.phone,
-        orderItems: cartItems.map((item) => ({
+        orderItems: mappedItems.map((item) => ({
+          productId: item.productId,
           name: item.name,
           price: Math.round(item.price * discountMultiplier),
           quantity: item.quantity || 1,
           selectedOptions: item.selectedOptions || {},
+          selections: item.selections || {},
         })),
         shippingAddress: {
           name: customerName,
@@ -227,9 +258,6 @@ function Checkout() {
           city: formData.city,
           zipCode: formData.zipCode,
         },
-        // Extra metadata — backend saves this in PendingOrder so the webhook
-        // can reconstruct the full order even if the browser never loads the
-        // success page
         itemsPrice,
         shippingPrice,
         totalPrice: discountedTotal,
@@ -309,9 +337,13 @@ function Checkout() {
                     }}
                   />
                   <div className="order-item-details">
-                    <h3>{item.name}</h3>
+                    <h3>
+                      {formatItemNameWithExtraLetters(
+                        item.name,
+                        item.selections?.extraLetters,
+                      )}
+                    </h3>
 
-                    {/* Display selected options in checkout */}
                     {item.selectedOptions && (
                       <div className="order-item-options">
                         {item.selectedOptions.length && (
@@ -326,6 +358,11 @@ function Checkout() {
                             <FaStar /> {item.selectedOptions.metalType}
                           </span>
                         )}
+                        {item.selectedOptions.jewelryType && (
+                          <span>
+                            <FaStar /> {item.selectedOptions.jewelryType}
+                          </span>
+                        )}
                         {item.selectedOptions.chainType && (
                           <span>
                             <FaLink /> {item.selectedOptions.chainType}
@@ -334,6 +371,12 @@ function Checkout() {
                         {item.selectedOptions.waxColor && (
                           <span>
                             <FaPalette /> {item.selectedOptions.waxColor}
+                          </span>
+                        )}
+                        {item.selections?.extraLetters?.length > 0 && (
+                          <span>
+                            {language === "he" ? "צירוף: " : "Extra: "}
+                            {item.selections.extraLetters.join(", ")}
                           </span>
                         )}
                       </div>
@@ -345,8 +388,24 @@ function Checkout() {
               ))}
             </div>
             <div className="order-total">
-              <span>{language === "he" ? 'סה"כ לתשלום:' : "Total:"}</span>
-              <span className="total-amount">{discountedTotal} ₪</span>
+              <div className="order-total-row">
+                <span>{language === "he" ? "משלוח:" : "Shipping:"}</span>
+                <span className="shipping-free">
+                  {language === "he" ? "חינם" : "Free"}
+                </span>
+              </div>
+              {includeGiftWrap && (
+                <div className="order-total-row">
+                  <span>
+                    {language === "he" ? GIFT_WRAP_NAME : GIFT_WRAP_NAME_EN}:
+                  </span>
+                  <span>{GIFT_WRAP_PRICE} ₪</span>
+                </div>
+              )}
+              <div className="order-total-row order-total-final">
+                <span>{language === "he" ? 'סה"כ לתשלום:' : "Total:"}</span>
+                <span className="total-amount">{discountedTotal} ₪</span>
+              </div>
             </div>
 
             {/* Coupon Code */}
@@ -492,6 +551,19 @@ function Checkout() {
                 </div>
               </div>
             </div>
+
+            <label className="order-bump">
+              <input
+                type="checkbox"
+                checked={includeGiftWrap}
+                onChange={(e) => setIncludeGiftWrap(e.target.checked)}
+              />
+              <span>
+                {language === "he"
+                  ? `הוסיפו אריזת מתנה יוקרתית (+${GIFT_WRAP_PRICE} ₪)`
+                  : `Add luxury gift wrapping (+₪${GIFT_WRAP_PRICE})`}
+              </span>
+            </label>
 
             <button
               type="submit"

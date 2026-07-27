@@ -45,6 +45,33 @@ const parseApiResponse = async (response) => {
   }
 };
 
+// Human-readable labels for order item option keys (selections/selectedOptions)
+const ORDER_OPTION_LABELS = {
+  metalType: { he: "סוג מתכת", en: "Metal" },
+  length: { he: "אורך", en: "Length" },
+  jewelryType: { he: "סוג תכשיט", en: "Jewelry type" },
+  extraLetters: { he: "אותיות נוספות", en: "Extra letters" },
+  chain: { he: "סוג שרשרת", en: "Chain" },
+};
+
+const getOrderItemOptions = (item, language) => {
+  const opts = item.selections || item.selectedOptions;
+  if (!opts) return [];
+  return Object.entries(opts)
+    .filter(
+      ([, v]) =>
+        v !== undefined &&
+        v !== null &&
+        v !== "" &&
+        !(Array.isArray(v) && v.length === 0),
+    )
+    .map(([key, value]) => {
+      const label =
+        ORDER_OPTION_LABELS[key]?.[language === "he" ? "he" : "en"] || key;
+      return `${label}: ${Array.isArray(value) ? value.join(", ") : value}`;
+    });
+};
+
 function Admin() {
   const { language, t } = useLanguage();
   const { showSuccess, showError } = useToast();
@@ -67,6 +94,9 @@ function Admin() {
   // Orders State
   const [orders, setOrders] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [viewOrder, setViewOrder] = useState(null);
+  const [trackingInput, setTrackingInput] = useState("");
+  const [trackingSaving, setTrackingSaving] = useState(false);
 
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
@@ -872,6 +902,57 @@ function Admin() {
       setOrders(prevOrders);
       console.error("Error updating order status:", error);
       showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    }
+  };
+
+  const handleSaveTracking = async (orderId) => {
+    const trackingNumber = trackingInput.trim();
+    setTrackingSaving(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${API_BASE_URL}/api/orders/${orderId}/tracking`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ trackingNumber }),
+        },
+      );
+      const data = await response.json();
+      if (data.success) {
+        showSuccess(
+          language === "he"
+            ? data.emailSent
+              ? "מספר המעקב נשמר ונשלח ללקוח במייל"
+              : "מספר המעקב נשמר"
+            : data.emailSent
+              ? "Tracking number saved & emailed to customer"
+              : "Tracking number saved",
+        );
+        setOrders((prev) =>
+          prev.map((o) =>
+            (o._id || o.id) === orderId ? { ...o, trackingNumber } : o,
+          ),
+        );
+        setViewOrder((prev) =>
+          prev && (prev._id || prev.id) === orderId
+            ? { ...prev, trackingNumber }
+            : prev,
+        );
+      } else {
+        showError(
+          data.message ||
+            (language === "he" ? "שגיאה בשמירת מספר המעקב" : "Save error"),
+        );
+      }
+    } catch (error) {
+      console.error("Error saving tracking number:", error);
+      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
+    } finally {
+      setTrackingSaving(false);
     }
   };
 
@@ -1753,6 +1834,7 @@ function Admin() {
                     <th>{language === "he" ? "שם מוצר" : "Product Name"}</th>
                     <th>{language === "he" ? "קטגוריה" : "Category"}</th>
                     <th>{language === "he" ? "מחיר" : "Price"}</th>
+                    <th>{language === "he" ? "מלאי" : "Stock"}</th>
                     <th>{language === "he" ? "סטטוס" : "Status"}</th>
                     <th>{language === "he" ? "פעולות" : "Actions"}</th>
                   </tr>
@@ -1760,7 +1842,7 @@ function Admin() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan="6" className="empty-table">
+                      <td colSpan="7" className="empty-table">
                         {language === "he"
                           ? "טוען מוצרים..."
                           : "Loading products..."}
@@ -1768,7 +1850,7 @@ function Admin() {
                     </tr>
                   ) : filteredProducts.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="empty-table">
+                      <td colSpan="7" className="empty-table">
                         {language === "he"
                           ? "לא נמצאו מוצרים"
                           : "No products found"}
@@ -1798,6 +1880,16 @@ function Admin() {
                         </td>
                         <td className="product-name-cell">
                           {product.name}
+                          {product.featured && (
+                            <FaStar
+                              className="featured-star"
+                              title={
+                                language === "he"
+                                  ? 'מוצג עם תג "נמכר ביותר" (נבחר בטאב דף הבית)'
+                                  : '"Best Seller" badge live (set in Home Page tab)'
+                              }
+                            />
+                          )}
                           {product.nameEn && (
                             <span className="product-name-sub">
                               {product.nameEn}
@@ -1813,6 +1905,33 @@ function Admin() {
                           )}
                         </td>
                         <td className="text-bold">₪{product.price}</td>
+                        <td>
+                          {(() => {
+                            const stock =
+                              typeof product.stock === "number"
+                                ? product.stock
+                                : 0;
+                            const lowStock = stock > 0 && stock <= 3;
+                            return (
+                              <>
+                                <span
+                                  className={
+                                    lowStock ? "stock-value stock-low" : "stock-value"
+                                  }
+                                >
+                                  {stock}
+                                </span>
+                                {lowStock && (
+                                  <span className="product-name-sub stock-low-hint">
+                                    {language === "he"
+                                      ? 'תג "נותרו רק" מוצג בחנות'
+                                      : '"Only X left" badge live'}
+                                  </span>
+                                )}
+                              </>
+                            );
+                          })()}
+                        </td>
                         <td>
                           <span
                             className={`status-badge ${
@@ -1922,6 +2041,29 @@ function Admin() {
                       </div>
                       <p className="text-muted" style={{ fontSize: "0.8rem" }}>
                         {product.category}
+                      </p>
+                      <p className="text-muted" style={{ fontSize: "0.8rem" }}>
+                        {language === "he" ? "מלאי:" : "Stock:"}{" "}
+                        <span
+                          className={
+                            typeof product.stock === "number" &&
+                            product.stock > 0 &&
+                            product.stock <= 3
+                              ? "stock-low"
+                              : undefined
+                          }
+                        >
+                          {typeof product.stock === "number"
+                            ? product.stock
+                            : 0}
+                        </span>
+                        {product.featured && (
+                          <>
+                            {" · "}
+                            <FaStar className="featured-star" />{" "}
+                            {language === "he" ? "נמכר ביותר" : "Best Seller"}
+                          </>
+                        )}
                       </p>
                       <div className="product-card-footer">
                         <span className="text-bold">₪{product.price}</span>
@@ -2186,6 +2328,7 @@ function Admin() {
                         </th>
                         <th>{language === "he" ? "תאריך" : "Date"}</th>
                         <th>{language === "he" ? "פריטים" : "Items"}</th>
+                        <th>{language === "he" ? "פרטים" : "Details"}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -2233,6 +2376,15 @@ function Admin() {
                                 </>
                               ) : (
                                 <span className="text-muted">-</span>
+                              )}
+                              {order.trackingNumber && (
+                                <span
+                                  className="product-name-sub"
+                                  style={{ color: "var(--color-secondary)" }}
+                                >
+                                  {language === "he" ? "מעקב:" : "Tracking:"}{" "}
+                                  <span dir="ltr">{order.trackingNumber}</span>
+                                </span>
                               )}
                             </td>
                             <td className="text-bold">
@@ -2334,10 +2486,11 @@ function Admin() {
                                       {item.name} x{item.quantity} – ₪
                                       {item.price * item.quantity}
                                       {(() => {
-                                        const opts =
-                                          item.selections ||
-                                          item.selectedOptions;
-                                        if (!opts || !Object.keys(opts).length)
+                                        const optionLines = getOrderItemOptions(
+                                          item,
+                                          language,
+                                        );
+                                        if (optionLines.length === 0)
                                           return null;
                                         return (
                                           <span
@@ -2347,21 +2500,7 @@ function Admin() {
                                               display: "block",
                                             }}
                                           >
-                                            {Object.entries(opts)
-                                              .filter(
-                                                ([, v]) =>
-                                                  v !== undefined &&
-                                                  v !== "" &&
-                                                  !(
-                                                    Array.isArray(v) &&
-                                                    v.length === 0
-                                                  ),
-                                              )
-                                              .map(
-                                                ([k, v]) =>
-                                                  `${k}: ${Array.isArray(v) ? v.join(",") : v}`,
-                                              )
-                                              .join(" · ")}
+                                            {optionLines.join(" · ")}
                                           </span>
                                         );
                                       })()}
@@ -2370,12 +2509,28 @@ function Admin() {
                                 </ul>
                               </details>
                             </td>
+                            <td>
+                              <button
+                                className="icon-btn icon-btn-edit"
+                                onClick={() => {
+                                  setViewOrder(order);
+                                  setTrackingInput(order.trackingNumber || "");
+                                }}
+                                title={
+                                  language === "he"
+                                    ? "פרטי הזמנה מלאים"
+                                    : "Full order details"
+                                }
+                              >
+                                <FaEye />
+                              </button>
+                            </td>
                           </tr>
                         );
                       })}
                       {filteredOrders.length === 0 && (
                         <tr>
-                          <td colSpan="10" className="empty-table">
+                          <td colSpan="11" className="empty-table">
                             {language === "he"
                               ? "לא נמצאו הזמנות"
                               : "No orders found"}
@@ -2387,6 +2542,307 @@ function Admin() {
                 </div>
               )}
             </div>
+
+            {/* ── Full Order Details Modal ── */}
+            {viewOrder &&
+              (() => {
+                const he = language === "he";
+                const orderId = viewOrder._id || viewOrder.id;
+                const items = viewOrder.items || [];
+                const shipping = viewOrder.shippingAddress || {};
+                const itemsSum =
+                  typeof viewOrder.itemsPrice === "number"
+                    ? viewOrder.itemsPrice
+                    : items.reduce(
+                        (sum, it) => sum + (it.price || 0) * (it.quantity || 1),
+                        0,
+                      );
+                return (
+                  <div
+                    className="order-modal-overlay"
+                    onClick={() => setViewOrder(null)}
+                    role="dialog"
+                    aria-modal="true"
+                  >
+                    <div
+                      className="order-modal"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="order-modal-header">
+                        <div>
+                          <h2>
+                            {he ? "הזמנה" : "Order"}{" "}
+                            <code>{String(orderId).slice(-8).toUpperCase()}</code>
+                          </h2>
+                          <p className="order-modal-sub">
+                            {he ? "נוצרה:" : "Created:"}{" "}
+                            {formatDate(viewOrder.createdAt)}
+                            {viewOrder.updatedAt &&
+                              viewOrder.updatedAt !== viewOrder.createdAt && (
+                                <>
+                                  {" · "}
+                                  {he ? "עודכנה:" : "Updated:"}{" "}
+                                  {formatDate(viewOrder.updatedAt)}
+                                </>
+                              )}
+                          </p>
+                        </div>
+                        <button
+                          className="order-modal-close"
+                          onClick={() => setViewOrder(null)}
+                          aria-label={he ? "סגור" : "Close"}
+                        >
+                          ✕
+                        </button>
+                      </div>
+
+                      <div className="order-modal-body">
+                        <div className="order-modal-grid">
+                          <section className="order-modal-section">
+                            <h3>{he ? "פרטי לקוח" : "Customer"}</h3>
+                            <p>
+                              <strong>{he ? "שם:" : "Name:"}</strong>{" "}
+                              {viewOrder.customerName || "-"}
+                            </p>
+                            <p>
+                              <strong>{he ? "אימייל:" : "Email:"}</strong>{" "}
+                              {viewOrder.customerEmail || viewOrder.email || "-"}
+                            </p>
+                            <p>
+                              <strong>{he ? "טלפון:" : "Phone:"}</strong>{" "}
+                              {viewOrder.customerPhone || viewOrder.phone || "-"}
+                            </p>
+                          </section>
+
+                          <section className="order-modal-section">
+                            <h3>{he ? "משלוח" : "Shipping"}</h3>
+                            <p>
+                              <strong>{he ? "נמען:" : "Recipient:"}</strong>{" "}
+                              {shipping.fullName || viewOrder.customerName || "-"}
+                            </p>
+                            <p>
+                              <strong>{he ? "כתובת:" : "Address:"}</strong>{" "}
+                              {[shipping.address, shipping.city, shipping.zipCode]
+                                .filter(Boolean)
+                                .join(", ") || "-"}
+                            </p>
+                            {viewOrder.notes && (
+                              <p>
+                                <strong>{he ? "הערות:" : "Notes:"}</strong>{" "}
+                                {viewOrder.notes}
+                              </p>
+                            )}
+                            <div className="order-tracking-editor">
+                              <label htmlFor="order-tracking-input">
+                                <strong>
+                                  {he ? "מספר מעקב למשלוח:" : "Tracking number:"}
+                                </strong>
+                              </label>
+                              <div className="order-tracking-row">
+                                <input
+                                  id="order-tracking-input"
+                                  type="text"
+                                  dir="ltr"
+                                  maxLength={120}
+                                  value={trackingInput}
+                                  onChange={(e) =>
+                                    setTrackingInput(e.target.value)
+                                  }
+                                  placeholder={
+                                    he
+                                      ? "הזן מספר מעקב מחברת המשלוחים"
+                                      : "Enter carrier tracking number"
+                                  }
+                                />
+                                <button
+                                  type="button"
+                                  className="btn-gold order-tracking-save"
+                                  disabled={
+                                    trackingSaving ||
+                                    trackingInput.trim() ===
+                                      (viewOrder.trackingNumber || "")
+                                  }
+                                  onClick={() => handleSaveTracking(orderId)}
+                                >
+                                  {trackingSaving
+                                    ? he
+                                      ? "שומר..."
+                                      : "Saving..."
+                                    : he
+                                      ? "שמור"
+                                      : "Save"}
+                                </button>
+                              </div>
+                              <p className="order-tracking-hint">
+                                {he
+                                  ? "בשמירת מספר מעקב חדש נשלח ללקוח מייל אוטומטי עם המספר וכפתור מעקב מהיר. המספר מוצג גם בדף מעקב ההזמנה באתר."
+                                  : "Saving a new tracking number automatically emails the customer the number with a quick-track button. It also appears on the order tracking page."}
+                              </p>
+                            </div>
+                          </section>
+
+                          <section className="order-modal-section">
+                            <h3>{he ? "תשלום" : "Payment"}</h3>
+                            <p>
+                              <strong>{he ? "סטטוס תשלום:" : "Status:"}</strong>{" "}
+                              {viewOrder.paymentStatus === "completed"
+                                ? he
+                                  ? "שולם"
+                                  : "Paid"
+                                : viewOrder.paymentStatus === "failed"
+                                  ? he
+                                    ? "נכשל"
+                                    : "Failed"
+                                  : he
+                                    ? "ממתין"
+                                    : "Pending"}
+                            </p>
+                            {viewOrder.paymentMethod && (
+                              <p>
+                                <strong>
+                                  {he ? "אמצעי תשלום:" : "Method:"}
+                                </strong>{" "}
+                                {viewOrder.paymentMethod}
+                              </p>
+                            )}
+                            {viewOrder.transactionUid && (
+                              <p>
+                                <strong>
+                                  {he ? "מזהה עסקה:" : "Transaction:"}
+                                </strong>{" "}
+                                <code dir="ltr">{viewOrder.transactionUid}</code>
+                              </p>
+                            )}
+                            <p>
+                              <strong>
+                                {he ? "סטטוס הזמנה:" : "Order status:"}
+                              </strong>{" "}
+                              <select
+                                className={`status-select status-${viewOrder.status}`}
+                                value={normalizeOrderStatus(
+                                  viewOrder.status || "Pending",
+                                )}
+                                onChange={(e) => {
+                                  handleOrderStatusChange(
+                                    orderId,
+                                    e.target.value,
+                                  );
+                                  setViewOrder({
+                                    ...viewOrder,
+                                    status: e.target.value,
+                                  });
+                                }}
+                              >
+                                <option value="Pending">
+                                  {he ? "בהמתנה" : "Pending"}
+                                </option>
+                                <option value="Paid">
+                                  {he ? "שולם" : "Paid"}
+                                </option>
+                                <option value="Processing">
+                                  {he ? "בעיבוד" : "Processing"}
+                                </option>
+                                <option value="Shipped">
+                                  {he ? "נשלחה" : "Shipped"}
+                                </option>
+                                <option value="Delivered">
+                                  {he ? "נמסרה" : "Delivered"}
+                                </option>
+                                <option value="Cancelled">
+                                  {he ? "בוטלה" : "Cancelled"}
+                                </option>
+                              </select>
+                            </p>
+                          </section>
+                        </div>
+
+                        <section className="order-modal-section">
+                          <h3>
+                            {he
+                              ? `פריטים (${items.length})`
+                              : `Items (${items.length})`}
+                          </h3>
+                          <table className="order-items-table">
+                            <thead>
+                              <tr>
+                                <th>{he ? "מוצר" : "Product"}</th>
+                                <th>{he ? "אפשרויות" : "Options"}</th>
+                                <th>{he ? "כמות" : "Qty"}</th>
+                                <th>{he ? "מחיר ליח'" : "Unit"}</th>
+                                <th>{he ? 'סה"כ' : "Total"}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {items.map((item, i) => {
+                                const optionLines = getOrderItemOptions(
+                                  item,
+                                  language,
+                                );
+                                return (
+                                  <tr key={item.productId || item.id || i}>
+                                    <td className="text-bold">{item.name}</td>
+                                    <td>
+                                      {optionLines.length > 0 ? (
+                                        <ul className="order-item-options">
+                                          {optionLines.map((line, j) => (
+                                            <li key={j}>{line}</li>
+                                          ))}
+                                        </ul>
+                                      ) : (
+                                        <span className="text-muted">-</span>
+                                      )}
+                                    </td>
+                                    <td>{item.quantity}</td>
+                                    <td>₪{item.price}</td>
+                                    <td className="text-bold">
+                                      ₪{(item.price || 0) * (item.quantity || 1)}
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </section>
+
+                        <section className="order-modal-section order-modal-summary">
+                          <div className="order-summary-row">
+                            <span>{he ? "סכום פריטים" : "Items subtotal"}</span>
+                            <span>₪{itemsSum}</span>
+                          </div>
+                          <div className="order-summary-row">
+                            <span>{he ? "משלוח" : "Shipping"}</span>
+                            <span>
+                              {viewOrder.shippingPrice > 0
+                                ? `₪${viewOrder.shippingPrice}`
+                                : he
+                                  ? "חינם"
+                                  : "Free"}
+                            </span>
+                          </div>
+                          {viewOrder.discountPercent > 0 && (
+                            <div className="order-summary-row order-summary-discount">
+                              <span>
+                                {he ? "הנחה" : "Discount"}
+                                {viewOrder.couponCode && (
+                                  <>
+                                    {" "}
+                                    (<code>{viewOrder.couponCode}</code>)
+                                  </>
+                                )}
+                              </span>
+                              <span>-{viewOrder.discountPercent}%</span>
+                            </div>
+                          )}
+                          <div className="order-summary-row order-summary-total">
+                            <span>{he ? 'סה"כ ששולם' : "Total paid"}</span>
+                            <span>₪{viewOrder.totalPrice || 0}</span>
+                          </div>
+                        </section>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
           </>
         )}
 

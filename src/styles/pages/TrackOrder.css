@@ -227,6 +227,32 @@
   color: var(--color-primary, #162839);
 }
 
+.track-order__tracking {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  text-align: center;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 8px;
+  color: var(--color-primary, #162839);
+  font-size: 0.95rem;
+  padding: 0.85rem 1.25rem;
+  margin: 0 0 2rem;
+}
+
+.track-order__tracking svg {
+  color: var(--color-secondary, #d4af37);
+}
+
+.track-order__tracking-number {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  user-select: all;
+}
+
 .track-order__cancelled {
   text-align: center;
   color: #93000a;

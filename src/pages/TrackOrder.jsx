@@ -214,6 +214,16 @@ function TrackOrder() {
               )}
             </div>
 
+            {result.trackingNumber && !isCancelled && (
+              <p className="track-order__tracking">
+                <FaShippingFast aria-hidden />
+                {he ? "מספר מעקב למשלוח:" : "Shipment tracking number:"}{" "}
+                <span className="track-order__tracking-number" dir="ltr">
+                  {result.trackingNumber}
+                </span>
+              </p>
+            )}
+
             {isCancelled ? (
               <p className="track-order__cancelled">
                 {he ? "ההזמנה בוטלה" : "This order was cancelled"}

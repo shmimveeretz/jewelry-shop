@@ -137,6 +137,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 
 // Components (always loaded - part of every page)
 import Navbar from "./components/Navbar";
+import CartDrawer from "./components/CartDrawer";
 import Footer from "./components/Footer";
 import ShabbatMode from "./components/ShabbatMode";
 import ScrollToTop from "./components/ScrollToTop";
@@ -182,6 +183,7 @@ function App() {
             <AccessibilityWidget />
             <div className="App">
               <ShabbatMode />              <TopBanner />              <Navbar />
+              <CartDrawer />
               <main className="main-content">
                 <Suspense
                   fallback={

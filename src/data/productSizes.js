@@ -118,11 +118,28 @@ export function isLetterChainProduct(product) {
   return product?.id === LETTER_CHAIN_PRODUCT_ID;
 }
 
+/** Any product in the Hebrew Letters category (single letters + letter chain). */
+export function isHebrewLetterProduct(product) {
+  return (
+    product?.category === "אותיות עבריות" ||
+    product?.categoryEn === "Hebrew Letters"
+  );
+}
+
+/**
+ * Extra letters are available on every Hebrew-letter product:
+ * - letter-chain: once a jewelry type (necklace/bracelet) is chosen
+ * - single-letter products: always
+ * - any other product with `extraLetterForBracelet` pricing: bracelets only
+ */
 export function allowsExtraLetters(product, jewelryType) {
-  if (!product?.priceAdditions?.extraLetterForBracelet) return false;
   if (isLetterChainProduct(product)) {
     return Boolean(jewelryType);
   }
+  if (isHebrewLetterProduct(product)) {
+    return true;
+  }
+  if (!product?.priceAdditions?.extraLetterForBracelet) return false;
   return isBraceletJewelryType(jewelryType);
 }
 

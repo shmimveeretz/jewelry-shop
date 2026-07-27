@@ -90,18 +90,89 @@
 /* ── Sticky CTA footer ── */
 .modal-sticky-footer {
   flex-shrink: 0;
-  padding: 1rem 1.5rem;
+  padding: 0.85rem 1.25rem
+    max(0.85rem, env(safe-area-inset-bottom, 0px));
   background: var(--color-white);
   border-top: 1px solid rgba(44, 62, 80, 0.1);
   box-shadow: 0 -4px 20px rgba(22, 40, 57, 0.05);
 }
 
+.modal-cta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
 .modal-sticky-footer .btn {
   width: 100%;
+  min-height: 48px;
   padding: 0.875rem;
   font-size: var(--font-size-base);
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+
+.modal-sticky-footer .buy-now-btn {
+  background: var(--color-secondary);
+  color: var(--color-white);
+  border: none;
+}
+
+.modal-sticky-footer .buy-now-btn:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.modal-sticky-footer .add-to-cart-btn {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+}
+
+.modal-ready-ship {
+  margin: 0.55rem 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  line-height: 1.4;
+}
+
+.modal-trust-signals {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem 1.1rem;
+  margin-top: 0.55rem;
+}
+
+.trust-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--color-text-light);
+  letter-spacing: 0.02em;
+}
+
+.trust-signal svg {
+  color: var(--color-secondary);
+  font-size: 0.8rem;
+}
+
+.product-modal-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-secondary);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.product-modal-rating-value {
+  color: var(--color-text-light);
+  font-size: 0.8rem;
+  letter-spacing: 0;
 }
 
 .product-modal-grid {
@@ -468,9 +539,16 @@
   border-color: rgba(212, 175, 55, 0.45);
 }
 
-/* Extra letters input (bracelet feature) */
+/* Extra letters chip builder */
+.extra-letters-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
 .extra-letters-input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   padding: 0.75rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-sm);
@@ -478,11 +556,44 @@
   background-color: var(--color-white);
   transition: border-color var(--transition-fast);
   direction: rtl;
+  text-align: center;
+  letter-spacing: 0.05em;
 }
 
 .extra-letters-input:focus {
   outline: none;
   border-color: var(--color-secondary);
+}
+
+.extra-letters-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.extra-letter-add-btn {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0 0.9rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-secondary);
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.extra-letter-add-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.extra-letters-error {
+  margin: 0.35rem 0 0;
+  color: #b42318;
+  font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .extra-letters-preview {
@@ -496,13 +607,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.25rem;
   min-width: 2rem;
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem 0.45rem 0.2rem 0.55rem;
   background: var(--color-secondary, #c9a96e);
   color: #fff;
   border-radius: 999px;
   font-size: 0.95rem;
   font-weight: 600;
+}
+
+.letter-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  color: #fff;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 /* Color Options for Wax Thread */
