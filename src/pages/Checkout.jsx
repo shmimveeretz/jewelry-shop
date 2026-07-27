@@ -274,7 +274,7 @@ function Checkout() {
         );
       }
 
-      window.open(redirectUrl, "_blank", "noopener,noreferrer");
+      window.location.assign(redirectUrl);
     } catch (err) {
       console.error("Checkout crash details:", err);
       showError(
