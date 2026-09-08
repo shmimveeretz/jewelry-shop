@@ -20,18 +20,18 @@ import {
   FaCog,
   FaStar,
 } from "react-icons/fa";
-import { useToast } from "../context/ToastContext";
-import { useLanguage } from "../contexts/LanguageContext";
-import ProductFormModal from "../components/ProductFormModal";
-import PayPlusDocumentForm from "../components/PayPlusDocumentForm";
-import NewsletterAdmin from "../components/NewsletterAdmin";
-import CouponStats from "../components/CouponStats";
-import DashboardCharts from "../components/DashboardCharts";
-import CategoryAdmin from "../components/CategoryAdmin";
-import HomeFeaturedAdmin from "../components/HomeFeaturedAdmin";
-import { MAX_MOTD_LENGTH } from "../utils/motd";
-import { getAllProducts, deleteProduct } from "../services/productApi";
-import "../styles/pages/Admin.css";
+import { useToast } from "../../../context/ToastContext";
+import { useLanguage } from "../../../contexts/LanguageContext";
+import ProductFormModal from "../../../components/ProductFormModal";
+import PayPlusDocumentForm from "../../../components/PayPlusDocumentForm";
+import NewsletterAdmin from "../../../components/NewsletterAdmin";
+import CouponStats from "../../../components/CouponStats";
+import DashboardCharts from "../../../components/DashboardCharts";
+import CategoryAdmin from "../../../components/CategoryAdmin";
+import HomeFeaturedAdmin from "../../../components/HomeFeaturedAdmin";
+import { MAX_MOTD_LENGTH } from "../../../utils/motd";
+import { getAllProducts, deleteProduct } from "../../../services/productApi";
+import "../../../styles/pages/Admin.css";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -72,7 +72,15 @@ const getOrderItemOptions = (item, language) => {
     });
 };
 
-function Admin() {
+/**
+ * The original single-file admin panel, moved here verbatim.
+ *
+ * Strangler fig: new features are built as their own routed modules under
+ * features/admin/ and never touch this file. When an existing tab needs work,
+ * it gets extracted into its own module and dropped from here — so this shrinks
+ * over time instead of being rewritten in one risky pass.
+ */
+function LegacyAdminView() {
   const { language, t } = useLanguage();
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
@@ -3504,4 +3512,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default LegacyAdminView;

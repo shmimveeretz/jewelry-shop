@@ -134,6 +134,7 @@ import "./styles/App.css";
 import { CartProvider } from "./context/CartContext";
 import { ToastProvider } from "./context/ToastContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { PopupProvider } from "./features/popups/PopupProvider";
 
 // Components (always loaded - part of every page)
 import Navbar from "./components/Navbar";
@@ -157,7 +158,24 @@ const Auth = lazy(() => import("./pages/Auth"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const VerifyCode = lazy(() => import("./pages/VerifyCode"));
 const ChangePassword = lazy(() => import("./pages/ChangePassword"));
-const Admin = lazy(() => import("./pages/Admin"));
+const AdminLayout = lazy(() => import("./features/admin/AdminLayout"));
+const DashboardHome = lazy(() => import("./features/admin/DashboardHome"));
+const LegacyAdminView = lazy(
+  () => import("./features/admin/legacy/LegacyAdminView"),
+);
+const ProductPageList = lazy(
+  () => import("./features/admin/dppBuilder/ProductPageList"),
+);
+const ProductPageEditor = lazy(
+  () => import("./features/admin/dppBuilder/ProductPageEditor"),
+);
+const PopupList = lazy(() => import("./features/admin/popupManager/PopupList"));
+const PopupEditor = lazy(
+  () => import("./features/admin/popupManager/PopupEditor"),
+);
+const MarketingHub = lazy(
+  () => import("./features/admin/marketing/MarketingHub"),
+);
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const PaymentFailure = lazy(() => import("./pages/PaymentFailure"));
 const Payment = lazy(() => import("./pages/Payment"));
@@ -168,6 +186,97 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const Accessibility = lazy(() => import("./pages/Accessibility"));
 const TrackOrder = lazy(() => import("./pages/TrackOrder"));
+const DppPage = lazy(() => import("./pages/DppPage"));
+
+/**
+ * Campaign landing pages render without navbar, footer or cart drawer: paid
+ * traffic gets one path forward (the CTA) and no links to leak out through.
+ *
+ * The admin brings its own shell chrome, so the storefront's is stripped there
+ * too.
+ */
+const CHROME_FREE_ROUTE_PREFIXES = ["/lp/", "/admin"];
+
+function AppShell() {
+  const { pathname } = useLocation();
+  const showChrome = !CHROME_FREE_ROUTE_PREFIXES.some((prefix) =>
+    pathname.startsWith(prefix),
+  );
+
+  return (
+    <div className="App">
+      {showChrome && (
+        <>
+          <TopBanner />
+          <Navbar />
+          <CartDrawer />
+        </>
+      )}
+      <main className="main-content">
+        <Suspense
+          fallback={
+            <div
+              style={{
+                minHeight: "60vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.2rem",
+                color: "#888",
+              }}
+            >
+              {/* language not available here — default to Hebrew loading text */}
+              Loading...
+            </div>
+          }
+        >
+          <Routes>
+            {/* Slug resolves to a built page, or falls back to a
+                        product id rendered with the default template — which
+                        is what keeps existing /lp/<productId> ad links alive. */}
+            <Route path="/lp/:slug" element={<DppPage />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/zodiac" element={<Zodiac />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            {/* <Route path="/story" element={<Story />} /> */}
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/login" element={<Auth />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify-code" element={<VerifyCode />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+            {/* Strangler fig: the shell owns /admin, new modules get
+                        real routes, and everything not yet extracted falls
+                        through to the original panel at /admin/store. */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<DashboardHome />} />
+              <Route path="pages" element={<ProductPageList />} />
+              <Route path="pages/:id" element={<ProductPageEditor />} />
+              <Route path="popups" element={<PopupList />} />
+              <Route path="popups/:id" element={<PopupEditor />} />
+              <Route path="marketing" element={<MarketingHub />} />
+              <Route path="store" element={<LegacyAdminView />} />
+              <Route path="*" element={<LegacyAdminView />} />
+            </Route>
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/payment-failure" element={<PaymentFailure />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/return-policy" element={<ReturnPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/accessibility" element={<Accessibility />} />
+            <Route path="/track-order" element={<TrackOrder />} />
+          </Routes>
+        </Suspense>
+      </main>
+      {showChrome && <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -175,83 +284,18 @@ function App() {
       <ToastProvider>
         <CartProvider>
           <Router>
-            <NormalizeDoubleSlashPath />
-            <MetaPixelPageView />
-            <DeviceTracker />
-            <CookieBanner />
-            <ScrollToTop />
-            <AccessibilityWidget />
-            <div className="App">
-              <ShabbatMode />              <TopBanner />              <Navbar />
-              <CartDrawer />
-              <main className="main-content">
-                <Suspense
-                  fallback={
-                    <div
-                      style={{
-                        minHeight: "60vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "1.2rem",
-                        color: "#888",
-                      }}
-                    >
-                      {/* language not available here — default to Hebrew loading text */}
-                      Loading...
-                    </div>
-                  }
-                >
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/shop" element={<Shop />} />
-                    <Route path="/zodiac" element={<Zodiac />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    {/* <Route path="/story" element={<Story />} /> */}
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/checkout" element={<Checkout />} />
-                    <Route path="/login" element={<Auth />} />
-                    <Route
-                      path="/forgot-password"
-                      element={<ForgotPassword />}
-                    />
-                    <Route path="/verify-code" element={<VerifyCode />} />
-                    <Route
-                      path="/change-password"
-                      element={<ChangePassword />}
-                    />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route
-                      path="/payment-success"
-                      element={<PaymentSuccess />}
-                    />
-                    <Route
-                      path="/payment-failure"
-                      element={<PaymentFailure />}
-                    />
-                    <Route path="/payment" element={<Payment />} />
-                    <Route
-                      path="/payment-cancelled"
-                      element={<PaymentCancelled />}
-                    />
-                    <Route
-                      path="/shipping-policy"
-                      element={<ShippingPolicy />}
-                    />
-                    <Route path="/return-policy" element={<ReturnPolicy />} />
-                    <Route
-                      path="/terms-of-service"
-                      element={<TermsOfService />}
-                    />
-                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/accessibility" element={<Accessibility />} />
-                    <Route path="/track-order" element={<TrackOrder />} />
-                  </Routes>
-                </Suspense>
-              </main>
-              <Footer />
-            </div>
+            {/* Inside the Router so it can react to route changes, but above
+                AppShell so an open popup survives a client-side navigation. */}
+            <PopupProvider>
+              <NormalizeDoubleSlashPath />
+              <MetaPixelPageView />
+              <DeviceTracker />
+              <CookieBanner />
+              <ScrollToTop />
+              <AccessibilityWidget />
+              <ShabbatMode />
+              <AppShell />
+            </PopupProvider>
           </Router>
         </CartProvider>
       </ToastProvider>

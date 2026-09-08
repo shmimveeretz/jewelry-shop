@@ -108,6 +108,9 @@
         src="https://www.facebook.com/tr?id=1655814618795131&ev=PageView&noscript=1"
     /></noscript>
     <div id="root"></div>
+    <!-- Popups portal here rather than into #root, so no page's stacking or
+         overflow rules can clip them. -->
+    <div id="popup-root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

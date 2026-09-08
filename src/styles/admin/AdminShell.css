@@ -1,0 +1,535 @@
+/*
+ * Admin shell: header, sidebar and the widget grid.
+ *
+ * Scoped under .admin-shell so it cannot reach the storefront, and kept
+ * separate from the legacy Admin.css that LegacyAdminView still owns.
+ */
+
+.admin-shell {
+  --shell-bg: #f4f5f7;
+  --shell-surface: #ffffff;
+  --shell-border: #e3e6ea;
+  --shell-navy: #2c3e50;
+  --shell-gold: #c9a227;
+  --shell-muted: #6b7480;
+
+  min-height: 100vh;
+  background: var(--shell-bg);
+  color: var(--shell-navy);
+}
+
+.admin-shell__booting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #888;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+
+.admin-shell__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1.25rem;
+  background: var(--shell-surface);
+  border-bottom: 1px solid var(--shell-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.admin-shell__brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.admin-shell__brand-name {
+  font-family: "Bona Nova", serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.admin-shell__brand-sub {
+  font-size: 0.75rem;
+  color: var(--shell-muted);
+}
+
+.admin-shell__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-shell__user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  margin-inline-end: 0.5rem;
+}
+
+.admin-shell__user small {
+  color: var(--shell-muted);
+  font-size: 0.7rem;
+}
+
+.admin-shell__ghost-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 38px;
+  padding: 0 0.85rem;
+  border: 1px solid var(--shell-border);
+  border-radius: 9px;
+  background: var(--shell-surface);
+  color: var(--shell-navy);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.admin-shell__ghost-btn:hover,
+.admin-shell__ghost-btn.is-on {
+  border-color: var(--shell-gold);
+  background: #fdf9ec;
+}
+
+.admin-shell__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--shell-muted);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.admin-shell__icon-btn:hover,
+.admin-shell__icon-btn.is-on {
+  color: var(--shell-gold);
+  background: #fdf9ec;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+
+.admin-shell__body {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: start;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.admin-shell__content {
+  min-width: 0;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────────────── */
+
+.admin-shell__sidebar {
+  background: var(--shell-surface);
+  border: 1px solid var(--shell-border);
+  border-radius: 14px;
+  padding: 0.75rem;
+  position: sticky;
+  top: 74px;
+}
+
+.admin-shell__sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.35rem 0.5rem;
+}
+
+.admin-shell__sidebar-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--shell-muted);
+}
+
+.admin-shell__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-shell__nav-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.admin-shell__nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  color: var(--shell-navy);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.admin-shell__nav-link:hover {
+  background: #f0f2f5;
+}
+
+.admin-shell__nav-link.is-active {
+  background: var(--shell-navy);
+  color: #fff;
+}
+
+.admin-shell__nav-link.is-active .admin-shell__nav-desc {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.admin-shell__nav-icon {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+}
+
+.admin-shell__nav-desc {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--shell-muted);
+  margin-top: 1px;
+}
+
+.admin-shell__nav-chevron {
+  margin-inline-start: auto;
+  font-size: 0.7rem;
+  opacity: 0.4;
+  /* The layout is RTL, so the chevron must point the other way. */
+  transform: scaleX(-1);
+}
+
+.admin-shell__nav-label {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.admin-shell__grip {
+  border: none;
+  background: transparent;
+  color: #b9bfc7;
+  cursor: grab;
+  font-size: 1rem;
+  padding: 0.35rem;
+  line-height: 1;
+  touch-action: none;
+}
+
+.admin-shell__grip:active {
+  cursor: grabbing;
+}
+
+.admin-shell__hidden {
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--shell-border);
+}
+
+.admin-shell__hidden-title {
+  font-size: 0.7rem;
+  color: var(--shell-muted);
+  margin: 0 0 0.35rem;
+}
+
+.admin-shell__hidden-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 0.5rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--shell-muted);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.admin-shell__hidden-item:hover {
+  background: #f0f2f5;
+}
+
+.admin-shell__reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 36px;
+  margin-top: 0.6rem;
+  border: 1px solid var(--shell-border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--shell-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* ── Dashboard ──────────────────────────────────────────────────────────── */
+
+.admin-dashboard__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.admin-dashboard__head h1 {
+  margin: 0;
+  font-family: "Bona Nova", serif;
+  font-size: 1.6rem;
+}
+
+.admin-dashboard__sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.85rem;
+  color: var(--shell-muted);
+}
+
+.admin-dashboard__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.admin-dashboard__periods {
+  display: flex;
+  border: 1px solid var(--shell-border);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--shell-surface);
+}
+
+.admin-dashboard__periods button {
+  min-height: 38px;
+  padding: 0 0.85rem;
+  border: none;
+  background: transparent;
+  color: var(--shell-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.admin-dashboard__periods button.is-active {
+  background: var(--shell-navy);
+  color: #fff;
+}
+
+.admin-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+/* ── Widgets ────────────────────────────────────────────────────────────── */
+
+.admin-widget {
+  /* Span is stored per widget rather than free x/y, so the grid still makes
+     sense when it collapses to fewer columns below. */
+  grid-column: span var(--widget-span, 4);
+  background: var(--shell-surface);
+  border: 1px solid var(--shell-border);
+  border-radius: 14px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.admin-widget.is-hidden {
+  opacity: 0.45;
+}
+
+.admin-widget__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--shell-border);
+  background: #fafbfc;
+}
+
+.admin-widget__title {
+  flex: 1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--shell-muted);
+}
+
+.admin-widget__body {
+  padding: 1rem;
+}
+
+.admin-widget__stat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-widget__stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: #fdf9ec;
+  color: var(--shell-gold);
+  font-size: 1.05rem;
+}
+
+.admin-widget__stat-label {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--shell-muted);
+}
+
+.admin-widget__stat-value {
+  margin: 0.1rem 0 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.admin-widget__stat-hint {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
+  color: var(--shell-muted);
+}
+
+.admin-widget__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-inline-start: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.admin-widget__trend.is-up {
+  color: #2f855a;
+}
+
+.admin-widget__trend.is-down {
+  color: #c53030;
+}
+
+.admin-widget__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-widget__list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+}
+
+.admin-widget__list a {
+  color: var(--shell-navy);
+  text-decoration: none;
+}
+
+.admin-widget__list a:hover {
+  text-decoration: underline;
+}
+
+.admin-widget__list-meta {
+  font-size: 0.74rem;
+  color: var(--shell-muted);
+  direction: ltr;
+  white-space: nowrap;
+}
+
+.admin-widget__empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--shell-muted);
+}
+
+.admin-widget__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.admin-widget__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 42px;
+  padding: 0 0.95rem;
+  border: 1px solid var(--shell-border);
+  border-radius: 10px;
+  color: var(--shell-navy);
+  text-decoration: none;
+  font-size: 0.87rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.admin-widget__action:hover {
+  border-color: var(--shell-gold);
+  background: #fdf9ec;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .admin-shell__body {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-shell__sidebar {
+    position: static;
+  }
+
+  .admin-dashboard__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .admin-widget {
+    grid-column: span min(var(--widget-span, 4), 6);
+  }
+}
+
+@media (max-width: 680px) {
+  .admin-dashboard__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-widget {
+    grid-column: 1 / -1;
+  }
+}

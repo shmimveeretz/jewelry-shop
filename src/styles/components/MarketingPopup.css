@@ -1,0 +1,306 @@
+/*
+ * Marketing popups.
+ *
+ * Colours come from inline styles set by the variant (validated server-side as
+ * hex), so this file owns layout and motion only.
+ */
+
+.mpopup-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  /* The layer itself must not eat clicks — only the dialog and overlay do. */
+  pointer-events: none;
+}
+
+.mpopup-layer--modal,
+.mpopup-layer--fullscreen {
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.mpopup-layer--bar {
+  align-items: flex-end;
+}
+
+.mpopup-layer--slideIn {
+  align-items: flex-end;
+  padding: 1rem;
+}
+
+.mpopup__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 26, 38, 0.55);
+  backdrop-filter: blur(2px);
+  pointer-events: auto;
+  animation: mpopup-fade 0.2s ease-out;
+}
+
+.mpopup {
+  position: relative;
+  pointer-events: auto;
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.22);
+  font-family: "Cardo", serif;
+  overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.mpopup:focus {
+  outline: none;
+}
+
+.mpopup--modal {
+  width: min(440px, 100%);
+  animation: mpopup-rise 0.25s ease-out;
+}
+
+.mpopup--fullscreen {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  border-radius: 0 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: mpopup-fade 0.2s ease-out;
+}
+
+.mpopup--slideIn {
+  width: min(360px, 100%);
+  animation: mpopup-slide 0.28s ease-out;
+}
+
+.mpopup--bar {
+  width: 100%;
+  border-radius: 0 !important;
+  animation: mpopup-slide 0.28s ease-out;
+}
+
+/* Position modifiers only apply to the floating layouts. */
+.mpopup-layer--slideIn .mpopup--bottomStart {
+  margin-inline-end: auto;
+}
+
+.mpopup-layer--slideIn .mpopup--bottomEnd {
+  margin-inline-start: auto;
+}
+
+.mpopup-layer--slideIn .mpopup--top {
+  align-self: flex-start;
+}
+
+.mpopup-layer--slideIn .mpopup--center {
+  margin-inline: auto;
+}
+
+.mpopup__close {
+  position: absolute;
+  top: 0.6rem;
+  inset-inline-end: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  color: inherit;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.mpopup__close:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.mpopup__image {
+  width: 100%;
+  max-height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.mpopup__content {
+  padding: 1.5rem 1.35rem 1.35rem;
+  text-align: center;
+}
+
+.mpopup__headline {
+  margin: 0 0 0.5rem;
+  font-family: "Bona Nova", serif;
+  font-size: 1.45rem;
+  line-height: 1.25;
+}
+
+.mpopup__subheadline {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.mpopup__body {
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  opacity: 0.75;
+}
+
+.mpopup__cta,
+.mpopup__form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* 48px keeps the tap target comfortable on the phones most of this traffic
+     arrives on. */
+  min-height: 48px;
+  padding: 0 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--popup-accent, #c9a227);
+  color: #1b2a4a;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.mpopup__cta:hover,
+.mpopup__form button:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+
+.mpopup__form button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.mpopup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mpopup__form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 0.85rem;
+  border: 1px solid rgba(27, 42, 74, 0.2);
+  border-radius: 10px;
+  background: #fff;
+  color: #1b2a4a;
+  font: inherit;
+  font-size: 1rem;
+}
+
+.mpopup__form input:focus {
+  outline: 2px solid var(--popup-accent, #c9a227);
+  outline-offset: -1px;
+}
+
+.mpopup__coupon {
+  margin: 0;
+  padding: 0.85rem;
+  border: 1px dashed var(--popup-accent, #c9a227);
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.mpopup__coupon strong {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 1.35rem;
+  letter-spacing: 0.12em;
+  direction: ltr;
+}
+
+.mpopup__error {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: #c53030;
+}
+
+.mpopup__dismiss {
+  display: block;
+  width: 100%;
+  margin-top: 0.75rem;
+  border: none;
+  background: none;
+  color: inherit;
+  opacity: 0.55;
+  font: inherit;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mpopup__dismiss:hover {
+  opacity: 0.8;
+}
+
+/* The bar layout is a single row on wide screens. */
+@media (min-width: 768px) {
+  .mpopup--bar .mpopup__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+    text-align: start;
+    padding: 1rem 3.5rem 1rem 1.35rem;
+  }
+
+  .mpopup--bar .mpopup__headline,
+  .mpopup--bar .mpopup__subheadline,
+  .mpopup--bar .mpopup__body {
+    margin: 0;
+  }
+
+  .mpopup--bar .mpopup__cta,
+  .mpopup--bar .mpopup__form {
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .mpopup--bar .mpopup__form {
+    flex-direction: row;
+  }
+
+  .mpopup--bar .mpopup__dismiss {
+    width: auto;
+    margin: 0;
+  }
+}
+
+@keyframes mpopup-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes mpopup-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+@keyframes mpopup-slide {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Respect a reduced-motion preference: no entrance animation at all. */
+@media (prefers-reduced-motion: reduce) {
+  .mpopup,
+  .mpopup__overlay {
+    animation: none !important;
+  }
+}

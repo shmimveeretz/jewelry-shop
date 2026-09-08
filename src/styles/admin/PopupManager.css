@@ -1,0 +1,182 @@
+/* Popup CMS. Builds on DppBuilder.css — .admin-field and .dpp-panel come from there. */
+
+.popup-editor__name {
+  width: 100%;
+  min-width: 220px;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #1b2a4a;
+  font-family: "Bona Nova", serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.popup-editor__name:hover {
+  border-color: rgba(27, 42, 74, 0.15);
+}
+
+.popup-editor__name:focus {
+  outline: none;
+  border-color: #c9a227;
+  background: #fff;
+}
+
+.popup-editor__status {
+  min-height: 40px;
+  padding: 0 0.6rem;
+  border: 1px solid rgba(27, 42, 74, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+}
+
+.popup-editor__grid {
+  display: grid;
+  /* The preview stays put while the form scrolls — the whole point is to see
+     the effect of a change without hunting for it. */
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.popup-editor__main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.popup-editor__side {
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.popup-editor__variants button svg {
+  vertical-align: middle;
+}
+
+.popup-variant,
+.popup-rules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* ------------------------------- Preview -------------------------------- */
+
+.popup-preview {
+  border: 1px solid rgba(27, 42, 74, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.popup-preview__label {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid rgba(27, 42, 74, 0.08);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.popup-preview__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  /* A neutral checker so light and dark popup backgrounds are both legible. */
+  background: repeating-conic-gradient(#f3f4f6 0% 25%, #e9ebef 0% 50%) 50% / 16px
+    16px;
+}
+
+.popup-preview__stage.has-overlay {
+  background: rgba(20, 26, 38, 0.55);
+}
+
+/* The runtime sizes these against the viewport, which is not what the stage is. */
+.popup-preview .mpopup--fullscreen,
+.popup-preview .mpopup--bar {
+  height: auto;
+  border-radius: 8px !important;
+}
+
+/* The preview is not interactive: nothing here should look clickable. */
+.popup-preview .mpopup__cta,
+.popup-preview .mpopup__form button,
+.popup-preview .mpopup__form input {
+  pointer-events: none;
+  opacity: 1;
+  cursor: default;
+}
+
+/* -------------------------------- Stats --------------------------------- */
+
+.popup-stats {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.popup-stats th,
+.popup-stats td {
+  padding: 0.45rem 0.35rem;
+  text-align: start;
+  border-bottom: 1px solid rgba(27, 42, 74, 0.08);
+}
+
+.popup-stats th {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.popup-stats tr.is-leading td {
+  background: rgba(201, 162, 39, 0.1);
+  font-weight: 600;
+}
+
+.dpp-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.dpp-panel__head h3 {
+  margin: 0;
+  font-family: "Bona Nova", serif;
+  font-size: 1.05rem;
+}
+
+.dpp-panel__hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+.dpp-link-btn {
+  border: none;
+  background: none;
+  color: #b91c1c;
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+  .popup-editor__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .popup-editor__side {
+    position: static;
+  }
+}

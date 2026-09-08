@@ -19,6 +19,11 @@ import {
   isValidSingleHebrewLetter,
   MAX_EXTRA_LETTERS,
 } from "../utils/extraHebrewLetters";
+import {
+  buildCartItem as buildProductCartItem,
+  calculateProductPrice,
+  getOptionKeys,
+} from "../utils/productPricing";
 import "../styles/components/ProductModal.css";
 
 function ProductModal({ product, onClose }) {
@@ -42,10 +47,7 @@ function ProductModal({ product, onClose }) {
 
   // Only initialise selectedOptions for keys whose value is an object (i.e. option groups).
   // Numeric keys like extraLetterForBracelet are not selectors.
-  const optionKeys = Object.keys(priceAdditions).filter(
-    (key) =>
-      typeof priceAdditions[key] === "object" && priceAdditions[key] !== null,
-  );
+  const optionKeys = getOptionKeys(priceAdditions);
 
   const isHebrewLetters = isHebrewLetterProduct(product);
   const isLetterChain = isLetterChainProduct(product);
@@ -78,39 +80,8 @@ function ProductModal({ product, onClose }) {
   //   { "name": "ורוד", hex: "#FF69B4" },
   // ];
 
-  const calculateTotalPrice = () => {
-    let totalPrice = product.price;
-    for (const key of optionKeys) {
-      if (key === "length" || key === "jewelryType") continue;
-      const selected = selectedOptions[key];
-      if (selected && priceAdditions[key]) {
-        totalPrice += priceAdditions[key][selected] || 0;
-      }
-    }
-    if (selectedOptions.jewelryType && priceAdditions.jewelryType) {
-      totalPrice +=
-        priceAdditions.jewelryType[selectedOptions.jewelryType] || 0;
-    }
-    totalPrice += getLengthAddition(
-      priceAdditions,
-      selectedOptions.jewelryType,
-      selectedOptions.length,
-      isHebrewLetters,
-    );
-    if (
-      allowsExtraLetters(product, selectedOptions.jewelryType) &&
-      extraLetters.length > 0
-    ) {
-      const perLetterCost = getExtraLetterPerBraceletCost(
-        priceAdditions,
-        selectedOptions.metalType,
-      );
-      if (perLetterCost > 0) {
-        totalPrice += extraLetters.length * perLetterCost;
-      }
-    }
-    return totalPrice;
-  };
+  const calculateTotalPrice = () =>
+    calculateProductPrice(product, selectedOptions, extraLetters);
 
   const handleOptionChange = (optionName, value) => {
     setSelectedOptions((prev) => ({
@@ -183,37 +154,8 @@ function ProductModal({ product, onClose }) {
   };
 
   // Build the cart item: full product data for display + selections for the backend
-  const buildCartItem = () => {
-    const finalPrice = calculateTotalPrice();
-
-    // Build the API-contract selections object.
-    // jewelryType and extraLetters are only relevant for Hebrew Letters.
-    const selections = {};
-    if (selectedOptions.metalType)
-      selections.metalType = selectedOptions.metalType;
-    if (selectedOptions.length) selections.length = selectedOptions.length;
-    if (isHebrewLetters) {
-      if (isLetterChain && selectedOptions.jewelryType) {
-        selections.jewelryType = selectedOptions.jewelryType;
-      }
-      selections.extraLetters = allowsExtraLetters(
-        product,
-        selectedOptions.jewelryType,
-      )
-        ? extraLetters
-        : [];
-    }
-
-    const cartItemId = `${product.id}__${JSON.stringify(selections)}`;
-    return {
-      ...product,
-      price: finalPrice,
-      basePrice: product.price,
-      selectedOptions: { ...selectedOptions },
-      selections,
-      cartItemId,
-    };
-  };
+  const buildCartItem = () =>
+    buildProductCartItem(product, selectedOptions, extraLetters);
 
   const handleAddToCart = () => {
     // Require all option selectors to be filled

@@ -194,41 +194,10 @@ img {
   color: var(--color-white);
 }
 
-/* Shabbat Mode Styles */
+/* Shabbat Mode — the takeover screen itself lives in components/ShabbatMode.css.
+   It covers the viewport, so the page behind it only needs its scroll locked. */
 body.shabbat-mode {
-  filter: grayscale(100%);
-  pointer-events: none;
-}
-
-body.shabbat-mode .shabbat-overlay {
-  display: flex;
-}
-
-.shabbat-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 10000;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  color: white;
-  text-align: center;
-  padding: 2rem;
-}
-
-.shabbat-overlay h2 {
-  font-size: var(--font-size-3xl);
-  margin-bottom: var(--spacing-md);
-}
-
-.shabbat-overlay p {
-  font-size: var(--font-size-lg);
-  max-width: 600px;
+  overflow: hidden;
 }
 
 .bona-nova-regular {

@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Preflight is disabled (see config/tailwind.config.js) so Tailwind cannot
+ * restyle the pages written before it was introduced. These rules restore the
+ * only Preflight behaviours the campaign pages rely on, scoped to .dpp-scope.
+ *
+ * Every selector is wrapped in :where() to keep specificity at zero, so a
+ * utility class always wins over the reset.
+ */
+@layer base {
+  /* Tailwind's border-* utilities only set a width; Preflight is what makes the
+     style solid. Without this, `border` renders nothing. */
+  :where(.dpp-scope, .dpp-scope *, .dpp-scope *::before, .dpp-scope *::after) {
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+  }
+
+  :where(.dpp-scope) :where(h1, h2, h3, h4, h5, h6) {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  :where(.dpp-scope) :where(ul, ol) {
+    list-style: none;
+  }
+
+  :where(.dpp-scope) :where(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+  }
+
+  :where(.dpp-scope) :where(select) {
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  :where(.dpp-scope) :where(svg) {
+    display: block;
+  }
+}
