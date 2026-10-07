@@ -40,7 +40,7 @@ function StatCard({ label, value, sub }) {
 }
 
 function MarketingHub() {
-  const { showSuccess, showError } = useToast();
+  const { showError } = useToast();
   const [data, setData] = useState(null);
   const [copiedSlug, setCopiedSlug] = useState(null);
 

@@ -4,8 +4,9 @@ import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/PaymentSuccess.css";
+import { API_BASE_URL } from "../constants/api";
+import { trackPurchaseOnce } from "../utils/tracking";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -145,7 +146,6 @@ function PaymentSuccess() {
   const [phase, setPhase] = useState("verifying");
   const [orderDetails, setOrderDetails] = useState(null);
   const [error, setError] = useState(null);
-  const [countdown, setCountdown] = useState(null);
 
   // Prevent double-execution in React StrictMode
   const ran = useRef(false);
@@ -157,9 +157,12 @@ function PaymentSuccess() {
     ran.current = true;
 
     const run = async () => {
-      const pendingOrder = JSON.parse(
-        localStorage.getItem("pendingOrder") || "{}",
-      );
+      let pendingOrder = {};
+      try {
+        pendingOrder = JSON.parse(localStorage.getItem("pendingOrder") || "{}") || {};
+      } catch {
+        // Corrupted storage: the server response still has the order
+      }
       const pageRequestUid = resolvePageRequestUid(searchParams);
       const approvedInUrl = isPayPlusApproved(searchParams);
 
@@ -244,7 +247,6 @@ function PaymentSuccess() {
         clearCart();
         localStorage.removeItem("cart");
         localStorage.removeItem("pendingOrder");
-        setCountdown(20);
         setPhase("success");
       } catch (err) {
         console.error("PaymentSuccess error:", err);
@@ -255,7 +257,6 @@ function PaymentSuccess() {
           clearCart();
           localStorage.removeItem("cart");
           localStorage.removeItem("pendingOrder");
-          setCountdown(20);
           setPhase("success");
           return;
         }
@@ -272,17 +273,16 @@ function PaymentSuccess() {
     run();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Countdown → redirect ───────────────────────────────────────────────────
-
+  // ── Conversion tracking ───────────────────────────────────────────────────
+  // The ad platforms optimise for this event; it fires once per order.
   useEffect(() => {
-    if (countdown === null) return;
-    if (countdown === 0) {
-      navigate("/");
-      return;
-    }
-    const t = setTimeout(() => setCountdown((c) => c - 1), 1000);
-    return () => clearTimeout(t);
-  }, [countdown, navigate]);
+    if (phase !== "success" || !orderDetails?.orderId) return;
+    trackPurchaseOnce({
+      orderId: orderDetails.orderId,
+      value: orderDetails.amount,
+      items: orderDetails.items || [],
+    });
+  }, [phase, orderDetails]);
 
   // ── Render guards ──────────────────────────────────────────────────────────
 
@@ -330,16 +330,6 @@ function PaymentSuccess() {
               ? "תודה על ההזמנה! שלחנו אליך אישור למייל עם מספר המעקב."
               : "Thank you for your order! We sent a confirmation email with your tracking number."}
           </p>
-          {countdown !== null && (
-            <p className="ps-countdown">
-              <span className="ps-countdown__icon" aria-hidden="true">
-                ⏱
-              </span>
-              {he
-                ? `מועבר לדף הבית בעוד ${countdown} שניות…`
-                : `Redirecting in ${countdown}s…`}
-            </p>
-          )}
         </section>
 
         {/* ── Summary + Shipping (side by side on desktop) ─────────────── */}

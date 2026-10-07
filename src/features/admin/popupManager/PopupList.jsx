@@ -9,7 +9,10 @@ import {
   listPopups,
   setPopupStatus,
 } from "../adminApi";
-import { blankPopup } from "./popupDefaults";
+import { blankPopup, TRIGGER_OPTIONS } from "./popupDefaults";
+
+const triggerLabel = (type) =>
+  TRIGGER_OPTIONS.find((option) => option.value === type)?.label || type;
 import "../../../styles/admin/DppBuilder.css";
 import "../../../styles/admin/PopupManager.css";
 
@@ -108,7 +111,7 @@ function PopupList() {
                 <Link to={`/admin/popups/${popup._id}`} className="dpp-list__link">
                   <span className="dpp-list__name">{popup.name}</span>
                   <span className="dpp-list__slug">
-                    {popup.triggerType} · עדיפות {popup.priority} ·{" "}
+                    {triggerLabel(popup.triggerType)} · עדיפות {popup.priority} ·{" "}
                     {popup.variantCount} וריאנטים
                   </span>
                 </Link>

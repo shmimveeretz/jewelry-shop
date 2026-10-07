@@ -337,7 +337,7 @@ function TermsOfService() {
 
               <section>
                 <h2>
-                  <FaRedo /> Returns and Exchanges
+                  <FaRedoAlt /> Returns and Exchanges
                 </h2>
                 <ul>
                   <li>Products can be returned within 14 days of receipt</li>

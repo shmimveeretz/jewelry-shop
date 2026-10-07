@@ -7,6 +7,7 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
+import FooterNewsletter from "./FooterNewsletter";
 import "../styles/components/Footer.css";
 
 function Footer() {
@@ -23,6 +24,7 @@ function Footer() {
                 ? "שמים וארץ - חנות תכשיטים יהודיים המתמחה בתכשיטים איכותיים עם סמלים יהודיים. כל תכשיט נעשה באהבה ובקפידה רבה."
                 : "Shamaim VeEretz - A Jewish jewelry store specializing in quality jewelry with Jewish symbols. Each piece is made with love and great care."}
             </p>
+            <FooterNewsletter />
             <div className="footer-social">
               <a
                 href="https://www.instagram.com/shamaim_ve_eretz"
@@ -96,13 +98,18 @@ function Footer() {
             <h3>{t("contactUs")}</h3>
             <ul>
               <li>
-                <FaEnvelope className="footer-icon" /> shmimveeretz@gmail.com
+                <a href="mailto:shmimveeretz@gmail.com">
+                  <FaEnvelope className="footer-icon" aria-hidden="true" />{" "}
+                  shmimveeretz@gmail.com
+                </a>
               </li>
               <li>
-                <FaPhone className="footer-icon" /> 052-595-5389
+                <a href="tel:+972525955389" dir="ltr">
+                  <FaPhone className="footer-icon" aria-hidden="true" /> 052-595-5389
+                </a>
               </li>
               <li>
-                <FaMapMarkerAlt className="footer-icon" />{" "}
+                <FaMapMarkerAlt className="footer-icon" aria-hidden="true" />{" "}
                 {language === "he" ? "תל אביב, ישראל" : "Tel Aviv, Israel"}
               </li>
             </ul>

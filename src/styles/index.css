@@ -36,21 +36,19 @@
   --font-size-2xl: 2rem;
   --font-size-3xl: 2.5rem;
 
-  /* Transitions */
-  --transition-fast: 0.2s ease;
-  --transition-medium: 0.3s ease;
+  /* Motion — strong custom curves: built-in CSS easings feel weak.
+     var(--ease-out) for anything entering or reacting to the user, ease-in-out for
+     things moving on screen, drawer curve for sheets. Keep UI motion short. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --transition-fast: 180ms var(--ease-out);
+  --transition-medium: 260ms var(--ease-out);
 
   /* Border Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-}
-
-@font-face {
-  font-family: "MyFont";
-  src: url("../assets/fonts/MyFont.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
 }
 
 * {
@@ -79,15 +77,23 @@ a {
   transition: color var(--transition-fast);
 }
 
-a:hover {
-  color: var(--color-secondary);
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    color: var(--color-secondary);
+  }
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
   border: none;
-  transition: all var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 img {
@@ -143,7 +149,13 @@ img {
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-medium);
+  transition:
+    color var(--transition-medium),
+    background-color var(--transition-medium),
+    border-color var(--transition-medium),
+    box-shadow var(--transition-medium),
+    transform var(--transition-medium),
+    opacity var(--transition-medium);
   display: inline-block;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -167,15 +179,19 @@ img {
   z-index: -1;
 }
 
-.btn:hover::before {
-  width: 300px;
-  height: 300px;
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
 }
 
-.btn:hover {
-  background-color: var(--color-secondary);
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    background-color: var(--color-secondary);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+  }
 }
 
 .btn:active {
@@ -189,9 +205,11 @@ img {
   color: var(--color-primary);
 }
 
-.btn-secondary:hover {
-  background-color: var(--color-primary);
-  color: var(--color-white);
+@media (hover: hover) and (pointer: fine) {
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
 }
 
 /* Shabbat Mode — the takeover screen itself lives in components/ShabbatMode.css.
@@ -337,19 +355,19 @@ body.shabbat-mode {
 
 /* Animation Utility Classes */
 .animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.6s var(--ease-out) forwards;
 }
 
 .animate-slideInRight {
-  animation: slideInRight 0.6s ease-out forwards;
+  animation: slideInRight 0.6s var(--ease-out) forwards;
 }
 
 .animate-slideInLeft {
-  animation: slideInLeft 0.6s ease-out forwards;
+  animation: slideInLeft 0.6s var(--ease-out) forwards;
 }
 
 .animate-scaleUp {
-  animation: scaleUp 0.5s ease-out forwards;
+  animation: scaleUp 0.5s var(--ease-out) forwards;
 }
 
 .animate-pulse {
@@ -384,13 +402,17 @@ body.shabbat-mode {
     box-shadow var(--transition-medium);
 }
 
-.hover-lift:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
 }
 
-.hover-glow:hover {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+@media (hover: hover) and (pointer: fine) {
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
 }
 
 /* Loading Spinner */
@@ -449,4 +471,417 @@ body.shabbat-mode {
   body {
     font-size: 0.9rem;
   }
+}
+
+/* ===== SCROLL REVEAL (components/ScrollReveal.jsx) ===== */
+/* Scoped to html.reveal-ready so nothing is hidden without JS or for
+   visitors who asked for reduced motion. */
+.reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+
+.reveal-ready .reveal.is-revealed {
+  opacity: 1;
+  /* none, not translateY(0): a lingering transform would trap any
+     position: fixed child (modals) inside the section. */
+  transform: none;
+}
+
+/* Hold the card stagger animations until their section is on screen */
+.reveal-ready .reveal:not(.is-revealed) * {
+  animation-play-state: paused;
+}
+
+/* ===== TYPOGRAPHY DETAILS ===== */
+/* Tracking and leading change with size: large headings sit tighter, body
+   copy stays at the font's own spacing. Lines break evenly instead of
+   leaving a single orphaned word. */
+h1 {
+  letter-spacing: -0.012em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+h2 {
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+h3 {
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* Prices and quantities: equal-width digits, so totals don't shimmer as
+   they change and columns of numbers line up */
+.price,
+.product-price,
+.product-modal-price,
+.cart-drawer-price,
+.cart-drawer-summary,
+.cart-item-price,
+.cart-item-price-single,
+.order-item-price,
+.price-item,
+.ps-item__price,
+.track-order__item-price,
+.cart-drawer-qty span,
+.free-shipping__text {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Drag-to-dismiss progress (hooks/useDragToDismiss.js). Registered so the
+   scrim can transition along with the panel on release. */
+@property --drag-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* ===== REDUCED TRANSPARENCY / INCREASED CONTRAST ===== */
+@media (prefers-reduced-transparency: reduce) {
+  .modal-overlay,
+  .cart-drawer-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+/* Honors the OS "reduce motion" setting site-wide (IS 5568 / WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===== ACCESSIBILITY UTILITIES ===== */
+/* Visible to screen readers only */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keyboard focus ring for clickable cards and other custom controls */
+[role="button"]:focus-visible,
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 3px;
+}
+
+/* "Skip to content" link: hidden until a keyboard user tabs to it */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -100px;
+  z-index: 10000;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ===== PAGE LOADER / 404 / ERROR SCREENS ===== */
+.page-loader {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-loader__spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid rgba(212, 175, 55, 0.25);
+  border-top-color: var(--color-secondary);
+  animation: rotate 0.9s linear infinite;
+}
+
+.not-found,
+.app-error {
+  min-height: 60vh;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.not-found__code {
+  font-size: clamp(4rem, 14vw, 7rem);
+  line-height: 1;
+  margin: 0;
+  color: var(--color-secondary);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+}
+
+.not-found h1,
+.app-error h1 {
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: 400;
+}
+
+.not-found p,
+.app-error p {
+  color: var(--color-text-light);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.not-found__actions,
+.app-error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+/* Programmatic focus target for the skip link; no visible ring needed */
+.main-content:focus {
+  outline: none;
+}
+
+/* ===== PREMIUM INTERACTION LAYER =====
+   Small details that compound: every pressable answers the finger, hover
+   effects only exist where there is a mouse, and images never flash white
+   while they load. */
+
+/* Press feedback: the interface "hears" the tap */
+.btn,
+.btn-secondary,
+.hero-btn-primary,
+.hero-btn-ghost,
+.cta-btn,
+.quick-add-btn,
+.add-to-cart-btn,
+.buy-now-btn,
+.submit-order-btn,
+.checkout-btn,
+.cart-drawer-checkout,
+.collection-btn,
+.coupon-apply-btn,
+.view-products-btn,
+.footer-newsletter__row button,
+.ps-btn,
+.cookie-banner__btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active,
+.btn-secondary:active,
+.hero-btn-primary:active,
+.hero-btn-ghost:active,
+.cta-btn:active,
+.quick-add-btn:active,
+.add-to-cart-btn:active,
+.buy-now-btn:active,
+.submit-order-btn:active:not(:disabled),
+.checkout-btn:active,
+.cart-drawer-checkout:active,
+.collection-btn:active,
+.coupon-apply-btn:active:not(:disabled),
+.view-products-btn:active,
+.footer-newsletter__row button:active:not(:disabled),
+.ps-btn:active,
+.cookie-banner__btn:active {
+  transform: scale(0.97);
+  transition-duration: 100ms;
+}
+
+.collection-card:active,
+.product-card:active {
+  transform: scale(0.985);
+}
+
+/* Touch screens: hover lifts would stick after a tap, so drop them */
+@media (hover: none) {
+  .collection-card:hover {
+    transform: none;
+  }
+
+  .collection-card:hover .collection-image,
+  .product-card:hover .product-image {
+    transform: none;
+  }
+
+  .collection-card:hover .card-hover-overlay {
+    opacity: 0;
+  }
+}
+
+/* Warm placeholder behind product photos while they stream in */
+.collection-image,
+.product-image,
+.product-modal-image,
+.cart-item-image,
+.cart-drawer-item img,
+.order-item img {
+  background-color: #efe9dd;
+}
+
+/* Brand-coloured text selection and crisper type */
+::selection {
+  background: rgba(212, 175, 55, 0.28);
+  color: var(--color-primary);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Never let a stray element create sideways scrolling on phones */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* ===== PAGE TRANSITION ===== */
+/* No forwards fill: once the animation ends no transform remains on this
+   wrapper. A leftover transform (even an identity matrix) turns it into the
+   containing block for position: fixed children, so modals opened inside a
+   page would be placed relative to the page instead of the viewport. */
+.page-transition {
+  animation: pageEnter 280ms var(--ease-out) backwards;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MOBILE-NATIVE BASELINE =====
+   The platform layer that separates "a website on a phone" from something
+   that feels installed. Each rule fixes one specific touch-device tell. */
+html {
+  /* No grey flash on tap — every control has its own :active state */
+  -webkit-tap-highlight-color: transparent;
+  /* No font inflation when the phone rotates to landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* iOS zooms into any input under 16px and never zooms back out */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* Taps fire immediately (no double-tap-zoom wait), and long-pressing a
+   control doesn't select its label. Content text stays selectable. */
+button,
+a,
+[role="button"],
+label,
+summary {
+  touch-action: manipulation;
+}
+
+button,
+[role="button"],
+.btn,
+.collection-btn,
+.navbar-icon,
+.jewelry-type-radio,
+.zodiac-list-item {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Inner scroll areas keep their own bounce but never drag the page behind */
+.modal-scroll-area,
+.cart-drawer-body,
+.navbar-menu {
+  overscroll-behavior: contain;
+}
+
+/* Notch-safe padding lives in Navbar.css, Footer.css and CookieBanner.css:
+   component stylesheets load after this file and would override it here. */
+/* ===== FREE SHIPPING PROGRESS (components/FreeShippingProgress.jsx) ===== */
+.free-shipping {
+  margin: 0 0 0.75rem;
+}
+
+.free-shipping__text {
+  margin: 0 0 0.4rem;
+  font-size: 0.88rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.free-shipping--done .free-shipping__text {
+  color: #1a7f37;
+  font-weight: 600;
+}
+
+.free-shipping__track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(44, 62, 80, 0.08);
+  overflow: hidden;
+}
+
+.free-shipping__bar {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-secondary), #e9c349);
+  /* Grows from the reading-start edge */
+  transform-origin: right;
+  transition: transform 420ms var(--ease-out);
+}
+
+html[dir="ltr"] .free-shipping__bar {
+  transform-origin: left;
+}
+
+.free-shipping--done .free-shipping__bar {
+  background: #2f9e55;
 }

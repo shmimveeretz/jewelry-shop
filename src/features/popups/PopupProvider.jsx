@@ -15,8 +15,20 @@ import { sendPopupEvent } from "./popupEvents";
 import { useTrigger } from "./useTrigger";
 import { detectDevice, isEligible, pickVariant } from "./targeting";
 import { markConverted, markVisited, recordImpression } from "./visitor";
+import { API_BASE_URL } from "../../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const POPUP_FREE_PREFIXES = [
+  "/checkout",
+  "/cart",
+  "/payment",
+  "/login",
+  "/forgot-password",
+  "/verify-code",
+  "/change-password",
+  "/unsubscribe",
+  "/admin",
+];
+
 
 const PopupContext = createContext(null);
 
@@ -75,6 +87,13 @@ export function PopupProvider({ children }) {
 
   useEffect(() => {
     if (registeredPath.current === pathname) return undefined;
+
+    // Never interrupt a purchase, a login or the admin — whatever the
+    // popup's own path rules say ("all pages" included).
+    if (POPUP_FREE_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+      setRules([]);
+      return undefined;
+    }
 
     const controller = new AbortController();
 

@@ -96,7 +96,7 @@ function ShippingPolicy() {
                   <FaGift /> משלוח חינם
                 </h2>
                 <p>
-                  הזמנות מעל <strong>₪500</strong> זכאיות למשלוח רגיל חינם!
+                  הזמנות בסך <strong>₪300 ומעלה</strong> (אחרי הנחות) זכאיות למשלוח רגיל חינם!
                 </p>
                 <p className="note">* ההטבה תקפה למשלוחים בתוך ישראל בלבד</p>
               </section>
@@ -231,7 +231,7 @@ function ShippingPolicy() {
                   <FaGift /> Free Shipping
                 </h2>
                 <p>
-                  Orders over <strong>₪500</strong> qualify for free standard
+                  Orders of <strong>₪300 or more</strong> (after discounts) qualify for free standard
                   shipping!
                 </p>
                 <p className="note">

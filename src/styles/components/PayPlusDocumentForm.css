@@ -127,7 +127,13 @@
   font-weight: 500;
   color: rgba(44, 62, 80, 0.7);
   cursor: pointer;
-  transition: all 0.18s;
+  transition:
+    color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    transform 180ms var(--ease-out),
+    opacity 180ms var(--ease-out);
   background: #fafafa;
 }
 
@@ -142,9 +148,11 @@
   font-weight: 600;
 }
 
-.ppdf-radio-btn:hover:not(.selected) {
-  border-color: rgba(44, 62, 80, 0.35);
-  color: var(--color-primary);
+@media (hover: hover) and (pointer: fine) {
+  .ppdf-radio-btn:hover:not(.selected) {
+    border-color: rgba(44, 62, 80, 0.35);
+    color: var(--color-primary);
+  }
 }
 
 /* ── Toggle switch ── */
@@ -221,9 +229,11 @@
   letter-spacing: 0.02em;
 }
 
-.ppdf-submit-btn:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .ppdf-submit-btn:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
 }
 
 .ppdf-submit-btn:disabled {
@@ -276,8 +286,10 @@
   font-family: var(--font-primary);
 }
 
-.ppdf-add-item-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .ppdf-add-item-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+  }
 }
 
 .ppdf-items-col-headers {
@@ -345,8 +357,10 @@
   flex-shrink: 0;
 }
 
-.ppdf-remove-btn:hover {
-  background: rgba(231, 76, 60, 0.18);
+@media (hover: hover) and (pointer: fine) {
+  .ppdf-remove-btn:hover {
+    background: rgba(231, 76, 60, 0.18);
+  }
 }
 
 /* ── Totals ── */
@@ -427,6 +441,8 @@
   color: inherit;
 }
 
-.ppdf-banner-close:hover {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .ppdf-banner-close:hover {
+    opacity: 1;
+  }
 }

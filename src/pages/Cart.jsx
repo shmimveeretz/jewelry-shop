@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useCart, MAX_QUANTITY_PER_ITEM } from "../context/CartContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import {
   FaTrash,
@@ -12,6 +12,14 @@ import {
   FaRuler,
   FaStar,
 } from "react-icons/fa";
+import {
+  formatPrice,
+  productName,
+  productImage,
+  handleImageError,
+} from "../utils/format";
+import FreeShippingProgress from "../components/FreeShippingProgress";
+import { quoteShipping } from "../utils/shipping";
 import "../styles/pages/Cart.css";
 
 function Cart() {
@@ -19,25 +27,12 @@ function Cart() {
   const navigate = useNavigate();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
 
-  const calculateShipping = () => {
-    return 0; // cartItems.length > 0 ? 30 : 0;
-  };
+  const he = language === "he";
+  const total = getCartTotal();
+  // Destination is chosen at checkout; the cart shows the Israeli rate
+  const shipping = quoteShipping("IL", total);
 
-  const calculateTotal = () => {
-    return getCartTotal() + calculateShipping();
-  };
-
-  const handleCheckout = () => {
-    const total = calculateTotal();
-
-    // Navigate to checkout page with cart data
-    navigate("/checkout", {
-      state: {
-        cartItems,
-        total,
-      },
-    });
-  };
+  const handleCheckout = () => navigate("/checkout");
   if (cartItems.length === 0) {
     return (
       <div className="cart-page">
@@ -78,24 +73,14 @@ function Cart() {
             {cartItems.map((item) => (
               <div key={item.cartItemId || item.id} className="cart-item">
                 <img
-                  src={
-                    Array.isArray(item.images)
-                      ? item.images[0]
-                      : item.image ||
-                        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop"
-                  }
-                  alt={item.name}
+                  src={productImage(item)}
+                  alt=""
                   className="cart-item-image"
-                  onError={(e) => {
-                    e.target.src =
-                      "https://images.unsplash  .com/photo-1535632066927-ab7c9ab60908?w=100&h=100&fit=crop";
-                  }}
+                  onError={handleImageError}
                 />
 
                 <div className="cart-item-details">
-                  <h3>
-                    {language === "en" && item.nameEn ? item.nameEn : item.name}
-                  </h3>
+                  <h3>{productName(item, language)}</h3>
                   <p className="cart-item-description">
                     {language === "en" && item.descriptionEn
                       ? item.descriptionEn
@@ -107,7 +92,8 @@ function Cart() {
                     <div className="selected-options">
                       {item.selectedOptions.length && (
                         <span className="option-tag">
-                          <FaRuler /> אורך: {item.selectedOptions.length} מ״מ
+                          <FaRuler aria-hidden="true" /> {he ? "אורך" : "Length"}:{" "}
+                          {item.selectedOptions.length} {he ? "ס״מ" : "cm"}
                         </span>
                       )}
                       {item.selectedOptions.metalType && (
@@ -132,7 +118,8 @@ function Cart() {
                       )}
                       {item.selections?.extraLetters?.length > 0 && (
                         <span className="option-tag">
-                          אותיות: {item.selections.extraLetters.join(", ")}
+                          {he ? "אותיות: " : "Letters: "}
+                          {item.selections.extraLetters.join(", ")}
                         </span>
                       )}
                     </div>
@@ -145,7 +132,7 @@ function Cart() {
                         : item.category}
                     </span>
                     <span className="cart-item-price-single">
-                      {item.price} ₪ ליחידה
+                      {formatPrice(item.price, language)} {he ? "ליחידה" : "each"}
                     </span>
                   </div>
                 </div>
@@ -161,12 +148,17 @@ function Cart() {
                         )
                       }
                       disabled={item.quantity <= 1}
+                      aria-label={he ? "הפחתת כמות" : "Decrease quantity"}
                     >
                       <FaMinus />
                     </button>
-                    <span className="quantity-display">{item.quantity}</span>
+                    <span className="quantity-display" aria-live="polite">
+                      {item.quantity}
+                    </span>
                     <button
                       className="quantity-btn"
+                      aria-label={he ? "הוספת כמות" : "Increase quantity"}
+                      disabled={item.quantity >= MAX_QUANTITY_PER_ITEM}
                       onClick={() =>
                         updateQuantity(
                           item.cartItemId || item.id,
@@ -178,14 +170,13 @@ function Cart() {
                     </button>
                   </div>
                   <div className="cart-item-price">
-                    {item.price * item.quantity} ₪
+                    {formatPrice(item.price * item.quantity, language)}
                   </div>
                   <button
                     className="remove-item"
                     onClick={() => removeFromCart(item.cartItemId || item.id)}
-                    title={
-                      language === "he" ? "הסר מהעגלה" : "Remove from cart"
-                    }
+                    title={he ? "הסר מהעגלה" : "Remove from cart"}
+                    aria-label={he ? "הסר מהעגלה" : "Remove from cart"}
                   >
                     <FaTrash />
                   </button>
@@ -197,21 +188,27 @@ function Cart() {
           <div className="cart-summary">
             <h2>{t("orderSummary")}</h2>
 
+            <FreeShippingProgress total={total} />
+
             <div className="summary-row">
               <span>{t("subtotal")}:</span>
-              <span>{getCartTotal()} ₪</span>
+              <span>{formatPrice(total, language)}</span>
             </div>
 
             <div className="summary-row">
-              <span>{t("shipping")}:</span>
-              <span style={{ color: "#2f6b3a", fontWeight: 700 }}>
-                {language === "he" ? "חינם" : "Free"}
-              </span>
+              <span>{he ? "משלוח בישראל" : "Shipping (Israel)"}:</span>
+              {shipping.price === 0 ? (
+                <span style={{ color: "#2f6b3a", fontWeight: 700 }}>
+                  {he ? "חינם" : "Free"}
+                </span>
+              ) : (
+                <span>{formatPrice(shipping.price, language)}</span>
+              )}
             </div>
 
             <div className="summary-row total">
               <span>{t("total")}:</span>
-              <span>{calculateTotal()} ₪</span>
+              <span>{formatPrice(total + shipping.price, language)}</span>
             </div>
 
             <button className="btn checkout-btn" onClick={handleCheckout}>

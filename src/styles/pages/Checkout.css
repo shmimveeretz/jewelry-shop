@@ -17,46 +17,56 @@
 }
 
 /* Guest Checkout Notice */
+/* Quiet, on-brand note: cream card with a gold rule, not a loud banner */
 .guest-checkout-notice {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1.5rem;
-  border-radius: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  background: #faf7f0;
+  color: var(--color-text);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-inline-start: 3px solid var(--color-secondary);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
   margin-bottom: 2rem;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-  text-align: center;
 }
 
 .guest-checkout-notice p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
+  margin: 0;
+  font-size: 0.95rem;
   line-height: 1.6;
 }
 
 .guest-checkout-notice strong {
-  font-weight: 700;
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
 .login-option {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-text-light);
+  white-space: nowrap;
 }
 
 .link-btn {
   background: none;
   border: none;
-  color: #ffd700;
+  color: var(--color-primary);
   text-decoration: underline;
+  text-decoration-color: var(--color-secondary);
+  text-underline-offset: 3px;
   cursor: pointer;
-  font-size: 1rem;
+  font: inherit;
   font-weight: 600;
   padding: 0;
-  transition: color 0.3s ease;
+  transition: color 180ms var(--ease-out);
 }
 
-.link-btn:hover {
-  color: #fff;
+@media (hover: hover) and (pointer: fine) {
+  .link-btn:hover {
+    color: var(--color-secondary);
+  }
 }
 
 .checkout-content {
@@ -260,8 +270,10 @@
   white-space: nowrap;
 }
 
-.coupon-apply-btn:hover:not(:disabled) {
-  background: #c4a12e;
+@media (hover: hover) and (pointer: fine) {
+  .coupon-apply-btn:hover:not(:disabled) {
+    background: #c4a12e;
+  }
 }
 
 .coupon-apply-btn:disabled {
@@ -292,8 +304,10 @@
   transition: color 0.2s;
 }
 
-.coupon-remove-btn:hover {
-  color: #e74c3c;
+@media (hover: hover) and (pointer: fine) {
+  .coupon-remove-btn:hover {
+    color: #e74c3c;
+  }
 }
 
 /* Checkout Form */
@@ -372,9 +386,11 @@
     box-shadow 0.3s ease;
 }
 
-.submit-order-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+@media (hover: hover) and (pointer: fine) {
+  .submit-order-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+  }
 }
 
 .submit-order-btn:disabled {
@@ -450,4 +466,115 @@
     width: 60px;
     height: 60px;
   }
+}
+
+/* ===== Validation, consent, totals breakdown ===== */
+ul.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.field-error {
+  color: #b42318;
+  font-size: 0.85rem;
+  margin: 0.35rem 0 0;
+}
+
+.form-group input[aria-invalid="true"],
+.coupon-input-row input[aria-invalid="true"] {
+  border-color: #b42318;
+  background: #fff8f7;
+}
+
+.order-total-discount {
+  color: #1a7f37;
+}
+
+.order-item-qty {
+  color: var(--color-text-light);
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+.terms-consent {
+  margin: var(--spacing-md, 1rem) 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.terms-consent label {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.terms-consent input {
+  margin-top: 0.3rem;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--color-secondary);
+}
+
+.terms-consent a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.secure-payment-note svg {
+  vertical-align: -2px;
+  color: var(--color-secondary);
+}
+
+.coupon-applied__icon {
+  color: #1a7f37;
+  vertical-align: -2px;
+}
+
+/* ===== Shipping: destination, hints ===== */
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font: inherit;
+  color: var(--color-text);
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+.field-hint {
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+  margin: 0.4rem 0 0;
+  line-height: 1.5;
+}
+
+.field-optional {
+  color: var(--color-text-light);
+  font-weight: 400;
+  font-size: 0.85em;
+}
+
+.order-total-note {
+  color: var(--color-text-light);
+  font-size: 0.9em;
+}
+
+.free-shipping-hint {
+  margin: 0.25rem 0 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--color-primary);
+  font-size: 0.88rem;
+  text-align: center;
 }

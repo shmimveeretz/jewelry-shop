@@ -13,7 +13,7 @@ const DEFAULT_PROPS = {
     showPrice: true,
     showOptions: true,
     showStock: true,
-    priceNote: 'כולל מע"מ ומשלוח',
+    priceNote: 'כולל מע"מ',
     ctaLabel: "לרכישה מאובטחת",
     reassuranceText: "תשלום מאובטח, ללא התחייבות, 14 יום להחזרה",
     lowStockThreshold: 5,
@@ -25,7 +25,7 @@ const DEFAULT_PROPS = {
   trustSignals: {
     items: [
       { icon: "lock", title: "תשלום מאובטח", text: "סליקה מוצפנת בתקן PCI" },
-      { icon: "truck", title: "משלוח חינם", text: "לכל יעד בישראל" },
+      { icon: "truck", title: "משלוח חינם", text: "בהזמנה מעל ₪300" },
       { icon: "hammer", title: "עבודת יד", text: "נוצר בהזמנה אישית באולפן שלנו" },
       { icon: "rotateCcw", title: "14 יום להחזרה", text: "מחזירים או מחליפים" },
     ],
@@ -64,12 +64,12 @@ const DEFAULT_PROPS = {
     items: [
       {
         question: "מתי התכשיט יגיע אליי?",
-        answer: "נשלח תוך עד 14 ימי עסקים, משלוח חינם לכל הארץ.",
+        answer: "נשלח תוך עד 14 ימי עסקים, משלוח חינם בהזמנה מעל ₪300.",
       },
     ],
   },
   finalCta: {
-    subheadline: "עבודת יד בהזמנה אישית, משלוח חינם ו-14 יום להחזרה.",
+    subheadline: "עבודת יד בהזמנה אישית, משלוח חינם מעל ₪300 ו-14 יום להחזרה.",
     ctaLabel: "לרכישה מאובטחת",
     background: "navy",
   },

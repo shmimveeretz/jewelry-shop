@@ -1,45 +1,45 @@
 import axios from "axios";
+import { API_BASE_URL } from "../constants/api";
 
-const API_URL = `${import.meta.env.VITE_API_URL || "https://jewelry-shop-udr7.onrender.com"}/api`;
+const API_URL = `${API_BASE_URL}/api`;
 
 /**
  * PayPlus Payment Service for Frontend
  */
 export const payPlusService = {
   /**
-   * Create a payment session
+   * Create a payment page for the cart.
+   *
+   * The server re-prices every item from the database and validates the
+   * coupon itself, so only product ids, options and quantities matter here.
    * @param {Object} paymentData - Payment information
-   * @returns {Promise<Object>} Payment page URL
+   * @returns {Promise<Object>} { paymentPageUrl, transactionUid, orderId, totalPrice }
    */
   async createPayment(paymentData) {
     try {
       const body = {
-        // Customer info — primary source for PayPlus invoice
         customerName: paymentData.customerName,
         customerEmail: paymentData.customerEmail,
         customerPhone: paymentData.customerPhone,
-
-        // Order items — backend derives the total from these
-        orderItems: paymentData.orderItems || paymentData.items,
-
-        // Shipping address — fallback source for customer info
+        orderItems: (paymentData.orderItems || paymentData.items || []).map(
+          (item) => ({
+            productId: item.productId,
+            quantity: item.quantity || 1,
+            selectedOptions: item.selectedOptions || {},
+            selections: item.selections || {},
+          }),
+        ),
         shippingAddress: paymentData.shippingAddress,
-
-        // Currency (defaults to "ILS" on the backend)
-        currency: paymentData.currency || "ILS",
-
-        // Extra metadata for PendingOrder persistence (webhook fallback)
-        itemsPrice: paymentData.itemsPrice,
-        shippingPrice: paymentData.shippingPrice,
-        totalPrice: paymentData.totalPrice,
         couponCode: paymentData.couponCode ?? null,
-        discountPercent: paymentData.discountPercent ?? 0,
       };
 
-      const response = await axios.post(
-        `${API_URL}/payment/create-intent`,
-        body,
-      );
+      // Logged-in customers get the order linked to their account
+      const token = localStorage.getItem("token");
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+      const response = await axios.post(`${API_URL}/payment/create-intent`, body, {
+        headers,
+      });
 
       return response.data;
     } catch (error) {
@@ -56,51 +56,6 @@ export const payPlusService = {
         typeof serverMsg === "string"
           ? serverMsg
           : "שגיאה ביצירת תשלום. אנא נסה שוב.",
-      );
-    }
-  },
-
-  /**
-   * Verify payment status
-   * @param {string} transactionUid - Transaction UID from PayPlus
-   * @returns {Promise<Object>} Payment status
-   */
-  async verifyPayment(transactionUid, orderData = null) {
-    try {
-      const url = `${API_URL}/payment/verify/${transactionUid}`;
-      const params = orderData ? { orderData: JSON.stringify(orderData) } : {};
-
-      const response = await axios.get(url, { params });
-
-      return response.data;
-    } catch (error) {
-      console.error("Payment verification failed:", error);
-      throw new Error(
-        error.response?.data?.error ||
-          "שגיאה באימות תשלום. אנא פנה לשירות לקוחות.",
-      );
-    }
-  },
-
-  /**
-   * Request a refund
-   * @param {string} transactionUid - Transaction UID to refund
-   * @param {number} amount - Amount to refund (optional)
-   * @returns {Promise<Object>} Refund status
-   */
-  async refundPayment(transactionUid, amount = null) {
-    try {
-      const response = await axios.post(`${API_URL}/payment/refund`, {
-        transactionUid,
-        amount,
-      });
-
-      return response.data;
-    } catch (error) {
-      console.error("Refund request failed:", error);
-      throw new Error(
-        error.response?.data?.error ||
-          "שגיאה בביטול תשלום. אנא פנה לשירות לקוחות.",
       );
     }
   },

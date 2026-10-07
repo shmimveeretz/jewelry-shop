@@ -9,8 +9,8 @@ import {
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/TrackOrder.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const STATUS_STEPS = [
   {
@@ -158,6 +158,11 @@ function TrackOrder() {
           <div className="track-order__search">
             <input
               id="orderId"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              enterKeyHint="search"
+              dir="ltr"
               type="text"
               className="track-order__input"
               value={orderId}
@@ -166,7 +171,6 @@ function TrackOrder() {
                 he ? "מספר הזמנה (לדוגמה: order_…)" : "Order number (e.g. order_…)"
               }
               autoComplete="off"
-              spellCheck={false}
               aria-label={he ? "מספר הזמנה" : "Order number"}
             />
             <button

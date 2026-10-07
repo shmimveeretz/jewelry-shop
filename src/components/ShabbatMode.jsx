@@ -29,6 +29,10 @@ async function getShabbatTimes() {
       end: havdalahItem?.date ?? null,
     };
 
+    // Keep only today's entry: older days' keys would otherwise pile up
+    Object.keys(localStorage)
+      .filter((key) => key.startsWith("hebcal_shabbat_") && key !== cacheKey)
+      .forEach((key) => localStorage.removeItem(key));
     localStorage.setItem(cacheKey, JSON.stringify(result));
     return result;
   } catch {

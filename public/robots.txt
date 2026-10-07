@@ -1,0 +1,13 @@
+# Shamaim VeEretz
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /login
+Disallow: /payment-success
+Disallow: /payment-failure
+Disallow: /payment-cancelled
+Disallow: /unsubscribe
+
+Sitemap: https://shamaimveeretz.com/sitemap.xml

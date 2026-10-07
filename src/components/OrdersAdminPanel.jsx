@@ -9,8 +9,8 @@ import {
 } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import "../styles/components/AdminPanel.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const getToken = () => localStorage.getItem("token");
 
 const STATUS_OPTIONS = [
@@ -56,20 +56,6 @@ function formatDate(dateStr) {
   } catch {
     return dateStr;
   }
-}
-
-function SectionHeading({ icon: Icon, title, subtitle }) {
-  return (
-    <div className="ap-heading">
-      <div className="ap-heading__icon">
-        <Icon />
-      </div>
-      <div>
-        <h2 className="ap-heading__title">{title}</h2>
-        {subtitle && <p className="ap-heading__sub">{subtitle}</p>}
-      </div>
-    </div>
-  );
 }
 
 export default function OrdersAdminPanel() {

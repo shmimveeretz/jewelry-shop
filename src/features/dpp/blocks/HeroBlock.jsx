@@ -24,7 +24,7 @@ function HeroBlock({ ctx, ...props }) {
     showPrice = true,
     showOptions = true,
     showStock = true,
-    priceNote = 'כולל מע"מ ומשלוח',
+    priceNote = 'כולל מע"מ',
     ctaLabel,
     reassuranceText = "תשלום מאובטח, ללא התחייבות, 14 יום להחזרה",
     footnote,
@@ -48,7 +48,7 @@ function HeroBlock({ ctx, ...props }) {
           product.meaningHe
             ? "מגיע עם כרטיס המשמעות של הסמל"
             : "אריזת מתנה מוכנה למסירה",
-          "משלוח חינם לכל הארץ, 14 יום להחזרה",
+          "משלוח חינם מעל ₪300, 14 יום להחזרה",
         ];
 
   return (

@@ -1,7 +1,11 @@
 .navbar {
   background-color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition:
+    background-color 240ms var(--ease-out),
+    box-shadow 240ms var(--ease-out),
+    border-color 240ms var(--ease-out);
   border-bottom: 1px solid rgba(44, 62, 80, 0.1);
   padding: 0;
   position: sticky;
@@ -28,9 +32,11 @@
     transform 0.3s ease;
 }
 
-.navbar-logo:hover {
-  opacity: 0.8;
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .navbar-logo:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
 }
 
 .logo-image {
@@ -74,13 +80,20 @@
   transition: width 0.25s ease;
 }
 
-.navbar-menu li a:hover::after,
 .navbar-menu li a.active::after {
   width: 100%;
 }
 
-.navbar-menu li a:hover {
-  color: var(--color-secondary);
+@media (hover: hover) and (pointer: fine) {
+  .navbar-menu li a:hover::after {
+    width: 100%;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .navbar-menu li a:hover {
+    color: var(--color-secondary);
+  }
 }
 
 .navbar-menu li a.active {
@@ -98,8 +111,10 @@
   transition: transform 0.3s ease;
 }
 
-.dropdown:hover .dropdown-icon {
-  transform: rotate(180deg);
+@media (hover: hover) and (pointer: fine) {
+  .dropdown:hover .dropdown-icon {
+    transform: rotate(180deg);
+  }
 }
 
 .dropdown-menu {
@@ -151,10 +166,12 @@
   display: none;
 }
 
-.dropdown-menu li a:hover {
-  background-color: rgba(212, 175, 55, 0.08);
-  color: var(--color-secondary);
-  border-right-color: var(--color-secondary);
+@media (hover: hover) and (pointer: fine) {
+  .dropdown-menu li a:hover {
+    background-color: rgba(212, 175, 55, 0.08);
+    color: var(--color-secondary);
+    border-right-color: var(--color-secondary);
+  }
 }
 
 .navbar-icons {
@@ -182,9 +199,11 @@
   line-height: 1;
 }
 
-.language-btn:hover {
-  background-color: var(--color-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+@media (hover: hover) and (pointer: fine) {
+  .language-btn:hover {
+    background-color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  }
 }
 
 .language-text {
@@ -212,40 +231,61 @@
   transition: color var(--transition-fast);
 }
 
-.navbar-icon:hover {
-  color: var(--color-secondary);
+@media (hover: hover) and (pointer: fine) {
+  .navbar-icon:hover {
+    color: var(--color-secondary);
+  }
 }
 
 .logout-btn {
   color: var(--color-text);
 }
 
-.logout-btn:hover {
-  color: #e74c3c;
+@media (hover: hover) and (pointer: fine) {
+  .logout-btn:hover {
+    color: #e74c3c;
+  }
 }
 
 .cart-icon {
   position: relative;
 }
 
+/* Sits on the icon's corner. Re-keyed on every count change in Navbar.jsx,
+   so it bumps once when something is added — no endless pulsing. */
 .cart-badge {
   position: absolute;
-  top: -8px;
-  left: -8px;
+  top: 2px;
+  inset-inline-end: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
   background-color: var(--color-secondary);
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 0.75rem;
+  color: var(--color-primary);
+  border: 2px solid var(--color-white);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  animation:
-    scaleUp 0.3s ease-out,
-    pulse 2s ease-in-out infinite;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+  font-variant-numeric: tabular-nums;
+  animation: cartBadgeBump 320ms var(--ease-out);
+}
+
+@keyframes cartBadgeBump {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .navbar-mobile-toggle {
@@ -270,6 +310,7 @@
     right: -100%;
     width: 260px;
     height: calc(100vh - 64px);
+    height: calc(100dvh - 64px); /* tracks the URL bar so the last link is reachable */
     background-color: #ffffff;
     flex-direction: column;
     padding: 1.5rem 1.25rem;
@@ -333,9 +374,65 @@
     color: var(--color-text-light);
   }
 
-  .dropdown-menu li a:hover {
-    color: var(--color-secondary);
-    background-color: rgba(212, 175, 55, 0.1);
-    border-right-color: var(--color-secondary);
+  @media (hover: hover) and (pointer: fine) {
+    .dropdown-menu li a:hover {
+      color: var(--color-secondary);
+      background-color: rgba(212, 175, 55, 0.1);
+      border-right-color: var(--color-secondary);
+    }
+  }
+}
+
+/* Elevation once the page scrolls under the header */
+.navbar {
+  transition:
+    box-shadow 240ms var(--ease-out),
+    border-color 240ms var(--ease-out),
+    background-color 240ms var(--ease-out);
+}
+
+/* Once content scrolls beneath it the bar becomes a material: the page shows
+   through, blurred and saturated, with a hairline catching the light instead
+   of a hard divider. */
+.navbar--scrolled {
+  background-color: rgba(255, 255, 255, 0.74);
+  border-bottom-color: rgba(44, 62, 80, 0.08);
+  box-shadow: 0 10px 30px -18px rgba(22, 40, 57, 0.28);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .navbar,
+  .navbar--scrolled {
+    background-color: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .navbar,
+  .navbar--scrolled {
+    background-color: #fff;
+    border-bottom-color: var(--color-primary);
+  }
+}
+
+/* Logo hover: a gentle fade only — scaling a wordmark looks jumpy */
+@media (hover: hover) and (pointer: fine) {
+  .navbar-logo:hover {
+    transform: none;
+  }
+}
+
+/* Keep the header clear of the notch in landscape (viewport-fit=cover) */
+.navbar-container {
+  --nav-pad: 3rem;
+  padding-left: max(var(--nav-pad), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--nav-pad), env(safe-area-inset-right, 0px));
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    --nav-pad: 1.25rem;
   }
 }

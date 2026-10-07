@@ -16,8 +16,8 @@ import {
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/AdminPanel.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const getToken = () => localStorage.getItem("token");
 const authHeaders = () => ({ Authorization: `Bearer ${getToken()}` });
 

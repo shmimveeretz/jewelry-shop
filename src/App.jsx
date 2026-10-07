@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,134 +6,12 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-
-function MetaPixelPageView() {
-  const location = useLocation();
-  const isFirstRender = useRef(true);
-
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return; // First PageView already tracked by index.html
-    }
-    if (typeof window.fbq === "function") {
-      window.fbq("track", "PageView");
-    }
-  }, [location.pathname]);
-
-  return null;
-}
-
-/** PayPlus sometimes redirects to //payment-success when FRONTEND_URL has a trailing slash */
-function NormalizeDoubleSlashPath() {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (location.pathname.includes("//")) {
-      const cleanPath = location.pathname.replace(/\/{2,}/g, "/");
-      navigate(`${cleanPath}${location.search}${location.hash}`, {
-        replace: true,
-      });
-    }
-  }, [location.pathname, location.search, location.hash, navigate]);
-
-  return null;
-}
-
-function DeviceTracker() {
-  useEffect(() => {
-    if (sessionStorage.getItem("_dtr")) return;
-
-    const ua = navigator.userAgent;
-
-    const getDeviceName = () => {
-      if (/iPhone/.test(ua)) return "iPhone";
-      if (/iPad/.test(ua)) return "iPad";
-      if (/Android/.test(ua)) {
-        const match = ua.match(/Android.*?;\s*(.+?)\s*Build/);
-        return match ? match[1] : "Android Device";
-      }
-      if (/Windows/.test(ua)) return "Windows PC";
-      if (/Macintosh/.test(ua)) return "Mac";
-      if (/Linux/.test(ua)) return "Linux";
-      return "Unknown Device";
-    };
-
-    const getBrowser = () => {
-      if (/Edg\//.test(ua)) return "Edge";
-      if (/OPR\//.test(ua)) return "Opera";
-      if (/Chrome\//.test(ua)) return "Chrome";
-      if (/Firefox\//.test(ua)) return "Firefox";
-      if (/Safari\//.test(ua)) return "Safari";
-      return "Unknown Browser";
-    };
-
-    const getOS = () => {
-      if (/Windows NT 10/.test(ua)) return "Windows 10/11";
-      if (/Windows NT 6/.test(ua)) return "Windows 7/8";
-      if (/Mac OS X ([\d_]+)/.test(ua)) {
-        const match = ua.match(/Mac OS X ([\d_]+)/);
-        return `macOS ${match ? match[1].replace(/_/g, ".") : ""}`;
-      }
-      if (/Android ([\d.]+)/.test(ua)) {
-        const match = ua.match(/Android ([\d.]+)/);
-        return `Android ${match ? match[1] : ""}`;
-      }
-      if (/iPhone OS ([\d_]+)/.test(ua)) {
-        const match = ua.match(/iPhone OS ([\d_]+)/);
-        return `iOS ${match ? match[1].replace(/_/g, ".") : ""}`;
-      }
-      if (/Linux/.test(ua)) return "Linux";
-      return "Unknown OS";
-    };
-
-    const trackDevice = async () => {
-      try {
-        const geoRes = await fetch("https://ipapi.co/json/");
-        const geo = await geoRes.json();
-
-        const API_BASE_URL =
-          import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-        const storedUser = localStorage.getItem("user");
-        const userId = storedUser ? JSON.parse(storedUser)?._id : undefined;
-
-        await fetch(`${API_BASE_URL}/api/admin/devices/track`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            location: {
-              city: geo.city || "",
-              country: geo.country_name || "",
-              timezone: geo.timezone || "",
-            },
-            deviceName: `${getBrowser()} on ${getDeviceName()}`,
-            browser: getBrowser(),
-            os: getOS(),
-            screen: `${screen.width}x${screen.height}`,
-            language: navigator.language,
-            ...(userId && { userId }),
-          }),
-        });
-
-        sessionStorage.setItem("_dtr", "1");
-      } catch {
-        // Silent fail — don't affect user experience
-      }
-    };
-
-    trackDevice();
-  }, []);
-
-  return null;
-}
 import "./styles/App.css";
 
 // Context
 import { CartProvider } from "./context/CartContext";
 import { ToastProvider } from "./context/ToastContext";
-import { LanguageProvider } from "./contexts/LanguageContext";
+import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { PopupProvider } from "./features/popups/PopupProvider";
 
 // Components (always loaded - part of every page)
@@ -142,9 +20,13 @@ import CartDrawer from "./components/CartDrawer";
 import Footer from "./components/Footer";
 import ShabbatMode from "./components/ShabbatMode";
 import ScrollToTop from "./components/ScrollToTop";
+import ScrollReveal from "./components/ScrollReveal";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 import CookieBanner from "./components/CookieBanner";
 import TopBanner from "./components/TopBanner";
+import ErrorBoundary from "./components/ErrorBoundary";
+import RouteMeta from "./components/RouteMeta";
+import Analytics from "./components/Analytics";
 
 // Pages (lazy loaded - only when route is visited)
 const Home = lazy(() => import("./pages/Home"));
@@ -178,7 +60,6 @@ const MarketingHub = lazy(
 );
 const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const PaymentFailure = lazy(() => import("./pages/PaymentFailure"));
-const Payment = lazy(() => import("./pages/Payment"));
 const PaymentCancelled = lazy(() => import("./pages/PaymentCancelled"));
 const ShippingPolicy = lazy(() => import("./pages/ShippingPolicy"));
 const ReturnPolicy = lazy(() => import("./pages/ReturnPolicy"));
@@ -186,7 +67,38 @@ const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const Accessibility = lazy(() => import("./pages/Accessibility"));
 const TrackOrder = lazy(() => import("./pages/TrackOrder"));
+const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const DppPage = lazy(() => import("./pages/DppPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+/** PayPlus sometimes redirects to //payment-success when FRONTEND_URL has a trailing slash */
+function NormalizeDoubleSlashPath() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.pathname.includes("//")) {
+      const cleanPath = location.pathname.replace(/\/{2,}/g, "/");
+      navigate(`${cleanPath}${location.search}${location.hash}`, {
+        replace: true,
+      });
+    }
+  }, [location.pathname, location.search, location.hash, navigate]);
+
+  return null;
+}
+
+function PageLoader() {
+  const { language } = useLanguage();
+  return (
+    <div className="page-loader" role="status">
+      <span className="page-loader__spinner" aria-hidden="true" />
+      <span className="visually-hidden">
+        {language === "he" ? "טוען…" : "Loading…"}
+      </span>
+    </div>
+  );
+}
 
 /**
  * Campaign landing pages render without navbar, footer or cart drawer: paid
@@ -199,6 +111,7 @@ const CHROME_FREE_ROUTE_PREFIXES = ["/lp/", "/admin"];
 
 function AppShell() {
   const { pathname } = useLocation();
+  const { language } = useLanguage();
   const showChrome = !CHROME_FREE_ROUTE_PREFIXES.some((prefix) =>
     pathname.startsWith(prefix),
   );
@@ -207,71 +120,70 @@ function AppShell() {
     <div className="App">
       {showChrome && (
         <>
+          <a className="skip-link" href="#main-content">
+            {language === "he" ? "דילוג לתוכן הראשי" : "Skip to main content"}
+          </a>
           <TopBanner />
           <Navbar />
           <CartDrawer />
         </>
       )}
-      <main className="main-content">
-        <Suspense
-          fallback={
+      <main className="main-content" id="main-content" tabIndex={-1}>
+        <ErrorBoundary resetKey={pathname}>
+          <Suspense fallback={<PageLoader />}>
+            {/* Re-keyed per page so each new page eases in. The admin shares
+                one key so its nested screens keep their state. */}
             <div
-              style={{
-                minHeight: "60vh",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "1.2rem",
-                color: "#888",
-              }}
+              className="page-transition"
+              key={pathname.startsWith("/admin") ? "admin" : pathname}
             >
-              {/* language not available here — default to Hebrew loading text */}
-              Loading...
+              <Routes>
+                {/* Slug resolves to a built page, or falls back to a
+                  product id rendered with the default template — which
+                  is what keeps existing /lp/<productId> ad links alive. */}
+                <Route path="/lp/:slug" element={<DppPage />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/zodiac" element={<Zodiac />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/login" element={<Auth />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/verify-code" element={<VerifyCode />} />
+                <Route path="/change-password" element={<ChangePassword />} />
+                {/* Strangler fig: the shell owns /admin, new modules get
+                  real routes, and everything not yet extracted falls
+                  through to the original panel at /admin/store. */}
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<DashboardHome />} />
+                  <Route path="pages" element={<ProductPageList />} />
+                  <Route path="pages/:id" element={<ProductPageEditor />} />
+                  <Route path="popups" element={<PopupList />} />
+                  <Route path="popups/:id" element={<PopupEditor />} />
+                  <Route path="marketing" element={<MarketingHub />} />
+                  <Route path="store" element={<LegacyAdminView />} />
+                  <Route path="*" element={<LegacyAdminView />} />
+                </Route>
+                <Route path="/payment-success" element={<PaymentSuccess />} />
+                <Route path="/payment-failure" element={<PaymentFailure />} />
+                <Route
+                  path="/payment-cancelled"
+                  element={<PaymentCancelled />}
+                />
+                <Route path="/shipping-policy" element={<ShippingPolicy />} />
+                <Route path="/return-policy" element={<ReturnPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/accessibility" element={<Accessibility />} />
+                <Route path="/track-order" element={<TrackOrder />} />
+                <Route path="/unsubscribe" element={<Unsubscribe />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </div>
-          }
-        >
-          <Routes>
-            {/* Slug resolves to a built page, or falls back to a
-                        product id rendered with the default template — which
-                        is what keeps existing /lp/<productId> ad links alive. */}
-            <Route path="/lp/:slug" element={<DppPage />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/zodiac" element={<Zodiac />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* <Route path="/story" element={<Story />} /> */}
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/login" element={<Auth />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/verify-code" element={<VerifyCode />} />
-            <Route path="/change-password" element={<ChangePassword />} />
-            {/* Strangler fig: the shell owns /admin, new modules get
-                        real routes, and everything not yet extracted falls
-                        through to the original panel at /admin/store. */}
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<DashboardHome />} />
-              <Route path="pages" element={<ProductPageList />} />
-              <Route path="pages/:id" element={<ProductPageEditor />} />
-              <Route path="popups" element={<PopupList />} />
-              <Route path="popups/:id" element={<PopupEditor />} />
-              <Route path="marketing" element={<MarketingHub />} />
-              <Route path="store" element={<LegacyAdminView />} />
-              <Route path="*" element={<LegacyAdminView />} />
-            </Route>
-            <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/payment-failure" element={<PaymentFailure />} />
-            <Route path="/payment" element={<Payment />} />
-            <Route path="/payment-cancelled" element={<PaymentCancelled />} />
-            <Route path="/shipping-policy" element={<ShippingPolicy />} />
-            <Route path="/return-policy" element={<ReturnPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/accessibility" element={<Accessibility />} />
-            <Route path="/track-order" element={<TrackOrder />} />
-          </Routes>
-        </Suspense>
+          </Suspense>
+        </ErrorBoundary>
       </main>
       {showChrome && <Footer />}
     </div>
@@ -288,10 +200,11 @@ function App() {
                 AppShell so an open popup survives a client-side navigation. */}
             <PopupProvider>
               <NormalizeDoubleSlashPath />
-              <MetaPixelPageView />
-              <DeviceTracker />
+              <RouteMeta />
+              <Analytics />
               <CookieBanner />
               <ScrollToTop />
+              <ScrollReveal />
               <AccessibilityWidget />
               <ShabbatMode />
               <AppShell />

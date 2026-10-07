@@ -122,8 +122,10 @@
   transition: color 0.25s ease;
 }
 
-.track-order__submit:hover:not(:disabled) {
-  color: var(--color-primary, #162839);
+@media (hover: hover) and (pointer: fine) {
+  .track-order__submit:hover:not(:disabled) {
+    color: var(--color-primary, #162839);
+  }
 }
 
 .track-order__submit:disabled {
@@ -400,9 +402,11 @@
     box-shadow 0.3s ease;
 }
 
-.track-order__item:hover {
-  border-color: rgba(115, 92, 0, 1);
-  box-shadow: 0 0 15px rgba(233, 195, 73, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .track-order__item:hover {
+    border-color: rgba(115, 92, 0, 1);
+    box-shadow: 0 0 15px rgba(233, 195, 73, 0.3);
+  }
 }
 
 .track-order__item-img {

@@ -59,10 +59,12 @@
   box-shadow: 0 20px 40px -15px rgba(22, 40, 57, 0.05);
 }
 
-.method-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--color-secondary);
-  box-shadow: 0 20px 40px -15px rgba(22, 40, 57, 0.15);
+@media (hover: hover) and (pointer: fine) {
+  .method-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-secondary);
+    box-shadow: 0 20px 40px -15px rgba(22, 40, 57, 0.15);
+  }
 }
 
 .method-icon-wrap {
@@ -79,8 +81,10 @@
   transition: background 0.3s ease;
 }
 
-.method-card:hover .method-icon-wrap {
-  background: rgba(212, 175, 55, 0.2);
+@media (hover: hover) and (pointer: fine) {
+  .method-card:hover .method-icon-wrap {
+    background: rgba(212, 175, 55, 0.2);
+  }
 }
 
 .method-card h3 {
@@ -176,11 +180,18 @@
 }
 
 .contact-form .form-group input:-webkit-autofill,
-.contact-form .form-group input:-webkit-autofill:hover,
 .contact-form .form-group input:-webkit-autofill:focus {
   -webkit-text-fill-color: #1f2d3a;
   box-shadow: 0 0 0 1000px #ffffff inset;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact-form .form-group input:-webkit-autofill:hover {
+    -webkit-text-fill-color: #1f2d3a;
+    box-shadow: 0 0 0 1000px #ffffff inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 .status-message {
@@ -221,8 +232,10 @@
     transform 0.1s ease;
 }
 
-.submit-btn:hover:not(:disabled) {
-  background: #c4a12e;
+@media (hover: hover) and (pointer: fine) {
+  .submit-btn:hover:not(:disabled) {
+    background: #c4a12e;
+  }
 }
 
 .submit-btn:active:not(:disabled) {
@@ -328,4 +341,36 @@
   .contact-header h1 {
     font-size: var(--font-size-2xl);
   }
+}
+
+/* Only cards that do something react to the pointer */
+.method-card--link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .method-card:not(.method-card--link):hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: 0 20px 40px -15px rgba(22, 40, 57, 0.05);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .method-card:not(.method-card--link):hover .method-icon-wrap {
+    background: rgba(212, 175, 55, 0.1);
+  }
+}
+
+@media (hover: none) {
+  .method-card--link:hover {
+    transform: none;
+  }
+}
+
+.method-card--link:active {
+  transform: scale(0.98);
+  transition-duration: 100ms;
 }

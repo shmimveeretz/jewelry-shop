@@ -8,15 +8,9 @@ function PaymentCancelled() {
   const { language } = useLanguage();
   const he = language === "he";
 
-  const handleRetry = () => {
-    // pendingOrder still in localStorage - go back to payment page
-    const savedOrder = localStorage.getItem("pendingOrder");
-    if (savedOrder) {
-      navigate("/payment");
-    } else {
-      navigate("/cart");
-    }
-  };
+  // The cart is untouched until a payment succeeds, so checkout can simply
+  // be retried (it redirects to the cart if that is empty).
+  const handleRetry = () => navigate("/checkout");
 
   return (
     <div className="payment-status-page">
@@ -44,14 +38,14 @@ function PaymentCancelled() {
 
         <div className="action-buttons">
           <button className="btn btn-primary" onClick={handleRetry}>
-            {he ? "🔄 חזור לתשלום" : "🔄 Return to Payment"}
+            {he ? "חזרה לתשלום" : "Return to payment"}
           </button>
 
           <button
             className="btn btn-secondary"
             onClick={() => navigate("/cart")}
           >
-            {he ? "🛒 חזור לעגלה" : "🛒 Back to Cart"}
+            {he ? "חזרה לעגלה" : "Back to cart"}
           </button>
 
           <button

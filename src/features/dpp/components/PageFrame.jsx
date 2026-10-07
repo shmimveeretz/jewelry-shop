@@ -22,7 +22,7 @@ function PageFrame({ children, background = "cream" }) {
           </span>
           <span className="flex items-center gap-1.5 text-xs text-gray-600 sm:text-sm">
             <Truck className="h-4 w-4 text-gold" strokeWidth={1.75} />
-            משלוח חינם לכל הארץ
+            משלוח חינם מעל ₪300
           </span>
         </div>
       </header>

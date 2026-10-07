@@ -1,118 +1,102 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+/**
+ * Product catalog with a small shared cache.
+ *
+ * The navbar cart drawer, the home page (twice) and the shop all read the
+ * catalog. Without sharing, one page view fired up to four identical
+ * requests, and switching categories in the shop refetched everything. Now
+ * each distinct server query is fetched once per CACHE_TTL_MS and concurrent
+ * callers share the same in-flight request; category/price filters are
+ * applied in memory.
+ */
+const CACHE_TTL_MS = 2 * 60 * 1000;
+const cache = new Map(); // query -> { at, promise, data }
+
+function buildQuery({ featured, limit }) {
+  const params = new URLSearchParams();
+  if (featured) params.set("featured", "true");
+  if (limit) params.set("limit", String(limit));
+  const query = params.toString();
+  return query ? `?${query}` : "";
+}
+
+function fetchCatalog(query, { force = false } = {}) {
+  const entry = cache.get(query);
+  if (!force && entry && Date.now() - entry.at < CACHE_TTL_MS) {
+    return entry.promise;
+  }
+
+  const promise = fetch(`${API_BASE_URL}/api/products${query}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.success || !Array.isArray(data.data)) {
+        throw new Error(data.message || "Failed to load products");
+      }
+      return data.data;
+    })
+    .catch((error) => {
+      // Never cache a failure: the next caller should retry.
+      cache.delete(query);
+      throw error;
+    });
+
+  cache.set(query, { at: Date.now(), promise });
+  return promise;
+}
 
 export const useProducts = (filters = {}) => {
-  const [products, setProducts] = useState([]);
+  const { featured, limit, category, minPrice, maxPrice } = filters;
+  const query = buildQuery({ featured, limit });
+
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchProducts = async () => {
-    try {
+  const load = useCallback(
+    (force = false) => {
+      let cancelled = false;
       setLoading(true);
       setError(null);
 
-      const params = new URLSearchParams();
-      if (filters.featured) params.set("featured", "true");
-      if (filters.limit) params.set("limit", String(filters.limit));
-      const query = params.toString() ? `?${params.toString()}` : "";
+      fetchCatalog(query, { force })
+        .then((products) => {
+          if (!cancelled) setAllProducts(products);
+        })
+        .catch((err) => {
+          console.error("Error fetching products:", err);
+          if (!cancelled) {
+            setAllProducts([]);
+            setError(err.message || "Connection error");
+          }
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
 
-      const response = await fetch(`${API_BASE_URL}/api/products${query}`);
-      const data = await response.json();
+      return () => {
+        cancelled = true;
+      };
+    },
+    [query],
+  );
 
-      if (data.success && data.data) {
-        let allProducts = data.data;
+  useEffect(() => load(), [load]);
 
-        // Apply filters
-        if (filters.category && filters.category !== "הכל") {
-          allProducts = allProducts.filter(
-            (product) => product.category === filters.category,
-          );
-        }
-
-        if (filters.minPrice) {
-          allProducts = allProducts.filter(
-            (product) => product.price >= filters.minPrice,
-          );
-        }
-
-        if (filters.maxPrice) {
-          allProducts = allProducts.filter(
-            (product) => product.price <= filters.maxPrice,
-          );
-        }
-
-        setProducts(allProducts);
-        setError(null);
-      } else {
-        setError("Failed to load products");
-        setProducts([]);
-      }
-    } catch (err) {
-      console.error("Error fetching products:", err);
-      setError("Connection error - make sure API is running");
-      setProducts([]);
-    } finally {
-      setLoading(false);
+  const products = useMemo(() => {
+    let list = allProducts;
+    if (category && category !== "הכל") {
+      list = list.filter((product) => product.category === category);
     }
-  };
+    if (minPrice) list = list.filter((product) => product.price >= minPrice);
+    if (maxPrice) list = list.filter((product) => product.price <= maxPrice);
+    return list;
+  }, [allProducts, category, minPrice, maxPrice]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [JSON.stringify(filters)]); // Re-fetch when filters change
+  const refetch = useCallback(() => {
+    load(true);
+  }, [load]);
 
-  const refetch = () => {
-    fetchProducts();
-  };
-
-  return {
-    products,
-    loading,
-    error,
-    refetch,
-  };
-};
-
-export const useProduct = (id) => {
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (!id) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch(`${API_BASE_URL}/api/products/${id}`);
-        const data = await response.json();
-
-        if (data.success) {
-          setProduct(data.data);
-        } else {
-          setError("Product not found");
-          setProduct(null);
-        }
-      } catch (err) {
-        console.error("Error fetching product:", err);
-        setError("Connection error - make sure API is running");
-        setProduct(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  return {
-    product,
-    loading,
-    error,
-  };
+  return { products, loading, error, refetch };
 };

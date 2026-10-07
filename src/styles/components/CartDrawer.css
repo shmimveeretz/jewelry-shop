@@ -8,6 +8,17 @@
   position: absolute;
   inset: 0;
   background: rgba(22, 40, 57, 0.45);
+  /* Dims and blurs the page together, and both follow a swipe-to-close */
+  opacity: calc(1 - var(--drag-progress));
+  backdrop-filter: blur(calc(6px * (1 - var(--drag-progress))));
+  -webkit-backdrop-filter: blur(calc(6px * (1 - var(--drag-progress))));
+  animation: cartBackdropIn 240ms var(--ease-out);
+}
+
+@keyframes cartBackdropIn {
+  from {
+    opacity: 0;
+  }
 }
 
 .cart-drawer {
@@ -20,17 +31,39 @@
   box-shadow: -8px 0 32px rgba(22, 40, 57, 0.18);
   display: flex;
   flex-direction: column;
-  animation: cartDrawerIn 0.28s ease-out;
+  animation: cartDrawerIn 340ms var(--ease-drawer);
+  /* Vertical scrolling stays native; horizontal swipes close the drawer */
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+/* Exit mirrors the entrance (same direction, a little faster) */
+.cart-drawer-root--closing .cart-drawer {
+  animation: cartDrawerOut 220ms var(--ease-in-out) forwards;
+}
+
+.cart-drawer-root--closing .cart-drawer-backdrop {
+  animation: cartBackdropOut 220ms var(--ease-out) forwards;
+}
+
+@keyframes cartDrawerOut {
+  to {
+    transform: translateX(var(--drawer-enter, 100%));
+  }
+}
+
+@keyframes cartBackdropOut {
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes cartDrawerIn {
   from {
     transform: translateX(var(--drawer-enter, 100%));
-    opacity: 0.6;
   }
   to {
-    transform: translateX(0);
-    opacity: 1;
+    transform: none;
   }
 }
 
@@ -261,4 +294,9 @@ html[dir="ltr"] .cart-drawer {
   .cart-drawer-crosssell-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+.cart-drawer-qty button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }

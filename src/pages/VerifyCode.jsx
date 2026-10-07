@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Auth.css";
+import { API_BASE_URL } from "../constants/api";
 
 function VerifyCode() {
   const { language } = useLanguage(); 
@@ -36,7 +37,7 @@ function VerifyCode() {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/verifycode`,
+        `${API_BASE_URL}/api/auth/verifycode`,
         {
           method: "POST",
           headers: {
@@ -55,9 +56,9 @@ function VerifyCode() {
             : "Code verified successfully!",
         );
 
-        // 🎯 שמור את resetToken ו-email ב-localStorage
-        localStorage.setItem("resetToken", data.resetToken);
-        localStorage.setItem("resetEmail", email);
+        // 🎯 שמור את resetToken ו-email ב-sessionStorage
+        sessionStorage.setItem("resetToken", data.resetToken);
+        sessionStorage.setItem("resetEmail", email);
 
         // Navigate to change password page after 2 seconds
         setTimeout(() => {
@@ -102,14 +103,16 @@ function VerifyCode() {
               type="text"
               id="code"
               name="code"
+              autoComplete="one-time-code"
+              inputMode="numeric"
+              dir="ltr"
               value={code}
               onChange={(e) =>
                 setCode(e.target.value.replace(/\D/g, "").slice(0, 6))
               }
               required
               maxLength="6"
-              placeholder={language === "he" ? "000000" : "000000"}
-              inputMode="numeric"
+              placeholder="000000"
               style={{
                 fontSize: "1.5rem",
                 letterSpacing: "0.5rem",

@@ -2,6 +2,10 @@
 <html lang="he" dir="rtl">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
     <link rel="icon" type="image/x-icon" href="/src/assets/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
     <link
@@ -12,12 +16,59 @@
     />
     <link rel="apple-touch-icon" href="/src/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/src/assets/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>שמים וארץ</title>
+    <!-- Matches the navy announcement bar at the very top of the page -->
+    <meta name="theme-color" content="#0f1a2e" />
+    <meta name="color-scheme" content="light" />
 
-    <!-- Google Fonts - Hebrew Support -->
+    <!-- Default SEO / link-preview tags. RouteMeta.jsx refines them per page;
+         these are what crawlers that do not run JavaScript see. -->
+    <title>תכשיטים יהודיים בעבודת יד | שמים וארץ</title>
+    <meta
+      name="description"
+      content="שמים וארץ — תכשיטים בעבודת יד בהשראת המקורות: אותיות עבריות, מזלות, אבני החושן וכוכבי הלכת. כסף 925, ציפוי זהב וזהב 14K. משלוח חינם מעל ₪300."
+    />
+    <link rel="canonical" href="https://shamaimveeretz.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="שמים וארץ" />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:title" content="תכשיטים יהודיים בעבודת יד | שמים וארץ" />
+    <meta
+      property="og:description"
+      content="תכשיטים בעבודת יד בהשראת המקורות — אותיות עבריות, מזלות, אבני החושן וכוכבי הלכת. משלוח חינם מעל ₪300."
+    />
+    <meta property="og:url" content="https://shamaimveeretz.com/" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/dhayarvh3/image/upload/v1771151995/HomepageBG.jpg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Store identity for search engines -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "JewelryStore",
+        "name": "שמים וארץ",
+        "alternateName": "Shamaim VeEretz",
+        "url": "https://shamaimveeretz.com/",
+        "logo": "https://shamaimveeretz.com/logo-512.png",
+        "image": "https://res.cloudinary.com/dhayarvh3/image/upload/v1771151995/HomepageBG.jpg",
+        "email": "shmimveeretz@gmail.com",
+        "telephone": "+972-52-595-5389",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Tel Aviv",
+          "addressCountry": "IL"
+        },
+        "priceRange": "₪₪",
+        "sameAs": ["https://www.instagram.com/shamaim_ve_eretz"]
+      }
+    </script>
+
+    <!-- Fonts and image CDN: open connections early -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Bona+Nova:ital,wght@0,400;0,700;1,400&family=Cardo:ital,wght@0,400;0,700;1,400&display=swap"
       rel="stylesheet"
@@ -27,14 +78,14 @@
       rel="stylesheet"
     />
 
-    <!-- Google Consent Mode v2 — must run before gtag.js loads -->
+    <!-- Google Consent Mode v2 — everything starts denied. The GA script itself
+         is only loaded after consent, and only when VITE_GA_MEASUREMENT_ID is
+         set (see src/utils/consent.js). -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
-
-      // 1. Set all consent signals to denied by default
       gtag("consent", "default", {
         analytics_storage: "denied",
         ad_storage: "denied",
@@ -42,33 +93,26 @@
         ad_personalization: "denied",
         wait_for_update: 500,
       });
-
-      // 2. Restore consent immediately for returning visitors who already accepted
+      var hasConsent = false;
       try {
-        if (localStorage.getItem("cookieConsent") === "granted") {
-          gtag("consent", "update", {
-            analytics_storage: "granted",
-            ad_storage: "granted",
-            ad_user_data: "granted",
-            ad_personalization: "granted",
-          });
-        }
+        hasConsent = localStorage.getItem("cookieConsent") === "granted";
       } catch (e) {
         // localStorage not available (private browsing edge case)
       }
-
+      if (hasConsent) {
+        gtag("consent", "update", {
+          analytics_storage: "granted",
+          ad_storage: "granted",
+          ad_user_data: "granted",
+          ad_personalization: "granted",
+        });
+      }
       gtag("js", new Date());
     </script>
-    <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
-    ></script>
-    <script>
-      gtag("config", "G-XXXXXXXXXX");
-    </script>
 
-    <!-- Meta Pixel Code -->
+    <!-- Meta Pixel. Starts revoked: nothing is sent to Facebook until the
+         visitor accepts cookies (the banner then grants consent and sends
+         the PageView). -->
     <script>
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
@@ -93,20 +137,18 @@
         "script",
         "https://connect.facebook.net/en_US/fbevents.js",
       );
+      fbq("consent", hasConsent ? "grant" : "revoke");
       fbq("init", "1655814618795131");
       fbq("track", "PageView");
     </script>
-    <!-- End Meta Pixel Code -->
   </head>
 
   <body>
-    <noscript
-      ><img
-        height="1"
-        width="1"
-        style="display: none"
-        src="https://www.facebook.com/tr?id=1655814618795131&ev=PageView&noscript=1"
-    /></noscript>
+    <noscript>
+      <p style="padding: 2rem; text-align: center; font-family: sans-serif">
+        האתר דורש JavaScript. אנא הפעילו JavaScript בדפדפן כדי לצפות בחנות.
+      </p>
+    </noscript>
     <div id="root"></div>
     <!-- Popups portal here rather than into #root, so no page's stacking or
          overflow rules can clip them. -->

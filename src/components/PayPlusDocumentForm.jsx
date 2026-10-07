@@ -11,20 +11,20 @@ import {
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/PayPlusDocumentForm.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const DOC_TYPES = [
-  { value: "tax_invoice", labelHe: "חשבונית מס", labelEn: "Tax Invoice" },
-  { value: "receipt", labelHe: "קבלה", labelEn: "Receipt" },
-  { value: "quote", labelHe: "הצעת מחיר", labelEn: "Quote" },
+  { value: "inv_tax", labelHe: "חשבונית מס", labelEn: "Tax Invoice" },
+  { value: "inv_receipt", labelHe: "קבלה", labelEn: "Receipt" },
+  { value: "inv_proforma", labelHe: "הצעת מחיר", labelEn: "Quote" },
   {
-    value: "tax_invoice_receipt",
+    value: "inv_tax_receipt",
     labelHe: "חשבונית מס/קבלה",
     labelEn: "Tax Invoice + Receipt",
   },
   {
-    value: "delivery_note",
+    value: "inv_delivery",
     labelHe: "תעודת משלוח",
     labelEn: "Delivery Note",
   },
@@ -32,13 +32,13 @@ const DOC_TYPES = [
 
 const PAYMENT_METHODS = [
   { value: "cash", labelHe: "מזומן", labelEn: "Cash" },
-  { value: "credit_card", labelHe: "כרטיס אשראי", labelEn: "Credit Card" },
+  { value: "credit-card", labelHe: "כרטיס אשראי", labelEn: "Credit Card" },
   {
-    value: "bank_transfer",
+    value: "bank-transfer",
     labelHe: "העברה בנקאית",
     labelEn: "Bank Transfer",
   },
-  { value: "check", labelHe: "המחאה", labelEn: "Check" },
+  { value: "payment-check", labelHe: "המחאה", labelEn: "Check" },
 ];
 
 const EMPTY_ITEM = { name: "", quantity: 1, price: "" };
@@ -51,10 +51,10 @@ export default function PayPlusDocumentForm() {
   const { language } = useLanguage();
   const L = (he, en) => (language === "en" ? en : he);
 
-  const [docType, setDocType] = useState("tax_invoice");
+  const [docType, setDocType] = useState("inv_tax_receipt");
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("credit_card");
+  const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [items, setItems] = useState([{ ...EMPTY_ITEM }]);
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -92,7 +92,7 @@ export default function PayPlusDocumentForm() {
     else if (!validateEmail(customerEmail))
       e.customerEmail = L("פורמט אימייל לא תקין", "Invalid email format");
 
-    const itemErrors = items.map((item, idx) => {
+    const itemErrors = items.map((item) => {
       const ie = {};
       if (!item.name.trim())
         ie.name = L("שם פריט נדרש", "Item name is required");
@@ -141,6 +141,15 @@ export default function PayPlusDocumentForm() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
+      const normalizedItems = items.map((item) => ({
+        name: item.name.trim(),
+        quantity: parseFloat(item.quantity),
+        price: parseFloat(item.price),
+      }));
+      const totalAmount =
+        Math.round(
+          normalizedItems.reduce((sum, i) => sum + i.price * i.quantity, 0) * 100,
+        ) / 100;
       const payload = {
         docType,
         preview,
@@ -148,16 +157,13 @@ export default function PayPlusDocumentForm() {
           name: customerName.trim(),
           email: customerEmail.trim(),
         },
-        paymentMethod,
-        items: items.map((item) => ({
-          name: item.name.trim(),
-          quantity: parseFloat(item.quantity),
-          price: parseFloat(item.price),
-        })),
+        items: normalizedItems,
+        payments: [{ payment_type: paymentMethod, amount: totalAmount }],
+        totalAmount,
       };
 
       const res = await axios.post(
-        `${API_BASE_URL}/api/payplus/create-document`,
+        `${API_BASE_URL}/api/payment/create-document`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } },
       );

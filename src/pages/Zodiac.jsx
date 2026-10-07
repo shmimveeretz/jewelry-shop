@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   GiRam,
@@ -38,7 +38,7 @@ function getSegmentData(index) {
 }
 
 function Zodiac() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const [selectedZodiac, setSelectedZodiac] = useState(null);
   const navigate = useNavigate();
 
@@ -277,8 +277,16 @@ function Zodiac() {
   // Get zodiac signs with current language
   const zodiacSigns = getZodiacSigns();
 
+  const panelRef = useRef(null);
+
   const handleZodiacSelect = (zodiac) => {
     setSelectedZodiac(zodiac);
+    // On narrow screens the details sit below the wheel; bring them into view
+    if (window.matchMedia("(max-width: 960px)").matches) {
+      requestAnimationFrame(() =>
+        panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
+    }
   };
 
   const handleViewProducts = () => {
@@ -349,6 +357,16 @@ function Zodiac() {
                     key={sign.name}
                     className="zodiac-wheel-segment"
                     onClick={() => handleZodiacSelect(sign)}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isSelected}
+                    aria-label={language === "he" ? `מזל ${sign.name}` : sign.nameEn}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleZodiacSelect(sign);
+                      }
+                    }}
                   >
                     <path
                       d={path}
@@ -415,7 +433,7 @@ function Zodiac() {
           </div>
 
           {/* Side Panel */}
-          <div className="zodiac-panel">
+          <div className="zodiac-panel" ref={panelRef}>
             <div className="zodiac-panel-header">
               <h3>{language === "he" ? "גלגל המזלות" : "The Zodiac Signs"}</h3>
               <p>
@@ -426,7 +444,7 @@ function Zodiac() {
             </div>
 
             {selectedZodiac ? (
-              <div className="zodiac-panel-detail">
+              <div className="zodiac-panel-detail" key={selectedZodiac.name} aria-live="polite">
                 <div className="zodiac-panel-icon">{selectedZodiac.icon}</div>
                 <h4>
                   {language === "he"
@@ -471,24 +489,33 @@ function Zodiac() {
               </div>
             ) : (
               <div className="zodiac-panel-empty">
+                <span className="zodiac-panel-empty__mark" aria-hidden="true">✦</span>
                 <p>
                   {language === "he"
-                    ? "בחר מזל מגלגל המזלות"
-                    : "Select a sign from the wheel"}
+                    ? "בחרו מזל בגלגל או ברשימה, וגלו את השבט, האבן והכוכב שלו"
+                    : "Choose a sign on the wheel or below to reveal its tribe, stone and planet"}
                 </p>
               </div>
             )}
 
-            <div className="zodiac-list">
+            <div
+              className="zodiac-list"
+              role="group"
+              aria-label={language === "he" ? "בחירת מזל" : "Choose a sign"}
+            >
               {zodiacSigns.map((sign) => (
-                <div
+                <button
+                  type="button"
                   key={sign.name}
                   className={`zodiac-list-item ${selectedZodiac?.name === sign.name ? "active" : ""}`}
+                  aria-pressed={selectedZodiac?.name === sign.name}
                   onClick={() => handleZodiacSelect(sign)}
                 >
-                  <span className="zodiac-list-icon">{sign.icon}</span>
+                  <span className="zodiac-list-icon" aria-hidden="true">
+                    {sign.icon}
+                  </span>
                   <span>{language === "he" ? sign.name : sign.nameEn}</span>
-                </div>
+                </button>
               ))}
             </div>
           </div>

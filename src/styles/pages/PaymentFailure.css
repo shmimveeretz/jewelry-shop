@@ -1,52 +1,107 @@
+/* Payment failed / cancelled.
+   A failed payment is a tense moment: calm brand colours, one clear next
+   step, and reassurance (no charge, cart kept) instead of alarm-red. */
+
 .payment-status-page {
   min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+  padding: 3rem 1rem;
+  background: var(--color-background);
 }
 
-.payment-status-container.failure {
-  border-top: 5px solid #f44336;
+.payment-status-container {
+  width: 100%;
+  max-width: 560px;
+  background: var(--color-white);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 24px 60px -24px rgba(22, 40, 57, 0.18);
+  animation: statusCardIn 320ms var(--ease-out) both;
+}
+
+@keyframes statusCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.status-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #b4532a;
+  background: #fbefe8;
+  border: 1px solid rgba(180, 83, 42, 0.25);
+}
+
+.payment-status-container h1 {
+  color: var(--color-primary);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  margin: 0 0 0.5rem;
 }
 
 .failure-message {
-  color: #666;
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  color: var(--color-text-light);
+  font-size: 1.05rem;
+  margin: 0 0 1.25rem;
   line-height: 1.6;
+}
+
+.failure-reassurance {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: #f1f7f2;
+  color: #1a5c2e;
+  font-size: 0.92rem;
 }
 
 .failure-reasons,
 .failure-actions {
-  background: #f9f9f9;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
-  text-align: right;
+  background: #faf7f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+  text-align: start;
 }
 
 .failure-reasons h3,
 .failure-actions h3 {
-  color: #333;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .failure-reasons ul,
 .failure-actions ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .failure-reasons li,
 .failure-actions li {
-  padding: 0.75rem 0;
-  color: #666;
+  padding: 0.55rem 0;
+  padding-inline-start: 1.25rem;
+  color: var(--color-text-light);
   position: relative;
-  padding-right: 1.5rem;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid rgba(44, 62, 80, 0.07);
+  line-height: 1.5;
 }
 
 .failure-reasons li:last-child,
@@ -54,39 +109,57 @@
   border-bottom: none;
 }
 
-.failure-reasons li:before {
-  content: "•";
+.failure-reasons li::before,
+.failure-actions li::before {
+  content: "";
   position: absolute;
-  right: 0;
-  color: #f44336;
-  font-weight: bold;
-  font-size: 1.5rem;
+  inset-inline-start: 0;
+  top: 1.05rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-secondary);
 }
 
-.failure-actions li:before {
-  content: "→";
-  position: absolute;
-  right: 0;
-  color: #2196f3;
-  font-weight: bold;
+.payment-status-container .action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+.payment-status-container .btn-primary {
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .btn-text {
   background: transparent;
-  color: #666;
+  color: var(--color-text-light);
   border: none;
   text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.btn-text:hover {
-  color: #333;
-  background: transparent;
+@media (hover: hover) and (pointer: fine) {
+  .btn-text:hover {
+    color: var(--color-primary);
+    background: transparent;
+  }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .failure-reasons,
-  .failure-actions {
-    padding: 1rem;
+@media (max-width: 480px) {
+  .payment-status-container {
+    padding: 2rem 1.25rem;
+  }
+
+  .payment-status-container .action-buttons {
+    flex-direction: column;
+  }
+
+  .payment-status-container .action-buttons .btn {
+    width: 100%;
   }
 }

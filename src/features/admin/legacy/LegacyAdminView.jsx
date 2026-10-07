@@ -19,6 +19,7 @@ import {
   FaArrowDown,
   FaCog,
   FaStar,
+  FaFileInvoice,
 } from "react-icons/fa";
 import { useToast } from "../../../context/ToastContext";
 import { useLanguage } from "../../../contexts/LanguageContext";
@@ -30,10 +31,22 @@ import DashboardCharts from "../../../components/DashboardCharts";
 import CategoryAdmin from "../../../components/CategoryAdmin";
 import HomeFeaturedAdmin from "../../../components/HomeFeaturedAdmin";
 import { MAX_MOTD_LENGTH } from "../../../utils/motd";
-import { getAllProducts, deleteProduct } from "../../../services/productApi";
+import { deleteProduct } from "../../../services/productApi";
 import "../../../styles/pages/Admin.css";
+import { API_BASE_URL } from "../../../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+/** The order number the customer received (falls back to the DB id tail) */
+const displayOrderNumber = (order) =>
+  order?.orderId || String(order?._id || order?.id || "").slice(-8).toUpperCase();
+
+/** "גרמניה" / "Germany" from an order's ISO country code */
+const countryLabel = (code, language) => {
+  try {
+    return new Intl.DisplayNames([language === "he" ? "he" : "en"], { type: "region" }).of(code);
+  } catch {
+    return code;
+  }
+};
 
 const parseApiResponse = async (response) => {
   const raw = await response.text();
@@ -81,7 +94,7 @@ const getOrderItemOptions = (item, language) => {
  * over time instead of being rewritten in one risky pass.
  */
 function LegacyAdminView() {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const { showSuccess, showError } = useToast();
   const navigate = useNavigate();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -109,13 +122,10 @@ function LegacyAdminView() {
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
   const [devices, setDevices] = useState([]);
-
-  const [blockedIPs, setBlockedIPs] = useState([]);
-
-  // Newsletter State
-  const [subscribers, setSubscribers] = useState([]);
-  const [newsletterLoading, setNewsletterLoading] = useState(false);
-  const [newsletterSearchTerm, setNewsletterSearchTerm] = useState("");
+  // Derived from the device log (it was a separate, never-filled state before)
+  const blockedIPs = [
+    ...new Set(devices.filter((d) => d.blocked && d.ipAddress).map((d) => d.ipAddress)),
+  ];
 
   // MOTD State
   const [motd, setMotd] = useState("");
@@ -126,38 +136,25 @@ function LegacyAdminView() {
 
   // Coupons State
   const [coupons, setCoupons] = useState([]);
-  const [newCoupon, setNewCoupon] = useState({
+  const EMPTY_COUPON = {
     code: "",
     discountPercent: "",
     description: "",
-  });
+    maxUses: "",
+    expiresAt: "",
+  };
+  const [newCoupon, setNewCoupon] = useState(EMPTY_COUPON);
   const [couponLoading, setCouponLoading] = useState(false);
   const [deviceSearchTerm, setDeviceSearchTerm] = useState("");
   const [newFirewallIP, setNewFirewallIP] = useState("");
   const [firewall, setFirewall] = useState([]);
 
   const [userSearchTerm, setUserSearchTerm] = useState("");
-  const [editingUser, setEditingUser] = useState(null);
 
   // Products State
   const [searchTerm, setSearchTerm] = useState("");
-  const [showForm, setShowForm] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    nameEn: "",
-    category: "",
-    categoryEn: "",
-    description: "",
-    descriptionEn: "",
-    price: "",
-    metals: "",
-    images: "",
-    status: "active",
-  });
 
   // Fetch MOTD on mount
   useEffect(() => {
@@ -231,7 +228,12 @@ function LegacyAdminView() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/products`);
+      // includeInactive: the storefront hides inactive products, the admin
+      // list must still show them so they can be re-activated.
+      const response = await fetch(
+        `${API_BASE_URL}/api/products?limit=200&includeInactive=true`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } },
+      );
       const data = await response.json();
 
       if (data.success) {
@@ -257,7 +259,7 @@ function LegacyAdminView() {
   };
 
   // Handle ProductForm success
-  const handleProductFormSuccess = (newProduct) => {
+  const handleProductFormSuccess = () => {
     setShowProductForm(false);
     setEditingProduct(null);
     fetchProducts();
@@ -315,7 +317,7 @@ function LegacyAdminView() {
         return;
       }
       setIsAuthorized(true);
-    } catch (error) {
+    } catch {
       navigate("/login");
     }
   }, [navigate, language, showError]);
@@ -372,62 +374,6 @@ function LegacyAdminView() {
     if (isAuthorized) fetchUsers();
   }, [isAuthorized]);
 
-  const fetchSubscribers = async () => {
-    setNewsletterLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${API_BASE_URL}/api/newsletter/subscribers`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      const data = await response.json();
-      if (data.success) setSubscribers(data.data || []);
-    } catch (error) {
-      console.error("Error fetching subscribers:", error);
-    } finally {
-      setNewsletterLoading(false);
-    }
-  };
-
-  const handleDeleteSubscriber = async (subscriberId) => {
-    if (
-      !window.confirm(
-        language === "he"
-          ? "האם אתה בטוח שברצונך למחוק מנוי זה?"
-          : "Are you sure you want to delete this subscriber?",
-      )
-    )
-      return;
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${API_BASE_URL}/api/newsletter/subscribers/${subscriberId}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      const data = await response.json();
-      if (data.success) {
-        setSubscribers((prev) =>
-          prev.filter((s) => (s._id || s.id) !== subscriberId),
-        );
-        showSuccess(
-          language === "he"
-            ? "המנוי נמחק בהצלחה"
-            : "Subscriber deleted successfully",
-        );
-      } else {
-        showError(data.message || "Error deleting subscriber");
-      }
-    } catch (error) {
-      console.error("Error deleting subscriber:", error);
-      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
-    }
-  };
-
   // Fetch coupons from API
   useEffect(() => {
     if (isAuthorized) fetchCoupons();
@@ -478,12 +424,17 @@ function LegacyAdminView() {
           discountPercent: pct,
           description: newCoupon.description.trim(),
           type: "manual",
+          // Optional limits — empty means unlimited / never expires
+          maxUses: newCoupon.maxUses ? Number(newCoupon.maxUses) : null,
+          expiresAt: newCoupon.expiresAt
+            ? new Date(`${newCoupon.expiresAt}T23:59:59`).toISOString()
+            : null,
         }),
       });
       const data = await response.json();
       if (data.success) {
         setCoupons((prev) => [...prev, data.data]);
-        setNewCoupon({ code: "", discountPercent: "", description: "" });
+        setNewCoupon(EMPTY_COUPON);
         showSuccess(
           language === "he"
             ? "קופון נוצר בהצלחה"
@@ -913,6 +864,36 @@ function LegacyAdminView() {
     }
   };
 
+  // Permanent: asks for confirmation, and is meant for test/duplicate orders
+  const handleDeleteOrder = async (orderId) => {
+    const order = orders.find((o) => (o._id || o.id) === orderId) || viewOrder;
+    const label = order?.orderId || orderId;
+    const confirmed = window.confirm(
+      language === "he"
+        ? `למחוק לצמיתות את הזמנה ${label}? לא ניתן לשחזר פעולה זו.`
+        : `Permanently delete order ${label}? This cannot be undone.`,
+    );
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json();
+      if (!data.success) throw new Error(data.message);
+
+      setOrders((prev) => prev.filter((o) => (o._id || o.id) !== orderId));
+      setViewOrder(null);
+      showSuccess(language === "he" ? "ההזמנה נמחקה" : "Order deleted");
+    } catch (error) {
+      showError(
+        error.message || (language === "he" ? "מחיקת ההזמנה נכשלה" : "Could not delete the order"),
+      );
+    }
+  };
+
   const handleSaveTracking = async (orderId) => {
     const trackingNumber = trackingInput.trim();
     setTrackingSaving(true);
@@ -968,6 +949,9 @@ function LegacyAdminView() {
     const searchLower = orderSearchTerm.toLowerCase();
     const matchesSearch =
       (order._id || order.id || "").toLowerCase().includes(searchLower) ||
+      // The number customers see in their emails and on the tracking page
+      (order.orderId || "").toLowerCase().includes(searchLower) ||
+      (order.transactionUid || "").toLowerCase().includes(searchLower) ||
       (order.customerName || "").toLowerCase().includes(searchLower) ||
       (order.customerEmail || order.email || "")
         .toLowerCase()
@@ -1169,191 +1153,6 @@ function LegacyAdminView() {
     );
   });
 
-  const handleAddProduct = () => {
-    setEditingProduct(null);
-    setFormData({
-      id: "",
-      name: "",
-      nameEn: "",
-      category: "",
-      categoryEn: "",
-      description: "",
-      descriptionEn: "",
-      price: "",
-      metals: "",
-      images: "",
-      status: "active",
-    });
-    setShowForm(true);
-  };
-
-  const handleEditProduct = (product) => {
-    setEditingProduct(product);
-    setFormData({
-      id: product.id,
-      name: product.name,
-      nameEn: product.nameEn || "",
-      category: product.category,
-      categoryEn: product.categoryEn || "",
-      description: product.description || "",
-      descriptionEn: product.descriptionEn || "",
-      price: product.price,
-      metals: Array.isArray(product.metals)
-        ? product.metals.join(", ")
-        : product.metals || "",
-      images: Array.isArray(product.images)
-        ? product.images.join(", ")
-        : product.images || "",
-      status: product.status || "active",
-    });
-    setShowForm(true);
-  };
-
-  const handleDeleteProduct = (id) => {
-    if (
-      window.confirm(
-        language === "he"
-          ? "האם אתה בטוח שברצונך למחוק מוצר זה?"
-          : "Are you sure you want to delete this product?",
-      )
-    ) {
-      setProducts(products.filter((p) => p.id !== id));
-      showSuccess(
-        language === "he"
-          ? "המוצר נמחק בהצלחה"
-          : "Product deleted successfully",
-      );
-    }
-  };
-
-  const handleFormChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-
-    if (editingProduct) {
-      // Update existing product
-      updateProductAPI({
-        ...editingProduct,
-        name: formData.name,
-        nameEn: formData.nameEn,
-        category: formData.category,
-        categoryEn: formData.categoryEn,
-        description: formData.description,
-        descriptionEn: formData.descriptionEn,
-        price: parseFloat(formData.price),
-        metals: formData.metals
-          .split(",")
-          .map((m) => m.trim())
-          .filter((m) => m),
-        images: formData.images
-          .split(",")
-          .map((i) => i.trim())
-          .filter((i) => i),
-        status: formData.status,
-      });
-    } else {
-      // Add new product
-      const newProduct = {
-        name: formData.name,
-        nameEn: formData.nameEn,
-        category: formData.category,
-        categoryEn: formData.categoryEn,
-        description: formData.description,
-        descriptionEn: formData.descriptionEn,
-        price: parseFloat(formData.price),
-        metals: formData.metals
-          .split(",")
-          .map((m) => m.trim())
-          .filter((m) => m),
-        images: formData.images
-          .split(",")
-          .map((i) => i.trim())
-          .filter((i) => i),
-        status: formData.status,
-      };
-      addProductAPI(newProduct);
-    }
-
-    setShowForm(false);
-  };
-
-  const addProductAPI = async (product) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE_URL}/api/products`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(product),
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setProducts([...products, data.data]);
-        showSuccess(
-          language === "he"
-            ? "המוצר הוסף בהצלחה"
-            : "Product added successfully",
-        );
-      } else {
-        showError(data.message || "Error adding product");
-      }
-    } catch (error) {
-      console.error("Error adding product:", error);
-      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
-    }
-  };
-
-  const updateProductAPI = async (product) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${API_BASE_URL}/api/products/${product._id || product.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(product),
-        },
-      );
-
-      const data = await response.json();
-      if (data.success) {
-        setProducts(
-          products.map((p) =>
-            p._id === data.data._id || p.id === data.data.id ? data.data : p,
-          ),
-        );
-        showSuccess(
-          language === "he"
-            ? "המוצר עודכן בהצלחה"
-            : "Product updated successfully",
-        );
-      } else {
-        showError(data.message || "Error updating product");
-      }
-    } catch (error) {
-      console.error("Error updating product:", error);
-      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
-    }
-  };
-
-  const handleFormCancel = () => {
-    setShowForm(false);
-    setEditingProduct(null);
-  };
-
   // If not authorized, show loading
   if (!isAuthorized) {
     return (
@@ -1458,6 +1257,17 @@ function LegacyAdminView() {
               {language === "he" ? "קופונים" : "Coupons"}
             </button>
           </li>
+          {isAdmin() && (
+            <li>
+              <button
+                className={`admin-nav-item ${activeTab === "invoices" ? "active" : ""}`}
+                onClick={() => setActiveTab("invoices")}
+              >
+                <FaFileInvoice className="nav-icon" />
+                {language === "he" ? "חשבוניות" : "Invoices"}
+              </button>
+            </li>
+          )}
           <li>
             <button
               className={`admin-nav-item ${activeTab === "newsletter" ? "active" : ""}`}
@@ -1691,16 +1501,14 @@ function LegacyAdminView() {
                           .map((order) => (
                             <tr key={order._id || order.id}>
                               <td>
-                                <code
+                                <code className="order-number-code"
                                   style={{
                                     fontSize: "0.78rem",
                                     color: "var(--color-secondary)",
                                     fontWeight: 700,
                                   }}
                                 >
-                                  {String(order._id || order.id)
-                                    .slice(-8)
-                                    .toUpperCase()}
+                                  {displayOrderNumber(order)}
                                 </code>
                               </td>
                               <td className="text-bold">
@@ -2302,8 +2110,13 @@ function LegacyAdminView() {
                     {language === "he" ? "בוטלה" : "Cancelled"}
                   </option>
                 </select>
-                <button className="btn-gold" onClick={fetchOrders} title="רענן">
-                  ↻
+                <button
+                  type="button"
+                  className="btn-gold"
+                  onClick={fetchOrders}
+                  title={language === "he" ? "רענון הרשימה" : "Refresh list"}
+                >
+                  ↻ {language === "he" ? "רענון" : "Refresh"}
                 </button>
               </div>
             </div>
@@ -2347,14 +2160,14 @@ function LegacyAdminView() {
                         return (
                           <tr key={orderId}>
                             <td>
-                              <code
+                              <code className="order-number-code"
                                 style={{
                                   fontSize: "0.78rem",
                                   color: "var(--color-secondary)",
                                   fontWeight: 700,
                                 }}
                               >
-                                {String(orderId).slice(-8).toUpperCase()}
+                                {displayOrderNumber(order)}
                               </code>
                             </td>
                             <td className="text-bold">
@@ -2377,7 +2190,13 @@ function LegacyAdminView() {
                                     {shipping.address}
                                   </span>
                                   <span className="product-name-sub">
-                                    {[shipping.city, shipping.zipCode]
+                                    {[
+                                      shipping.city,
+                                      shipping.zipCode,
+                                      shipping.country && shipping.country !== "IL"
+                                        ? countryLabel(shipping.country, language)
+                                        : null,
+                                    ]
                                       .filter(Boolean)
                                       .join(", ")}
                                   </span>
@@ -2529,8 +2348,13 @@ function LegacyAdminView() {
                                     ? "פרטי הזמנה מלאים"
                                     : "Full order details"
                                 }
+                                aria-label={
+                                  language === "he"
+                                    ? `פרטי הזמנה ${displayOrderNumber(order)}`
+                                    : `Order ${displayOrderNumber(order)} details`
+                                }
                               >
-                                <FaEye />
+                                <FaEye aria-hidden="true" />
                               </button>
                             </td>
                           </tr>
@@ -2558,8 +2382,10 @@ function LegacyAdminView() {
                 const orderId = viewOrder._id || viewOrder.id;
                 const items = viewOrder.items || [];
                 const shipping = viewOrder.shippingAddress || {};
+                // Older webhook-saved orders stored itemsPrice as 0; fall back
+                // to the line items rather than showing ₪0
                 const itemsSum =
-                  typeof viewOrder.itemsPrice === "number"
+                  viewOrder.itemsPrice > 0
                     ? viewOrder.itemsPrice
                     : items.reduce(
                         (sum, it) => sum + (it.price || 0) * (it.quantity || 1),
@@ -2580,7 +2406,7 @@ function LegacyAdminView() {
                         <div>
                           <h2>
                             {he ? "הזמנה" : "Order"}{" "}
-                            <code>{String(orderId).slice(-8).toUpperCase()}</code>
+                            <code className="order-number-code">{displayOrderNumber(viewOrder)}</code>
                           </h2>
                           <p className="order-modal-sub">
                             {he ? "נוצרה:" : "Created:"}{" "}
@@ -2630,7 +2456,12 @@ function LegacyAdminView() {
                             </p>
                             <p>
                               <strong>{he ? "כתובת:" : "Address:"}</strong>{" "}
-                              {[shipping.address, shipping.city, shipping.zipCode]
+                              {[
+                                shipping.address,
+                                shipping.city,
+                                shipping.zipCode,
+                                countryLabel(shipping.country || "IL", language),
+                              ]
                                 .filter(Boolean)
                                 .join(", ") || "-"}
                             </p>
@@ -2846,6 +2677,24 @@ function LegacyAdminView() {
                             <span>₪{viewOrder.totalPrice || 0}</span>
                           </div>
                         </section>
+
+                        {isAdmin() && (
+                          <section className="order-modal-section order-modal-danger">
+                            <button
+                              type="button"
+                              className="order-delete-btn"
+                              onClick={() => handleDeleteOrder(orderId)}
+                            >
+                              <FaTrash aria-hidden="true" />{" "}
+                              {he ? "מחיקת הזמנה" : "Delete order"}
+                            </button>
+                            <p className="order-tracking-hint">
+                              {he
+                                ? "למחיקת הזמנות בדיקה או כפולות בלבד. לביטול הזמנה של לקוח אמיתי עדיף לשנות סטטוס ל'בוטל', כך שההיסטוריה נשמרת."
+                                : "For test or duplicate orders only. To cancel a real customer's order, set its status to Cancelled so the history is kept."}
+                            </p>
+                          </section>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -3184,6 +3033,38 @@ function LegacyAdminView() {
                     }
                   />
                 </div>
+                <div className="form-group">
+                  <label>
+                    {language === "he"
+                      ? "מקסימום שימושים (ריק = ללא הגבלה)"
+                      : "Max uses (empty = unlimited)"}
+                  </label>
+                  <input
+                    type="number"
+                    className="search-input"
+                    min="1"
+                    placeholder="∞"
+                    value={newCoupon.maxUses}
+                    onChange={(e) =>
+                      setNewCoupon((p) => ({ ...p, maxUses: e.target.value }))
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label>
+                    {language === "he"
+                      ? "בתוקף עד (ריק = ללא תפוגה)"
+                      : "Valid until (empty = no expiry)"}
+                  </label>
+                  <input
+                    type="date"
+                    className="search-input"
+                    value={newCoupon.expiresAt}
+                    onChange={(e) =>
+                      setNewCoupon((p) => ({ ...p, expiresAt: e.target.value }))
+                    }
+                  />
+                </div>
                 <button
                   className="btn-gold"
                   onClick={handleCreateCoupon}
@@ -3211,6 +3092,8 @@ function LegacyAdminView() {
                     <th>{language === "he" ? "הנחה" : "Discount"}</th>
                     <th>{language === "he" ? "סוג" : "Type"}</th>
                     <th>{language === "he" ? "תיאור" : "Description"}</th>
+                    <th>{language === "he" ? "שימושים" : "Uses"}</th>
+                    <th>{language === "he" ? "תוקף" : "Expires"}</th>
                     <th>{language === "he" ? "סטאטוס" : "Status"}</th>
                     <th>{language === "he" ? "פעולות" : "Actions"}</th>
                   </tr>
@@ -3218,7 +3101,7 @@ function LegacyAdminView() {
                 <tbody>
                   {coupons.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="empty-table">
+                      <td colSpan="8" className="empty-table">
                         {language === "he"
                           ? "אין קודי קופון עדיין"
                           : "No coupon codes yet"}
@@ -3263,6 +3146,17 @@ function LegacyAdminView() {
                           {coupon.description || "-"}
                         </td>
                         <td>
+                          {coupon.usedCount || 0}
+                          {coupon.maxUses ? ` / ${coupon.maxUses}` : ""}
+                        </td>
+                        <td className="text-muted">
+                          {coupon.expiresAt
+                            ? new Date(coupon.expiresAt).toLocaleDateString(
+                                language === "he" ? "he-IL" : "en-GB",
+                              )
+                            : "-"}
+                        </td>
+                        <td>
                           <span
                             className={`status-badge ${
                               coupon.isActive !== false
@@ -3305,6 +3199,9 @@ function LegacyAdminView() {
             </div>
           </>
         )}
+        {/* ───────────────── INVOICES TAB ───────────────── */}
+        {activeTab === "invoices" && isAdmin() && <PayPlusDocumentForm />}
+
         {/* ───────────────── NEWSLETTER TAB ───────────────── */}
         {activeTab === "newsletter" && <NewsletterAdmin />}
 

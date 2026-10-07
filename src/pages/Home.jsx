@@ -11,7 +11,53 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useProducts } from "../hooks/useProducts";
 import ProductModal from "../components/ProductModal";
+import { formatPrice, productName, productImage, handleImageError } from "../utils/format";
+import { clickableProps } from "../utils/a11y";
 import "../styles/pages/Home.css";
+
+function lowStockLabel(stock, language) {
+  if (!(typeof stock === "number" && stock > 0 && stock <= 3)) return null;
+  if (language === "he") {
+    return stock === 1 ? "נותר אחרון במלאי" : `נותרו רק ${stock} במלאי`;
+  }
+  return stock === 1 ? "LAST ONE LEFT" : `ONLY ${stock} LEFT`;
+}
+
+function HomeProductCard({ product, language, badge, onOpen }) {
+  const name = productName(product, language);
+  const lowStock = lowStockLabel(product.stock, language);
+  return (
+    <div
+      className="collection-card"
+      {...clickableProps(
+        () => onOpen(product),
+        language === "he" ? `צפייה בפרטי ${name}` : `View ${name}`,
+      )}
+    >
+      {badge && <div className="best-seller-badge">{badge}</div>}
+      {lowStock && <div className="low-stock-badge">{lowStock}</div>}
+      <div className="collection-image-wrap">
+        <img
+          src={productImage(product)}
+          alt={name}
+          className="collection-image"
+          loading="lazy"
+          decoding="async"
+          onError={handleImageError}
+        />
+        <div className="card-hover-overlay" aria-hidden="true">
+          <span className="card-overlay-btn">
+            {language === "he" ? "צפה בפרטים" : "View Details"}
+          </span>
+        </div>
+      </div>
+      <div className="collection-info">
+        <h3>{name}</h3>
+        <div className="price">{formatPrice(product.price, language)}</div>
+      </div>
+    </div>
+  );
+}
 
 function Home() {
   const { t, language } = useLanguage();
@@ -82,8 +128,8 @@ function Home() {
           </p>
           <p className="hero-value-prop">
             {language === "he"
-              ? "תכשיטי מקור בעבודת יד עם משמעות — משלוח חינם לכל הארץ"
-              : "Handmade jewelry with meaning — free shipping nationwide"}
+              ? "תכשיטי מקור בעבודת יד עם משמעות — משלוח חינם מעל ₪300"
+              : "Handmade jewelry with meaning — free shipping over ₪300"}
           </p>
           <div className="hero-cta-row">
             <Link to="/shop" className="hero-btn-primary">
@@ -96,7 +142,7 @@ function Home() {
           <div className="hero-trust-strip">
             <span>
               <FaShippingFast />
-              {language === "he" ? "משלוח חינם ומהיר" : "Free fast shipping"}
+              {language === "he" ? "משלוח חינם מעל ₪300" : "Free shipping over ₪300"}
             </span>
             <span>
               <FaGem />
@@ -113,12 +159,12 @@ function Home() {
           <span className="hero-scroll-text">
             {language === "he" ? "גלו עוד" : "Discover"}
           </span>
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-outlined" aria-hidden="true">
             keyboard_double_arrow_down
           </span>
         </div>
 
-        <div className="hero-mizrach">
+        <div className="hero-mizrach" aria-hidden="true">
           <div className="mizrach-line" />
           <span className="mizrach-label">
             {language === "he" ? "מזרח" : "EAST"}
@@ -158,61 +204,19 @@ function Home() {
           ) : (
             <div className="collections-grid">
               {topProducts.map((product, index) => (
-                <div
+                <HomeProductCard
                   key={product.id}
-                  className="collection-card"
-                  onClick={() => setSelectedProduct(product)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {index === 0 && (
-                    <div className="best-seller-badge">
-                      {language === "he" ? "נמכר ביותר" : "BEST SELLER"}
-                    </div>
-                  )}
-                  {typeof product.stock === "number" &&
-                    product.stock > 0 &&
-                    product.stock <= 3 && (
-                      <div className="low-stock-badge">
-                        {language === "he"
-                          ? product.stock === 1
-                            ? "נותר אחרון במלאי"
-                            : `נותרו רק ${product.stock} במלאי`
-                          : product.stock === 1
-                            ? "LAST ONE LEFT"
-                            : `ONLY ${product.stock} LEFT`}
-                      </div>
-                    )}
-                  <div className="collection-image-wrap">
-                    <img
-                      src={
-                        Array.isArray(product.images)
-                          ? product.images[0]
-                          : product.image ||
-                            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
-                      }
-                      alt={product.name}
-                      className="collection-image"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.target.src =
-                          "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
-                      }}
-                    />
-                    <div className="card-hover-overlay">
-                      <span className="card-overlay-btn">
-                        {language === "he" ? "צפה בפרטים" : "View Details"}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="collection-info">
-                    <h3>
-                      {language === "en" && product.nameEn
-                        ? product.nameEn
-                        : product.name}
-                    </h3>
-                    <div className="price">{product.price} ₪</div>
-                  </div>
-                </div>
+                  product={product}
+                  language={language}
+                  onOpen={setSelectedProduct}
+                  badge={
+                    index === 0
+                      ? language === "he"
+                        ? "נמכר ביותר"
+                        : "BEST SELLER"
+                      : null
+                  }
+                />
               ))}
             </div>
           )}
@@ -246,43 +250,12 @@ function Home() {
 
             <div className="collections-grid">
               {trinityProducts.map((product) => (
-                <div
+                <HomeProductCard
                   key={product.id}
-                  className="collection-card"
-                  onClick={() => setSelectedProduct(product)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="collection-image-wrap">
-                    <img
-                      src={
-                        Array.isArray(product.images)
-                          ? product.images[0]
-                          : product.image ||
-                            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop"
-                      }
-                      alt={product.name}
-                      className="collection-image"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.target.src =
-                          "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=300&h=300&fit=crop";
-                      }}
-                    />
-                    <div className="card-hover-overlay">
-                      <span className="card-overlay-btn">
-                        {language === "he" ? "צפה בפרטים" : "View Details"}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="collection-info">
-                    <h3>
-                      {language === "en" && product.nameEn
-                        ? product.nameEn
-                        : product.name}
-                    </h3>
-                    <div className="price">{product.price} ₪</div>
-                  </div>
-                </div>
+                  product={product}
+                  language={language}
+                  onOpen={setSelectedProduct}
+                />
               ))}
             </div>
 
@@ -346,8 +319,8 @@ function Home() {
                 <span>
                   <FaShippingFast />
                   {language === "he"
-                    ? "משלוח חינם לכל הארץ"
-                    : "Free nationwide shipping"}
+                    ? "משלוח חינם מעל ₪300"
+                    : "Free shipping over ₪300"}
                 </span>
               </div>
             </div>

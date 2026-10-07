@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Auth.css";
+import { API_BASE_URL } from "../constants/api";
 
 function ForgotPassword() {
   const { language } = useLanguage();
@@ -18,7 +19,7 @@ function ForgotPassword() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/forgotpassword`,
+        `${API_BASE_URL}/api/auth/forgotpassword`,
         {
           method: "POST",
           headers: {
@@ -62,7 +63,6 @@ function ForgotPassword() {
         <div className="auth-container">
           <div className="auth-header">
             <h1>
-              ✅{" "}
               {language === "he"
                 ? "קוד נשלח בהצלחה!"
                 : "Code Sent Successfully!"}
@@ -140,6 +140,10 @@ function ForgotPassword() {
               type="email"
               id="email"
               name="email"
+              autoComplete="email"
+              inputMode="email"
+              dir="ltr"
+              enterKeyHint="send"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

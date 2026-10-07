@@ -18,7 +18,7 @@
   z-index: 1100;
   display: flex;
   align-items: center;
-  animation: tb-enter 0.45s ease-out forwards;
+  animation: tb-enter 0.45s var(--ease-out) forwards;
 }
 
 .top-banner--closing {
@@ -127,10 +127,12 @@
   flex-shrink: 0;
 }
 
-.top-banner-close:hover {
-  border-color: rgba(212, 175, 55, 0.75);
-  background: rgba(212, 175, 55, 0.12);
-  color: #f5e6b8;
+@media (hover: hover) and (pointer: fine) {
+  .top-banner-close:hover {
+    border-color: rgba(212, 175, 55, 0.75);
+    background: rgba(212, 175, 55, 0.12);
+    color: #f5e6b8;
+  }
 }
 
 .top-banner-close:focus-visible {
@@ -203,5 +205,48 @@
 
   .top-banner-track > span[aria-hidden="true"] {
     display: none;
+  }
+}
+
+/* ── Layering fixes ──
+   Edge fades sit above the scrolling text so it dissolves at both ends, and
+   the close button sits above both with its own lane, at a fixed size (the
+   global 44px touch-target rule would otherwise inflate it over the text). */
+.top-banner-edge {
+  z-index: 3;
+}
+
+.top-banner-viewport {
+  margin-inline-start: 3rem;
+}
+
+.top-banner-edge--start {
+  inset-inline-start: 3rem;
+}
+
+.top-banner .top-banner-close {
+  z-index: 4;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  background: var(--tb-navy);
+  transition:
+    border-color 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out);
+}
+
+/* Bigger invisible hit area without a bigger visual */
+.top-banner .top-banner-close::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .top-banner .top-banner-close:hover {
+    border-color: var(--tb-gold);
+    background: rgba(212, 175, 55, 0.12);
   }
 }

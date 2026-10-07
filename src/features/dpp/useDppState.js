@@ -116,9 +116,12 @@ export function useDppState({ product, page }) {
     // `chain` is excluded on purpose: every choice costs 0 and buildCartItem
     // never forwards it to the order, so on a campaign page it was pure
     // friction — one more required tap between the visitor and the CTA.
+    // `extraLetterForBracelet` is a per-metal price table for extra letters,
+    // not a choice: shown as a group it became a required, priced option.
     const extraGroups = getOptionKeys(priceAdditions)
       .filter(
-        (key) => !["jewelryType", "metalType", "length", "chain"].includes(key),
+        (key) =>
+          !["jewelryType", "metalType", "length", "chain", "extraLetterForBracelet"].includes(key),
       )
       .map((key) => ({ key, choices: toChoices(key) }))
       .filter((group) => group.choices.length > 0);
@@ -177,20 +180,11 @@ export function useDppState({ product, page }) {
 
     const item = buildCartItem(product, selected);
 
-    trackPixel("InitiateCheckout", {
-      content_ids: [product.id],
-      content_name: product.name,
-      content_type: "product",
-      num_items: 1,
-      value: item.price,
-      currency: "ILS",
-      ...(page?.tracking?.customEventParams || {}),
-    });
-
+    // InitiateCheckout fires on the checkout page itself (shared with the store)
     navigate("/checkout", {
       state: { cartItems: [{ ...item, quantity: 1 }], total: item.price },
     });
-  }, [product, optionModel, selected, page, navigate]);
+  }, [product, optionModel, selected, navigate]);
 
   return {
     product,

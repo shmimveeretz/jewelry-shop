@@ -83,13 +83,21 @@
   color: #d4af37;
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition:
+    color 260ms var(--ease-out),
+    background-color 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out),
+    transform 260ms var(--ease-out),
+    opacity 260ms var(--ease-out);
   border-bottom: 1px solid transparent;
 }
 
-.accessibility-content a:hover {
-  color: #333;
-  border-bottom: 2px solid #d4af37;
+@media (hover: hover) and (pointer: fine) {
+  .accessibility-content a:hover {
+    color: #333;
+    border-bottom: 2px solid #d4af37;
+  }
 }
 
 .accessibility-content a:focus {
@@ -136,12 +144,20 @@
   color: #d4af37;
   text-decoration: none;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition:
+    color 260ms var(--ease-out),
+    background-color 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out),
+    transform 260ms var(--ease-out),
+    opacity 260ms var(--ease-out);
 }
 
-.info-item a:hover {
-  color: #333;
-  border-bottom: 2px solid #d4af37;
+@media (hover: hover) and (pointer: fine) {
+  .info-item a:hover {
+    color: #333;
+    border-bottom: 2px solid #d4af37;
+  }
 }
 
 .info-item a:focus {

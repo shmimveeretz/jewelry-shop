@@ -26,12 +26,52 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is logged in
-    const userStr = localStorage.getItem("user");
-    if (userStr) {
-      setUser(JSON.parse(userStr));
+    // Refresh the signed-in user on navigation (login/logout happen elsewhere)
+    try {
+      const userStr = localStorage.getItem("user");
+      setUser(userStr ? JSON.parse(userStr) : null);
+    } catch {
+      setUser(null);
     }
-  }, [location]);
+    // Any navigation closes the mobile menu
+    setIsMenuOpen(false);
+    setIsDropdownOpen(false);
+  }, [location.pathname, location.search]);
+
+  // Mobile menu: Escape closes it and the page behind does not scroll
+  useEffect(() => {
+    if (!isMenuOpen) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [isMenuOpen]);
+
+  // Lift the header off the page once content scrolls beneath it
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setIsScrolled(window.scrollY > 8));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const displayName = user
+    ? [user.firstName, user.lastName].filter(Boolean).join(" ") || user.name || ""
+    : "";
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -42,7 +82,7 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    const userName = user?.name || t("user");
+    const userName = displayName || t("user");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
@@ -55,7 +95,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar${isScrolled ? " navbar--scrolled" : ""}`} aria-label={language === "he" ? "ניווט ראשי" : "Main navigation"}>
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           <img
@@ -65,7 +105,7 @@ function Navbar() {
           />
         </Link>
 
-        <ul className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
+        <ul id="main-menu" className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
           <li>
             <Link
               to="/"
@@ -79,6 +119,13 @@ function Navbar() {
             className="dropdown"
             onMouseEnter={() => !isMenuOpen && setIsDropdownOpen(true)}
             onMouseLeave={() => !isMenuOpen && setIsDropdownOpen(false)}
+            onFocus={() => !isMenuOpen && setIsDropdownOpen(true)}
+            onBlur={(e) => {
+              // Close once keyboard focus leaves the whole dropdown
+              if (!isMenuOpen && !e.currentTarget.contains(e.relatedTarget)) {
+                setIsDropdownOpen(false);
+              }
+            }}
           >
             <Link
               to="/shop"
@@ -91,7 +138,7 @@ function Navbar() {
                 }
               }}
             >
-              {t("shop")} <FaChevronDown className="dropdown-icon" />
+              {t("shop")} <FaChevronDown className="dropdown-icon" aria-hidden="true" />
             </Link>
             <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
               <li>
@@ -215,11 +262,14 @@ function Navbar() {
 
         <div className="navbar-icons">
           <button
+            type="button"
             onClick={toggleLanguage}
             className="navbar-icon language-btn"
             title={language === "he" ? "Switch to English" : "עבור לעברית"}
+            aria-label={language === "he" ? "Switch to English" : "עבור לעברית"}
+            lang={language === "he" ? "en" : "he"}
           >
-            <FaGlobe />
+            <FaGlobe aria-hidden="true" />
             <span className="language-text">
               {language === "he" ? "EN" : "עב"}
             </span>
@@ -228,35 +278,58 @@ function Navbar() {
             <>
               <span className="user-name">
                 {language === "he"
-                  ? `שלום, ${user.firstName ? `${user.firstName} ${user.lastName}` : user.name || "משתמש"}`
-                  : `Hello, ${user.firstName ? `${user.firstName} ${user.lastName}` : user.name || "User"}`}
+                  ? `שלום, ${displayName || "משתמש"}`
+                  : `Hello, ${displayName || "User"}`}
               </span>
               <button
+                type="button"
                 onClick={handleLogout}
                 className="navbar-icon logout-btn"
                 title={t("logout")}
+                aria-label={t("logout")}
               >
-                <FaSignOutAlt />
+                <FaSignOutAlt aria-hidden="true" />
               </button>
             </>
           ) : (
-            <Link to="/login" className="navbar-icon" title={t("login")}>
-              <FaUser />
+            <Link to="/login" className="navbar-icon" title={t("login")} aria-label={t("login")}>
+              <FaUser aria-hidden="true" />
             </Link>
           )}
           <button
             type="button"
             className="navbar-icon cart-icon"
             onClick={openCartDrawer}
-            aria-label={language === "he" ? "עגלה" : "Cart"}
+            aria-label={
+              language === "he"
+                ? `עגלת קניות, ${getCartCount()} פריטים`
+                : `Shopping cart, ${getCartCount()} items`
+            }
           >
-            <FaShoppingCart />
+            <FaShoppingCart aria-hidden="true" />
             {getCartCount() > 0 && (
-              <span className="cart-badge">{getCartCount()}</span>
+              <span className="cart-badge" aria-hidden="true" key={getCartCount()}>
+                {getCartCount()}
+              </span>
             )}
           </button>
-          <button className="navbar-mobile-toggle" onClick={toggleMenu}>
-            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          <button
+            type="button"
+            className="navbar-mobile-toggle"
+            onClick={toggleMenu}
+            aria-expanded={isMenuOpen}
+            aria-controls="main-menu"
+            aria-label={
+              isMenuOpen
+                ? language === "he"
+                  ? "סגירת התפריט"
+                  : "Close menu"
+                : language === "he"
+                  ? "פתיחת התפריט"
+                  : "Open menu"
+            }
+          >
+            {isMenuOpen ? <FaTimes aria-hidden="true" /> : <FaBars aria-hidden="true" />}
           </button>
         </div>
       </div>

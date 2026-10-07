@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { CONSENT_KEY, setTrackingConsent } from "../utils/consent";
 import "../styles/components/CookieBanner.css";
-
-const STORAGE_KEY = "cookieConsent";
 
 export default function CookieBanner() {
   const { language } = useLanguage();
@@ -11,7 +10,7 @@ export default function CookieBanner() {
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(CONSENT_KEY);
       if (!stored) {
         // Small delay so page renders first, then banner slides up
         const t = setTimeout(() => setVisible(true), 500);
@@ -23,17 +22,7 @@ export default function CookieBanner() {
   }, []);
 
   const dismiss = (granted) => {
-    if (granted && typeof window.gtag === "function") {
-      window.gtag("consent", "update", {
-        analytics_storage: "granted",
-        ad_storage: "granted",
-        ad_user_data: "granted",
-        ad_personalization: "granted",
-      });
-    }
-    try {
-      localStorage.setItem(STORAGE_KEY, granted ? "granted" : "denied");
-    } catch {}
+    setTrackingConsent(granted);
 
     // Animate out, then unmount
     setDismissing(true);
@@ -47,8 +36,7 @@ export default function CookieBanner() {
   return (
     <div
       className={`cookie-banner${dismissing ? " cookie-banner--out" : ""}`}
-      role="alertdialog"
-      aria-modal="true"
+      role="region"
       aria-label={isHe ? "הסכמה לעוגיות" : "Cookie consent"}
     >
       <div className="cookie-banner__inner">
@@ -56,12 +44,7 @@ export default function CookieBanner() {
           {isHe
             ? "אנו משתמשים בעוגיות לניתוח תנועה ולשיפור חוויית הגלישה."
             : "We use cookies to analyze traffic and improve your experience."}{" "}
-          <a
-            href="/privacy-policy"
-            className="cookie-banner__link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="/privacy-policy" className="cookie-banner__link">
             {isHe ? "מדיניות פרטיות" : "Privacy Policy"}
           </a>
         </p>

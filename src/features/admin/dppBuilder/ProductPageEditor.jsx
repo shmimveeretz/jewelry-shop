@@ -43,18 +43,31 @@ function ProductPageEditor() {
   const [isSaving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState(0);
   const [tab, setTab] = useState("build");
+  const [loadError, setLoadError] = useState(null);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
+    setLoadError(null);
     Promise.all([getProductPage(id), getBlockTypes()])
       .then(([pageData, blockTypes]) => {
+        if (cancelled) return;
         setPage(pageData);
         setSchemas(blockTypes);
         setBlocks(pageData.draft?.blocks || []);
         setTheme(pageData.draft?.theme || {});
         setSelectedKey(pageData.draft?.blocks?.[0]?.key || null);
       })
-      .catch((error) => showError(error.message));
-  }, [id, showError]);
+      .catch((error) => {
+        if (cancelled) return;
+        // Without this the editor sat on "loading…" forever
+        setLoadError(error.message || "טעינת העמוד נכשלה");
+        showError(error.message);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [id, showError, reloadKey]);
 
   const schemaByType = useMemo(
     () => new Map(schemas.map((schema) => [schema.type, schema])),
@@ -160,6 +173,21 @@ function ProductPageEditor() {
       showError(error.message);
     }
   };
+
+  if (!page && loadError) {
+    return (
+      <div className="dpp-builder__loading" role="alert">
+        <p>לא הצלחנו לטעון את העמוד: {loadError}</p>
+        <button
+          type="button"
+          className="btn"
+          onClick={() => setReloadKey((key) => key + 1)}
+        >
+          נסו שוב
+        </button>
+      </div>
+    );
+  }
 
   if (!page) {
     return <p className="dpp-builder__loading">טוען את העמוד…</p>;

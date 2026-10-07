@@ -9,8 +9,8 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useToast } from "../context/ToastContext";
 import "../styles/components/AdminPanel.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const HOME_SLOT_COUNT = 4;
 
 export default function HomeFeaturedAdmin() {

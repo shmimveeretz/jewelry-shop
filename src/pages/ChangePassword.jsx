@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Auth.css";
+import { API_BASE_URL } from "../constants/api";
 
 function ChangePassword() {
   const { language } = useLanguage();
@@ -15,8 +16,8 @@ function ChangePassword() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // בדוק שיש resetToken ב-localStorage
-    const token = localStorage.getItem("resetToken");
+    // בדוק שיש resetToken ב-sessionStorage
+    const token = sessionStorage.getItem("resetToken");
     if (!token) {
       showError(
         language === "he"
@@ -39,12 +40,14 @@ function ChangePassword() {
     setLoading(true);
 
     try {
-      // Validation
-      if (formData.newPassword.length < 6) {
+      // Same rule the server enforces (see Backend/src/models/User.js)
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+      if (!passwordRegex.test(formData.newPassword)) {
         showError(
           language === "he"
-            ? "הסיסמה החדשה חייבת להכיל לפחות 6 תווים"
-            : "New password must be at least 6 characters",
+            ? "הסיסמה חייבת להכיל לפחות 8 תווים, אות גדולה, אות קטנה וסימן מיוחד"
+            : "Password needs 8+ characters with upper and lower case letters and a symbol",
         );
         setLoading(false);
         return;
@@ -59,16 +62,16 @@ function ChangePassword() {
       }
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/changepassword`,
+        `${API_BASE_URL}/api/auth/changepassword`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: localStorage.getItem("resetEmail"),
+            email: sessionStorage.getItem("resetEmail"),
             newPassword: formData.newPassword,
-            resetToken: localStorage.getItem("resetToken"),
+            resetToken: sessionStorage.getItem("resetToken"),
           }),
         },
       );
@@ -82,9 +85,9 @@ function ChangePassword() {
             : "Password changed successfully!",
         );
 
-        // 🎉 נקה את localStorage
-        localStorage.removeItem("resetToken");
-        localStorage.removeItem("resetEmail");
+        // 🎉 נקה את sessionStorage
+        sessionStorage.removeItem("resetToken");
+        sessionStorage.removeItem("resetEmail");
 
         // Navigate to login after 2 seconds
         setTimeout(() => {

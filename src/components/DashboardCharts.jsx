@@ -83,6 +83,16 @@ function DonutChart({ data, labelKey, valueKey, title }) {
   );
 }
 
+// Order statuses are stored in English; the dashboard speaks Hebrew
+const STATUS_HE = {
+  Pending: "ממתינה",
+  Paid: "שולמה",
+  Processing: "בטיפול",
+  Shipped: "נשלחה",
+  Delivered: "נמסרה",
+  Cancelled: "בוטלה",
+};
+
 export default function DashboardCharts({ charts }) {
   const { language } = useLanguage();
   const he = language === "he";
@@ -91,7 +101,7 @@ export default function DashboardCharts({ charts }) {
 
   const revenueData = charts.revenueOverTime || [];
   const statusData = (charts.ordersByStatus || []).map((s) => ({
-    status: s.status,
+    status: he ? STATUS_HE[s.status] || s.status : s.status,
     count: s.count,
   }));
   const categoryData = (charts.productsByCategory || []).map((c) => ({

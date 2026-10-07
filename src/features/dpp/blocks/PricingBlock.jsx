@@ -33,7 +33,7 @@ function PricingBlock({ ctx, ...props }) {
         {showShippingLine ? (
           <p className="mt-2 flex items-center justify-center gap-1.5 text-sm text-gray-600">
             <Truck className="h-4 w-4 text-gold" strokeWidth={1.75} />
-            משלוח חינם לכל הארץ
+            משלוח חינם מעל ₪300
           </p>
         ) : null}
 

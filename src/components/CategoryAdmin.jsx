@@ -3,8 +3,8 @@ import { FaEdit, FaPlus, FaSave, FaTrash, FaTimes } from "react-icons/fa";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/AdminPanel.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const EMPTY_FORM = {
   slug: "",
@@ -208,6 +208,7 @@ export default function CategoryAdmin() {
                 <label>{he ? "שם (אנגלית)" : "Name (English)"}</label>
                 <input
                   value={form.nameEn}
+                  dir="ltr"
                   onChange={(e) => setForm({ ...form, nameEn: e.target.value })}
                 />
               </div>
@@ -227,6 +228,17 @@ export default function CategoryAdmin() {
                 value={form.descriptionHe}
                 onChange={(e) =>
                   setForm({ ...form, descriptionHe: e.target.value })
+                }
+              />
+            </div>
+            <div className="ap-field">
+              <label>{he ? "תיאור (אנגלית)" : "Description (English)"}</label>
+              <textarea
+                rows={3}
+                dir="ltr"
+                value={form.descriptionEn}
+                onChange={(e) =>
+                  setForm({ ...form, descriptionEn: e.target.value })
                 }
               />
             </div>

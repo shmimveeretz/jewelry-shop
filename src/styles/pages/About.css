@@ -158,8 +158,10 @@
   z-index: 1;
 }
 
-.about-story-img:hover {
-  filter: grayscale(0%);
+@media (hover: hover) and (pointer: fine) {
+  .about-story-img:hover {
+    filter: grayscale(0%);
+  }
 }
 
 .about-story-quote-card {
@@ -245,14 +247,16 @@
     border-color 0.5s ease,
     box-shadow 0.5s ease,
     transform 0.3s ease;
-  animation: cardSlideUp 0.6s ease-out both;
+  animation: cardSlideUp 0.6s var(--ease-out) both;
   animation-delay: var(--delay, 0s);
 }
 
-.about-number-card:hover {
-  border-color: var(--color-secondary);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.13);
-  transform: translateY(-5px);
+@media (hover: hover) and (pointer: fine) {
+  .about-number-card:hover {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.13);
+    transform: translateY(-5px);
+  }
 }
 
 @keyframes cardSlideUp {
@@ -285,16 +289,19 @@
   font-size: 1.75rem;
 }
 
-.about-number-card:hover .about-number-icon {
-  background: var(--color-secondary);
-  color: var(--color-white);
-  transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+  .about-number-card:hover .about-number-icon {
+    background: var(--color-secondary);
+    color: var(--color-white);
+    transform: scale(1.1);
+  }
 }
 
 .about-number-value {
   font-size: 3.25rem;
   font-weight: 700;
   color: var(--color-primary);
+  font-variant-numeric: tabular-nums; /* digits keep their width while counting */
   line-height: 1;
   font-family: var(--font-primary);
 }

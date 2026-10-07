@@ -108,9 +108,11 @@
     box-shadow 0.3s ease;
 }
 
-.auth-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+@media (hover: hover) and (pointer: fine) {
+  .auth-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+  }
 }
 
 .auth-btn:disabled {
@@ -140,8 +142,10 @@
   font-size: 1rem;
 }
 
-.toggle-btn:hover {
-  color: var(--color-primary);
+@media (hover: hover) and (pointer: fine) {
+  .toggle-btn:hover {
+    color: var(--color-primary);
+  }
 }
 
 /* Forgot Password Link */
@@ -170,10 +174,12 @@
   opacity: 1 !important;
 }
 
-.forgot-password-link .link-btn:hover,
-.auth-toggle .link-btn:hover {
-  color: var(--color-primary);
-  opacity: 0.8;
+@media (hover: hover) and (pointer: fine) {
+  .forgot-password-link .link-btn:hover,
+  .auth-toggle .link-btn:hover {
+    color: var(--color-primary);
+    opacity: 0.8;
+  }
 }
 
 /* Email Sent Message */

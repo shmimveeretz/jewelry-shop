@@ -911,3 +911,18 @@
 .home-featured-slot__preview span {
   color: #6b7280;
 }
+
+/* Admin panels are flex children: without min-width: 0 the widest table
+   inside sets their width and the panel spills off narrow screens. Tables
+   scroll sideways inside their card instead. */
+.admin-container > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ap-wrap .ap-table-wrap,
+.ap-wrap .table-wrap,
+.ap-wrap .admin-table-card {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}

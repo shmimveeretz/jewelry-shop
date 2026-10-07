@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
-import { emailService } from "../utils/emailService";
 import "../styles/pages/Auth.css";
+import { API_BASE_URL } from "../constants/api";
 
 function Auth() {
   const { t, language } = useLanguage();
@@ -25,7 +25,6 @@ function Auth() {
   // Get return path and cart data from location state
   const returnTo = location.state?.returnTo || "/";
   const cartItems = location.state?.cartItems;
-  const total = location.state?.total;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -50,7 +49,7 @@ function Auth() {
 
         // Password strength validation
         const passwordRegex =
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
         if (!passwordRegex.test(formData.password)) {
           showError(
             language === "he"
@@ -74,8 +73,6 @@ function Auth() {
             newsletterSubscribe: formData.newsletterSubscribe,
           };
 
-      const API_BASE_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(`${API_BASE_URL}/api/auth/${endpoint}`, {
         method: "POST",
         headers: {
@@ -91,20 +88,10 @@ function Auth() {
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.data));
 
-        // Send welcome email on registration
-        if (!isLogin) {
-          emailService.sendWelcomeEmail({
-            email: formData.email,
-            firstName: formData.firstname,
-            lastName: formData.lastname,
-          });
-        }
-
+        // The server sends the welcome email itself on registration.
         const userName =
-          data.data.fullname ||
-          `${data.data.firstname} ${data.data.lastname}` ||
-          data.data.name ||
-          s(language === "he" ? "משתמש" : "User");
+          [data.data.firstName, data.data.lastName].filter(Boolean).join(" ") ||
+          (language === "he" ? "משתמש" : "User");
         showSuccess(
           isLogin
             ? `${language === "he" ? "שלום" : "Hello"} ${userName}! ${t("loginSuccess")}`
@@ -116,8 +103,10 @@ function Auth() {
         // Navigate after a short delay to allow toast to show
         setTimeout(() => {
           // If coming from checkout, return to checkout with cart data
-          if (returnTo === "/checkout" && cartItems && total) {
-            navigate("/checkout", { state: { cartItems, total } });
+          // A "buy now" item survives the login detour; otherwise checkout
+          // reads the cart itself.
+          if (returnTo === "/checkout" && cartItems?.length) {
+            navigate("/checkout", { state: { cartItems } });
           } else {
             navigate(returnTo);
           }
@@ -169,6 +158,7 @@ function Auth() {
                   type="text"
                   id="firstname"
                   name="firstname"
+                  autoComplete="given-name"
                   value={formData.firstname}
                   onChange={handleChange}
                   required
@@ -182,6 +172,7 @@ function Auth() {
                   type="text"
                   id="lastname"
                   name="lastname"
+                  autoComplete="family-name"
                   value={formData.lastname}
                   onChange={handleChange}
                   required
@@ -195,6 +186,9 @@ function Auth() {
                   type="tel"
                   id="phone"
                   name="phone"
+                  autoComplete="tel"
+                  inputMode="tel"
+                  dir="ltr"
                   value={formData.phone}
                   onChange={handleChange}
                   required
@@ -212,6 +206,9 @@ function Auth() {
               type="email"
               id="email"
               name="email"
+              autoComplete="email"
+              inputMode="email"
+              dir="ltr"
               value={formData.email}
               onChange={handleChange}
               required
@@ -224,6 +221,7 @@ function Auth() {
               type="password"
               id="password"
               name="password"
+              autoComplete={isLogin ? "current-password" : "new-password"}
               value={formData.password}
               onChange={handleChange}
               required
@@ -238,6 +236,7 @@ function Auth() {
                   type="password"
                   id="confirmPassword"
                   name="confirmPassword"
+                  autoComplete="new-password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required

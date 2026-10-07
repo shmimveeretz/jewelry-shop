@@ -1,5 +1,6 @@
 import "../styles/pages/About.css";
 import { useLanguage } from "../contexts/LanguageContext";
+import CountUp from "../components/CountUp";
 
 const SACRED_NUMBERS = (language) => [
   {
@@ -130,10 +131,12 @@ function About() {
                 className="about-number-card"
                 style={{ "--delay": item.delay }}
               >
-                <div className="about-number-icon">
+                <div className="about-number-icon" aria-hidden="true">
                   <span className="material-symbols-outlined">{item.icon}</span>
                 </div>
-                <div className="about-number-value">{item.number}</div>
+                <div className="about-number-value">
+                  <CountUp value={item.number} />
+                </div>
                 <p className="about-number-label">{item.label}</p>
                 <p className="about-number-desc">{item.desc}</p>
               </div>

@@ -1,4 +1,3 @@
-import React from "react";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Accessibility.css";
 

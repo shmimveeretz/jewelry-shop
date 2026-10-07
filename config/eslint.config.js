@@ -29,6 +29,14 @@ export default [
             ...react.configs['jsx-runtime'].rules,
             ...reactHooks.configs.recommended.rules,
             'react/jsx-no-target-blank': 'off',
+            // The project does not use PropTypes, and Hebrew copy is full of
+            // literal quotes (e.g. צה"ל); both rules only produced noise that
+            // buried real errors such as undefined components.
+            'react/prop-types': 'off',
+            'react/no-unescaped-entities': 'off',
+            'react/jsx-no-undef': 'error',
+            // React 18 only passes the lowercase attribute through to <img>
+            'react/no-unknown-property': ['error', { ignore: ['fetchpriority'] }],
             'react-refresh/only-export-components': [
                 'warn',
                 { allowConstantExport: true },

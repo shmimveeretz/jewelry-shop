@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaShieldAlt } from "react-icons/fa";
 import "../styles/pages/PaymentFailure.css";
 
 function PaymentFailure() {
@@ -15,7 +15,7 @@ function PaymentFailure() {
   return (
     <div className="payment-status-page">
       <div className="payment-status-container failure">
-        <div className="status-icon"><FaTimes /></div>
+        <div className="status-icon" aria-hidden="true"><FaTimes /></div>
 
         <h1>{language === "he" ? "התשלום נכשל" : "Payment Failed"}</h1>
 
@@ -23,6 +23,13 @@ function PaymentFailure() {
           {language === "he"
             ? "מצטערים, התשלום לא הושלם בהצלחה."
             : "Sorry, your payment could not be processed."}
+        </p>
+
+        <p className="failure-reassurance">
+          <FaShieldAlt aria-hidden="true" />
+          {language === "he"
+            ? "לא בוצע חיוב, והעגלה שלך נשמרה"
+            : "You were not charged, and your cart is saved"}
         </p>
 
         <div className="failure-reasons">

@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaLock, FaShippingFast, FaUndoAlt } from "react-icons/fa";
+import {
+  FaLock,
+  FaShippingFast,
+  FaUndoAlt,
+  FaShareAlt,
+  FaExclamationCircle,
+} from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -24,13 +30,65 @@ import {
   calculateProductPrice,
   getOptionKeys,
 } from "../utils/productPricing";
+import { formatPrice, productName, handleImageError } from "../utils/format";
+import { useDialog } from "../hooks/useDialog";
+import { useDragToDismiss } from "../hooks/useDragToDismiss";
+import { trackEvent, productEventPayload } from "../utils/tracking";
 import "../styles/components/ProductModal.css";
 
 function ProductModal({ product, onClose }) {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const navigate = useNavigate();
   const { addToCart, openCartDrawer } = useCart();
-  const { showCartToast } = useToast();
+  const { showCartToast, showSuccess } = useToast();
+  // Play the exit animation, then let the parent unmount us
+  const [closing, setClosing] = useState(false);
+  const closeAnimated = () => {
+    if (closing) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      onClose();
+      return;
+    }
+    setClosing(true);
+    window.setTimeout(onClose, 200);
+  };
+  const dialogRef = useDialog(true, closeAnimated);
+  const overlayRef = useRef(null);
+  // On phones the modal is a bottom sheet: pull it down to dismiss
+  const [isSheet] = useState(
+    () => window.matchMedia?.("(max-width: 768px)").matches ?? false,
+  );
+  useDragToDismiss({
+    sheetRef: dialogRef,
+    scrimRef: overlayRef,
+    axis: "y",
+    direction: 1,
+    scrollSelector: ".modal-scroll-area",
+    enabled: isSheet,
+    onDismiss: onClose,
+  });
+
+  // Funnel: a product was viewed (once per opening)
+  useEffect(() => {
+    trackEvent("ViewContent", productEventPayload(product));
+  }, [product]);
+  const titleId = `product-modal-title-${product.id}`;
+
+  // Every product has a shareable URL: /shop?product=<id> opens this modal.
+  const handleShare = async () => {
+    const url = `${window.location.origin}/shop?product=${encodeURIComponent(product.id)}`;
+    const title = productName(product, language);
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      showSuccess(language === "he" ? "הקישור הועתק" : "Link copied");
+    } catch {
+      // Share sheet dismissed by the user — nothing to do
+    }
+  };
 
   const displayCategory =
     language === "en"
@@ -68,6 +126,27 @@ function ProductModal({ product, onClose }) {
   // Support both single image and images array
   const productImages = product.images || [product.image];
   const currentImage = productImages[currentImageIndex];
+
+  const showNextImage = () =>
+    setCurrentImageIndex((prev) => (prev === productImages.length - 1 ? 0 : prev + 1));
+  const showPrevImage = () =>
+    setCurrentImageIndex((prev) => (prev === 0 ? productImages.length - 1 : prev - 1));
+
+  // Swipe between photos on touch screens. In Hebrew the gallery reads right
+  // to left, so swiping right moves forward.
+  const touchStartX = useRef(null);
+  const handleGalleryTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleGalleryTouchEnd = (e) => {
+    if (touchStartX.current === null || productImages.length < 2) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < 40) return;
+    const forward = language === "he" ? delta > 0 : delta < 0;
+    if (forward) showNextImage();
+    else showPrevImage();
+  };
 
   // const waxColors = [
   //   { "name": "שחור", hex: "#000000" },
@@ -167,6 +246,9 @@ function ProductModal({ product, onClose }) {
     const productWithOptions = buildCartItem();
 
     addToCart(productWithOptions, 1);
+    // A single light tick on phones that support it, on the same frame as the toast
+    navigator.vibrate?.(10);
+    trackEvent("AddToCart", productEventPayload(product, productWithOptions.price));
     const displayName =
       language === "en" && product.nameEn ? product.nameEn : product.name;
     showCartToast(
@@ -366,52 +448,83 @@ function ProductModal({ product, onClose }) {
   ) : null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`modal-overlay${closing ? " modal-overlay--closing" : ""}`}
+      ref={overlayRef}
+      onClick={closeAnimated}
+    >
+      <div
+        className="modal-content"
+        onClick={(e) => e.stopPropagation()}
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        tabIndex={-1}
+      >
         <div className="modal-drag-handle">
           <div className="modal-drag-handle-pill"></div>
         </div>
-        <button className="modal-close" onClick={onClose}>
+        <button
+          type="button"
+          className="modal-close"
+          onClick={closeAnimated}
+          aria-label={language === "he" ? "סגירה" : "Close"}
+        >
           ✕
+        </button>
+        <button
+          type="button"
+          className="modal-share"
+          onClick={handleShare}
+          aria-label={language === "he" ? "שיתוף המוצר" : "Share this product"}
+          title={language === "he" ? "שיתוף" : "Share"}
+        >
+          <FaShareAlt />
         </button>
 
         <div className="modal-scroll-area">
           <div className="product-modal-grid">
             <div className="product-image-gallery">
-              <div className="main-image-container">
+              <div
+                className="main-image-container"
+                onTouchStart={handleGalleryTouchStart}
+                onTouchEnd={handleGalleryTouchEnd}
+              >
                 <img
+                  key={currentImage}
                   src={currentImage}
-                  alt={product.name}
+                  alt={productName(product, language)}
                   className="product-modal-image"
+                  onError={handleImageError}
                 />
                 {productImages.length > 1 && (
                   <>
+                    {/* "Previous" sits on the reading-start side: right in Hebrew */}
                     <button
+                      type="button"
                       className="gallery-nav prev"
-                      onClick={() =>
-                        setCurrentImageIndex((prev) =>
-                          prev === 0 ? productImages.length - 1 : prev - 1,
-                        )
-                      }
-                      aria-label={
-                        language === "en" ? "Previous image" : "תמונה קודמת"
-                      }
+                      onClick={showPrevImage}
+                      aria-label={language === "en" ? "Previous image" : "תמונה קודמת"}
                     >
-                      ‹
+                      {language === "he" ? "›" : "‹"}
                     </button>
                     <button
+                      type="button"
                       className="gallery-nav next"
-                      onClick={() =>
-                        setCurrentImageIndex((prev) =>
-                          prev === productImages.length - 1 ? 0 : prev + 1,
-                        )
-                      }
-                      aria-label={
-                        language === "en" ? "Next image" : "תמונה הבאה"
-                      }
+                      onClick={showNextImage}
+                      aria-label={language === "en" ? "Next image" : "תמונה הבאה"}
                     >
-                      ›
+                      {language === "he" ? "‹" : "›"}
                     </button>
+                    <div className="gallery-dots" aria-hidden="true">
+                      {productImages.map((img, index) => (
+                        <span
+                          key={img + index}
+                          className={`gallery-dot${index === currentImageIndex ? " active" : ""}`}
+                        />
+                      ))}
+                    </div>
                   </>
                 )}
               </div>
@@ -454,20 +567,16 @@ function ProductModal({ product, onClose }) {
                     </span>
                   </div>
                 )}
-                <h2>
-                  {language === "en" && product.nameEn
-                    ? product.nameEn
-                    : product.name}
-                </h2>
-                <div className="product-modal-price">
-                  {calculateTotalPrice()} ₪
+                <h2 id={titleId}>{productName(product, language)}</h2>
+                <div className="product-modal-price" aria-live="polite">
+                  {formatPrice(calculateTotalPrice(), language)}
                 </div>
               </div>
 
               <div className="product-modal-selections">
                 {showWarning && (
-                  <div className="selection-warning">
-                    ⚠️{" "}
+                  <div className="selection-warning" role="alert">
+                    <FaExclamationCircle aria-hidden="true" />{" "}
                     {language === "he"
                       ? "יש לבחור את כל המאפיינים הנדרשים לפני הוספה לעגלה"
                       : "Please select all required options before adding to cart"}
@@ -1049,8 +1158,8 @@ function ProductModal({ product, onClose }) {
           <div className="modal-cta-row">
             <button className="btn buy-now-btn" onClick={handleBuyNow}>
               {language === "he"
-                ? `לרכישה מיידית — ${calculateTotalPrice()} ₪`
-                : `Buy Now — ₪${calculateTotalPrice()}`}
+                ? `לרכישה מיידית — ${formatPrice(calculateTotalPrice(), language)}`
+                : `Buy Now — ${formatPrice(calculateTotalPrice(), language)}`}
             </button>
             <button className="btn add-to-cart-btn" onClick={handleAddToCart}>
               {language === "he" ? "הוסף לעגלה" : "Add to Cart"}
@@ -1068,7 +1177,7 @@ function ProductModal({ product, onClose }) {
             </span>
             <span className="trust-signal">
               <FaShippingFast />
-              {language === "he" ? "משלוח חינם" : "Free shipping"}
+              {language === "he" ? "משלוח חינם מעל ₪300" : "Free shipping over ₪300"}
             </span>
             <span className="trust-signal">
               <FaUndoAlt />

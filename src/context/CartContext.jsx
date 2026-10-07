@@ -10,10 +10,23 @@ export const useCart = () => {
   return context;
 };
 
+// Same per-line limit the server enforces (Backend/src/utils/orderPricing.js),
+// so a customer never discovers it as an error on the payment step.
+export const MAX_QUANTITY_PER_ITEM = 20;
+const clampQuantity = (quantity) =>
+  Math.min(Math.max(Math.floor(quantity) || 1, 1), MAX_QUANTITY_PER_ITEM);
+
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
+    // A corrupted or hand-edited value must not crash the whole app on load
+    try {
+      const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+      return Array.isArray(savedCart)
+        ? savedCart.map((item) => ({ ...item, quantity: clampQuantity(item.quantity) }))
+        : [];
+    } catch {
+      return [];
+    }
   });
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
@@ -34,11 +47,11 @@ export const CartProvider = ({ children }) => {
       if (existingItem) {
         return prevItems.map((item) =>
           (item.cartItemId || item.id) === key
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: clampQuantity(item.quantity + quantity) }
             : item,
         );
       } else {
-        return [...prevItems, { ...product, quantity }];
+        return [...prevItems, { ...product, quantity: clampQuantity(quantity) }];
       }
     });
   };
@@ -58,7 +71,7 @@ export const CartProvider = ({ children }) => {
     setCartItems((prevItems) =>
       prevItems.map((item) =>
         (item.cartItemId || item.id) === cartItemId
-          ? { ...item, quantity }
+          ? { ...item, quantity: clampQuantity(quantity) }
           : item,
       ),
     );

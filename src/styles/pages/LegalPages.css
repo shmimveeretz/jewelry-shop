@@ -84,12 +84,20 @@
   color: #3498db;
   text-decoration: none;
   border-bottom: 1px solid transparent;
-  transition: all 0.3s ease;
+  transition:
+    color 260ms var(--ease-out),
+    background-color 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out),
+    transform 260ms var(--ease-out),
+    opacity 260ms var(--ease-out);
 }
 
-.legal-content a:hover {
-  color: #2980b9;
-  border-bottom-color: #2980b9;
+@media (hover: hover) and (pointer: fine) {
+  .legal-content a:hover {
+    color: #2980b9;
+    border-bottom-color: #2980b9;
+  }
 }
 
 /* Special styles for notes and highlights */
@@ -118,13 +126,21 @@
   border-radius: 10px;
   padding: 1.5rem;
   margin: 1rem 0;
-  transition: all 0.3s ease;
+  transition:
+    color 260ms var(--ease-out),
+    background-color 260ms var(--ease-out),
+    border-color 260ms var(--ease-out),
+    box-shadow 260ms var(--ease-out),
+    transform 260ms var(--ease-out),
+    opacity 260ms var(--ease-out);
 }
 
-.shipping-option:hover {
-  border-color: #3498db;
-  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .shipping-option:hover {
+    border-color: #3498db;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+    transform: translateY(-2px);
+  }
 }
 
 .shipping-option h3 {
@@ -177,9 +193,11 @@
   transition: transform 0.3s ease;
 }
 
-.step:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+@media (hover: hover) and (pointer: fine) {
+  .step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  }
 }
 
 .step h3 {
@@ -339,9 +357,11 @@
     padding: 1rem;
   }
 
-  .shipping-option:hover,
-  .step:hover {
-    transform: none;
-    box-shadow: none;
+  @media (hover: hover) and (pointer: fine) {
+    .shipping-option:hover,
+    .step:hover {
+      transform: none;
+      box-shadow: none;
+    }
   }
 }

@@ -31,7 +31,9 @@ export function calculateProductPrice(product, selectedOptions = {}, extraLetter
   let totalPrice = product.price;
 
   for (const key of getOptionKeys(priceAdditions)) {
-    if (key === "length" || key === "jewelryType") continue;
+    // extraLetterForBracelet is a per-letter price table, charged below only
+    // for letters actually added (same as the server's priceCart)
+    if (key === "length" || key === "jewelryType" || key === "extraLetterForBracelet") continue;
     const selected = selectedOptions[key];
     if (selected && priceAdditions[key]) {
       totalPrice += priceAdditions[key][selected] || 0;

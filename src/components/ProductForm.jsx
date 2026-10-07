@@ -6,8 +6,8 @@ import {
 } from "../services/productApi";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/productForm.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export default function ProductForm({
   onSuccess,
@@ -158,6 +158,7 @@ export default function ProductForm({
           <input
             type="text"
             name="nameEn"
+            dir="ltr"
             value={formData.nameEn}
             onChange={handleInputChange}
           />
@@ -179,6 +180,7 @@ export default function ProductForm({
         <label>{L("תיאור (אנגלית)", "Description (English)")}</label>
         <textarea
           name="descriptionEn"
+          dir="ltr"
           value={formData.descriptionEn}
           onChange={handleInputChange}
           rows={3}

@@ -8,6 +8,7 @@ import PageFrame, {
 import BlockRenderer from "../features/dpp/BlockRenderer";
 import { useDppState } from "../features/dpp/useDppState";
 import { usePopupRegistry } from "../features/popups/PopupProvider";
+import { applyPageMeta, setJsonLd, productJsonLd, SITE_URL } from "../utils/pageMeta";
 import {
   getDppBootstrap,
   getDppPreview,
@@ -125,6 +126,23 @@ function DppContent({ data }) {
   useEffect(() => {
     popupRegistry?.registerPopups(data.popups || []);
   }, [popupRegistry, data.popups]);
+
+  // Tab title, share preview and Product rich-result data for this page.
+  // Campaign pages are noindex unless the admin explicitly turns that off.
+  useEffect(() => {
+    const path = `/lp/${page.slug || product.id}`;
+    applyPageMeta({
+      title: page.seo?.title || product.name,
+      description: (page.seo?.description || product.description || "").slice(0, 160),
+      path,
+      image: page.seo?.ogImage || product.images?.[0],
+      type: "product",
+      noindex: page.seo?.noindex !== false,
+      language: "he",
+    });
+    setJsonLd("product", productJsonLd(product, { url: `${SITE_URL}${path}` }));
+    return () => setJsonLd("product", null);
+  }, [page, product]);
 
   const blocks = page.blocks || [];
   const flowBlocks = blocks.filter((block) => block.placement !== "pinned");

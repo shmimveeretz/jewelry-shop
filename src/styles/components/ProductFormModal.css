@@ -10,7 +10,7 @@
   justify-content: center;
   z-index: 2000;
   padding: var(--spacing-md, 1.5rem);
-  animation: pfm-fade-in 0.2s ease-out;
+  animation: pfm-fade-in 0.2s var(--ease-out);
 }
 
 @keyframes pfm-fade-in {
@@ -98,9 +98,11 @@
   flex-shrink: 0;
 }
 
-.pfm-close:hover {
-  background: #e8e6df;
-  color: var(--color-primary, #2c3e50);
+@media (hover: hover) and (pointer: fine) {
+  .pfm-close:hover {
+    background: #e8e6df;
+    color: var(--color-primary, #2c3e50);
+  }
 }
 
 /* ── Body (scrollable) ───────────────────────────────────────────────── */

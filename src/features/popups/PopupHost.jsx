@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import "../../styles/components/MarketingPopup.css";
+import { API_BASE_URL } from "../../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])';
@@ -15,7 +15,7 @@ const FOCUSABLE =
  * have their own stacking contexts and overflow rules, and a popup clipped by
  * whichever section happened to contain it is worse than no popup at all.
  */
-function PopupHost({ popup, variant, onClose }) {
+function PopupHost({ variant, onClose }) {
   const dialogRef = useRef(null);
   const restoreFocusRef = useRef(null);
   const [email, setEmail] = useState("");

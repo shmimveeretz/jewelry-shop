@@ -8,8 +8,8 @@ import {
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/Contact.css";
+import { API_BASE_URL } from "../constants/api";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Contact() {
   const { language } = useLanguage();
@@ -55,7 +55,7 @@ function Contact() {
       } else {
         setStatus({ type: "error", message: data.message });
       }
-    } catch (error) {
+    } catch {
       setStatus({
         type: "error",
         message:
@@ -83,36 +83,41 @@ function Contact() {
 
         {/* Contact Info Cards */}
         <section className="contact-methods-grid">
-          <div className="method-card">
-            <div className="method-icon-wrap">
+          <a
+            className="method-card method-card--link"
+            href="https://wa.me/972525955389"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="method-icon-wrap" aria-hidden="true">
               <FaWhatsapp />
             </div>
             <h3>{language === "he" ? "וואטסאפ" : "WhatsApp"}</h3>
             <p dir="ltr">052-595-5389</p>
-          </div>
-          <div className="method-card">
-            <div className="method-icon-wrap">
+          </a>
+          <a className="method-card method-card--link" href="mailto:shmimveeretz@gmail.com">
+            <div className="method-icon-wrap" aria-hidden="true">
               <FaEnvelope />
             </div>
             <h3>{language === "he" ? "דואר אלקטרוני" : "Email"}</h3>
-            <p>shmimveeretz@gmail.com</p>
-          </div>
+            <p dir="ltr">shmimveeretz@gmail.com</p>
+          </a>
           <div className="method-card">
-            <div className="method-icon-wrap">
+            <div className="method-icon-wrap" aria-hidden="true">
               <FaMapMarkerAlt />
             </div>
             <h3>{language === "he" ? "סטודיו" : "Studio"}</h3>
-            <p>Tel Aviv, Israel</p>
+            <p>{language === "he" ? "תל אביב, ישראל" : "Tel Aviv, Israel"}</p>
           </div>
           <div className="method-card">
-            <div className="method-icon-wrap">
+            <div className="method-icon-wrap" aria-hidden="true">
               <FaClock />
             </div>
             <h3>{language === "he" ? "שעות פעילות" : "Business Hours"}</h3>
             <p>
-              {language === "he"
-                ? "א׳–ה׳, 09:00–18:00"
-                : "Sun–Thu, 09:00–18:00"}
+              {language === "he" ? "א׳–ה׳, " : "Sun–Thu, "}
+              {/* bdi keeps the time range in reading order inside Hebrew text */}
+              <bdi dir="ltr">09:00–18:00</bdi>
             </p>
           </div>
         </section>
@@ -137,6 +142,7 @@ function Contact() {
                     type="text"
                     id="name"
                     name="name"
+                    autoComplete="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -154,6 +160,9 @@ function Contact() {
                     type="email"
                     id="email"
                     name="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    dir="ltr"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -171,6 +180,9 @@ function Contact() {
                     type="tel"
                     id="phone"
                     name="phone"
+                    autoComplete="tel"
+                    inputMode="tel"
+                    dir="ltr"
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="050-000-0000"
@@ -203,6 +215,7 @@ function Contact() {
                 <textarea
                   id="message"
                   name="message"
+                  enterKeyHint="enter"
                   value={formData.message}
                   onChange={handleChange}
                   required
