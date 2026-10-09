@@ -20,10 +20,15 @@
 const API_TIMEOUT_MS = 700;
 const SITE_NAME = "שמים וארץ";
 
+// The API's public address. netlify.toml's [build] environment only exists
+// during the build, so at runtime the edge only sees variables set in the
+// Netlify UI; without this fallback the function silently did nothing.
+const DEFAULT_API_BASE = "https://jewelry-shop-udr7.onrender.com";
+
 const resolveApiBase = () =>
   Netlify.env.get("DPP_API_URL") ||
   Netlify.env.get("VITE_API_URL") ||
-  "";
+  DEFAULT_API_BASE;
 
 /**
  * JSON.stringify alone is NOT safe to drop inside a <script> tag: a string
