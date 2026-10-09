@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaShoppingCart,
@@ -20,6 +20,7 @@ function Navbar() {
   const { showSuccess } = useToast();
   const { language, toggleLanguage, t } = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
   const location = useLocation();
@@ -41,14 +42,20 @@ function Navbar() {
   // Mobile menu: Escape closes it and the page behind does not scroll
   useEffect(() => {
     if (!isMenuOpen) return undefined;
+    // Pin the menu and scrim just below the bar's current position
+    const bottom = navRef.current?.getBoundingClientRect().bottom;
+    if (bottom) navRef.current.style.setProperty("--nav-bottom", `${Math.round(bottom)}px`);
     const previous = document.body.style.overflow;
+    const previousRoot = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     const onKey = (e) => {
       if (e.key === "Escape") setIsMenuOpen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = previous;
+      document.documentElement.style.overflow = previousRoot;
       window.removeEventListener("keydown", onKey);
     };
   }, [isMenuOpen]);
@@ -95,7 +102,7 @@ function Navbar() {
   };
 
   return (
-    <nav className={`navbar${isScrolled ? " navbar--scrolled" : ""}`} aria-label={language === "he" ? "ניווט ראשי" : "Main navigation"}>
+    <nav ref={navRef} className={`navbar${isScrolled ? " navbar--scrolled" : ""}`} aria-label={language === "he" ? "ניווט ראשי" : "Main navigation"}>
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           <img
@@ -108,6 +115,13 @@ function Navbar() {
           />
         </Link>
 
+        {isMenuOpen && (
+          <div
+            className="navbar-scrim"
+            aria-hidden="true"
+            onClick={() => setIsMenuOpen(false)}
+          />
+        )}
         <ul id="main-menu" className={`navbar-menu ${isMenuOpen ? "active" : ""}`}>
           <li>
             <Link
