@@ -742,15 +742,45 @@
   transform: none;
 }
 
+/* Shown in the sticky footer, above the buttons, so it is always on screen */
 .selection-warning {
-  background-color: #fff3cd;
-  border: 1px solid #ffc107;
-  color: #856404;
-  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background-color: #fdf6e3;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  color: #6b5414;
+  padding: 0.6rem 0.85rem;
   border-radius: var(--radius-sm);
-  margin-bottom: var(--spacing-md);
-  font-size: var(--font-size-sm);
+  margin-bottom: 0.65rem;
+  font-size: 0.9rem;
   text-align: center;
+  animation: selectionWarningIn 240ms var(--ease-out);
+}
+
+@keyframes selectionWarningIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* The option still missing a choice: a soft gold ring that pulses twice */
+.product-option--missing {
+  border-radius: var(--radius-sm);
+  animation: optionMissingPulse 1.4s var(--ease-out) 2;
+}
+
+@keyframes optionMissingPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.55);
+    background-color: rgba(212, 175, 55, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(212, 175, 55, 0);
+    background-color: transparent;
+  }
 }
 
 /* Special Info Sections */

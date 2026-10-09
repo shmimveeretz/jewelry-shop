@@ -241,6 +241,7 @@ function ProductModal({ product, onClose }) {
     // Require all option selectors to be filled
     if (isAddToCartDisabled()) {
       setShowWarning(true);
+      revealMissingOption();
       return;
     }
 
@@ -266,6 +267,7 @@ function ProductModal({ product, onClose }) {
   const handleBuyNow = () => {
     if (isAddToCartDisabled()) {
       setShowWarning(true);
+      revealMissingOption();
       return;
     }
 
@@ -277,6 +279,30 @@ function ProductModal({ product, onClose }) {
         total: productWithOptions.price,
       },
     });
+  };
+
+  /**
+   * Scroll the first option still without a choice into view and pulse it,
+   * so the customer sees what's missing instead of hunting for it.
+   */
+  const revealMissingOption = () => {
+    const root = dialogRef.current;
+    if (!root) return;
+    const groups = [...root.querySelectorAll(".product-options .product-option")];
+    const missing = groups.find((group) => {
+      const select = group.querySelector("select");
+      if (select) return !select.value;
+      const radios = group.querySelectorAll('input[type="radio"]');
+      return radios.length > 0 && !group.querySelector('input[type="radio"]:checked');
+    });
+    if (!missing) return;
+    const smooth = !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    missing.scrollIntoView({ block: "center", behavior: smooth ? "smooth" : "auto" });
+    missing.classList.remove("product-option--missing");
+    // Restart the pulse even if it ran on a previous tap
+    void missing.offsetWidth;
+    missing.classList.add("product-option--missing");
+    missing.querySelector("select, input")?.focus({ preventScroll: true });
   };
 
   const isAddToCartDisabled = () => {
@@ -577,15 +603,6 @@ function ProductModal({ product, onClose }) {
               </div>
 
               <div className="product-modal-selections">
-                {showWarning && (
-                  <div className="selection-warning" role="alert">
-                    <FaExclamationCircle aria-hidden="true" />{" "}
-                    {language === "he"
-                      ? "יש לבחור את כל המאפיינים הנדרשים לפני הוספה לעגלה"
-                      : "Please select all required options before adding to cart"}
-                  </div>
-                )}
-
                 <div className="product-options">
                   {isLetterChain ? (
                     <>
@@ -1158,6 +1175,16 @@ function ProductModal({ product, onClose }) {
           </div>
         </div>
         <div className="modal-sticky-footer">
+          {/* Lives in the footer, next to the button that was tapped: inside
+              the scroll area it sat above the options, off screen on phones */}
+          {showWarning && (
+            <div className="selection-warning" role="alert">
+              <FaExclamationCircle aria-hidden="true" />{" "}
+              {language === "he"
+                ? "נשאר לבחור את המאפיינים המסומנים למעלה"
+                : "Please choose the highlighted options above"}
+            </div>
+          )}
           <div className="modal-cta-row">
             <button className="btn buy-now-btn" onClick={handleBuyNow}>
               {language === "he"
