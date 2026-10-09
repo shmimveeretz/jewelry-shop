@@ -17,6 +17,7 @@ import {
   productName,
   productImage,
   handleImageError,
+  sizedImage,
 } from "../utils/format";
 import FreeShippingProgress from "../components/FreeShippingProgress";
 import { quoteShipping } from "../utils/shipping";
@@ -40,6 +41,7 @@ function Cart() {
           <div className="empty-cart">
             <div className="empty-cart-icon">
               <span
+                aria-hidden="true"
                 className="material-symbols-outlined"
                 style={{
                   fontSize: "3rem",
@@ -73,7 +75,7 @@ function Cart() {
             {cartItems.map((item) => (
               <div key={item.cartItemId || item.id} className="cart-item">
                 <img
-                  src={productImage(item)}
+                  src={sizedImage(productImage(item), 100)}
                   alt=""
                   className="cart-item-image"
                   onError={handleImageError}

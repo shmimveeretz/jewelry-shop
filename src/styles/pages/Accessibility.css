@@ -80,7 +80,7 @@
 
 /* Link Styles */
 .accessibility-content a {
-  color: #d4af37;
+  color: var(--color-gold-text);
   text-decoration: none;
   font-weight: 500;
   transition:
@@ -141,7 +141,7 @@
 }
 
 .info-item a {
-  color: #d4af37;
+  color: var(--color-gold-text);
   text-decoration: none;
   font-weight: 500;
   transition:

@@ -132,6 +132,8 @@ function LegacyAdminView() {
   const [motd2, setMotd2] = useState("");
   const [motdInput, setMotdInput] = useState("");
   const [motd2Input, setMotd2Input] = useState("");
+  const [motdEnInput, setMotdEnInput] = useState("");
+  const [motd2EnInput, setMotd2EnInput] = useState("");
   const [motdLoading, setMotdLoading] = useState(false);
 
   // Coupons State
@@ -168,6 +170,8 @@ function LegacyAdminView() {
           setMotd2(data.motd2 || "");
           setMotdInput(data.motd || "");
           setMotd2Input(data.motd2 || "");
+          setMotdEnInput(data.motdEn || "");
+          setMotd2EnInput(data.motd2En || "");
         }
       } catch (error) {
         console.error("Error fetching MOTD:", error);
@@ -186,7 +190,12 @@ function LegacyAdminView() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ motd: motdInput, motd2: motd2Input }),
+        body: JSON.stringify({
+          motd: motdInput,
+          motd2: motd2Input,
+          motdEn: motdEnInput,
+          motd2En: motd2EnInput,
+        }),
       });
       const data = await parseApiResponse(response);
       if (!response.ok) {
@@ -3371,6 +3380,47 @@ function LegacyAdminView() {
                     {motd2Input.length}/{MAX_MOTD_LENGTH}
                   </span>
                 </div>
+
+                {/* English versions, shown to visitors browsing in English.
+                    Left empty, English visitors see the Hebrew text. */}
+                {[
+                  ["motdEn", motdEnInput, setMotdEnInput, "Message 1 (English)"],
+                  ["motd2En", motd2EnInput, setMotd2EnInput, "Message 2 (English)"],
+                ].map(([key, value, setValue, label]) => (
+                  <div
+                    key={key}
+                    style={{ display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" }}
+                  >
+                    <label
+                      htmlFor={`admin-${key}`}
+                      style={{ minWidth: "4.5rem", fontSize: "0.82rem", color: "#666" }}
+                    >
+                      {language === "he" ? label.replace("Message", "הודעה").replace("(English)", "(אנגלית)") : label}
+                    </label>
+                    <input
+                      id={`admin-${key}`}
+                      type="text"
+                      dir="ltr"
+                      value={value}
+                      onChange={(e) => setValue(e.target.value)}
+                      maxLength={MAX_MOTD_LENGTH}
+                      placeholder={language === "he" ? "אופציונלי — לגולשים באנגלית" : "Optional, for English visitors"}
+                      style={{
+                        flex: 1,
+                        minWidth: "220px",
+                        padding: "0.55rem 0.9rem",
+                        border: "1px solid #ddd",
+                        borderRadius: "0.5rem",
+                        fontSize: "0.9rem",
+                        outline: "none",
+                      }}
+                      onKeyDown={(e) => e.key === "Enter" && handleMotdUpdate()}
+                    />
+                    <span style={{ fontSize: "0.75rem", color: "#999", whiteSpace: "nowrap" }}>
+                      {value.length}/{MAX_MOTD_LENGTH}
+                    </span>
+                  </div>
+                ))}
                 <button
                   className="btn-gold"
                   onClick={handleMotdUpdate}

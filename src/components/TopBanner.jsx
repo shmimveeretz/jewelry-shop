@@ -30,10 +30,18 @@ function TopBanner() {
         const data = await response.json();
         if (!data.success) return;
 
-        const activeMessages = getMotdMessages(data.motd, data.motd2);
-        if (!activeMessages.length) return;
+        // English visitors get the English text where the admin wrote one,
+        // and the Hebrew otherwise
+        const en = language === "en";
+        const first = (en && data.motdEn) || data.motd;
+        const second = (en && data.motd2En) || data.motd2;
+        const activeMessages = getMotdMessages(first, second);
+        if (!activeMessages.length) {
+          setMessages([]);
+          return;
+        }
 
-        if (isMotdDismissed(data.motd, data.motd2)) {
+        if (isMotdDismissed(first, second)) {
           setDismissed(true);
         }
         setMessages(activeMessages);
@@ -43,7 +51,7 @@ function TopBanner() {
     };
 
     fetchMotd();
-  }, []);
+  }, [language]);
 
   useLayoutEffect(() => {
     if (!messages.length || dismissed) return;

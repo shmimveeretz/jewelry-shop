@@ -27,7 +27,9 @@
       name="description"
       content="שמים וארץ — תכשיטים בעבודת יד בהשראת המקורות: אותיות עבריות, מזלות, אבני החושן וכוכבי הלכת. כסף 925, ציפוי זהב וזהב 14K. משלוח חינם מעל ₪300."
     />
-    <link rel="canonical" href="https://shamaimveeretz.com/" />
+    <!-- No static canonical / og:url: this file is served for every route, so a
+         hardcoded "/" would tell crawlers every page is the homepage. They are
+         set per page by utils/pageMeta.js, and at the edge for /lp/* pages. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="שמים וארץ" />
     <meta property="og:locale" content="he_IL" />
@@ -36,7 +38,6 @@
       property="og:description"
       content="תכשיטים בעבודת יד בהשראת המקורות — אותיות עבריות, מזלות, אבני החושן וכוכבי הלכת. משלוח חינם מעל ₪300."
     />
-    <meta property="og:url" content="https://shamaimveeretz.com/" />
     <meta
       property="og:image"
       content="https://res.cloudinary.com/dhayarvh3/image/upload/v1771151995/HomepageBG.jpg"

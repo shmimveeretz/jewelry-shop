@@ -31,7 +31,7 @@ function VideoEmbedBlock({ title, provider = "youtube", videoId, caption }) {
       </div>
 
       {caption ? (
-        <p className="mt-3 text-center text-sm text-gray-500">{caption}</p>
+        <p className="mt-3 text-center text-sm text-gray-600">{caption}</p>
       ) : null}
     </section>
   );

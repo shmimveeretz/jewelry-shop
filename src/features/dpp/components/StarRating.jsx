@@ -17,7 +17,7 @@ function StarRating({ average, count, showCount = true }) {
         ))}
       </div>
       {showCount ? (
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-600">
           {Number(average).toFixed(1)} ({count} ביקורות)
         </span>
       ) : null}

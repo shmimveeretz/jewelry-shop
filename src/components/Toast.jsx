@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/components/Toast.css";
+import { sizedImage } from "../utils/format";
 
 function Toast({
   message,
@@ -56,7 +57,7 @@ function Toast({
     <div className={getclassName()}>
       <div className="toast-content">
         {productImage && (
-          <img src={productImage} alt="" className="toast-product-image" />
+          <img src={sizedImage(productImage, 64)} alt="" className="toast-product-image" />
         )}
         <div className="toast-icon-wrapper">{getIcon()}</div>
         <div className="toast-message">

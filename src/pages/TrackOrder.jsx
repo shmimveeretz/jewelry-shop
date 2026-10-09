@@ -10,6 +10,7 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/TrackOrder.css";
 import { API_BASE_URL } from "../constants/api";
+import { sizedImage } from "../utils/format";
 
 
 const STATUS_STEPS = [
@@ -272,7 +273,7 @@ function TrackOrder() {
                       {item.image && (
                         <img
                           className="track-order__item-img"
-                          src={item.image}
+                          src={sizedImage(item.image, 80)}
                           alt={item.name}
                           loading="lazy"
                         />

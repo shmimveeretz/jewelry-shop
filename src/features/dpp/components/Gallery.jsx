@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
+import { sizedImage } from "../../../utils/format";
 
 function Gallery({ images, name }) {
   const [index, setIndex] = useState(0);
@@ -14,7 +15,7 @@ function Gallery({ images, name }) {
       <div className="relative overflow-hidden rounded-2xl bg-white shadow-sm">
         {current ? (
           <img
-            src={current}
+            src={sizedImage(current, 600)}
             alt={name}
             width="800"
             height="800"
@@ -23,7 +24,7 @@ function Gallery({ images, name }) {
             loading="eager"
             fetchpriority="high"
             decoding="async"
-            className="aspect-square w-full object-cover"
+            className="aspect-square h-auto w-full object-cover"
           />
         ) : (
           <div className="flex aspect-square w-full flex-col items-center justify-center gap-2 bg-cream text-gray-400">
@@ -67,7 +68,7 @@ function Gallery({ images, name }) {
               }`}
             >
               <img
-                src={image}
+                src={sizedImage(image, 70)}
                 alt=""
                 loading="lazy"
                 className="h-full w-full object-cover"

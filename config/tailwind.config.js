@@ -21,7 +21,7 @@ export default {
     extend: {
       colors: {
         navy: { DEFAULT: "#2c3e50", deep: "#1f2937" },
-        gold: { DEFAULT: "#d4af37", soft: "#c5a572", dark: "#b8962e" },
+        gold: { DEFAULT: "#d4af37", soft: "#c5a572", dark: "#b8962e", ink: "#86691a" },
         cream: "#f5f5f0",
       },
       fontFamily: {

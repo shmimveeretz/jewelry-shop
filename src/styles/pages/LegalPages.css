@@ -16,7 +16,7 @@
 
 .legal-container h1 {
   text-align: center;
-  color: #d4af37;
+  color: var(--color-gold-text);
   font-size: 2.5rem;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
@@ -36,7 +36,7 @@
 }
 
 .legal-content h2 {
-  color: #d4af37;
+  color: var(--color-gold-text);
   font-size: 1.8rem;
   margin-bottom: 1rem;
   margin-top: 2rem;
@@ -81,7 +81,7 @@
 }
 
 .legal-content a {
-  color: #3498db;
+  color: var(--color-primary);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition:
@@ -95,8 +95,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .legal-content a:hover {
-    color: #2980b9;
-    border-bottom-color: #2980b9;
+    color: var(--color-gold-text);
+    border-bottom-color: var(--color-secondary);
   }
 }
 
@@ -137,14 +137,14 @@
 
 @media (hover: hover) and (pointer: fine) {
   .shipping-option:hover {
-    border-color: #3498db;
+    border-color: var(--color-secondary);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
     transform: translateY(-2px);
   }
 }
 
 .shipping-option h3 {
-  color: #3498db;
+  color: var(--color-primary);
   font-size: 1.3rem;
   margin-top: 0;
 }
@@ -164,11 +164,11 @@
   border-radius: 10px;
   padding: 1.5rem;
   margin: 1rem 0;
-  border-right: 4px solid #3498db;
+  border-right: 4px solid var(--color-secondary);
 }
 
 .faq-item h4 {
-  color: #2980b9;
+  color: var(--color-gold-text);
   margin-top: 0;
 }
 

@@ -15,6 +15,7 @@ import {
   productName,
   productImage,
   handleImageError,
+  sizedImage,
 } from "../utils/format";
 import "../styles/components/CartDrawer.css";
 
@@ -154,7 +155,7 @@ function CartDrawerPanel() {
                   return (
                     <li key={key} className="cart-drawer-item">
                       <img
-                        src={productImage(item)}
+                        src={sizedImage(productImage(item), 80)}
                         alt=""
                         loading="lazy"
                         onError={handleImageError}
@@ -216,7 +217,7 @@ function CartDrawerPanel() {
                         onClick={() => handleCrossSellClick(product)}
                       >
                         <img
-                          src={productImage(product)}
+                          src={sizedImage(productImage(product), 140)}
                           alt=""
                           loading="lazy"
                           onError={handleImageError}

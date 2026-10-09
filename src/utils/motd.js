@@ -6,8 +6,10 @@ export const normalizeMotd = (value) => {
   return value.replace(/<[^>]*>/g, "").trim().slice(0, MAX_MOTD_LENGTH);
 };
 
-export const getMotdMessages = (...values) =>
-  values.map(normalizeMotd).filter(Boolean);
+// Distinct, non-empty messages: the same text saved in both slots shows once
+export const getMotdMessages = (...values) => [
+  ...new Set(values.map(normalizeMotd).filter(Boolean)),
+];
 
 export const getMotdFingerprint = (...values) =>
   getMotdMessages(...values).join("\x1e");

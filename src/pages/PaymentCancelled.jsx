@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { FaRegCommentDots } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/PaymentFailure.css";
 import { FaTimes } from "react-icons/fa";
@@ -52,7 +53,8 @@ function PaymentCancelled() {
             className="btn btn-outline"
             onClick={() => navigate("/contact")}
           >
-            {he ? "💬 צור קשר לתמיכה" : "💬 Contact Support"}
+            <FaRegCommentDots aria-hidden="true" />{" "}
+            {he ? "צור קשר לתמיכה" : "Contact Support"}
           </button>
         </div>
       </div>

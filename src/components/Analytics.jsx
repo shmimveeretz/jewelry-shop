@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { API_BASE_URL } from "../constants/api";
+import { trackEvent } from "../utils/tracking";
 import {
   hasTrackingConsent,
   whenConsentGranted,
@@ -99,6 +100,17 @@ function Analytics() {
       }),
     [],
   );
+
+  // A WhatsApp chat is how many customers ask before buying; count it as a
+  // Contact wherever the link lives (footer, contact page, checkout)
+  useEffect(() => {
+    const onClick = (event) => {
+      const link = event.target.closest?.('a[href*="wa.me/"]');
+      if (link) trackEvent("Contact", { method: "whatsapp", value: 0 });
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
 
   useEffect(() => {
     if (isFirstRender.current) {

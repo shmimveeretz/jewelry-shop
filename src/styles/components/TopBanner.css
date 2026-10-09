@@ -22,7 +22,7 @@
 }
 
 .top-banner--closing {
-  animation: tb-exit 0.35s ease-in forwards;
+  animation: tb-exit 240ms var(--ease-out) forwards;
   pointer-events: none;
 }
 
@@ -218,6 +218,21 @@
 
 .top-banner-viewport {
   margin-inline-start: 3rem;
+}
+
+/* The viewport is direction:ltr (the marquee math needs it), so its logical
+   margin would land on the left. In Hebrew the close button sits on the
+   right; reserve the lane there instead. */
+html[dir="rtl"] .top-banner-viewport {
+  margin-left: 0;
+  margin-right: 3rem;
+}
+
+/* 30px visible, 44px to the finger */
+.top-banner .top-banner-close::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
 }
 
 .top-banner-edge--start {

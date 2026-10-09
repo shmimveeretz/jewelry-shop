@@ -7,6 +7,7 @@ import {
   FaPalette,
   FaLock,
   FaCheckCircle,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { payPlusService } from "../utils/payPlusService";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -18,6 +19,7 @@ import {
   productName,
   productImage,
   handleImageError,
+  sizedImage,
 } from "../utils/format";
 import {
   computeOrderTotals,
@@ -174,6 +176,9 @@ function Checkout() {
   const [couponCode, setCouponCode] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
   const [couponError, setCouponError] = useState("");
+  // The coupon field stays folded behind a link: an open, empty field sends
+  // shoppers without a code off to search for one.
+  const [couponOpen, setCouponOpen] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState(null); // { code, discountPercent }
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [includeGiftWrap, setIncludeGiftWrap] = useState(false);
@@ -404,7 +409,7 @@ function Checkout() {
                 return (
                   <li key={item.cartItemId || item.id} className="order-item">
                     <img
-                      src={productImage(item)}
+                      src={sizedImage(productImage(item), 80)}
                       alt=""
                       onError={handleImageError}
                     />
@@ -529,10 +534,26 @@ function Checkout() {
             </div>
 
             <div className="coupon-section">
-              <label className="coupon-label" htmlFor="coupon-code">
-                {he ? "קוד קופון" : "Coupon Code"}
-              </label>
-              {appliedCoupon ? (
+              {!appliedCoupon && !couponOpen ? (
+                <button
+                  type="button"
+                  className="coupon-toggle"
+                  aria-expanded="false"
+                  onClick={() => {
+                    setCouponOpen(true);
+                    requestAnimationFrame(() =>
+                      document.getElementById("coupon-code")?.focus(),
+                    );
+                  }}
+                >
+                  {he ? "יש לכם קוד קופון?" : "Have a coupon code?"}
+                </button>
+              ) : (
+                <label className="coupon-label" htmlFor="coupon-code">
+                  {he ? "קוד קופון" : "Coupon Code"}
+                </label>
+              )}
+              {!appliedCoupon && !couponOpen ? null : appliedCoupon ? (
                 <div className="coupon-applied">
                   <span>
                     <FaCheckCircle
@@ -764,6 +785,39 @@ function Checkout() {
                 ? "התשלום מתבצע בדף מאובטח ומוצפן של PayPlus. פרטי האשראי אינם נשמרים אצלנו."
                 : "Payment happens on PayPlus's secure, encrypted page. We never store card details."}
             </p>
+
+            {/* Answers the last questions before paying, from the store's own
+                policies, and a human to ask */}
+            <ul className="checkout-assurance">
+              <li>
+                {he
+                  ? "נוצר בעבודת יד ונשלח תוך עד 14 ימי עסקים"
+                  : "Handmade to order, ships within 14 business days"}
+              </li>
+              <li>{he ? "אחריות 12 חודשים מפני פגמי ייצור" : "12-month warranty against defects"}</li>
+              <li>
+                {he ? (
+                  <>
+                    14 יום להחזרה (למעט מוצרים שהותאמו אישית) ·{" "}
+                    <Link to="/return-policy">מדיניות ההחזרות</Link>
+                  </>
+                ) : (
+                  <>
+                    14-day returns (personalized items excluded) ·{" "}
+                    <Link to="/return-policy">Return policy</Link>
+                  </>
+                )}
+              </li>
+            </ul>
+            <a
+              className="checkout-help"
+              href="https://wa.me/972525955389"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaWhatsapp aria-hidden="true" />{" "}
+              {he ? "שאלה לפני התשלום? כתבו לנו בוואטסאפ" : "Question before paying? Message us on WhatsApp"}
+            </a>
           </form>
         </div>
       </div>

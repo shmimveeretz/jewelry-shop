@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { API_BASE_URL } from "../constants/api";
+import { trackEvent } from "../utils/tracking";
 
 /** Newsletter signup in the footer; shows the welcome coupon on success. */
 function FooterNewsletter() {
@@ -36,6 +37,7 @@ function FooterNewsletter() {
         return;
       }
       setEmail("");
+      trackEvent("Lead", { lead_source: "footer", value: 0 });
       setStatus({
         type: "success",
         message: data.couponCode

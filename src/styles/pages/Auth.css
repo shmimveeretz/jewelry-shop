@@ -134,12 +134,15 @@
 .toggle-btn {
   background: none;
   border: none;
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-weight: bold;
   cursor: pointer;
   margin-right: 0.5rem;
   text-decoration: underline;
   font-size: 1rem;
+  /* Comfortable tap area without changing how the link sits in the line */
+  padding: 0.65rem 0.35rem;
+  margin-block: -0.65rem;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -162,7 +165,7 @@
 .auth-toggle .link-btn {
   background: none;
   border: none;
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-weight: 600;
   cursor: pointer;
   text-decoration: underline;
@@ -210,5 +213,35 @@
 
   .auth-header h1 {
     font-size: 1.5rem;
+  }
+}
+
+/* Show/hide password: the button sits inside the field's end edge */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-inline-end: 4.5rem;
+}
+
+.password-toggle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  min-width: 44px;
+  padding: 0 0.85rem;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-text-light);
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .password-toggle:hover {
+    color: var(--color-primary);
   }
 }

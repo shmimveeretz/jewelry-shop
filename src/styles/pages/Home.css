@@ -93,7 +93,7 @@
   padding: 1.05rem 2.75rem;
   min-height: 52px;
   background: var(--color-secondary);
-  color: var(--color-white);
+  color: var(--color-primary);
   border-radius: var(--radius-md);
   font-size: var(--font-size-base);
   letter-spacing: 0.15em;
@@ -193,7 +193,7 @@
 }
 
 .hero-scroll-text {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
 }
@@ -397,8 +397,8 @@
   left: 0.85rem;
   z-index: 10;
   background: var(--color-secondary);
-  color: var(--color-white);
-  font-size: 0.62rem;
+  color: var(--color-primary);
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -413,7 +413,7 @@
   z-index: 10;
   background: #8c2f22;
   color: var(--color-white);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -495,7 +495,7 @@
 .price {
   font-size: var(--font-size-lg);
   font-weight: 600;
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
 }
 
 /* ─── Skeleton Loader ────────────────────────────────────────────── */
@@ -700,7 +700,7 @@
 @media (hover: hover) and (pointer: fine) {
   .cta-btn:hover {
     background: var(--color-secondary);
-    color: var(--color-white);
+    color: var(--color-primary);
     transform: translateY(-2px);
   }
 }

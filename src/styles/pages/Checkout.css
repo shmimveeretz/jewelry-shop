@@ -65,7 +65,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .link-btn:hover {
-    color: var(--color-secondary);
+    color: var(--color-gold-text);
   }
 }
 
@@ -156,7 +156,7 @@
 }
 
 .order-item-price {
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-weight: bold;
   font-size: 1.1rem;
 }
@@ -192,7 +192,7 @@
 }
 
 .total-amount {
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-size: 1.5rem;
 }
 
@@ -229,7 +229,7 @@
 .coupon-label {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: rgba(44, 62, 80, 0.6);
+  color: var(--color-text-light);
   margin-bottom: 0.5rem;
 }
 
@@ -260,7 +260,7 @@
 
 .coupon-apply-btn {
   background: var(--color-secondary);
-  color: white;
+  color: var(--color-primary);
   border: none;
   padding: 0.6rem 1rem;
   font-size: var(--font-size-sm);
@@ -306,7 +306,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .coupon-remove-btn:hover {
-    color: #e74c3c;
+    color: #c0392b;
   }
 }
 
@@ -577,4 +577,59 @@ ul.order-items {
   color: var(--color-primary);
   font-size: 0.88rem;
   text-align: center;
+}
+
+/* ── Folded coupon field ── */
+.coupon-toggle {
+  background: none;
+  border: none;
+  padding: 0.6rem 0;
+  min-height: 44px;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--color-text-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .coupon-toggle:hover {
+    color: var(--color-primary);
+  }
+}
+
+/* ── Last-step reassurance under the pay button ── */
+.checkout-assurance {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  color: var(--color-text-light);
+  text-align: center;
+}
+
+.checkout-assurance a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.checkout-help {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.checkout-help svg {
+  color: #1f8f4e;
 }

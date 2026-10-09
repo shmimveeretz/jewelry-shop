@@ -26,7 +26,7 @@ function HeroBlock({ ctx, ...props }) {
     showStock = true,
     priceNote = 'כולל מע"מ',
     ctaLabel,
-    reassuranceText = "תשלום מאובטח, ללא התחייבות, 14 יום להחזרה",
+    reassuranceText = "תשלום מאובטח · אחריות 12 חודשים · 14 יום להחזרה",
     footnote,
     lowStockThreshold = 5,
   } = props;
@@ -62,7 +62,7 @@ function HeroBlock({ ctx, ...props }) {
 
         <div className="animate-dpp-rise">
           {eyebrow || product.category ? (
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gold-dark">
+            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gold-ink">
               {eyebrow || product.category}
             </p>
           ) : null}
@@ -71,8 +71,12 @@ function HeroBlock({ ctx, ...props }) {
             {headline || product.name}
           </h1>
 
-          {subheadline ? (
-            <p className="mt-3 leading-relaxed text-gray-600">{subheadline}</p>
+          {/* Without an admin subheadline, the symbol's own meaning tells a cold
+              ad visitor why this piece matters */}
+          {subheadline || product.meaningHe ? (
+            <p className="mt-3 leading-relaxed text-gray-600">
+              {subheadline || `סמל של ${product.meaningHe}`}
+            </p>
           ) : null}
 
           {showRating && hasRating ? (
@@ -93,7 +97,7 @@ function HeroBlock({ ctx, ...props }) {
                 {formatPrice(totalPrice)}
               </span>
               {priceNote ? (
-                <span className="text-sm text-gray-500">{priceNote}</span>
+                <span className="text-sm text-gray-600">{priceNote}</span>
               ) : null}
             </div>
           ) : null}
@@ -138,13 +142,13 @@ function HeroBlock({ ctx, ...props }) {
           ) : null}
 
           {showStock && isLowStock ? (
-            <p className="mt-3 text-center text-sm font-medium text-gold-dark">
+            <p className="mt-3 text-center text-sm font-medium text-gold-ink">
               נותרו {product.stock} יחידות במלאי הנוכחי
             </p>
           ) : null}
 
           {footnote ? (
-            <p className="mt-4 text-center text-sm text-gray-500">{footnote}</p>
+            <p className="mt-4 text-center text-sm text-gray-600">{footnote}</p>
           ) : null}
         </div>
       </div>

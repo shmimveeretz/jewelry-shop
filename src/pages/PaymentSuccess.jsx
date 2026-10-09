@@ -6,6 +6,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import "../styles/pages/PaymentSuccess.css";
 import { API_BASE_URL } from "../constants/api";
 import { trackPurchaseOnce } from "../utils/tracking";
+import { sizedImage } from "../utils/format";
 
 
 // ── helpers ───────────────────────────────────────────────────────────────────
@@ -422,7 +423,7 @@ function PaymentSuccess() {
                   {item.image && (
                     <img
                       className="ps-item__img"
-                      src={item.image}
+                      src={sizedImage(item.image, 80)}
                       alt={item.name}
                       loading="lazy"
                     />

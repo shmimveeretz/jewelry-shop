@@ -85,6 +85,11 @@
   }
 }
 
+.modal-close svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
 /* ── Drag Handle (mobile only) ── */
 .modal-drag-handle {
   display: none;
@@ -136,7 +141,7 @@
 
 .modal-sticky-footer .buy-now-btn {
   background: var(--color-secondary);
-  color: var(--color-white);
+  color: var(--color-primary);
   border: none;
 }
 
@@ -173,7 +178,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   color: var(--color-text-light);
   letter-spacing: 0.02em;
 }
@@ -187,7 +192,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-size: 0.9rem;
   letter-spacing: 0.05em;
   margin-bottom: 0.25rem;
@@ -372,7 +377,7 @@
 
 .product-modal-price {
   font-size: var(--font-size-3xl);
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-weight: 700;
   margin-bottom: var(--spacing-md);
 }
@@ -396,7 +401,7 @@
 }
 
 .price-item.addition {
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-size: var(--font-size-sm);
   padding-right: var(--spacing-md);
 }
@@ -416,7 +421,7 @@
 }
 
 .price-item.total span:last-child {
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-size: var(--font-size-xl);
 }
 
@@ -445,7 +450,7 @@
 }
 
 .product-option label .required {
-  color: #e74c3c;
+  color: #c0392b;
   margin-right: 4px;
 }
 
@@ -619,7 +624,7 @@
   border: none;
   border-radius: var(--radius-sm);
   background: var(--color-secondary);
-  color: #fff;
+  color: var(--color-primary);
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;
@@ -1088,7 +1093,7 @@ html[dir="rtl"] .gallery-nav.next {
 
 @keyframes optionCheckIn {
   from {
-    transform: scale(0.6);
+    transform: scale(0.85);
     opacity: 0;
   }
 }

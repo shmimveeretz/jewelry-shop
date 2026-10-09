@@ -11,7 +11,7 @@ import {
 import { useLanguage } from "../contexts/LanguageContext";
 import { useProducts } from "../hooks/useProducts";
 import ProductModal from "../components/ProductModal";
-import { formatPrice, productName, productImage, handleImageError } from "../utils/format";
+import { formatPrice, productName, productImage, handleImageError, sizedImage } from "../utils/format";
 import { clickableProps } from "../utils/a11y";
 import "../styles/pages/Home.css";
 
@@ -38,7 +38,7 @@ function HomeProductCard({ product, language, badge, onOpen }) {
       {lowStock && <div className="low-stock-badge">{lowStock}</div>}
       <div className="collection-image-wrap">
         <img
-          src={productImage(product)}
+          src={sizedImage(productImage(product), 400)}
           alt={name}
           className="collection-image"
           loading="lazy"
@@ -150,7 +150,7 @@ function Home() {
             </span>
             <span>
               <FaStarSolid />
-              {language === "he" ? "החזרה קלה" : "Easy returns"}
+              {language === "he" ? "14 יום להחזרה" : "14-day returns"}
             </span>
           </div>
         </div>

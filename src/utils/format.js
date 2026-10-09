@@ -49,6 +49,32 @@ export function productImage(product) {
   return product.image || PLACEHOLDER_IMAGE;
 }
 
+/**
+ * Ask Cloudinary for an image no wider than `width` CSS pixels at 2x density.
+ * Product photos are uploaded at ~3000px; a 300px card was downloading all of
+ * it (≈255KB vs ≈41KB). Non-Cloudinary URLs are returned unchanged.
+ */
+export function sizedImage(url, width) {
+  if (typeof url !== "string" || !width) return url;
+  const marker = "/image/upload/";
+  const at = url.indexOf(marker);
+  if (at === -1 || !url.includes("res.cloudinary.com")) return url;
+
+  const head = url.slice(0, at + marker.length);
+  const rest = url.slice(at + marker.length);
+  const size = `w_${Math.round(width * 2)},c_limit`;
+  const [first, ...others] = rest.split("/");
+
+  // An existing transformation segment ("f_auto,q_auto") gets the size added;
+  // a version ("v123") or file name means there is none yet.
+  const isTransform = others.length > 0 && /^[a-z]{1,3}_[^/]*$/.test(first) && !/^v\d+$/.test(first);
+  if (isTransform) {
+    const kept = first.split(",").filter((part) => !/^(w|c)_/.test(part));
+    return `${head}${[...kept, size].join(",")}/${others.join("/")}`;
+  }
+  return `${head}f_auto,q_auto,${size}/${rest}`;
+}
+
 /** onError handler: swap a broken image for the placeholder exactly once. */
 export function handleImageError(event) {
   const img = event.currentTarget;

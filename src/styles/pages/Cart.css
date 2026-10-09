@@ -87,7 +87,7 @@
 
 .cart-item-price {
   font-size: var(--font-size-xl);
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-weight: 700;
 }
 
@@ -95,6 +95,14 @@
   color: var(--color-text-light);
   font-size: var(--font-size-sm);
   margin-bottom: var(--spacing-sm);
+  /* A reminder of the piece, not the full story: the chosen options below
+     are what matter here, and long descriptions made each row ~500px tall
+     on phones */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 /* Selected Options Display */
@@ -132,7 +140,7 @@
   );
   border-radius: var(--radius-sm);
   font-size: var(--font-size-xs);
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-weight: 600;
 }
 
@@ -159,8 +167,9 @@
 }
 
 .quantity-btn {
-  width: 32px;
-  height: 32px;
+  /* 44px: the minimum comfortable touch target */
+  width: 44px;
+  height: 44px;
   border: none;
   background: white;
   border-radius: var(--radius-sm);
@@ -168,7 +177,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-size: 0.875rem;
   transition:
     color var(--transition-fast),
@@ -182,7 +191,7 @@
 @media (hover: hover) and (pointer: fine) {
   .quantity-btn:hover:not(:disabled) {
     background: var(--color-secondary);
-    color: white;
+    color: var(--color-primary);
     transform: scale(1.1);
   }
 }
@@ -202,7 +211,7 @@
 .remove-item {
   background: none;
   border: none;
-  color: #e74c3c;
+  color: #c0392b;
   cursor: pointer;
   font-size: 1.1rem;
   padding: 0.5rem;
@@ -219,7 +228,7 @@
 @media (hover: hover) and (pointer: fine) {
   .remove-item:hover {
     color: white;
-    background: #e74c3c;
+    background: #c0392b;
     transform: scale(1.1);
   }
 }

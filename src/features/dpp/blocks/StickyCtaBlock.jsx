@@ -21,7 +21,7 @@ function StickyCtaBlock({ ctx, ...props }) {
       >
         <div className="flex items-center gap-3">
           <div className="shrink-0">
-            <p className="text-xs text-gray-500">{totalLabel}</p>
+            <p className="text-xs text-gray-600">{totalLabel}</p>
             <p className="text-lg font-bold leading-tight text-navy">
               {formatPrice(totalPrice)}
             </p>

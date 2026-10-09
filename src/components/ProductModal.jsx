@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import {
   FaLock,
   FaShippingFast,
-  FaUndoAlt,
+  FaShieldAlt,
   FaShareAlt,
   FaExclamationCircle,
+  FaTimes,
 } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import { useToast } from "../context/ToastContext";
@@ -30,7 +31,7 @@ import {
   calculateProductPrice,
   getOptionKeys,
 } from "../utils/productPricing";
-import { formatPrice, productName, handleImageError } from "../utils/format";
+import { formatPrice, productName, handleImageError, sizedImage } from "../utils/format";
 import { useDialog } from "../hooks/useDialog";
 import { useDragToDismiss } from "../hooks/useDragToDismiss";
 import { trackEvent, productEventPayload } from "../utils/tracking";
@@ -471,7 +472,7 @@ function ProductModal({ product, onClose }) {
           onClick={closeAnimated}
           aria-label={language === "he" ? "סגירה" : "Close"}
         >
-          ✕
+          <FaTimes aria-hidden="true" />
         </button>
         <button
           type="button"
@@ -493,7 +494,7 @@ function ProductModal({ product, onClose }) {
               >
                 <img
                   key={currentImage}
-                  src={currentImage}
+                  src={sizedImage(currentImage, 600)}
                   alt={productName(product, language)}
                   className="product-modal-image"
                   onError={handleImageError}
@@ -533,7 +534,7 @@ function ProductModal({ product, onClose }) {
                   {productImages.map((img, index) => (
                     <img
                       key={index}
-                      src={img}
+                      src={sizedImage(img, 90)}
                       alt={`${product.name} ${index + 1}`}
                       className={`thumbnail ${
                         index === currentImageIndex ? "active" : ""
@@ -557,8 +558,10 @@ function ProductModal({ product, onClose }) {
                         : `Rated ${product.rating} out of 5`
                     }
                   >
-                    {"★".repeat(Math.round(Math.min(5, product.rating)))}
-                    {"☆".repeat(5 - Math.round(Math.min(5, product.rating)))}
+                    <span aria-hidden="true">
+                      {"★".repeat(Math.round(Math.min(5, product.rating)))}
+                      {"☆".repeat(5 - Math.round(Math.min(5, product.rating)))}
+                    </span>
                     <span className="product-modal-rating-value">
                       {product.rating.toFixed(1)}
                       {typeof product.reviews === "number" &&
@@ -1180,8 +1183,8 @@ function ProductModal({ product, onClose }) {
               {language === "he" ? "משלוח חינם מעל ₪300" : "Free shipping over ₪300"}
             </span>
             <span className="trust-signal">
-              <FaUndoAlt />
-              {language === "he" ? "החזרה קלה" : "Easy returns"}
+              <FaShieldAlt />
+              {language === "he" ? "אחריות 12 חודשים" : "12-month warranty"}
             </span>
           </div>
         </div>

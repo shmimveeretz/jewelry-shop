@@ -102,6 +102,9 @@ function Navbar() {
             src={logo}
             alt={language === "he" ? "שמים וארץ" : "Shamaim VeEretz"}
             className="logo-image"
+            // Intrinsic ratio, so the header doesn't shift while the logo loads
+            width="2951"
+            height="1477"
           />
         </Link>
 

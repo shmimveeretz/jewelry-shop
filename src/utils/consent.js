@@ -40,6 +40,30 @@ export function setTrackingConsent(granted) {
   window.dispatchEvent(new CustomEvent(EVENT, { detail: { granted } }));
 }
 
+/** Whether the visitor has answered the cookie banner either way */
+export function hasAnsweredConsent() {
+  try {
+    return localStorage.getItem(CONSENT_KEY) !== null;
+  } catch {
+    // Storage blocked: the banner can't remember an answer, so don't wait on it
+    return true;
+  }
+}
+
+/** Run `callback` once the banner is (or becomes) answered. Returns a cleanup. */
+export function whenConsentAnswered(callback) {
+  if (hasAnsweredConsent()) {
+    callback();
+    return () => {};
+  }
+  const listener = () => {
+    window.removeEventListener(EVENT, listener);
+    callback();
+  };
+  window.addEventListener(EVENT, listener);
+  return () => window.removeEventListener(EVENT, listener);
+}
+
 /** Run `callback` once consent is (or becomes) granted. Returns a cleanup. */
 export function whenConsentGranted(callback) {
   if (hasTrackingConsent()) {

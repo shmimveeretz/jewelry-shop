@@ -339,6 +339,14 @@
   align-items: center;
 }
 
+/* On phones the 500-unit wheel renders at ~60%, which shrinks its 10-unit
+   labels to ~6px. Give them more units there so they land near 10-11px. */
+@media (max-width: 600px) {
+  .zodiac-svg text.zodiac-wheel-label {
+    font-size: 17px;
+  }
+}
+
 .zodiac-svg {
   width: 100%;
   max-width: 750px;
@@ -398,7 +406,7 @@
 
 .zodiac-panel-header h3 {
   font-size: var(--font-size-xl);
-  color: var(--color-secondary);
+  color: var(--color-gold-text);
   font-family: var(--font-primary);
 }
 

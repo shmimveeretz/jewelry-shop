@@ -68,7 +68,7 @@ function About() {
               : '"Between heaven and earth, where the sacred meets matter, creation is born to illuminate the soul."'}
           </p>
           <div className="about-hero-scroll">
-            <span className="material-symbols-outlined">expand_more</span>
+            <span aria-hidden="true" className="material-symbols-outlined">expand_more</span>
           </div>
         </div>
       </header>
@@ -132,7 +132,7 @@ function About() {
                 style={{ "--delay": item.delay }}
               >
                 <div className="about-number-icon" aria-hidden="true">
-                  <span className="material-symbols-outlined">{item.icon}</span>
+                  <span aria-hidden="true" className="material-symbols-outlined">{item.icon}</span>
                 </div>
                 <div className="about-number-value">
                   <CountUp value={item.number} />
@@ -148,7 +148,7 @@ function About() {
         <section className="about-closing-section">
           <div className="about-closing-inner">
             <div className="about-closing-bg-icon">
-              <span className="material-symbols-outlined">flare</span>
+              <span aria-hidden="true" className="material-symbols-outlined">flare</span>
             </div>
             <h3>
               {language === "he"

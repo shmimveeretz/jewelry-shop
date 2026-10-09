@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import "../../styles/components/MarketingPopup.css";
 import { API_BASE_URL } from "../../constants/api";
+import { trackEvent } from "../../utils/tracking";
 
 
 const FOCUSABLE =
@@ -96,6 +97,7 @@ function PopupHost({ variant, onClose }) {
       // The coupon is the reason they gave us the address, so it is shown
       // before the popup goes away.
       setCouponCode(data.couponCode || null);
+      trackEvent("Lead", { lead_source: "popup", value: 0 });
       onClose("converted", { keepOpen: true });
     } catch {
       setError("שגיאת חיבור, נסו שוב");

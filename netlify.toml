@@ -3,6 +3,9 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  # /lp/* campaign pages: product data, title and share image injected at the
+  # edge (see the function's own header comment)
+  edge_functions = "netlify/edge-functions"
   environment = { NODE_VERSION = "18.17.0", VITE_API_URL = "https://jewelry-shop-udr7.onrender.com" }
 
 # Redirect all routes to index.html for React Router SPA

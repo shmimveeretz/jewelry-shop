@@ -49,7 +49,7 @@ function StoryBlock({ ctx, ...props }) {
           <div>
             <p className="text-lg italic leading-relaxed">{quote}</p>
             {product.sourceHe ? (
-              <footer className="mt-2 text-sm text-gray-500">
+              <footer className="mt-2 text-sm text-gray-600">
                 {product.sourceHe}
               </footer>
             ) : null}

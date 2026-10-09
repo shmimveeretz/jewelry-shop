@@ -61,14 +61,28 @@ export function useTrigger(popup, onFire) {
         };
         addListener(document, "mouseout", onMouseOut);
 
-        // Mobile has no cursor, so the equivalent signal is a back-navigation
-        // attempt. A pushed history entry lets popstate stand in for it.
-        const onPopState = () => fire();
-        window.history.pushState({ popupGuard: true }, "");
-        addListener(window, "popstate", onPopState);
-        cleanups.push(() => {
-          if (window.history.state?.popupGuard) window.history.back();
-        });
+        // Phones have no cursor. The usual stand-in is a fast flick back up
+        // the page after reading some of it: the thumb heading for the address
+        // bar or tabs. (Trapping the back button with a fake history entry
+        // was the old approach; it breaks Back, and Chrome skips such entries.)
+        let lastY = window.scrollY;
+        let lastT = performance.now();
+        let deepestY = lastY;
+        const onScroll = () => {
+          const y = window.scrollY;
+          const t = performance.now();
+          const velocity = (y - lastY) / Math.max(t - lastT, 1); // px/ms, negative = up
+          deepestY = Math.max(deepestY, y);
+          const readSome = deepestY > window.innerHeight * 0.75;
+          if (readSome && velocity < -2.5 && y < deepestY - window.innerHeight * 0.5) {
+            fire();
+          }
+          lastY = y;
+          lastT = t;
+        };
+        if (window.matchMedia?.("(pointer: coarse)").matches) {
+          addListener(window, "scroll", onScroll, { passive: true });
+        }
         break;
       }
 

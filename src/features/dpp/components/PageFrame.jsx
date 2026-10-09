@@ -92,14 +92,14 @@ export function PageFooter() {
 
   return (
     <footer className="bg-navy-deep px-4 py-6 text-center text-xs text-white/50">
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-0">
         {links.map(({ href, label }) => (
           <a
             key={href}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white"
+            className="inline-block py-2.5 hover:text-white"
           >
             {label}
           </a>

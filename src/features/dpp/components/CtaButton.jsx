@@ -21,7 +21,7 @@ const CtaButton = forwardRef(function CtaButton(
 ) {
   const variants = {
     primary:
-      "bg-gold text-navy shadow-lg shadow-gold/30 hover:bg-gold-dark hover:text-white",
+      "bg-gold text-navy shadow-lg shadow-gold/30 hover:bg-gold-dark",
     onDark: "bg-gold text-navy shadow-lg hover:bg-white",
   };
 

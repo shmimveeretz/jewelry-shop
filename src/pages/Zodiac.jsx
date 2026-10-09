@@ -384,6 +384,7 @@ function Zodiac() {
                       dominantBaseline="middle"
                       transform={`rotate(${textRotation}, ${lx}, ${ly})`}
                       fontSize="10"
+                      className="zodiac-wheel-label"
                       fill={isSelected ? "#d4af37" : "#2c3e50"}
                       fontFamily="Cardo, serif"
                       fontWeight={isSelected ? "700" : "400"}

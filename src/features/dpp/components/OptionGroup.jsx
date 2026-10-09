@@ -3,7 +3,7 @@ function OptionGroup({ label, hint, choices, value, onChange, invalid }) {
     <div>
       <div className="mb-2 flex items-baseline justify-between gap-3">
         <span className="text-sm font-semibold text-navy">{label}</span>
-        {hint ? <span className="text-xs text-gray-500">{hint}</span> : null}
+        {hint ? <span className="text-xs text-gray-600">{hint}</span> : null}
       </div>
       <div className="flex flex-wrap gap-2">
         {choices.map((choice) => {
@@ -24,7 +24,7 @@ function OptionGroup({ label, hint, choices, value, onChange, invalid }) {
               {choice.note ? (
                 <span
                   className={`ms-1 text-xs ${
-                    isSelected ? "text-white/70" : "text-gray-500"
+                    isSelected ? "text-white/70" : "text-gray-600"
                   }`}
                 >
                   {choice.note}

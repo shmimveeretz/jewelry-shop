@@ -311,3 +311,10 @@
     animation: none !important;
   }
 }
+
+/* The close button stays 34px visually but takes a 44px tap */
+.mpopup__close::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+}

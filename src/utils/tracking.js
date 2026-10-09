@@ -12,6 +12,9 @@ const GA_EVENT_NAMES = {
   AddToCart: "add_to_cart",
   InitiateCheckout: "begin_checkout",
   Purchase: "purchase",
+  // Newsletter signup (popup or footer) and a WhatsApp chat started
+  Lead: "generate_lead",
+  Contact: "contact",
 };
 
 /**
@@ -35,7 +38,16 @@ export function trackEvent(event, payload = {}, options = {}) {
         currency: data.currency,
         value: data.value,
         transaction_id: options.eventID,
-        items: (data.content_ids || []).map((id) => ({ item_id: id })),
+        // GA4's item reports need a name or id, price and quantity per item
+        items: (data.content_ids || []).map((id, index) => ({
+          item_id: id,
+          ...(index === 0 && data.content_name ? { item_name: data.content_name } : {}),
+          ...(index === 0 && data.content_category ? { item_category: data.content_category } : {}),
+          ...(data.content_ids.length === 1 && data.value
+            ? { price: data.value / (Number(data.num_items) || 1), quantity: Number(data.num_items) || 1 }
+            : {}),
+        })),
+        ...(data.lead_source ? { lead_source: data.lead_source } : {}),
       });
     }
   } catch {

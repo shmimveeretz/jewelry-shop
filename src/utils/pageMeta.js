@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { quoteShipping } from "./shipping";
 
 /**
  * Document <head> management for the SPA: title, description, canonical URL,
@@ -120,6 +121,32 @@ export function productJsonLd(product, { url, language = "he" } = {}) {
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: { "@type": "Organization", name: SITE_NAME.he },
+      // From the published shipping and return policies. Google's merchant
+      // listings warn on products without these.
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: quoteShipping("IL", Number(product.price) || 0).price,
+          currency: "ILS",
+        },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "IL" },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          // The policy promises delivery within 14 business days of the order
+          // (made to order, then couriered); split as making + transit
+          handlingTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 10, unitCode: "DAY" },
+          transitTime: { "@type": "QuantitativeValue", minValue: 1, maxValue: 4, unitCode: "DAY" },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "IL",
+        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 14,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/ReturnShippingFees",
+      },
     },
   };
 }

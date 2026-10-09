@@ -28,7 +28,7 @@ function FeaturesBlock({ title, items = [], columns = 3 }) {
               key={`${item.title}-${index}`}
               className="rounded-2xl bg-white p-6 shadow-sm"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cream text-gold-dark">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cream text-gold-ink">
                 <Icon className="h-5 w-5" strokeWidth={1.75} />
               </span>
               <p className="mt-4 font-semibold text-navy">{item.title}</p>

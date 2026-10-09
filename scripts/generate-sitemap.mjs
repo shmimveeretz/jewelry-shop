@@ -14,6 +14,7 @@ const SITE = "https://shamaimveeretz.com";
 const API =
   (process.env.VITE_API_URL || "https://jewelry-shop-udr7.onrender.com").replace(/\/+$/, "");
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../public/sitemap.xml");
+const LLMS_OUT = path.resolve(path.dirname(OUT), "llms.txt");
 
 const STATIC_PAGES = [
   ["/", "1.0", "weekly"],
@@ -98,6 +99,65 @@ async function main() {
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, xml);
   console.log(`sitemap: wrote ${urls.length} URLs (${products.length} products)`);
+
+  if (products.length > 0) {
+    fs.writeFileSync(LLMS_OUT, buildLlmsTxt(products));
+    console.log(`llms.txt: wrote ${products.length} products`);
+  }
+}
+
+/**
+ * /llms.txt (llmstxt.org): the store in plain text for AI assistants. The
+ * site is a JavaScript app, and AI crawlers don't run JavaScript, so without
+ * this they see an empty page. Every fact here mirrors the site's own policy
+ * pages; products and prices come from the live catalogue at build time.
+ */
+function buildLlmsTxt(products) {
+  const byCategory = new Map();
+  for (const p of products) {
+    const key = p.category || "אחר";
+    if (!byCategory.has(key)) byCategory.set(key, { en: p.categoryEn, items: [] });
+    byCategory.get(key).items.push(p);
+  }
+
+  const productLines = [...byCategory.entries()]
+    .map(([category, { en, items }]) => {
+      const lines = items
+        .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+        .map((p) => {
+          const name = p.nameEn ? `${p.name} (${p.nameEn})` : p.name;
+          return `- [${name}](${SITE}/shop?product=${encodeURIComponent(p.id)}): from ₪${p.price}`;
+        });
+      return `### ${category}${en ? ` (${en})` : ""}\n\n${lines.join("\n")}`;
+    })
+    .join("\n\n");
+
+  return `# שמים וארץ (Shamaim VeEretz)
+
+> Handmade Jewish jewelry from Israel, inspired by the sources: Hebrew letters, zodiac signs and Hebrew months, the stones of the High Priest's breastplate (Hoshen), the planets and the symbols of the tribes of Israel. Sterling silver 925, gold plating and 14K gold. Every piece is made to order.
+
+- Website: ${SITE} (Hebrew, with an English version)
+- Prices: Israeli shekels (ILS), VAT included
+- Made to order, delivered in Israel within up to 14 business days of the order
+- Shipping in Israel: ₪30, free on orders of ₪300 or more
+- International shipping: Europe ₪150, USA and Canada ₪180, rest of the world ₪200
+- Returns: within 14 days of delivery for unused items; personalized pieces (custom letters, engravings, special sizes) can't be returned unless defective
+- Warranty: 12 months against manufacturing defects
+- Contact: shmimveeretz@gmail.com, WhatsApp +972-52-595-5389
+
+## Key pages
+
+- [Shop](${SITE}/shop): the full collection
+- [Zodiac wheel](${SITE}/zodiac): find the piece for a zodiac sign or Hebrew month
+- [About](${SITE}/about)
+- [Shipping policy](${SITE}/shipping-policy)
+- [Return policy](${SITE}/return-policy)
+- [Contact](${SITE}/contact)
+
+## Products
+
+${productLines}
+`;
 }
 
 main().catch((error) => {

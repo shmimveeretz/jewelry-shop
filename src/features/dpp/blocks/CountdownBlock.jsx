@@ -43,7 +43,7 @@ function CountdownBlock({ title, endsAt, expiredText = "המבצע הסתיים"
   if (remaining <= 0) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-8 text-center">
-        <p className="text-gray-500">{expiredText}</p>
+        <p className="text-gray-600">{expiredText}</p>
       </section>
     );
   }

@@ -11,6 +11,7 @@ function Auth() {
   const location = useLocation();
   const { showSuccess, showError } = useToast();
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -19,7 +20,8 @@ function Auth() {
     password: "",
     confirmPassword: "",
     phone: "",
-    newsletterSubscribe: true,
+    // Opt-in must be an active choice (Israeli anti-spam law, GDPR)
+    newsletterSubscribe: false,
   });
 
   // Get return path and cart data from location state
@@ -135,7 +137,7 @@ function Auth() {
       email: "",
       password: "",
       confirmPassword: "",
-      newsletterSubscribe: true,
+      newsletterSubscribe: false,
     });
   };
 
@@ -217,15 +219,28 @@ function Auth() {
 
           <div className="form-group">
             <label htmlFor="password">{t("password")}</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              autoComplete={isLogin ? "current-password" : "new-password"}
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                autoComplete={isLogin ? "current-password" : "new-password"}
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-pressed={showPassword}
+                aria-controls="password"
+              >
+                {showPassword
+                  ? language === "he" ? "הסתרה" : "Hide"
+                  : language === "he" ? "הצגה" : "Show"}
+              </button>
+            </div>
           </div>
 
           {!isLogin && (
@@ -255,7 +270,7 @@ function Auth() {
                   />
                   <span>
                     {language === "he"
-                      ? "קבלי עדכונים, מבצעים וחדשות בדואר אלקטרוני"
+                      ? "אשמח לקבל עדכונים, מבצעים וחדשות במייל"
                       : "Subscribe to our newsletter for updates & exclusive offers"}
                   </span>
                 </label>

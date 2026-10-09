@@ -29,7 +29,7 @@
 
 .contact-header p {
   font-size: var(--font-size-lg);
-  color: rgba(44, 62, 80, 0.6);
+  color: var(--color-text-light);
   max-width: 640px;
   margin: 0 auto;
   font-style: italic;
@@ -140,7 +140,7 @@
 }
 
 .required {
-  color: #e74c3c;
+  color: #c0392b;
 }
 
 .contact-form .form-group input,
@@ -217,7 +217,7 @@
   width: 100%;
   padding: 1.25rem;
   background: var(--color-secondary);
-  color: white;
+  color: var(--color-primary);
   border: none;
   border-radius: 0.5rem;
   font-size: var(--font-size-base);

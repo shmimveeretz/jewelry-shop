@@ -14,11 +14,13 @@ import {
   productName,
   productImage,
   handleImageError,
+  sizedImage,
 } from "../utils/format";
 import { clickableProps } from "../utils/a11y";
 import { trackEvent, productEventPayload } from "../utils/tracking";
 import { applyPageMeta, setJsonLd, productJsonLd, SITE_URL } from "../utils/pageMeta";
 import { applyRouteMeta } from "../components/RouteMeta";
+import ProductCardMedia from "../components/ProductCardMedia";
 
 // Calculate the min and max possible price for a product given its priceAdditions
 function getProductPriceRange(product) {
@@ -364,7 +366,7 @@ function Shop() {
           <div className="category-hero">
             <div className="category-hero-image">
               <img
-                src={currentCollection.image}
+                src={sizedImage(currentCollection.image, 1400)}
                 alt=""
                 fetchpriority="high"
                 onError={handleImageError}
@@ -505,16 +507,9 @@ function Shop() {
                         </div>
                       )}
                       {lowStock && <div className="low-stock-badge">{lowStock}</div>}
-                      <img
-                        src={productImage(product)}
-                        alt={name}
-                        className="product-image"
-                        loading="lazy"
-                        decoding="async"
-                        onError={handleImageError}
-                      />
+                      <ProductCardMedia product={product} alt={name} />
                       <div className="product-info">
-                        <h3>{name}</h3>
+                        <h3 title={name}>{name}</h3>
                         {renderQuote(product)}
                         <div className="product-price">{renderPrice(product)}</div>
                         <button

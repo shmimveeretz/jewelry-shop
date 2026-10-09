@@ -16,6 +16,7 @@ import { useTrigger } from "./useTrigger";
 import { detectDevice, isEligible, pickVariant } from "./targeting";
 import { markConverted, markVisited, recordImpression } from "./visitor";
 import { API_BASE_URL } from "../../constants/api";
+import { hasAnsweredConsent, whenConsentAnswered } from "../../utils/consent";
 
 const POPUP_FREE_PREFIXES = [
   "/checkout",
@@ -58,6 +59,11 @@ export function PopupProvider({ children }) {
   const [shownIds, setShownIds] = useState([]);
   const [active, setActive] = useState(null);
   const [device, setDevice] = useState(detectDevice);
+  // A first visit already opens with the cookie banner; a marketing popup on
+  // top of it is two interruptions before the page has been seen. Popups arm
+  // only once the banner has been answered (their delay starts from then).
+  const [consentAnswered, setConsentAnswered] = useState(hasAnsweredConsent);
+  useEffect(() => whenConsentAnswered(() => setConsentAnswered(true)), []);
 
   // Set by DppPage: campaign pages already received their popups inside the
   // bootstrap payload, so fetching them again would be a wasted round trip on
@@ -119,7 +125,7 @@ export function PopupProvider({ children }) {
   );
 
   const candidate = useMemo(() => {
-    if (active) return null;
+    if (active || !consentAnswered) return null;
 
     return (
       rules
@@ -129,7 +135,7 @@ export function PopupProvider({ children }) {
         .sort((a, b) => (b.priority || 0) - (a.priority || 0))
         .find((popup) => isEligible(popup, { language, device })) || null
     );
-  }, [rules, shownIds, active, language, device]);
+  }, [rules, shownIds, active, language, device, consentAnswered]);
 
   const handleFire = useCallback(() => {
     if (!candidate) return;

@@ -9,6 +9,7 @@ import BlockRenderer from "../features/dpp/BlockRenderer";
 import { useDppState } from "../features/dpp/useDppState";
 import { usePopupRegistry } from "../features/popups/PopupProvider";
 import { applyPageMeta, setJsonLd, productJsonLd, SITE_URL } from "../utils/pageMeta";
+import { trackEvent, productEventPayload } from "../utils/tracking";
 import {
   getDppBootstrap,
   getDppPreview,
@@ -126,6 +127,12 @@ function DppContent({ data }) {
   useEffect(() => {
     popupRegistry?.registerPopups(data.popups || []);
   }, [popupRegistry, data.popups]);
+
+  // Ad traffic lands here, so this is the ViewContent the ad platforms
+  // optimise against (the storefront fires its own from the product modal)
+  useEffect(() => {
+    trackEvent("ViewContent", productEventPayload(product));
+  }, [product]);
 
   // Tab title, share preview and Product rich-result data for this page.
   // Campaign pages are noindex unless the admin explicitly turns that off.
