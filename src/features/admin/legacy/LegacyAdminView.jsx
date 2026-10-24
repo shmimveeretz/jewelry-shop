@@ -20,6 +20,7 @@ import {
   FaCog,
   FaStar,
   FaFileInvoice,
+  FaFileExport,
 } from "react-icons/fa";
 import { useToast } from "../../../context/ToastContext";
 import { useLanguage } from "../../../contexts/LanguageContext";
@@ -31,9 +32,27 @@ import DashboardCharts from "../../../components/DashboardCharts";
 import CategoryAdmin from "../../../components/CategoryAdmin";
 import HomeFeaturedAdmin from "../../../components/HomeFeaturedAdmin";
 import { MAX_MOTD_LENGTH } from "../../../utils/motd";
+import {
+  ORDER_CSV_COLUMNS,
+  PRODUCT_CSV_COLUMNS,
+  downloadCsv,
+  toCsv,
+} from "../../../utils/csv";
 import { deleteProduct } from "../../../services/productApi";
 import "../../../styles/pages/Admin.css";
 import { API_BASE_URL } from "../../../constants/api";
+
+/**
+ * Short form for tables: "order_1791103454318_guest_…" → "#03454318" (the
+ * last 8 digits of its timestamp). The full number stays in the tooltip,
+ * the details view and search.
+ */
+const compactOrderNumber = (order) => {
+  const full = String(order?.orderId || "");
+  const digits = full.match(/\d{6,}/)?.[0];
+  if (digits) return `#${digits.slice(-8)}`;
+  return `#${String(order?._id || order?.id || full).slice(-8).toUpperCase()}`;
+};
 
 /** The order number the customer received (falls back to the DB id tail) */
 const displayOrderNumber = (order) =>
@@ -122,10 +141,6 @@ function LegacyAdminView() {
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
   const [devices, setDevices] = useState([]);
-  // Derived from the device log (it was a separate, never-filled state before)
-  const blockedIPs = [
-    ...new Set(devices.filter((d) => d.blocked && d.ipAddress).map((d) => d.ipAddress)),
-  ];
 
   // MOTD State
   const [motd, setMotd] = useState("");
@@ -148,8 +163,6 @@ function LegacyAdminView() {
   const [newCoupon, setNewCoupon] = useState(EMPTY_COUPON);
   const [couponLoading, setCouponLoading] = useState(false);
   const [deviceSearchTerm, setDeviceSearchTerm] = useState("");
-  const [newFirewallIP, setNewFirewallIP] = useState("");
-  const [firewall, setFirewall] = useState([]);
 
   const [userSearchTerm, setUserSearchTerm] = useState("");
 
@@ -517,15 +530,6 @@ function LegacyAdminView() {
       const data = await response.json();
       if (data.success) {
         setDevices(data.data);
-        const blocked = [
-          ...new Set(
-            (data.data || [])
-              .filter((d) => d.blocked)
-              .map((d) => d.ipAddress)
-              .filter(Boolean),
-          ),
-        ];
-        setFirewall(blocked);
       } else {
         console.error("Error fetching devices:", data.message);
       }
@@ -954,6 +958,21 @@ function LegacyAdminView() {
     }
   };
 
+  // Exports the orders on screen, so search and status filter apply
+  const handleExportOrders = () => {
+    if (filteredOrders.length === 0) {
+      showError(language === "he" ? "אין הזמנות לייצוא" : "No orders to export");
+      return;
+    }
+    const date = new Date().toISOString().slice(0, 10);
+    downloadCsv(`orders-${date}.csv`, toCsv(filteredOrders, ORDER_CSV_COLUMNS));
+    showSuccess(
+      language === "he"
+        ? `יוצאו ${filteredOrders.length} הזמנות לקובץ CSV`
+        : `Exported ${filteredOrders.length} orders to CSV`,
+    );
+  };
+
   const filteredOrders = orders.filter((order) => {
     const searchLower = orderSearchTerm.toLowerCase();
     const matchesSearch =
@@ -974,144 +993,6 @@ function LegacyAdminView() {
 
     return matchesSearch && matchesStatus;
   });
-
-  const handleBlockIP = (deviceId) => {
-    const device = devices.find((d) => d.id === deviceId || d._id === deviceId);
-    if (!device) return;
-
-    const newBlocked = !device.blocked;
-    const blockDeviceAsync = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `${API_BASE_URL}/api/admin/devices/${device._id || device.id}/block`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ blocked: newBlocked }),
-          },
-        );
-
-        const data = await response.json();
-        if (data.success) {
-          await fetchDevices();
-          showSuccess(
-            language === "he"
-              ? `כתובת IP ${device.ipAddress} ${newBlocked ? "חסומה" : "הוסרה מחסימה"} בהצלחה`
-              : `IP address ${device.ipAddress} ${newBlocked ? "blocked" : "unblocked"} successfully`,
-          );
-        } else {
-          showError(data.message || "Error updating block status");
-        }
-      } catch (error) {
-        console.error("Error blocking device:", error);
-        showError(language === "he" ? "שגיאה בחיבור לשרת" : "Connection error");
-      }
-    };
-    blockDeviceAsync();
-  };
-
-  const handleAddToFirewall = async () => {
-    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    if (!newFirewallIP.trim()) {
-      showError(
-        language === "he" ? "אנא הזן כתובת IP" : "Please enter an IP address",
-      );
-      return;
-    }
-
-    if (!ipRegex.test(newFirewallIP)) {
-      showError(
-        language === "he"
-          ? "פורמט IP לא תקין (דוגמה: 192.168.1.100)"
-          : "Invalid IP format (example: 192.168.1.100)",
-      );
-      return;
-    }
-
-    if (firewall.includes(newFirewallIP)) {
-      showError(
-        language === "he"
-          ? `כתובת IP ${newFirewallIP} כבר חסומה`
-          : `IP address ${newFirewallIP} is already blocked`,
-      );
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${API_BASE_URL}/api/admin/devices/ip/${encodeURIComponent(newFirewallIP)}/block`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ blocked: true }),
-        },
-      );
-      const data = await response.json();
-      if (data.success) {
-        setFirewall([...firewall, newFirewallIP]);
-        setNewFirewallIP("");
-        fetchDevices();
-        showSuccess(
-          language === "he"
-            ? `כתובת IP ${newFirewallIP} נחסמה בהצלחה`
-            : `IP address ${newFirewallIP} blocked successfully`,
-        );
-      } else {
-        showError(data.message || "Failed to block IP");
-      }
-    } catch (error) {
-      console.error("Error blocking IP:", error);
-      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
-    }
-  };
-
-  const removeFromFirewall = async (ipAddress) => {
-    const confirmed = window.confirm(
-      language === "he"
-        ? `האם אתה בטוח שברצונך לבטל חסימה של ${ipAddress}?`
-        : `Are you sure you want to unblock ${ipAddress}?`,
-    );
-
-    if (!confirmed) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${API_BASE_URL}/api/admin/devices/ip/${encodeURIComponent(ipAddress)}/block`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ blocked: false }),
-        },
-      );
-      const data = await response.json();
-      if (data.success) {
-        setFirewall(firewall.filter((ip) => ip !== ipAddress));
-        fetchDevices();
-        showSuccess(
-          language === "he"
-            ? `חסימת ${ipAddress} בוטלה בהצלחה`
-            : `IP address ${ipAddress} unblocked successfully`,
-        );
-      } else {
-        showError(data.message || "Failed to unblock IP");
-      }
-    } catch (error) {
-      console.error("Error unblocking IP:", error);
-      showError(language === "he" ? "שגיאה בחיבור" : "Connection error");
-    }
-  };
 
   const filteredDevices = devices
     .filter((device) => {
@@ -1149,6 +1030,21 @@ function LegacyAdminView() {
   };
 
   const isROI = () => getCurrentUser().role === "roi";
+
+  // The export follows the list on screen: a search narrows it too
+  const handleExportProducts = () => {
+    if (filteredProducts.length === 0) {
+      showError(language === "he" ? "אין מוצרים לייצוא" : "No products to export");
+      return;
+    }
+    const date = new Date().toISOString().slice(0, 10);
+    downloadCsv(`products-${date}.csv`, toCsv(filteredProducts, PRODUCT_CSV_COLUMNS));
+    showSuccess(
+      language === "he"
+        ? `יוצאו ${filteredProducts.length} מוצרים לקובץ CSV`
+        : `Exported ${filteredProducts.length} products to CSV`,
+    );
+  };
 
   const filteredProducts = products.filter((product) => {
     const searchLower = searchTerm.toLowerCase();
@@ -1638,6 +1534,19 @@ function LegacyAdminView() {
                   />
                 </div>
                 <button
+                  type="button"
+                  className="btn-outline-admin"
+                  onClick={handleExportProducts}
+                  title={
+                    language === "he"
+                      ? "הורדת רשימת המוצרים המוצגת כקובץ CSV (נפתח באקסל)"
+                      : "Download the listed products as CSV (opens in Excel)"
+                  }
+                >
+                  <FaFileExport aria-hidden="true" />
+                  {language === "he" ? "ייצוא ל-CSV" : "Export CSV"}
+                </button>
+                <button
                   className="btn-gold"
                   onClick={() => {
                     setEditingProduct(null);
@@ -2121,6 +2030,19 @@ function LegacyAdminView() {
                 </select>
                 <button
                   type="button"
+                  className="btn-outline-admin"
+                  onClick={handleExportOrders}
+                  title={
+                    language === "he"
+                      ? "הורדת ההזמנות המוצגות כקובץ CSV (נפתח באקסל)"
+                      : "Download the listed orders as CSV (opens in Excel)"
+                  }
+                >
+                  <FaFileExport aria-hidden="true" />
+                  {language === "he" ? "ייצוא ל-CSV" : "Export CSV"}
+                </button>
+                <button
+                  type="button"
                   className="btn-gold"
                   onClick={fetchOrders}
                   title={language === "he" ? "רענון הרשימה" : "Refresh list"}
@@ -2136,22 +2058,17 @@ function LegacyAdminView() {
                   {language === "he" ? "טוען הזמנות..." : "Loading orders..."}
                 </div>
               ) : (
-                <div style={{ overflowX: "auto" }}>
-                  <table className="admin-table">
+                <>
+                <div className="desktop-only" style={{ overflowX: "auto" }}>
+                  <table className="admin-table orders-table">
                     <thead>
                       <tr>
                         <th>{language === "he" ? "מספר הזמנה" : "Order #"}</th>
                         <th>{language === "he" ? "לקוח" : "Customer"}</th>
                         <th>
-                          {language === "he"
-                            ? "אימייל / טלפון"
-                            : "Email / Phone"}
-                        </th>
-                        <th>
                           {language === "he" ? "כתובת משלוח" : "Shipping"}
                         </th>
                         <th>{language === "he" ? "סכום ששולם" : "Paid"}</th>
-                        <th>{language === "he" ? "קופון" : "Coupon"}</th>
                         <th>{language === "he" ? "תשלום" : "Payment"}</th>
                         <th>
                           {language === "he" ? "סטטוס הזמנה" : "Order Status"}
@@ -2169,28 +2086,29 @@ function LegacyAdminView() {
                         return (
                           <tr key={orderId}>
                             <td>
-                              <code className="order-number-code"
-                                style={{
-                                  fontSize: "0.78rem",
-                                  color: "var(--color-secondary)",
-                                  fontWeight: 700,
-                                }}
+                              <code
+                                className="order-number-code"
+                                title={displayOrderNumber(order)}
+                                dir="ltr"
                               >
-                                {displayOrderNumber(order)}
+                                {compactOrderNumber(order)}
                               </code>
                             </td>
-                            <td className="text-bold">
-                              {order.customerName || "-"}
-                            </td>
                             <td>
-                              <span>
-                                {order.customerEmail || order.email || "-"}
+                              <span className="text-bold">
+                                {order.customerName || "-"}
                               </span>
                               {(order.customerPhone || order.phone) && (
-                                <span className="product-name-sub">
+                                <span className="product-name-sub" dir="ltr">
                                   {order.customerPhone || order.phone}
                                 </span>
                               )}
+                              <span
+                                className="product-name-sub order-email"
+                                title={order.customerEmail || order.email || ""}
+                              >
+                                {order.customerEmail || order.email || ""}
+                              </span>
                             </td>
                             <td>
                               {shipping.address ? (
@@ -2235,20 +2153,8 @@ function LegacyAdminView() {
                                     : `${order.discountPercent}% off`}
                                 </span>
                               )}
-                            </td>
-                            <td>
-                              {order.couponCode ? (
-                                <code
-                                  style={{
-                                    fontSize: "0.78rem",
-                                    color: "var(--color-secondary)",
-                                    fontWeight: 700,
-                                  }}
-                                >
-                                  {order.couponCode}
-                                </code>
-                              ) : (
-                                <span className="text-muted">-</span>
+                              {order.couponCode && (
+                                <code className="order-coupon-code">{order.couponCode}</code>
                               )}
                             </td>
                             <td>
@@ -2371,7 +2277,7 @@ function LegacyAdminView() {
                       })}
                       {filteredOrders.length === 0 && (
                         <tr>
-                          <td colSpan="11" className="empty-table">
+                          <td colSpan="9" className="empty-table">
                             {language === "he"
                               ? "לא נמצאו הזמנות"
                               : "No orders found"}
@@ -2381,6 +2287,83 @@ function LegacyAdminView() {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Phones: one card per order instead of an 1,100px table */}
+                <div className="mobile-cards mobile-only">
+                  {filteredOrders.length === 0 && (
+                    <p className="empty-table">
+                      {language === "he" ? "לא נמצאו הזמנות" : "No orders found"}
+                    </p>
+                  )}
+                  {filteredOrders.map((order) => {
+                    const orderId = order._id || order.id;
+                    const items = order.items || [];
+                    const paid = order.paymentStatus === "completed";
+                    const failed = order.paymentStatus === "failed";
+                    return (
+                      <div key={orderId} className="order-card-mobile">
+                        <div className="order-card-top">
+                          <code className="order-number-code" title={displayOrderNumber(order)} dir="ltr">
+                            {compactOrderNumber(order)}
+                          </code>
+                          <span className="text-muted">{formatDate(order.createdAt)}</span>
+                        </div>
+                        <div className="order-card-customer">
+                          <strong>{order.customerName || "-"}</strong>
+                          {(order.customerPhone || order.phone) && (
+                            <a href={`tel:${order.customerPhone || order.phone}`} dir="ltr">
+                              {order.customerPhone || order.phone}
+                            </a>
+                          )}
+                        </div>
+                        <div className="order-card-row">
+                          <span className="order-card-total">
+                            ₪{order.totalPrice || 0}
+                            <small>
+                              {" · "}
+                              {language === "he" ? `${items.length} פריטים` : `${items.length} items`}
+                            </small>
+                          </span>
+                          <span className={`status-badge ${paid ? "status-active" : failed ? "status-blocked" : "status-pending"}`}>
+                            <span className="status-dot"></span>
+                            {paid
+                              ? language === "he" ? "שולם" : "Paid"
+                              : failed
+                                ? language === "he" ? "נכשל" : "Failed"
+                                : language === "he" ? "ממתין" : "Pending"}
+                          </span>
+                        </div>
+                        <div className="order-card-actions">
+                          <select
+                            className={`status-select status-${order.status}`}
+                            value={normalizeOrderStatus(order.status || "Pending")}
+                            onChange={(e) => handleOrderStatusChange(orderId, e.target.value)}
+                            aria-label={language === "he" ? "סטטוס הזמנה" : "Order status"}
+                          >
+                            <option value="Pending">{language === "he" ? "בהמתנה" : "Pending"}</option>
+                            <option value="Paid">{language === "he" ? "שולם" : "Paid"}</option>
+                            <option value="Processing">{language === "he" ? "בעיבוד" : "Processing"}</option>
+                            <option value="Shipped">{language === "he" ? "נשלחה" : "Shipped"}</option>
+                            <option value="Delivered">{language === "he" ? "נמסרה" : "Delivered"}</option>
+                            <option value="Cancelled">{language === "he" ? "בוטלה" : "Cancelled"}</option>
+                          </select>
+                          <button
+                            type="button"
+                            className="btn-outline-admin"
+                            onClick={() => {
+                              setViewOrder(order);
+                              setTrackingInput(order.trackingNumber || "");
+                            }}
+                          >
+                            <FaEye aria-hidden="true" />
+                            {language === "he" ? "פרטים" : "Details"}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                </>
               )}
             </div>
 
@@ -2744,72 +2727,6 @@ function LegacyAdminView() {
               </div>
             </div>
 
-            {/* Firewall Section */}
-            <div className="firewall-section">
-              <h3>
-                {language === "he"
-                  ? "🔥 ניהול חומת אש"
-                  : "🔥 Firewall Management"}
-              </h3>
-              <div className="firewall-input-group">
-                <div className="search-input-wrapper" style={{ flex: 1 }}>
-                  <FaSearch className="search-icon" />
-                  <input
-                    type="text"
-                    className="search-input"
-                    style={{ width: "100%" }}
-                    placeholder={
-                      language === "he"
-                        ? "הזן כתובת IP (דוגמה: 192.168.1.100)"
-                        : "Enter IP address (e.g. 192.168.1.100)"
-                    }
-                    value={newFirewallIP}
-                    onChange={(e) => setNewFirewallIP(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") handleAddToFirewall();
-                    }}
-                  />
-                </div>
-                <button className="btn-gold" onClick={handleAddToFirewall}>
-                  <FaPlus />
-                  {language === "he" ? "הוסף לחומת אש" : "Add to Firewall"}
-                </button>
-              </div>
-
-              {firewall.length > 0 && (
-                <div className="firewall-list">
-                  <h4
-                    style={{
-                      marginBottom: "var(--spacing-sm)",
-                      color: "#e74c3c",
-                    }}
-                  >
-                    {language === "he"
-                      ? `כתובות IP חסומות (${firewall.length})`
-                      : `Blocked IPs (${firewall.length})`}
-                  </h4>
-                  <div className="firewall-grid">
-                    {firewall.map((ip, index) => (
-                      <div key={index} className="firewall-item">
-                        <code className="ip-address">{ip}</code>
-                        <button
-                          className="icon-btn icon-btn-delete"
-                          onClick={() => removeFromFirewall(ip)}
-                          title={
-                            language === "he"
-                              ? "הסר מחומת אש"
-                              : "Remove from firewall"
-                          }
-                        >
-                          {language === "he" ? "🗑️ הסר" : "🗑️ Remove"}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
             <div className="admin-table-card">
               <div style={{ overflowX: "auto" }}>
                 <table className="admin-table">
@@ -2832,8 +2749,6 @@ function LegacyAdminView() {
                       <th>
                         {language === "he" ? "כניסה אחרונה" : "Last Login"}
                       </th>
-                      <th>{language === "he" ? "סטטוס" : "Status"}</th>
-                      <th>{language === "he" ? "פעולות" : "Actions"}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2879,47 +2794,11 @@ function LegacyAdminView() {
                           </span>
                         </td>
                         <td>{formatDate(device.lastLogin)}</td>
-                        <td>
-                          <span
-                            className={`status-badge ${
-                              device.blocked
-                                ? "status-blocked"
-                                : "status-active"
-                            }`}
-                          >
-                            <span className="status-dot"></span>
-                            {device.blocked
-                              ? language === "he"
-                                ? "חסום"
-                                : "Blocked"
-                              : language === "he"
-                                ? "פעיל"
-                                : "Active"}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="row-actions">
-                            <button
-                              className={`action-btn ${device.blocked ? "unblock" : "block"}`}
-                              onClick={() =>
-                                handleBlockIP(device._id || device.id)
-                              }
-                            >
-                              {device.blocked
-                                ? language === "he"
-                                  ? "בטל חסימה"
-                                  : "Unblock"
-                                : language === "he"
-                                  ? "חסום מכשיר"
-                                  : "Block Device"}
-                            </button>
-                          </div>
-                        </td>
                       </tr>
                     ))}
                     {filteredDevices.length === 0 && (
                       <tr>
-                        <td colSpan="9" className="empty-table">
+                        <td colSpan="7" className="empty-table">
                           {language === "he"
                             ? "לא נמצאו מכשירים"
                             : "No devices found"}
@@ -2931,29 +2810,6 @@ function LegacyAdminView() {
               </div>
             </div>
 
-            {/* Blocked IPs Summary */}
-            <div className="blocked-ips-summary">
-              <h3>
-                {language === "he"
-                  ? "📋 רשימת כתובות IP החסומות"
-                  : "📋 Blocked IP Addresses"}
-              </h3>
-              {blockedIPs.length > 0 ? (
-                <ul className="blocked-ips-list">
-                  {blockedIPs.map((ip) => (
-                    <li key={ip}>
-                      <code>{ip}</code>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p style={{ color: "#999", fontStyle: "italic" }}>
-                  {language === "he"
-                    ? "אין כתובות IP חסומות כרגע"
-                    : "No blocked IP addresses at the moment"}
-                </p>
-              )}
-            </div>
           </>
         )}
 
