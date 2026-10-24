@@ -3,7 +3,6 @@ import {
   FaArrowDown,
   FaArrowUp,
   FaBoxOpen,
-  FaEye,
   FaFileAlt,
   FaMoneyBillWave,
   FaPlus,
@@ -85,19 +84,6 @@ export const WIDGET_REGISTRY = {
         value={stats?.orders?.count ?? 0}
         trend={stats?.orders?.trend}
         hint={`סה"כ: ${stats?.totalOrders ?? 0}`}
-      />
-    ),
-  },
-  visits: {
-    label: "כניסות",
-    defaultSpan: 3,
-    render: ({ stats }) => (
-      <StatWidget
-        icon={FaEye}
-        label="כניסות בתקופה"
-        value={stats?.visits?.count ?? 0}
-        trend={stats?.visits?.trend}
-        hint={`מבקרים ייחודיים: ${stats?.visits?.total ?? 0}`}
       />
     ),
   },
@@ -219,7 +205,6 @@ export const WIDGET_REGISTRY = {
 export const DEFAULT_DASHBOARD_LAYOUT = [
   { widgetKey: "revenue", visible: true, span: 3 },
   { widgetKey: "orders", visible: true, span: 3 },
-  { widgetKey: "visits", visible: true, span: 3 },
   { widgetKey: "newUsers", visible: true, span: 3 },
   { widgetKey: "quickActions", visible: true, span: 12 },
   { widgetKey: "campaignPages", visible: true, span: 6 },

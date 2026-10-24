@@ -6,7 +6,6 @@ import {
   FaEdit,
   FaTrash,
   FaUsers,
-  FaShieldAlt,
   FaBoxOpen,
   FaShoppingCart,
   FaTag,
@@ -140,7 +139,6 @@ function LegacyAdminView() {
 
   const [orderSearchTerm, setOrderSearchTerm] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("all");
-  const [devices, setDevices] = useState([]);
 
   // MOTD State
   const [motd, setMotd] = useState("");
@@ -162,7 +160,6 @@ function LegacyAdminView() {
   };
   const [newCoupon, setNewCoupon] = useState(EMPTY_COUPON);
   const [couponLoading, setCouponLoading] = useState(false);
-  const [deviceSearchTerm, setDeviceSearchTerm] = useState("");
 
   const [userSearchTerm, setUserSearchTerm] = useState("");
 
@@ -505,38 +502,6 @@ function LegacyAdminView() {
     }
   };
 
-  // Fetch devices from API (ROI only)
-  useEffect(() => {
-    if (!isAuthorized) return;
-    try {
-      const userData = JSON.parse(localStorage.getItem("user") || "{}");
-      if (userData.role === "roi") fetchDevices();
-    } catch {
-      /* ignore */
-    }
-  }, [isAuthorized]);
-
-  const fetchDevices = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_BASE_URL}/api/admin/devices`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-      if (data.success) {
-        setDevices(data.data);
-      } else {
-        console.error("Error fetching devices:", data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching devices:", error);
-    }
-  };
 
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -643,8 +608,8 @@ function LegacyAdminView() {
     ) {
       showError(
         language === "he"
-          ? "🔒 רק מנהל ניטור (ROI) יכול לנהל משתמשים בעלי תפקידים גבוהים"
-          : "🔒 Only ROI (Device Manager) can manage higher-level roles",
+          ? "🔒 רק מנהל על (ROI) יכול לנהל משתמשים בעלי תפקידים גבוהים"
+          : "🔒 Only ROI (Super Admin) can manage higher-level roles",
       );
       return;
     }
@@ -653,7 +618,7 @@ function LegacyAdminView() {
     if (newRole === "roi") {
       const confirmed = window.confirm(
         language === "he"
-          ? `⚠️ אתה עומד לתת ל-${getUserName(targetUser || {}).first} גישה כמנהל ניטור (ROI). 👑 זה התפקיד הגבוה ביותר במערכת. האם אתה בטוח?`
+          ? `⚠️ אתה עומד לתת ל-${getUserName(targetUser || {}).first} גישה כמנהל על (ROI). 👑 זה התפקיד הגבוה ביותר במערכת. האם אתה בטוח?`
           : `⚠️ You are about to grant ${getUserName(targetUser || {}).first} ROI access. 👑 This is the highest role in the system. Are you sure?`,
       );
       if (!confirmed) return;
@@ -663,7 +628,7 @@ function LegacyAdminView() {
     if (targetUser?.role === "roi" && newRole !== "roi") {
       const confirmed = window.confirm(
         language === "he"
-          ? `⚠️ אתה עומד להסיר מ-${getUserName(targetUser || {}).first} את תפקיד מנהל ניטור (ROI). תפקיד זה הוא הגבוה ביותר. האם אתה בטוח?`
+          ? `⚠️ אתה עומד להסיר מ-${getUserName(targetUser || {}).first} את תפקיד מנהל על (ROI). תפקיד זה הוא הגבוה ביותר. האם אתה בטוח?`
           : `⚠️ You are about to remove ${getUserName(targetUser || {}).first}'s ROI (highest) role. Are you sure?`,
       );
       if (!confirmed) return;
@@ -696,7 +661,7 @@ function LegacyAdminView() {
             user: language === "he" ? "משתמש" : "User",
             admin: language === "he" ? "מנהל" : "Admin",
             roi:
-              language === "he" ? "מנהל ניטור (ROI)" : "Device Manager (ROI)",
+              language === "he" ? "מנהל על (ROI)" : "Super Admin (ROI)",
           };
 
           showSuccess(
@@ -994,28 +959,6 @@ function LegacyAdminView() {
     return matchesSearch && matchesStatus;
   });
 
-  const filteredDevices = devices
-    .filter((device) => {
-      const locationStr = [
-        device.location?.city,
-        device.location?.country,
-        device.location?.timezone,
-      ]
-        .filter(Boolean)
-        .join(", ")
-        .toLowerCase();
-      return (
-        (device.ipAddress || "")
-          .toLowerCase()
-          .includes(deviceSearchTerm.toLowerCase()) ||
-        (device.deviceName || "")
-          .toLowerCase()
-          .includes(deviceSearchTerm.toLowerCase()) ||
-        locationStr.includes(deviceSearchTerm.toLowerCase())
-      );
-    })
-    .sort((a, b) => new Date(b.lastLogin) - new Date(a.lastLogin));
-
   const getCurrentUser = () => {
     try {
       return JSON.parse(localStorage.getItem("user") || "{}");
@@ -1139,17 +1082,6 @@ function LegacyAdminView() {
               >
                 <FaTag className="nav-icon" />
                 {language === "he" ? "קטגוריות" : "Categories"}
-              </button>
-            </li>
-          )}
-          {isROI() && (
-            <li>
-              <button
-                className={`admin-nav-item ${activeTab === "devices" ? "active" : ""}`}
-                onClick={() => setActiveTab("devices")}
-              >
-                <FaShieldAlt className="nav-icon" />
-                {language === "he" ? "מכשירים" : "Devices"}
               </button>
             </li>
           )}
@@ -1310,46 +1242,6 @@ function LegacyAdminView() {
                             <FaArrowDown />
                           )}
                           {Math.abs(dashboardStats.newUsers.trend)}%
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Site Visits */}
-                  <div className="stat-card">
-                    <div className="stat-icon-wrap stat-icon-visits">
-                      <FaEye />
-                    </div>
-                    <div className="stat-body">
-                      <p className="stat-value">
-                        {(dashboardStats?.visits?.count ?? 0).toLocaleString()}
-                      </p>
-                      <p className="stat-label">
-                        {language === "he" ? "מבקרים בתקופה" : "Visitors (period)"}
-                      </p>
-                      {(dashboardStats?.visits?.total ?? 0) > 0 && (
-                        <p
-                          style={{
-                            color: "#888",
-                            fontSize: "0.75rem",
-                            margin: "0.15rem 0 0",
-                          }}
-                        >
-                          {language === "he"
-                            ? `סה״כ מבקרים ייחודיים: ${dashboardStats.visits.total.toLocaleString()}`
-                            : `Total unique visitors: ${dashboardStats.visits.total.toLocaleString()}`}
-                        </p>
-                      )}
-                      {dashboardStats?.visits?.trend !== undefined && (
-                        <span
-                          className={`stat-trend ${dashboardStats.visits.trend >= 0 ? "trend-up" : "trend-down"}`}
-                        >
-                          {dashboardStats.visits.trend >= 0 ? (
-                            <FaArrowUp />
-                          ) : (
-                            <FaArrowDown />
-                          )}
-                          {Math.abs(dashboardStats.visits.trend)}%
                         </span>
                       )}
                     </div>
@@ -1914,8 +1806,8 @@ function LegacyAdminView() {
                               {isROI() && (
                                 <option value="roi">
                                   {language === "he"
-                                    ? "מנהל ניטור (ROI)"
-                                    : "Device Manager (ROI)"}
+                                    ? "מנהל על (ROI)"
+                                    : "Super Admin (ROI)"}
                                 </option>
                               )}
                             </select>
@@ -2692,124 +2584,6 @@ function LegacyAdminView() {
                   </div>
                 );
               })()}
-          </>
-        )}
-
-        {/* ───────────────── DEVICES TAB ───────────────── */}
-        {activeTab === "devices" && isROI() && (
-          <>
-            <div className="section-header">
-              <div>
-                <h1>
-                  {language === "he" ? "ניהול מכשירים" : "Device Management"}
-                </h1>
-                <p className="section-subtitle">
-                  {language === "he"
-                    ? `סה"כ ${filteredDevices.length} מכשירים`
-                    : `Total ${filteredDevices.length} devices`}
-                </p>
-              </div>
-              <div className="section-actions">
-                <div className="search-input-wrapper">
-                  <FaSearch className="search-icon" />
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder={
-                      language === "he"
-                        ? "חיפוש לפי IP או מכשיר..."
-                        : "Search by IP or device..."
-                    }
-                    value={deviceSearchTerm}
-                    onChange={(e) => setDeviceSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="admin-table-card">
-              <div style={{ overflowX: "auto" }}>
-                <table className="admin-table">
-                  <thead>
-                    <tr>
-                      <th>{language === "he" ? "כתובת IP" : "IP Address"}</th>
-                      <th>
-                        {language === "he"
-                          ? "מכשיר / דפדפן"
-                          : "Device / Browser"}
-                      </th>
-                      <th>{language === "he" ? "מערכת הפעלה" : "OS"}</th>
-                      <th>{language === "he" ? "מיקום" : "Location"}</th>
-                      <th>
-                        {language === "he" ? "מסך / שפה" : "Screen / Lang"}
-                      </th>
-                      <th>
-                        {language === "he" ? "ספירת כניסות" : "Login Count"}
-                      </th>
-                      <th>
-                        {language === "he" ? "כניסה אחרונה" : "Last Login"}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredDevices.map((device) => (
-                      <tr key={device._id || device.id}>
-                        <td>
-                          <code className="ip-address">{device.ipAddress}</code>
-                        </td>
-                        <td>
-                          <strong>{device.deviceName || "-"}</strong>
-                          {device.browser && (
-                            <span className="product-name-sub">
-                              {device.browser}
-                            </span>
-                          )}
-                        </td>
-                        <td className="text-muted">{device.os || "-"}</td>
-                        <td>
-                          <strong>
-                            {device.location?.city && device.location?.country
-                              ? `${device.location.city}, ${device.location.country}`
-                              : device.location?.city ||
-                                device.location?.country ||
-                                "-"}
-                          </strong>
-                          <span className="product-name-sub">
-                            {typeof device.location?.timezone === "string"
-                              ? device.location.timezone
-                              : ""}
-                          </span>
-                        </td>
-                        <td className="text-muted">
-                          {device.screen || "-"}
-                          {device.language && (
-                            <span className="product-name-sub">
-                              {device.language}
-                            </span>
-                          )}
-                        </td>
-                        <td>
-                          <span className="login-count">
-                            {device.loginCount}
-                          </span>
-                        </td>
-                        <td>{formatDate(device.lastLogin)}</td>
-                      </tr>
-                    ))}
-                    {filteredDevices.length === 0 && (
-                      <tr>
-                        <td colSpan="7" className="empty-table">
-                          {language === "he"
-                            ? "לא נמצאו מכשירים"
-                            : "No devices found"}
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
           </>
         )}
 
