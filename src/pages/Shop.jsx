@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import "../styles/pages/Shop.css";
@@ -60,6 +60,8 @@ function lowStockLabel(product, language) {
 }
 
 const ALL = "הכל";
+// Cards rendered at a time; more are added as the visitor nears the end
+const PRODUCTS_PER_BATCH = 12;
 
 const ALL_COLLECTION = {
   id: ALL,
@@ -220,6 +222,11 @@ function Shop() {
     [productParam, catalog],
   );
 
+  // Render the grid in batches: all 71 cards (and their photos) at once used
+  // enough memory for iOS to kill the page on smaller iPhones.
+  const [renderCount, setRenderCount] = useState(PRODUCTS_PER_BATCH);
+  const sentinelRef = useRef(null);
+
   const openProduct = (product) => updateParams({ product: product.id });
   const closeProduct = () => updateParams({ product: null }, { replace: true });
 
@@ -249,6 +256,28 @@ function Shop() {
     else sorted.sort(recommendedOrder(selectedCollection));
     return sorted;
   }, [catalog, selectedCollection, zodiacFilter, searchTerm, sortBy, language]);
+
+  // A new filter, search or sort starts again from the first batch
+  useEffect(() => {
+    setRenderCount(PRODUCTS_PER_BATCH);
+  }, [selectedCollection, zodiacFilter, searchTerm, sortBy]);
+
+  // Add the next batch when the end of the grid comes within ~1.5 screens
+  const hasMore = renderCount < visibleProducts.length;
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!hasMore || !sentinel || typeof IntersectionObserver === "undefined") return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setRenderCount((count) => count + PRODUCTS_PER_BATCH);
+        }
+      },
+      { rootMargin: "0px 0px 150% 0px" },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [hasMore, renderCount]);
 
   const handleCollectionChange = (collectionId) => {
     updateParams({
@@ -366,7 +395,11 @@ function Shop() {
           <div className="category-hero">
             <div className="category-hero-image">
               <img
-                src={sizedImage(currentCollection.image, 1400)}
+                src={sizedImage(currentCollection.image, 800)}
+                srcSet={[400, 800, 1400]
+                  .map((w) => `${sizedImage(currentCollection.image, w)} ${w * 2}w`)
+                  .join(", ")}
+                sizes="100vw"
                 alt=""
                 fetchpriority="high"
                 onError={handleImageError}
@@ -488,8 +521,9 @@ function Shop() {
                 </button>
               </div>
             ) : visibleProducts.length > 0 ? (
+              <>
               <div className="products-grid">
-                {visibleProducts.map((product) => {
+                {visibleProducts.slice(0, renderCount).map((product) => {
                   const name = productName(product, language);
                   const lowStock = lowStockLabel(product, language);
                   return (
@@ -539,6 +573,10 @@ function Shop() {
                   );
                 })}
               </div>
+              {renderCount < visibleProducts.length && (
+                <div ref={sentinelRef} className="products-sentinel" aria-hidden="true" />
+              )}
+              </>
             ) : (
               <div className="no-products">
                 <p>

@@ -185,9 +185,18 @@
   flex-direction: column;
   gap: 1rem;
   cursor: pointer;
-  animation: fadeIn 0.5s var(--ease-out) forwards;
-  opacity: 0;
+  /* "backwards", not "forwards" + opacity:0: a forwards-filled animation
+     never ends, and on iOS each of the 71 cards kept its own GPU layer —
+     enough memory, with the photos, for Safari to kill the page on smaller
+     iPhones ("A problem repeatedly occurred"). */
+  animation: fadeIn 0.5s var(--ease-out) backwards;
   position: relative;
+}
+
+/* Invisible marker at the end of the grid; reaching it renders the next
+   batch of products (see PRODUCTS_PER_BATCH in Shop.jsx) */
+.products-sentinel {
+  height: 1px;
 }
 
 .best-seller-badge {
