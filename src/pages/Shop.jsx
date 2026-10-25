@@ -506,6 +506,14 @@ function Shop() {
                   : `${visibleProducts.length} product${visibleProducts.length === 1 ? "" : "s"}`}
               </p>
             )}
+            {/* What "from ₪…" means, once, instead of leaving shoppers to guess */}
+            {!loading && !error && visibleProducts.length > 0 && (
+              <p className="shop-price-note">
+                {language === "he"
+                  ? "״החל מ־״ הוא מחיר הבסיס. בחירת מתכת (ציפוי זהב או זהב 14 קראט) ואפשרויות נוספות מעדכנת את המחיר לפני ההוספה לעגלה."
+                  : "“From” is the base price. Choosing a metal (gold plating or 14K gold) and other options updates the price before you add to cart."}
+              </p>
+            )}
 
             {loading ? (
               <ProductSkeletonGrid />

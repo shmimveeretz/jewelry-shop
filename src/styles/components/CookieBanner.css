@@ -147,3 +147,112 @@
 .cookie-banner {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ── Quiet card instead of a full-width dark bar ──
+   A first visit shouldn't open on "system interface": the notice is a
+   small warm card in the corner (with side margins on phones), the store
+   palette, and two equal-weight choices. */
+.cookie-banner {
+  left: auto;
+  right: 1.25rem;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  padding-bottom: 0;
+  width: min(440px, calc(100vw - 2.5rem));
+  background: #faf7f0;
+  border: 1px solid rgba(44, 62, 80, 0.12);
+  border-top: 1px solid rgba(44, 62, 80, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 18px 44px -18px rgba(22, 40, 57, 0.35);
+  animation: cookie-rise 0.45s var(--ease-out) both;
+}
+
+.cookie-banner--out {
+  animation: cookie-sink 0.22s var(--ease-out) forwards;
+}
+
+@keyframes cookie-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes cookie-sink {
+  to {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.cookie-banner .cookie-banner__inner {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+}
+
+.cookie-banner .cookie-banner__text {
+  min-width: 0;
+  color: var(--color-primary);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.cookie-banner .cookie-banner__link {
+  color: var(--color-primary);
+  font-weight: 600;
+  border-bottom-color: rgba(44, 62, 80, 0.35);
+}
+
+.cookie-banner .cookie-banner__actions {
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.cookie-banner .cookie-banner__btn {
+  flex: 1;
+  min-height: 44px;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0;
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.cookie-banner .cookie-banner__btn--accept {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.cookie-banner .cookie-banner__btn--reject {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid rgba(44, 62, 80, 0.3);
+}
+
+.cookie-banner .cookie-banner__btn:focus-visible {
+  outline-color: var(--color-primary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cookie-banner .cookie-banner__btn--accept:hover {
+    filter: none;
+    background: #1f2d3a;
+  }
+
+  .cookie-banner .cookie-banner__btn--reject:hover {
+    background: rgba(44, 62, 80, 0.05);
+    border-color: rgba(44, 62, 80, 0.5);
+  }
+}
+
+/* In RTL the card sits at the start (right) edge on desktop; phones get it
+   centred with margins */
+@media (max-width: 640px) {
+  .cookie-banner {
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}

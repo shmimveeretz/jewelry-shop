@@ -684,3 +684,11 @@
     justify-content: space-between;
   }
 }
+
+.shop-price-note {
+  margin: -0.25rem 0 1.25rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--color-text-light);
+  max-width: 52rem;
+}

@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
-  FaGem,
-  FaPalette,
-  FaStar as FaStarSolid,
+  FaHandSparkles,
+  FaShieldAlt,
   FaShippingFast,
-  FaLock,
-  FaHandHoldingHeart,
+  FaScroll,
+  FaGift,
 } from "react-icons/fa";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useProducts } from "../hooks/useProducts";
@@ -60,7 +59,7 @@ function HomeProductCard({ product, language, badge, onOpen }) {
 }
 
 function Home() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Fetch admin-selected best sellers for the home page
@@ -76,38 +75,80 @@ function Home() {
     .filter((product) => product.category === "שלישיות מיוחדות")
     .slice(0, 4);
 
-  const features = [
+  // "Choose by meaning": four doors into the collection, each pictured with a
+  // real piece from it (an admin-featured one when there is one)
+  const pathImage = (category) =>
+    (allProducts.find((p) => p.category === category && p.featured) ||
+      allProducts.find((p) => p.category === category)) ?? null;
+
+  const paths = [
     {
-      icon: <FaGem />,
-      title: language === "he" ? "איכות פרימיום" : "Premium Quality",
-      description:
+      key: "letters",
+      category: "אותיות עבריות",
+      to: `/shop?category=${encodeURIComponent("אותיות עבריות")}`,
+      title: language === "he" ? "אות עברית" : "A Hebrew letter",
+      text:
         language === "he"
-          ? "כל התכשיטים שלנו עשויים מחומרים איכותיים ביותר"
-          : "All our jewelry is made from the highest quality materials",
+          ? "אות מהאלף־בית, לבד או בשרשרת אותיות אישית"
+          : "A single letter, or your own chain of letters",
     },
     {
-      icon: <FaPalette />,
-      title: language === "he" ? "עיצוב ייחודי" : "Unique Design",
-      description:
+      key: "zodiac",
+      category: "תליוני מזלות",
+      to: "/zodiac",
+      title: language === "he" ? "המזל שלכם" : "Your sign",
+      text:
         language === "he"
-          ? "עיצובים מקוריים שמשלבים מסורת ומודרניות"
-          : "Original designs that combine tradition and modernity",
+          ? "לפי המזל או החודש העברי, בגלגל המזלות"
+          : "By zodiac sign or Hebrew month, on the zodiac wheel",
     },
     {
-      icon: <FaStarSolid />,
-      title: language === "he" ? "מסורת יהודית" : "Jewish Tradition",
-      description:
+      key: "stones",
+      category: "אבני חושן",
+      to: `/shop?category=${encodeURIComponent("אבני חושן")}`,
+      title: language === "he" ? "אבן חושן" : "A Hoshen stone",
+      text:
         language === "he"
-          ? "תכשיטים עם משמעות רוחנית ותרבותית עמוקה"
-          : "Jewelry with deep spiritual and cultural meaning",
+          ? "שתים־עשרה אבני החושן, אבן לכל שבט"
+          : "The twelve stones of the breastplate, one for each tribe",
     },
     {
-      icon: <FaShippingFast />,
-      title: language === "he" ? "משלוח מהיר" : "Fast Shipping",
+      key: "symbols",
+      category: "סמלי בני ישראל",
+      to: `/shop?category=${encodeURIComponent("סמלי בני ישראל")}`,
+      title: language === "he" ? "סמל" : "A symbol",
+      text:
+        language === "he"
+          ? "חי, מגן דוד, נבל ועוד סמלים שליוו את עם ישראל"
+          : "Chai, Star of David, harp and more symbols of Israel",
+    },
+  ];
+
+  // Three concrete commitments, each one true of every order today
+  const promises = [
+    {
+      icon: <FaHandSparkles />,
+      title: language === "he" ? "נוצר בהזמנה אישית" : "Made to order",
       description:
         language === "he"
-          ? "משלוח מהיר ומאובטח לכל רחבי הארץ"
-          : "Fast and secure shipping throughout the country",
+          ? "כל תכשיט מוכן במיוחד בשבילכם ונשלח תוך עד 14 ימי עסקים."
+          : "Each piece is made for you and ships within 14 business days.",
+    },
+    {
+      icon: <FaScroll />,
+      title: language === "he" ? "סמל עם מקור" : "A symbol with a source",
+      description:
+        language === "he"
+          ? "כל קולקציה מתחילה ממקור: אות, פסוק או מסורת, ולכל תכשיט מוסבר מה הוא מסמל."
+          : "Every collection starts from a source: a letter, a verse or a tradition, and each piece explains what it stands for.",
+    },
+    {
+      icon: <FaGift />,
+      title: language === "he" ? "ליווי עד הבית" : "With you to the door",
+      description:
+        language === "he"
+          ? "משלוח עם מספר מעקב, אריזת מתנה לבחירה, אחריות 12 חודשים ומענה אישי בוואטסאפ."
+          : "Tracked delivery, optional gift wrapping, a 12-month warranty and personal WhatsApp support.",
     },
   ];
 
@@ -118,39 +159,45 @@ function Home() {
         <div className="hero-overlay" />
 
         <div className="hero-content">
+          {/* The verse is the brand's signature, kept small above the promise */}
+          <p className="hero-verse">
+            {language === "he"
+              ? "״בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ״"
+              : "“In the beginning God created the heavens and the earth”"}
+            <span className="hero-verse-source">
+              {language === "he" ? "בראשית א׳, א׳" : "Genesis 1:1"}
+            </span>
+          </p>
           <h1>
             {language === "he"
-              ? '"בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ"'
-              : '"In the beginning God created the heavens and the earth"'}
+              ? "תכשיטים שנושאים סיפור עברי קרוב ללב"
+              : "Jewelry that carries a Hebrew story close to the heart"}
           </h1>
-          <p className="hero-source">
-            {language === "he" ? "בראשית א', א'" : "Genesis 1:1"}
-          </p>
           <p className="hero-value-prop">
             {language === "he"
-              ? "תכשיטי מקור בעבודת יד עם משמעות — משלוח חינם מעל ₪300"
-              : "Handmade jewelry with meaning — free shipping over ₪300"}
+              ? "אותיות, מזלות וסמלים עתיקים, בעבודת יד, כתכשיט אישי לחיים של היום."
+              : "Letters, zodiac signs and ancient symbols, handmade as personal jewelry for today."}
           </p>
           <div className="hero-cta-row">
             <Link to="/shop" className="hero-btn-primary">
-              {language === "he" ? "לרכישה" : "Shop the Collection"}
+              {language === "he" ? "לגלות את הקולקציה" : "Discover the collection"}
             </Link>
-            <Link to="/about" className="hero-btn-ghost">
-              {language === "he" ? "הסיפור שלנו" : "Our Story"}
+            <Link to="/zodiac" className="hero-btn-ghost">
+              {language === "he" ? "למצוא את הסמל שלי" : "Find my symbol"}
             </Link>
           </div>
           <div className="hero-trust-strip">
+            <span>
+              <FaHandSparkles />
+              {language === "he" ? "בעבודת יד, בהזמנה אישית" : "Handmade to order"}
+            </span>
             <span>
               <FaShippingFast />
               {language === "he" ? "משלוח חינם מעל ₪300" : "Free shipping over ₪300"}
             </span>
             <span>
-              <FaGem />
-              {language === "he" ? "תשלום מאובטח" : "Secure checkout"}
-            </span>
-            <span>
-              <FaStarSolid />
-              {language === "he" ? "14 יום להחזרה" : "14-day returns"}
+              <FaShieldAlt />
+              {language === "he" ? "אחריות 12 חודשים" : "12-month warranty"}
             </span>
           </div>
         </div>
@@ -173,6 +220,46 @@ function Home() {
         </div>
       </section>
 
+      {/* Choose by meaning */}
+      <section className="paths-section">
+        <div className="container">
+          <div className="section-header centered">
+            <h2 className="section-title">
+              {language === "he" ? "בחרו לפי משמעות" : "Choose by meaning"}
+            </h2>
+            <p className="section-subtitle">
+              {language === "he"
+                ? "ארבע דרכים להגיע לתכשיט שמתאים לכם"
+                : "Four ways to the piece that's yours"}
+            </p>
+          </div>
+          <div className="paths-grid">
+            {paths.map((path) => {
+              const product = pathImage(path.category);
+              return (
+                <Link key={path.key} to={path.to} className="path-card">
+                  <div className="path-image">
+                    {product && (
+                      <img
+                        src={sizedImage(productImage(product), 360)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        onError={handleImageError}
+                      />
+                    )}
+                  </div>
+                  <div className="path-body">
+                    <h3>{path.title}</h3>
+                    <p>{path.text}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Collections - Top 4 Best Sellers */}
       <section className="featured-collections">
         <div className="container">
@@ -184,8 +271,8 @@ function Home() {
             </h2>
             <p className="section-subtitle">
               {language === "he"
-                ? "חיבור נצחי בין רוח לחומר, מעוצב בזהב"
-                : "An eternal connection between spirit and matter, crafted in gold"}
+                ? "התכשיטים שהכי הרבה לקוחות בחרו לאחרונה"
+                : "The pieces our customers choose most"}
             </p>
           </div>
 
@@ -270,60 +357,26 @@ function Home() {
 
       <div className="section-divider" />
 
-      {/* Why Choose Us */}
+      {/* Proof and service */}
       <section className="why-choose-us">
         <div className="container">
-          <h2 className="section-title">{t("whyChooseUs")}</h2>
-          <div className="features-grid">
-            {features.map((feature, index) => (
+          <h2 className="section-title">
+            {language === "he" ? "מה מקבלים איתנו" : "What comes with every piece"}
+          </h2>
+          <div className="features-grid features-grid--three">
+            {promises.map((promise, index) => (
               <div
-                key={index}
+                key={promise.title}
                 className="feature-card"
-                style={{ "--stagger": `${index * 0.15}s` }}
+                style={{ "--stagger": `${index * 0.12}s` }}
               >
                 <div className="feature-icon-wrap">
-                  <div className="feature-icon">{feature.icon}</div>
+                  <div className="feature-icon">{promise.icon}</div>
                 </div>
-                <h3>{feature.title}</h3>
-                <p>{feature.description}</p>
+                <h3>{promise.title}</h3>
+                <p>{promise.description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider" />
-
-      {/* CTA Section */}
-      <section className="cta-section">
-        <div className="container">
-          <div className="cta-inner">
-            <div className="cta-accent-border" />
-            <div className="cta-content">
-              <h2>{t("zodiacTitle")}</h2>
-              <p>{t("zodiacSubtitle")}</p>
-              <Link to="/zodiac" className="cta-btn">
-                {t("findYourSign")}
-              </Link>
-              <div className="cta-trust-strip">
-                <span>
-                  <FaLock />
-                  {language === "he" ? "תשלום מאובטח" : "Secure payments"}
-                </span>
-                <span>
-                  <FaHandHoldingHeart />
-                  {language === "he"
-                    ? "עבודת יד באהבה"
-                    : "Handcrafted with love"}
-                </span>
-                <span>
-                  <FaShippingFast />
-                  {language === "he"
-                    ? "משלוח חינם מעל ₪300"
-                    : "Free shipping over ₪300"}
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </section>

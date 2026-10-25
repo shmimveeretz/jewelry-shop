@@ -40,8 +40,29 @@
   max-width: 3600px;
 }
 
+/* The verse is the brand's signature: small, set apart, above the promise */
+.hero-verse {
+  margin: 0 auto 1.4rem;
+  max-width: 34rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+  animation: heroReveal 1s var(--ease-out) both;
+}
+
+.hero-verse-source {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.62);
+}
+
 .hero-content h1 {
-  font-size: clamp(1.8rem, 5vw, 4.5rem);
+  max-width: 16ch;
+  margin-inline: auto;
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
   color: var(--color-white);
   font-weight: 400;
   line-height: 1.12;
@@ -88,30 +109,32 @@
   animation: heroReveal 1s var(--ease-out) 0.4s both;
 }
 
+/* Primary action: warm stone, not bright gold. Gold stays a material accent
+   (icons, rules), so the button doesn't fight the photograph. */
 .hero-btn-primary {
   display: inline-block;
-  padding: 1.05rem 2.75rem;
+  padding: 1.05rem 2.5rem;
   min-height: 52px;
-  background: var(--color-secondary);
+  background: #f6f1e7;
   color: var(--color-primary);
   border-radius: var(--radius-md);
   font-size: var(--font-size-base);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.06em;
   font-family: var(--font-primary);
   font-weight: 600;
   text-decoration: none;
   transition:
-    filter 0.35s ease,
+    background-color 0.3s ease,
     transform 0.3s ease,
     box-shadow 0.3s ease;
-  box-shadow: 0 6px 24px rgba(201, 169, 110, 0.45);
+  box-shadow: 0 8px 26px rgba(10, 16, 26, 0.28);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .hero-btn-primary:hover {
-    filter: brightness(1.08);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(201, 169, 110, 0.55);
+    background-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(10, 16, 26, 0.34);
   }
 }
 
@@ -120,11 +143,11 @@
   padding: 0.85rem 1.75rem;
   min-height: 48px;
   background: transparent;
-  color: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: var(--radius-md);
-  font-size: 0.9rem;
-  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
   font-family: var(--font-primary);
   text-decoration: none;
   backdrop-filter: blur(8px);
@@ -751,5 +774,142 @@
 
   .cta-accent-border {
     border-radius: var(--radius-md);
+  }
+}
+
+/* ─── Choose by meaning ─────────────────────────────────────────── */
+.paths-section {
+  padding: var(--spacing-xl) 0 var(--spacing-lg);
+}
+
+.paths-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: var(--spacing-lg);
+}
+
+.path-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border: 1px solid rgba(44, 62, 80, 0.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out);
+}
+
+.path-card:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .path-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px -18px rgba(22, 40, 57, 0.35);
+  }
+
+  .path-card:hover .path-image img {
+    transform: scale(1.04);
+  }
+}
+
+.path-image {
+  aspect-ratio: 4 / 5;
+  background: #efe9dd;
+  overflow: hidden;
+}
+
+.path-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.path-body {
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.path-body h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.path-body p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-text-light);
+}
+
+.features-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .paths-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .paths-grid {
+    gap: 0.75rem;
+  }
+
+  .path-body {
+    padding: 0.75rem 0.8rem 0.9rem;
+  }
+
+  .path-body h3 {
+    font-size: 1.05rem;
+  }
+
+  .path-body p {
+    font-size: 0.85rem;
+  }
+
+  .features-grid--three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phones: start the hero content higher so both actions sit above the fold
+   (and above the first-visit cookie card) instead of centring them */
+@media (max-width: 640px) {
+  .hero {
+    align-items: flex-start;
+    padding-top: 9svh;
+  }
+
+  .hero-verse {
+    margin-bottom: 1rem;
+  }
+
+  .hero-content h1 {
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-value-prop {
+    margin-bottom: 1.4rem;
+  }
+
+  .hero-cta-row {
+    gap: 0.75rem;
+  }
+
+  .hero-btn-primary,
+  .hero-btn-ghost {
+    width: 100%;
+    max-width: 22rem;
+    text-align: center;
   }
 }

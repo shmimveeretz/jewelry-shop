@@ -1,6 +1,5 @@
 import "../styles/pages/About.css";
 import { useLanguage } from "../contexts/LanguageContext";
-import CountUp from "../components/CountUp";
 
 const SACRED_NUMBERS = (language) => [
   {
@@ -19,7 +18,7 @@ const SACRED_NUMBERS = (language) => [
   {
     icon: "nights_stay",
     number: 7,
-    label: language === "he" ? "כוכבי לכת" : "Stars Pendants",
+    label: language === "he" ? "כוכבי לכת" : "Classical planets",
     desc:
       language === "he"
         ? "שבעת המאורות המייצגים את מחזורי הזמן והשפעת השמיים על חיי האדם."
@@ -135,7 +134,7 @@ function About() {
                   <span aria-hidden="true" className="material-symbols-outlined">{item.icon}</span>
                 </div>
                 <div className="about-number-value">
-                  <CountUp value={item.number} />
+                  {item.number}
                 </div>
                 <p className="about-number-label">{item.label}</p>
                 <p className="about-number-desc">{item.desc}</p>
