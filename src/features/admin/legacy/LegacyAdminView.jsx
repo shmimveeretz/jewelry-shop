@@ -1298,14 +1298,12 @@ function LegacyAdminView() {
                           .map((order) => (
                             <tr key={order._id || order.id}>
                               <td>
-                                <code className="order-number-code"
-                                  style={{
-                                    fontSize: "0.78rem",
-                                    color: "var(--color-secondary)",
-                                    fontWeight: 700,
-                                  }}
+                                <code
+                                  className="order-number-code"
+                                  title={displayOrderNumber(order)}
+                                  dir="ltr"
                                 >
-                                  {displayOrderNumber(order)}
+                                  {compactOrderNumber(order)}
                                 </code>
                               </td>
                               <td className="text-bold">
@@ -1339,17 +1337,20 @@ function LegacyAdminView() {
                                 </span>
                               </td>
                               <td>
+                                {/* Statuses are stored capitalised ("Delivered"); compare
+                                    case-insensitively or nothing matches */}
                                 <span
                                   className={`status-badge ${
-                                    order.status === "delivered"
+                                    String(order.status).toLowerCase() === "delivered"
                                       ? "status-active"
-                                      : order.status === "cancelled"
+                                      : String(order.status).toLowerCase() === "cancelled"
                                         ? "status-blocked"
                                         : "status-pending"
                                   }`}
                                 >
                                   <span className="status-dot"></span>
                                   {{
+                                    paid: language === "he" ? "שולם" : "Paid",
                                     pending:
                                       language === "he" ? "בהמתנה" : "Pending",
                                     processing:
@@ -1362,7 +1363,8 @@ function LegacyAdminView() {
                                       language === "he" ? "נמסרה" : "Delivered",
                                     cancelled:
                                       language === "he" ? "בוטלה" : "Cancelled",
-                                  }[order.status] || order.status}
+                                  }[String(order.status || "pending").toLowerCase()] ||
+                                    order.status}
                                 </span>
                               </td>
                               <td className="text-muted">
